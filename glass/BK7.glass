@@ -1,0 +1,20 @@
+Name=BK7
+
+FileAuthor= Etienne de Foras
+FileAuthorMail= etienne.deforas@gmail.com
+
+GlassMaker= Schott
+GlassMakerWebsite=http://www.schott.com
+GlassInfoSource=http://www.us.schott.com/advanced_optics/english/download/schott_optical_glass_catalogue_excel_january_2011.xls
+Formulae=Sellmeier
+FormulaeInfo=http://en.wikipedia.org/wiki/Sellmeier_equation
+B1=1.03961212
+B2=2.31792344e-1
+B3=1.01046945
+C1=6.00069867e-3
+C2=2.00179144e-2
+C3=1.03560653e2
+
+Density=2.51
+
+SolidColor=8844025

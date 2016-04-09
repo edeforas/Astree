@@ -1,0 +1,6 @@
+<RCC>
+    <qresource prefix="/Astree">
+        <file>Astree.ico</file>
+        <file>Astree_fr.qm</file>
+    </qresource>
+</RCC>

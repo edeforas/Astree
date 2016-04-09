@@ -1,0 +1,20 @@
+Name=F2
+
+FileAuthor= Etienne de Foras
+FileAuthorMail= etienne.deforas@gmail.com
+
+GlassMaker= Schott
+GlassMakerWebsite=http://www.schott.com
+GlassInfoSource=http://www.us.schott.com/advanced_optics/english/download/schott_optical_glass_catalogue_excel_january_2011.xls
+Formulae=Sellmeier
+FormulaeInfo=http://en.wikipedia.org/wiki/Sellmeier_equation
+B1=1.34533359
+B2=2.09073118e-1
+B3=9.37357162e-1
+C1=9.97743871e-3
+C2=4.70450767e-2
+C3=1.11886764e2
+
+Density=3.60
+
+SolidColor=6542041

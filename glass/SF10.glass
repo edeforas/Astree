@@ -1,0 +1,21 @@
+Name=SF10
+
+FileAuthor= Etienne de Foras
+FileAuthorMail= etienne.deforas@gmail.com
+
+GlassMaker= Schott
+GlassMakerWebsite=http://www.schott.com
+GlassInfoSource=http://www.us.schott.com/advanced_optics/english/download/schott_optical_glass_catalogue_excel_january_2011.xls
+
+Formulae=Sellmeier
+FormulaeInfo=http://en.wikipedia.org/wiki/Sellmeier_equation
+B1=1.62153902E+00
+B2=2.56287842E-01
+B3=1.64447552E+00
+C1=1.22241457E-02
+C2=5.95736775E-02
+C3=1.47468793E+02
+
+Density=3.05
+
+SolidColor=6542041

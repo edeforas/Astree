@@ -1,0 +1,340 @@
+// this file is covered by the General Public License version 2 or later
+// please see GPL.html for more details and licensing issues
+// copyright Etienne de Foras ( the author )  mailto: etienne.deforas@gmail.com
+
+#include "MainWindow.h"
+#include "ui_MainWindow.h"
+#include <QMessageBox>
+#include <QFileDialog>
+#include <QtGui>
+
+#include <cassert>
+
+#include "OpticalDevice.h"
+#include "DeviceIo.h"
+#include "DeviceIoZmx.h"
+#include "DockSurfacesData.h"
+#include "DockLightProperties.h"
+#include "DockScatterPlot.h"
+#include "DockCommentary.h"
+#include "DockImageQuality.h"
+#include "DockOptimizer.h"
+#include "FrameSideView.h"
+#include "AstreeDefines.h"
+#include "FileUtil.h"
+#include "MaterialManager.h"
+#include "DialogMediumManager.h"
+#include "DialogScaleDevice.h"
+
+#include "DeviceScaling.h"
+//////////////////////////////////////////////////////////////////////////////
+MainWindow::MainWindow(QWidget *parent)
+    : QMainWindow(parent), ui(new Ui::MainWindowClass)
+{
+    ui->setupUi(this);
+    _pDevice=new OpticalDevice;
+
+    dLightTilt=0.;
+
+    string sExepath=FileUtil::get_path(FileUtil::get_executable_path());
+
+    //load all materials
+    vector<string> vsMaterials=FileUtil::list(sExepath+"\\glass\\*.glass");
+
+    for(unsigned int i=0;i<vsMaterials.size();i++)
+    {
+        bool bOk=MaterialManager::singleton().load(sExepath+"\\glass\\"+vsMaterials[i]);
+
+        if(bOk==false)
+            QMessageBox::warning(this,"Warning:","Unable to load material file: "+QString(vsMaterials[i].c_str()));
+    }
+
+    _bMustSave=false;
+
+    _pFrameSideView=new FrameSideView(this);
+    setCentralWidget(_pFrameSideView);
+
+    _pDockSurfacesData=new DockSurfacesData(this);
+    addDockWidget(Qt::BottomDockWidgetArea, _pDockSurfacesData);
+
+    _pDockLightProperties=new DockLightProperties(this);
+    addDockWidget(Qt::LeftDockWidgetArea, _pDockLightProperties);
+
+    _pDockScatterPlot=new DockScatterPlot(this);
+    addDockWidget(Qt::LeftDockWidgetArea, _pDockScatterPlot);
+
+    _pDockCommentary=new DockCommentary(this);
+    addDockWidget(Qt::LeftDockWidgetArea, _pDockCommentary);
+
+    _pDockImageQuality=new DockImageQuality(this);
+    addDockWidget(Qt::BottomDockWidgetArea, _pDockImageQuality);
+
+    _pDockOptimizer=new DockOptimizer(this);
+    addDockWidget(Qt::LeftDockWidgetArea, _pDockOptimizer);
+
+
+    tabifyDockWidget(_pDockCommentary,_pDockOptimizer);
+    tabifyDockWidget(_pDockOptimizer,_pDockLightProperties);
+    tabifyDockWidget(_pDockLightProperties,_pDockScatterPlot);
+  //  tabifyDockWidget(_pDockScatterPlot,_pDockImageQuality);
+
+    update_views(0);
+}
+//////////////////////////////////////////////////////////////////////////////
+MainWindow::~MainWindow()
+{
+    delete ui;
+    delete _pDevice;
+}
+//////////////////////////////////////////////////////////////////////////////
+void MainWindow::closeEvent(QCloseEvent *event)
+{
+    if (ask_save_and_action())
+        event->accept();
+    else
+        event->ignore();
+}
+//////////////////////////////////////////////////////////////////////////////
+bool MainWindow::ask_save_and_action()
+{
+    if (_bMustSave==true)
+    {
+        int iRet=QMessageBox::question(this,"Warning","Save?",QMessageBox::Yes | QMessageBox::No | QMessageBox::Cancel);
+        if (iRet==QMessageBox::Cancel)
+            return false;
+
+        if (iRet==QMessageBox::Yes)
+        {
+            DeviceIo::save(_sFileName,_pDevice);
+            _bMustSave=false;
+            update_views(0);
+        }
+    }
+
+    return true;
+}
+//////////////////////////////////////////////////////////////////////////////
+void MainWindow::clear_device()
+{
+    _bMustSave=false;
+    //_sFileName="";
+    delete _pDevice;
+    _pDevice=new OpticalDevice;
+        dLightTilt=0.;
+}
+//////////////////////////////////////////////////////////////////////////////
+void MainWindow::on_actionQuit_triggered()
+{
+    if (ask_save_and_action())
+        qApp->quit();
+}
+//////////////////////////////////////////////////////////////////////////////
+void MainWindow::on_actionAbout_triggered()
+{
+    QMessageBox mb;
+    mb.setText("Astree " ASTREE_VERSION " by etienne.deforas@gmail.com");
+    mb.setIconPixmap(QPixmap(":/Astree/Astree.ico"));
+    mb.exec();
+}
+//////////////////////////////////////////////////////////////////////////////
+void MainWindow::on_actionLoad_triggered()
+{
+    if (ask_save_and_action()==false)
+        return;
+
+    _sFileName = QFileDialog::getOpenFileName(this,tr("Open Astree File"), ".", tr("Astree Files (*.astree)")).toStdString();
+
+    if (!_sFileName.empty())
+    {
+        clear_device();
+        update_views(0);
+        load_file(_sFileName);
+    }
+}
+//////////////////////////////////////////////////////////////////////////////
+void MainWindow::on_actionNew_triggered()
+{
+    if (ask_save_and_action()==false)
+        return;
+
+    clear_device();
+    update_views(0);
+    _pFrameSideView->fit_in_view();
+}
+//////////////////////////////////////////////////////////////////////////////
+void MainWindow::on_actionSave_triggered()
+{
+    DeviceIo::save(_sFileName,_pDevice);
+    _bMustSave=false;
+    update_views(0);
+}
+//////////////////////////////////////////////////////////////////////////////
+void MainWindow::on_actionSave_as_triggered()
+{
+    if (_pDevice==0)
+        return;
+
+    string sFileName = QFileDialog::getSaveFileName(this,tr("Open Astree File"), ".", tr("Astree Files (*.astree)")).toStdString();
+
+    if (sFileName.empty()==false)
+    {
+        _sFileName=sFileName;
+        DeviceIo::save(_sFileName,_pDevice);
+        _bMustSave=false;
+        update_views(0);
+    }
+}
+//////////////////////////////////////////////////////////////////////////////
+void MainWindow::on_actionClose_triggered()
+{
+    if (ask_save_and_action()==false)
+        return;
+
+    clear_device();
+    _sFileName="";
+    update_views(0);
+    _pFrameSideView->fit_in_view();
+}
+//////////////////////////////////////////////////////////////////////////////
+bool MainWindow::load_file(string sFile)
+{
+    _sFileName="";
+    _bMustSave=false;
+    clear_device();
+    OpticalDevice* pDevice=DeviceIo::load(sFile);
+    if (pDevice==0)
+    {
+        QMessageBox m;
+        m.setText((string("Unable to Open file!!:")+sFile).c_str());
+        m.exec();
+        return false;
+    }
+
+    delete _pDevice;
+    _pDevice=pDevice;
+    _sFileName=sFile;
+    update_views(0);
+    _pFrameSideView->fit_in_view();
+    return true;
+}
+//////////////////////////////////////////////////////////////////////////////
+void MainWindow::update_views(void* pSender,bool bMustSave)
+{
+    if ( (pSender!=0) && bMustSave)
+    {
+        _bMustSave=true;
+    }
+
+  //  if (pSender!=(void*)_pDockScatterPlot)
+    {
+        _pDockScatterPlot->device_changed(_pDevice);
+    }
+
+    //   if (pSender!=(void*)_pDockSurfacesData) // call always for the auto diameter
+  //  {
+        _pDockSurfacesData->device_changed(_pDevice);
+   // }
+
+    if (pSender!=(void*)_pDockLightProperties)
+    {
+        _pDockLightProperties->device_changed(_pDevice);
+    }
+
+    if (pSender!=(void*)_pFrameSideView)
+    {
+        _pFrameSideView->device_changed(_pDevice);
+    }
+
+    if(pSender!=_pDockCommentary)
+    {
+        _pDockCommentary->device_changed(_pDevice);
+    }
+
+    if(pSender!=_pDockImageQuality)
+    {
+        _pDockImageQuality->device_changed(_pDevice);
+    }
+
+    if(pSender!=_pDockOptimizer)
+    {
+        _pDockOptimizer->device_changed(_pDevice);
+    }
+
+    //maj le titre
+    string sTitle="Astree";
+    if(!_sFileName.empty())
+        sTitle+=" ["+_sFileName+"]";
+
+    if (_bMustSave==true)
+        sTitle+=" *";
+
+    setWindowTitle(QString(sTitle.c_str()));
+}
+//////////////////////////////////////////////////////////////////////////////
+void MainWindow::on_actionMedium_Manager_triggered()
+{
+    DialogMediumManager mm(this);
+    mm.exec();
+}
+//////////////////////////////////////////////////////////////////////////////
+void MainWindow::on_actionScal_device_triggered()
+{
+    DialogScaleDevice sd(this);
+    if(sd.exec())
+    {
+        DeviceScaling dmc;
+
+        dmc.scale(_pDevice,sd.get_scale());
+        _bMustSave=true;
+        update_views(0);
+        _pFrameSideView->fit_in_view();
+    }
+}
+//////////////////////////////////////////////////////////////////////////////
+void MainWindow::on_actionImport_ZMX_file_triggered()
+{
+    if (ask_save_and_action()==false)
+        return;
+
+    string sFile = QFileDialog::getOpenFileName(this,tr("Import ZMX File"), ".", tr("ZMX Files (*.zmx)")).toStdString();
+
+    if (!sFile.empty())
+    {
+        _sFileName="";
+        clear_device();
+        update_views(0);
+
+        _bMustSave=false;
+        clear_device();
+        OpticalDevice* pDevice=DeviceIoZmx::import(sFile);
+        if (pDevice==0)
+        {
+            QMessageBox m;
+            m.setText((string("Unable to Open Zmx file!!:")+_sFileName).c_str());
+            m.exec();
+            return;
+        }
+
+        delete _pDevice;
+        _pDevice=pDevice;
+        _sFileName=sFile;
+        update_views(0);
+        _pFrameSideView->fit_in_view();
+    }
+}
+//////////////////////////////////////////////////////////////////////////////
+void MainWindow::on_actionFit_in_View_triggered()
+{
+    _pFrameSideView->fit_in_view();
+}
+//////////////////////////////////////////////////////////////////////////////
+void MainWindow::on_actionZoom_in_triggered()
+{
+    _pFrameSideView->zoom_in();
+}
+//////////////////////////////////////////////////////////////////////////////
+void MainWindow::on_actionZoom_out_triggered()
+{
+    _pFrameSideView->zoom_out();
+}
+//////////////////////////////////////////////////////////////////////////////

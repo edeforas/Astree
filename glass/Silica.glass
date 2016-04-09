@@ -1,0 +1,22 @@
+Name=Silica
+
+FileAuthor= Etienne de Foras
+FileAuthorMail= etienne.deforas@gmail.com
+
+GlassMaker=
+GlassMakerWebsite=
+GlassInfoSource=http://refractiveindex.info/?shelf=main&book=SiO2&page=Malitson
+GlassInfoSourceFormula=n=sqrt(1+0.6961663/(1-pow(0.0684043/x,2))+0.4079426/(1-pow(0.1162414/x,2))+0.8974794/(1-pow(9.896161/x,2)))
+Formulae=Sellmeier
+FormulaeInfo=http://en.wikipedia.org/wiki/Sellmeier_equation
+B1=0.6961663
+B2=0.4079426
+B3=0.8974794
+C1=0.00467914825849
+C2=0.01351206307396
+C3=97.934002537921
+
+Density=2.21
+
+SolidColor=8844025
+
