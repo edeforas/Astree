@@ -45,7 +45,7 @@ void DockCommentary::device_changed(OpticalDevice* pDevice)
     _bCanEmit=true;
 }
 
-
+////////////////////////////////////////////////////////////////////////
 void DockCommentary::on_textEdit_textChanged()
 {
     if(_pDevice!=0)
@@ -53,7 +53,7 @@ void DockCommentary::on_textEdit_textChanged()
         if(_bCanEmit)
         {
             _pDevice->set_note(ui->textEdit->document()->toPlainText().toStdString());
-            static_cast<MainWindow*>(parent())->update_views(this); //uncesserary repaint
+            static_cast<MainWindow*>(parent())->update_views(this,COMMENT_CHANGED);
         }
     }
 }

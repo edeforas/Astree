@@ -249,5 +249,5 @@ void DockScatterPlot::on_hsImageFieldPos_valueChanged(int value)
      ((MainWindow*)parent())->dLightTilt=(double)value/m_ui->hsImageFieldPos->maximum()*_pDevice->half_field_of_view();
 
    //  if(_bCanEmit==true)
-         ((MainWindow*)parent())->update_views(this,false);
+   static_cast<MainWindow*>(parent())->update_views(this,USER_INTERFACE_CHANGED,false);
 }

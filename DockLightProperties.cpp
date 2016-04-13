@@ -115,5 +115,5 @@ void DockLightProperties::OnLightChange()
     _pDevice->set_nb_intermediate_angles(iNbStep);
 
     if(_bCanEmit==true)
-        static_cast<MainWindow*>(parent())->update_views(this);
+        static_cast<MainWindow*>(parent())->update_views(this,PARAMETERS_CHANGED);
 }

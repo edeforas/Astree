@@ -6,6 +6,7 @@
 #define MAINWINDOW_H
 
 #include <QMainWindow>
+#include "AstreeDefines.h"
 
 #include <string>
 using namespace std;
@@ -40,7 +41,7 @@ public:
     double dLightTilt;
 
 public slots:
-    void update_views(void* pSender, bool bMustSave=true);
+    void update_views(void* pSender, int iReason, bool bMustSave=true);
 
 protected:
     virtual void closeEvent ( QCloseEvent * event );

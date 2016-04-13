@@ -392,11 +392,11 @@ void DockSurfacesData::OnCellChanged(int iRow,int iCol)
         QString qsText=pItem->text();
 
         _pDevice->set_comment(iRow,qsText.toStdString());
-    //    iCol++;
+        //    iCol++;
     }
 
     if (_bCanEmit==true)
-        ((MainWindow*)parent())->update_views(this);
+        static_cast<MainWindow*>(parent())->update_views(this,PARAMETERS_CHANGED);
 }
 //////////////////////////////////////////////////////////////////////////////
 void DockSurfacesData::OnAddSurfaceAfter()
@@ -415,7 +415,7 @@ void DockSurfacesData::OnAddSurfaceAfter()
         _pDevice->set_auto_diameter(iLine+1,true);
 
     //  device_changed(_pDevice);
-    ((MainWindow*)parent())->update_views(this);
+    static_cast<MainWindow*>(parent())->update_views(this,NB_SURFACE_CHANGED);
 
     m_ui->twSurfacesDatas->selectRow(iLine+1);
 }
@@ -437,7 +437,7 @@ void DockSurfacesData::OnAddSurfaceBefore()
         _pDevice->set_auto_diameter(iLine,true);
 
     //  device_changed(_pDevice);
-    ((MainWindow*)parent())->update_views(this);
+    static_cast<MainWindow*>(parent())->update_views(this,NB_SURFACE_CHANGED);
 
     m_ui->twSurfacesDatas->selectRow(iLine);
 }
@@ -450,7 +450,8 @@ void DockSurfacesData::OnDeleteSurface()
 
     _pDevice->delete_surface(iLine);
     //   device_changed(_pDevice);
-    ((MainWindow*)parent())->update_views(this);
+    static_cast<MainWindow*>(parent())->update_views(this,NB_SURFACE_CHANGED);
+
 
     if(iLine>=m_ui->twSurfacesDatas->rowCount())
         iLine =m_ui->twSurfacesDatas->rowCount()-1;
@@ -468,7 +469,7 @@ void DockSurfacesData::on_cbPolyAspheric_clicked()
 
     _bDisplayAspheric=m_ui->cbPolyAspheric->isChecked();
     //  device_changed(_pDevice);
-    ((MainWindow*)parent())->update_views(this);
+    //static_cast<MainWindow*>(parent())->update_views(this,USER_INTERFACE_CHANGED);
 }
 //////////////////////////////////////////////////////////////////////////////
 void DockSurfacesData::on_cbInnerDiameter_clicked()
@@ -478,7 +479,8 @@ void DockSurfacesData::on_cbInnerDiameter_clicked()
 
     _bDisplayInnerDiameter=m_ui->cbInnerDiameter->isChecked();
     //  device_changed(_pDevice);
-    ((MainWindow*)parent())->update_views(this);
+    //static_cast<MainWindow*>(parent())->update_views(this,USER_INTERFACE_CHANGED);
+
 }
 //////////////////////////////////////////////////////////////////////////////
 void DockSurfacesData::on_cbComment_clicked()
@@ -488,22 +490,18 @@ void DockSurfacesData::on_cbComment_clicked()
 
     _bDisplayComment=m_ui->cbComment->isChecked();
     // device_changed(_pDevice);
-    ((MainWindow*)parent())->update_views(this);
+    //static_cast<MainWindow*>(parent())->update_views(this,USER_INTERFACE_CHANGED);
+
 }
 //////////////////////////////////////////////////////////////////////////////
 void DockSurfacesData::on_comboCoordMode_activated(const QString &arg1)
 {
     if(arg1=="Absolute")
-    {
         _pDevice->set_convention("absolute");
-    }
 
     if(arg1=="Relative")
-    {
         _pDevice->set_convention("relative");
-    }
 
-    //  device_changed(_pDevice);
-    ((MainWindow*)parent())->update_views(this);
+    static_cast<MainWindow*>(parent())->update_views(this,PARAMETERS_CHANGED);
 }
 //////////////////////////////////////////////////////////////////////////////

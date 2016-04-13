@@ -132,7 +132,7 @@ void DockOptimizer::on_pushButton_clicked()
     ui->lblResult->setStyleSheet("color: black;");
     ui->lblResult->repaint();
 
-//    OptimizerResult result=dopt.optimise_brute_force(omf); //todo, put in thread
+    //    OptimizerResult result=dopt.optimise_brute_force(omf); //todo, put in thread
     OptimizerResult result=dopt.optimise_random(omf); //todo, put in thread
     if(result==eBetterSolutionFound)
     {
@@ -161,13 +161,32 @@ void DockOptimizer::on_pushButton_clicked()
     setCursor(Qt::ArrowCursor);
 
     // update results
-    static_cast<MainWindow*>(parent())->update_views(this);
+    if( (result==eBetterSolutionFound)|| (result==eSolutionOnEdge) )
+        static_cast<MainWindow*>(parent())->update_views(this,PARAMETERS_CHANGED);
 }
 /////////////////////////////////////////////////////////////
-void DockOptimizer::device_changed(OpticalDevice *pDevice)
+void DockOptimizer::device_changed(OpticalDevice *pDevice,int iReason)
 {
     _pDevice=pDevice;
-    ui->lblResult->setText("...");
-    ui->lblResult->setStyleSheet("color: black;");
+
+    if((iReason==NEW_OPTICAL_DEVICE) || (iReason==NB_SURFACE_CHANGED) )
+    {
+        int iNbSurFace=_pDevice->nb_surface();
+
+        for(int i=0;i<NB_PARAM_MAX;i++)
+        {
+            QComboBox*  qcbSurf=new QComboBox;
+            for(int i=0;i<iNbSurFace;i++)
+                qcbSurf->addItem(QString::number(i));
+
+            ui->twParams->setCellWidget(i,1,qcbSurf);
+        }
+    }
+
+    if( (iReason!=COMMENT_CHANGED) && (iReason!=OPTICAL_DEVICE_SAVED) )
+    {
+        ui->lblResult->setText("...");
+        ui->lblResult->setStyleSheet("color: black;");
+    }
 }
 /////////////////////////////////////////////////////////////

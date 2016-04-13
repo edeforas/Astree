@@ -17,7 +17,7 @@ public:
     explicit DockOptimizer(QWidget *parent = 0);
     ~DockOptimizer();
 
-    void device_changed(OpticalDevice *pDevice);
+    void device_changed(OpticalDevice *pDevice, int iReason);
 
 private slots:
     void on_pushButton_clicked();
