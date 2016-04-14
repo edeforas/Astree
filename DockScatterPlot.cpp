@@ -161,7 +161,7 @@ void DockScatterPlot::device_changed(OpticalDevice* pDevice)
     }
 
     Light light;
-    pDevice->compute_light(&light,pDevice->nb_surface()-1, ((MainWindow*)parent())->dLightTilt,NB_POINTS_SCATTER_PLOT,NB_POINTS_SCATTER_PLOT);
+    pDevice->compute_light(&light,pDevice->nb_surface()-1, static_cast<MainWindow*>(parent())->dLightTilt,NB_POINTS_SCATTER_PLOT,NB_POINTS_SCATTER_PLOT);
 
     ScatterPlot* sp=new ScatterPlot;
     sp->setZValue(10);
@@ -246,7 +246,7 @@ void DockScatterPlot::on_pushButton_3_clicked()
 void DockScatterPlot::on_hsImageFieldPos_valueChanged(int value)
 {
     // _pDevice->set_light_tilt((double)value/m_ui->hsImageFieldPos->maximum()*_pDevice->get_half_field_of_view());
-     ((MainWindow*)parent())->dLightTilt=(double)value/m_ui->hsImageFieldPos->maximum()*_pDevice->half_field_of_view();
+     static_cast<MainWindow*>(parent())->dLightTilt=(double)value/m_ui->hsImageFieldPos->maximum()*_pDevice->half_field_of_view();
 
    //  if(_bCanEmit==true)
    static_cast<MainWindow*>(parent())->update_views(this,USER_INTERFACE_CHANGED,false);

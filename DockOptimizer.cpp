@@ -75,18 +75,18 @@ void DockOptimizer::on_pushButton_clicked()
         QCheckBox* qcbOptimize=(QCheckBox*)ui->twParams->cellWidget(i,0);
         if(!qcbOptimize->isChecked())
             continue;
-
+/*
         QTableWidgetItem* pItemSurf=ui->twParams->item(i,1);
         if(pItemSurf==0)
             continue;
-
-        int iSurface=pItemSurf->text().toInt(&bOk)-1;
+*/
+        QComboBox* qcbSurf=(QComboBox*)ui->twParams->cellWidget(i,1);
+        int iSurface=qcbSurf->currentText().toInt(&bOk);
         if(!bOk)
             return;
 
         QComboBox* qcbParam=(QComboBox*)ui->twParams->cellWidget(i,2);
         std::string sParam=qcbParam->currentText().toStdString();
-
         if(sParam=="(none)")
             continue;
 

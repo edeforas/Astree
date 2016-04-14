@@ -69,7 +69,7 @@ double DeviceOptimizer::compute_demerit(OptimizerMeritFunction eMeritFunction)
 
     if(eMeritFunction==eMostlyCenter)
     {
-        return 1e99; //TODO
+        return 1.e99; //TODO
     }
 
     if(eMeritFunction==eFullFrameMaxError)
@@ -92,6 +92,145 @@ OptimizerResult DeviceOptimizer::optimise_random(OptimizerMeritFunction eMeritFu
     if(_parameters.empty())
         return eNothingToOptimize;
 
+    double dMeritOrig=compute_demerit(eMeritFunction);
+    OpticalDevice deviceOrig(*_pDevice);
+
+    ParameterSet paramBest=_parameters;
+    double dBestMerit=1.e99; // todo init with actual solution
+
+    for(int iScale=0;iScale<10;iScale++)
+    {
+        for(int i=0;i<100;i++)
+        {
+            vector<DeviceOptimizerParameter> newParamBest=paramBest;
+            for(unsigned int iP=0;iP<newParamBest.size();iP++)
+            {
+                DeviceOptimizerParameter& dop=newParamBest[iP];
+
+                dop.dVal=dop.dMin+(dop.dMax-dop.dMin)*rand()/RAND_MAX;
+                assert(dop.dVal<=dop.dMax);
+                assert(dop.dVal>=dop.dMin);
+            }
+
+            apply_parameter(newParamBest);
+            double dMerit=compute_demerit(eMeritFunction);
+
+            if(dMerit<dBestMerit)
+            {
+                paramBest=newParamBest;
+                dBestMerit=dMerit;
+            }
+        }
+
+        // todo check dBestMerit
+
+        // scale around best solution , divide by 4 each dimension
+        for(unsigned int iP=0;iP<paramBest.size();iP++)
+        {
+            DeviceOptimizerParameter& dop=paramBest[iP];
+            double dCenter=dop.dVal;
+            double dRadius=(dop.dMax-dop.dMin)/2./4.;
+
+            dop.dMin=dCenter-dRadius;
+            dop.dMax=dCenter+dRadius;
+
+            // todo check domain exit
+        }
+    }
+
+    if(dBestMerit<1.e98)
+    {
+        if(dBestMerit<dMeritOrig)
+        {
+            _parameters=paramBest;
+            apply_parameter(paramBest);
+            return eBetterSolutionFound;
+        }
+    }
+
+    // todo add amoeba optimization
+
+    //restore device original settings
+    *_pDevice=deviceOrig;
+    return eNoBetterSolution;
+}
+//////////////////////////////////////////////////////////////////////////////
+OptimizerResult DeviceOptimizer::optimise_amoeba(OptimizerMeritFunction eMeritFunction)
+{
+    assert(_pDevice!=0);
+
+    if(_parameters.empty())
+        return eNothingToOptimize;
+
+    // init simplex with the center of the definition domain
+    vector<ParameterSet> simplex(_parameters.size()+1);
+    {
+        ParameterSet& param=simplex[0];
+        param=_parameters;
+        for(unsigned int i=0;i<_parameters.size();i++)
+        {
+            param[i].dVal=(param[i].dMin+param[i].dMax)/2;
+        }
+    }
+
+    // init simplex with the semi edge of the definition domain
+    for(unsigned int i=1;i<simplex.size();i++)
+    {
+        ParameterSet& param=simplex[i];
+        param=simplex[0];
+
+        // expand the i axis
+        DeviceOptimizerParameter& paramToExpand=param[i];
+        paramToExpand.dVal=paramToExpand.dVal+(paramToExpand.dMax-paramToExpand.dMin)/4.;
+    }
+
+    //compute solution at each param
+    vector<double> vdDemerit(simplex.size());
+    for(unsigned int i=1;i<simplex.size();i++)
+    {
+        apply_parameter(simplex[i]);
+        vdDemerit[i]=compute_demerit(eMeritFunction);
+    }
+
+    int iIter=0,iMaxIter=200;
+    bool bStopCriteria=false;
+    while((iIter<iMaxIter) && (bStopCriteria==false))
+    {
+        //get the best and worse solution index
+        int iBest=0;
+        double dBest=vdDemerit[0];
+        int iWorse=0;
+        double dWorse=vdDemerit[0];
+
+        for(unsigned int i=1;i<simplex.size();i++)
+        {
+            if(vdDemerit[i]<dBest)
+            {
+                iBest=i;
+                dBest=vdDemerit[i];
+            }
+
+            if(vdDemerit[i]>dWorse)
+            {
+                iWorse=i;
+                dWorse=vdDemerit[i];
+            }
+        }
+
+        //search the best solution on the line (best,mean)
+        const ParameterSet& paramBest=simplex[iBest];
+        const ParameterSet& paramWorse=simplex[iWorse];
+
+        ParameterSet paramMean;
+
+        //out of domain solutions return a infinite value
+
+
+
+
+        iIter++;
+    }
+    /*
     double dMeritOrig=compute_demerit(eMeritFunction);
     OpticalDevice deviceOrig(*_pDevice);
 
@@ -136,15 +275,7 @@ OptimizerResult DeviceOptimizer::optimise_random(OptimizerMeritFunction eMeritFu
 
             // todo check domain exit
         }
-
-
-
-
-
-
-
     }
-
 
     if(dBestMerit<1.e98)
     {
@@ -160,6 +291,7 @@ OptimizerResult DeviceOptimizer::optimise_random(OptimizerMeritFunction eMeritFu
 
     //restore device original settings
     *_pDevice=deviceOrig;
+    */
     return eNoBetterSolution;
 }
 //////////////////////////////////////////////////////////////////////////////

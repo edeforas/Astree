@@ -37,6 +37,8 @@ enum OptimizerResult
     eNothingToOptimize
 };
 
+typedef vector<DeviceOptimizerParameter> ParameterSet;
+
 class DeviceOptimizer
 {
 public:
@@ -44,13 +46,14 @@ public:
     void set_device(OpticalDevice* pDevice);
     void add_parameter(int iSurface,string sParameter,double dMin,double dMax);
     OptimizerResult optimise_random(OptimizerMeritFunction eMeritFunction);
+    OptimizerResult optimise_amoeba(OptimizerMeritFunction eMeritFunction);
 
 private:
     void apply_parameter(const vector<DeviceOptimizerParameter>& parameters);
     double compute_demerit(OptimizerMeritFunction eMeritFunction); //return demerit value: lower is better
 
     OpticalDevice* _pDevice;
-    vector<DeviceOptimizerParameter> _parameters;
+    ParameterSet _parameters;
 };
 
 #endif

@@ -154,7 +154,7 @@ void FrameSideView::device_changed(OpticalDevice* pDevice)
 
     // plot ray fan
     Light light;
-    double dLightTilt=((MainWindow*)parent())->dLightTilt;
+    double dLightTilt=static_cast<MainWindow*>(parent())->dLightTilt;
     _pDevice->compute_light(&light,-1,dLightTilt,SIDEVIEW_NB_POINTS_LIGHT,1);
     vector<Photon> vp1=light.get_all_photons();
     for (int iS=0;iS<_pDevice->nb_surface();iS++)
