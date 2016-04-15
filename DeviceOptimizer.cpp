@@ -46,8 +46,6 @@ void DeviceOptimizer::apply_parameter(const vector<DeviceOptimizerParameter>& pa
 
         if(sParam=="thick")
             _pDevice->set_z(iSurface,dVal);
-
-        //TODO more params
     }
 }
 //////////////////////////////////////////////////////////////////////////////
@@ -217,15 +215,48 @@ OptimizerResult DeviceOptimizer::optimise_amoeba(OptimizerMeritFunction eMeritFu
             }
         }
 
-        //search the best solution on the line (best,mean)
-        const ParameterSet& paramBest=simplex[iBest];
+        //search the best solution on the line (worse,mean)
+        //   const ParameterSet& paramBest=simplex[iBest];
         const ParameterSet& paramWorse=simplex[iWorse];
 
+        //init param mean
         ParameterSet paramMean;
+        paramMean.resize(paramWorse.size());
+        for(unsigned int i=0;i<paramMean.size();i++)
+        {
+            paramMean[i].iSurface=paramWorse[i].iSurface;
+            paramMean[i].sParameter=paramWorse[i].sParameter;
+
+            paramMean[i].dMin=paramWorse[i].dMin;
+
+            paramMean[i].dMax=paramWorse[i].dMax;
+            paramMean[i].dVal=0.;
+        }
+
+        for(unsigned int iS=0;iS<simplex.size();iS++)
+        {
+            if((int)iS==iWorse)
+                continue;
+
+            const ParameterSet& param=simplex[iS];
+
+
+            for(unsigned int i=0;i<param.size();i++)
+            {
+                paramMean[i].dVal+=param[i].dVal;
+            }
+        }
+
+        //TODO divide by simplex.size()-1
+
+
+
+
+
 
         //out of domain solutions return a infinite value
 
-
+        //TODO
 
 
         iIter++;
