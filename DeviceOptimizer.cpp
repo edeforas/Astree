@@ -155,6 +155,8 @@ OptimizerResult DeviceOptimizer::optimise_random(OptimizerMeritFunction eMeritFu
 //////////////////////////////////////////////////////////////////////////////
 OptimizerResult DeviceOptimizer::optimise_amoeba(OptimizerMeritFunction eMeritFunction)
 {
+    // see at : https://en.wikipedia.org/wiki/Nelder%E2%80%93Mead_method
+
     assert(_pDevice!=0);
 
     if(_parameters.empty())
@@ -171,7 +173,7 @@ OptimizerResult DeviceOptimizer::optimise_amoeba(OptimizerMeritFunction eMeritFu
         }
     }
 
-    // init simplex with the semi edge of the definition domain
+    // then init simplex with the semi edge of the definition domain
     for(unsigned int i=1;i<simplex.size();i++)
     {
         ParameterSet& param=simplex[i];
@@ -194,12 +196,13 @@ OptimizerResult DeviceOptimizer::optimise_amoeba(OptimizerMeritFunction eMeritFu
     bool bStopCriteria=false;
     while((iIter<iMaxIter) && (bStopCriteria==false))
     {
-        //get the best and worse solution index
+        //get the best, worse and secondworse solution index
         int iBest=0;
         double dBest=vdDemerit[0];
         int iWorse=0;
         double dWorse=vdDemerit[0];
-
+        int iSecondWorse=0; (void)iSecondWorse;
+        double dSecondWorse=vdDemerit[0];
         for(unsigned int i=1;i<simplex.size();i++)
         {
             if(vdDemerit[i]<dBest)
@@ -214,49 +217,141 @@ OptimizerResult DeviceOptimizer::optimise_amoeba(OptimizerMeritFunction eMeritFu
                 dWorse=vdDemerit[i];
             }
         }
+        //find the second worse
+        for(unsigned int i=1;i<simplex.size();i++)
+            if( ((int)i!=iWorse) && (vdDemerit[i]>dSecondWorse) )
+            {
+                iSecondWorse=i;
+                dSecondWorse=vdDemerit[i];
+            }
+
+        assert(dBest<=dSecondWorse);
+        assert(dSecondWorse<=dWorse);
 
         //search the best solution on the line (worse,mean)
-        //   const ParameterSet& paramBest=simplex[iBest];
         const ParameterSet& paramWorse=simplex[iWorse];
 
-        //init param mean
-        ParameterSet paramMean;
-        paramMean.resize(paramWorse.size());
+        //compute param mean
+        ParameterSet paramMean=paramWorse;
         for(unsigned int i=0;i<paramMean.size();i++)
-        {
-            paramMean[i].iSurface=paramWorse[i].iSurface;
-            paramMean[i].sParameter=paramWorse[i].sParameter;
-
-            paramMean[i].dMin=paramWorse[i].dMin;
-
-            paramMean[i].dMax=paramWorse[i].dMax;
             paramMean[i].dVal=0.;
-        }
-
         for(unsigned int iS=0;iS<simplex.size();iS++)
         {
             if((int)iS==iWorse)
                 continue;
 
             const ParameterSet& param=simplex[iS];
-
-
             for(unsigned int i=0;i<param.size();i++)
-            {
                 paramMean[i].dVal+=param[i].dVal;
+        }
+        for(unsigned int i=0;i<paramMean.size();i++)
+            paramMean[i].dVal/=simplex.size()-1.;
+
+        bool bFound=false;
+
+        //reflexion case
+        //compute paramMirror
+        ParameterSet paramMirror=paramMean;
+        bool bOutOfDomain=false;
+        for(unsigned int i=0;i<paramMirror.size();i++)
+        {
+            paramMirror[i].dVal+=(paramMean[i].dVal-paramWorse[i].dVal);
+            if( (paramMirror[i].dVal<paramMirror[i].dMin ) || (paramMirror[i].dVal>paramMirror[i].dMax ) )
+                bOutOfDomain=true;
+        }
+
+        double dMirror=1e99;
+        if(!bOutOfDomain)
+        {
+            apply_parameter(paramMirror);
+            dMirror=compute_demerit(eMeritFunction);
+        }
+
+        if( (dBest<=dMirror) && (dMirror<dSecondWorse) )
+        {
+            //replace Worst by mirror
+            simplex[iWorse]=paramMirror;
+            vdDemerit[iWorse]=dMirror;
+            bFound=true;
+        }
+
+        //expansion
+        if(!bFound && (dMirror<dBest))
+        {
+            //compute paramMirrorFar
+            ParameterSet paramMirrorFar=paramMean;
+            bool bOutOfDomain=false;
+            for(unsigned int i=0;i<paramMirrorFar.size();i++)
+            {
+                paramMirrorFar[i].dVal+=2*(paramMirror[i].dVal-paramMean[i].dVal);
+                if( (paramMirrorFar[i].dVal<paramMirrorFar[i].dMin ) || (paramMirrorFar[i].dVal>paramMirrorFar[i].dMax ) )
+                    bOutOfDomain=true;
+            }
+            double dMirrorFar=1.e99;
+            if(!bOutOfDomain)
+            {
+                apply_parameter(paramMirrorFar);
+                dMirrorFar=compute_demerit(eMeritFunction);
+            }
+
+            if(dMirrorFar<dBest)
+            {
+                simplex[iWorse]=paramMirrorFar;
+                vdDemerit[iWorse]=dMirrorFar;
+                bFound=true;
+            }
+            else
+            {
+                simplex[iWorse]=paramMirror;
+                vdDemerit[iWorse]=dMirror;
+                bFound=true;
             }
         }
 
-        //TODO divide by simplex.size()-1
+        //contraction
+        if(!bFound)
+        {
+            assert(dMirror>=dSecondWorse);
+            ParameterSet paramMirrorContracted=paramMean;
+            for(unsigned int i=0;i<paramMirrorContracted.size();i++)
+                paramMirrorContracted[i].dVal+=0.5*(paramWorse[i].dVal-paramMean[i].dVal);
+            apply_parameter(paramMirrorContracted);
+            double dContracted=compute_demerit(eMeritFunction);
+            if(dContracted<dWorse)
+            {
+                simplex[iWorse]=paramMirrorContracted;
+                vdDemerit[iWorse]=dContracted;
+                bFound=true;
+            }
+        }
+
+        //reduction
+        if(!bFound)
+        {
+            for(unsigned int i=0;i<simplex.size();i++)
+            {
+                const ParameterSet& paramBest=simplex[iBest];
+                if((int)i!=iBest)
+                {
+                    ParameterSet& paramReducted=simplex[i];
+                    for(unsigned int j=0;j<paramReducted.size();j++)
+                        paramReducted[j].dVal=paramBest[j].dVal+0.5*(paramReducted[j].dVal-paramBest[j].dVal);
+                }
+            }
+            bFound=true;
+        }
+
+        assert(bFound==true);
+
+        //end condition test
+
+        //compute the parameter range
 
 
 
+        //based on simplex size
 
-
-
-        //out of domain solutions return a infinite value
-
-        //TODO
+//TODO
 
 
         iIter++;
