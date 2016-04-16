@@ -146,8 +146,6 @@ OptimizerResult DeviceOptimizer::optimise_random(OptimizerMeritFunction eMeritFu
         }
     }
 
-    // todo add amoeba optimization
-
     //restore device original settings
     *_pDevice=deviceOrig;
     return eNoBetterSolution;
@@ -155,12 +153,29 @@ OptimizerResult DeviceOptimizer::optimise_random(OptimizerMeritFunction eMeritFu
 //////////////////////////////////////////////////////////////////////////////
 OptimizerResult DeviceOptimizer::optimise_amoeba(OptimizerMeritFunction eMeritFunction)
 {
-    // see at : https://en.wikipedia.org/wiki/Nelder%E2%80%93Mead_method
+    // see algo at : https://en.wikipedia.org/wiki/Nelder%E2%80%93Mead_method
 
     assert(_pDevice!=0);
 
+    double dMeritOrig=compute_demerit(eMeritFunction);
+    OpticalDevice deviceOrig(*_pDevice);
+
     if(_parameters.empty())
         return eNothingToOptimize;
+
+    //initialise parameteres min resolution
+    vector<double> vdMinResolution(_parameters.size());
+    for(unsigned int i=0;i<_parameters.size();i++)
+    {
+        if(_parameters[i].sParameter=="conic")
+            vdMinResolution[i]=1.e-6;
+
+        if(_parameters[i].sParameter=="RCurv")
+            vdMinResolution[i]=1.e-6;
+
+        if(_parameters[i].sParameter=="thick")
+            vdMinResolution[i]=1.e-6;
+    }
 
     // init simplex with the center of the definition domain
     vector<ParameterSet> simplex(_parameters.size()+1);
@@ -194,11 +209,11 @@ OptimizerResult DeviceOptimizer::optimise_amoeba(OptimizerMeritFunction eMeritFu
 
     int iIter=0,iMaxIter=200;
     bool bStopCriteria=false;
+    int iBest=0;
+    double dBest=vdDemerit[0];
     while((iIter<iMaxIter) && (bStopCriteria==false))
     {
         //get the best, worse and secondworse solution index
-        int iBest=0;
-        double dBest=vdDemerit[0];
         int iWorse=0;
         double dWorse=vdDemerit[0];
         int iSecondWorse=0; (void)iSecondWorse;
@@ -250,7 +265,6 @@ OptimizerResult DeviceOptimizer::optimise_amoeba(OptimizerMeritFunction eMeritFu
         bool bFound=false;
 
         //reflexion case
-        //compute paramMirror
         ParameterSet paramMirror=paramMean;
         bool bOutOfDomain=false;
         for(unsigned int i=0;i<paramMirror.size();i++)
@@ -260,7 +274,7 @@ OptimizerResult DeviceOptimizer::optimise_amoeba(OptimizerMeritFunction eMeritFu
                 bOutOfDomain=true;
         }
 
-        double dMirror=1e99;
+        double dMirror=1.e99;
         if(!bOutOfDomain)
         {
             apply_parameter(paramMirror);
@@ -336,6 +350,9 @@ OptimizerResult DeviceOptimizer::optimise_amoeba(OptimizerMeritFunction eMeritFu
                     ParameterSet& paramReducted=simplex[i];
                     for(unsigned int j=0;j<paramReducted.size();j++)
                         paramReducted[j].dVal=paramBest[j].dVal+0.5*(paramReducted[j].dVal-paramBest[j].dVal);
+
+                    apply_parameter(paramReducted);
+                    vdDemerit[i]=compute_demerit(eMeritFunction);
                 }
             }
             bFound=true;
@@ -343,81 +360,41 @@ OptimizerResult DeviceOptimizer::optimise_amoeba(OptimizerMeritFunction eMeritFu
 
         assert(bFound==true);
 
-        //end condition test
-
         //compute the parameter range
+        // stop criteria based on the simplex size
+        vector<double> vdMinParam(_parameters.size(),1e99);
+        vector<double> vdMaxParam(_parameters.size(),-1e99);
+        for(unsigned int i=0;i<simplex.size();i++)
+        {
+            const ParameterSet& param=simplex[i];
+            for(unsigned int j=0;j<param.size();j++)
+            {
+                if(param[j].dVal<vdMinParam[j])
+                    vdMinParam[j]=param[j].dVal;
+                if(param[j].dVal>vdMaxParam[j])
+                    vdMaxParam[j]=param[j].dVal;
+            }
+        }
 
-
-
-        //based on simplex size
-
-//TODO
-
+        bStopCriteria=true;
+        for(unsigned int i=0;i<vdMinParam.size();i++)
+        {
+            if(vdMaxParam[i]-vdMinParam[i]>vdMinResolution[i])
+                bStopCriteria=false;
+        }
 
         iIter++;
     }
-    /*
-    double dMeritOrig=compute_demerit(eMeritFunction);
-    OpticalDevice deviceOrig(*_pDevice);
 
-    vector<DeviceOptimizerParameter> paramBest=_parameters;
-    double dBestMerit=1.e99; // todo init with actual solution
-
-    for(int iScale=0;iScale<10;iScale++)
+    if( (dBest<dMeritOrig) && (iIter>=0) )
     {
-        for(int i=0;i<100;i++)
-        {
-            vector<DeviceOptimizerParameter> newParamBest=paramBest;
-            for(unsigned int iP=0;iP<newParamBest.size();iP++)
-            {
-                DeviceOptimizerParameter& dop=newParamBest[iP];
-
-                dop.dVal=dop.dMin+(dop.dMax-dop.dMin)*rand()/RAND_MAX;
-                assert(dop.dVal<=dop.dMax);
-                assert(dop.dVal>=dop.dMin);
-            }
-
-            apply_parameter(newParamBest);
-            double dMerit=compute_demerit(eMeritFunction);
-
-            if(dMerit<dBestMerit)
-            {
-                paramBest=newParamBest;
-                dBestMerit=dMerit;
-            }
-        }
-
-        // todo check dBestMerit
-
-        // scale around best solution , divide by 4 each dimension
-        for(unsigned int iP=0;iP<paramBest.size();iP++)
-        {
-            DeviceOptimizerParameter& dop=paramBest[iP];
-            double dCenter=dop.dVal;
-            double dRadius=(dop.dMax-dop.dMin)/2./4.;
-
-            dop.dMin=dCenter-dRadius;
-            dop.dMax=dCenter+dRadius;
-
-            // todo check domain exit
-        }
-    }
-
-    if(dBestMerit<1.e98)
-    {
-        if(dBestMerit<dMeritOrig)
-        {
-            _parameters=paramBest;
-            apply_parameter(paramBest);
+            _parameters=simplex[iBest];
+            apply_parameter(_parameters);
             return eBetterSolutionFound;
-        }
     }
-
-    // todo add amoeba optimization
 
     //restore device original settings
     *_pDevice=deviceOrig;
-    */
     return eNoBetterSolution;
 }
 //////////////////////////////////////////////////////////////////////////////
