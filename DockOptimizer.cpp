@@ -133,7 +133,8 @@ void DockOptimizer::on_pushButton_clicked()
     ui->lblResult->repaint();
 
     //    OptimizerResult result=dopt.optimise_brute_force(omf); //todo, put in thread
-    OptimizerResult result=dopt.optimise_random(omf); //todo, put in thread
+//    OptimizerResult result=dopt.optimise_random(omf); //todo, put in thread
+    OptimizerResult result=dopt.optimise_amoeba(omf); //todo, put in thread
     if(result==eBetterSolutionFound)
     {
         ui->lblResult->setText("Better Solution found.");

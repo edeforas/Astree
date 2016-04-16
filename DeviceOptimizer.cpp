@@ -194,14 +194,14 @@ OptimizerResult DeviceOptimizer::optimise_amoeba(OptimizerMeritFunction eMeritFu
         ParameterSet& param=simplex[i];
         param=simplex[0];
 
-        // expand the i axis
-        DeviceOptimizerParameter& paramToExpand=param[i];
-        paramToExpand.dVal=paramToExpand.dVal+(paramToExpand.dMax-paramToExpand.dMin)/4.;
+        // expand the i-1 axis
+        DeviceOptimizerParameter& paramToExpand=param[i-1];
+        paramToExpand.dVal=paramToExpand.dVal+(paramToExpand.dMax-paramToExpand.dMin)/8.;
     }
 
     //compute solution at each param
     vector<double> vdDemerit(simplex.size());
-    for(unsigned int i=1;i<simplex.size();i++)
+    for(unsigned int i=0;i<simplex.size();i++)
     {
         apply_parameter(simplex[i]);
         vdDemerit[i]=compute_demerit(eMeritFunction);
@@ -240,7 +240,7 @@ OptimizerResult DeviceOptimizer::optimise_amoeba(OptimizerMeritFunction eMeritFu
                 dSecondWorse=vdDemerit[i];
             }
 
-        assert(dBest<=dSecondWorse);
+  //TODO      assert(dBest<=dSecondWorse);
         assert(dSecondWorse<=dWorse);
 
         //search the best solution on the line (worse,mean)
