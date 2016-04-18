@@ -46,6 +46,24 @@ void DeviceOptimizer::apply_parameter(const vector<DeviceOptimizerParameter>& pa
 
         if(sParam=="thick")
             _pDevice->set_z(iSurface,dVal);
+
+        if( (sParam=="r4") || (sParam=="r6") || (sParam=="r8") || (sParam=="r10") )
+        {
+            double dR4,dR6,dR8,dR10;
+            _pDevice->poly_aspheric(iSurface,dR4,dR6,dR8,dR10);
+
+            if(sParam=="r4")
+                _pDevice->set_poly_aspheric(iSurface,dVal,dR6,dR8,dR10);
+
+            if(sParam=="r6")
+                _pDevice->set_poly_aspheric(iSurface,dR4,dVal,dR8,dR10);
+
+            if(sParam=="r8")
+                _pDevice->set_poly_aspheric(iSurface,dR4,dR6,dVal,dR10);
+
+            if(sParam=="r10")
+                _pDevice->set_poly_aspheric(iSurface,dR4,dR6,dR8,dVal);
+        }
     }
 }
 //////////////////////////////////////////////////////////////////////////////
@@ -240,7 +258,7 @@ OptimizerResult DeviceOptimizer::optimise_amoeba(OptimizerMeritFunction eMeritFu
                 dSecondWorse=vdDemerit[i];
             }
 
-  //TODO      assert(dBest<=dSecondWorse);
+        //TODO      assert(dBest<=dSecondWorse);
         assert(dSecondWorse<=dWorse);
 
         //search the best solution on the line (worse,mean)
@@ -388,9 +406,9 @@ OptimizerResult DeviceOptimizer::optimise_amoeba(OptimizerMeritFunction eMeritFu
 
     if( (dBest<dMeritOrig) && (iIter>=0) )
     {
-            _parameters=simplex[iBest];
-            apply_parameter(_parameters);
-            return eBetterSolutionFound;
+        _parameters=simplex[iBest];
+        apply_parameter(_parameters);
+        return eBetterSolutionFound;
     }
 
     //restore device original settings

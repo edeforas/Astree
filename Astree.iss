@@ -3,7 +3,7 @@
 
 [Setup]
 AppName=Astree
-AppVerName=Astree 1.14
+AppVerName=Astree 1.15
 AppPublisher=Etienne de Foras
 AppPublisherURL=http://edeforas.free.fr
 AppSupportURL=http://edeforas.free.fr
@@ -28,7 +28,6 @@ Source: ".\*.h"; DestDir: "{app}\src\Astree"; Flags: ignoreversion
 Source: ".\*.cpp"; DestDir: "{app}\src\Astree"; Flags: ignoreversion
 Source: ".\Util\*.*"; DestDir: "{app}\src\Util"; Flags: ignoreversion
 Source: ".\*.pro"; DestDir: "{app}\src\Astree"; Flags: ignoreversion
-Source: ".\*.txt"; DestDir: "{app}\src\Astree"; Flags: ignoreversion
 Source: ".\*.ui"; DestDir: "{app}\src\Astree"; Flags: ignoreversion
 Source: ".\*.qm"; DestDir: "{app}\src\Astree"; Flags: ignoreversion
 Source: ".\*.ts"; DestDir: "{app}\src\Astree"; Flags: ignoreversion
