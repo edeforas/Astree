@@ -225,13 +225,15 @@ OptimizerResult DeviceOptimizer::optimise_amoeba(OptimizerMeritFunction eMeritFu
         vdDemerit[i]=compute_demerit(eMeritFunction);
     }
 
-    int iIter=0,iMaxIter=200;
+    int iIter=0,iMaxIter=1000;
     bool bStopCriteria=false;
     int iBest=0;
     double dBest=vdDemerit[0];
     while((iIter<iMaxIter) && (bStopCriteria==false))
     {
         //get the best, worse and secondworse solution index
+        dBest=vdDemerit[0];
+        iBest=0;
         int iWorse=0;
         double dWorse=vdDemerit[0];
         int iSecondWorse=0; (void)iSecondWorse;
@@ -258,7 +260,7 @@ OptimizerResult DeviceOptimizer::optimise_amoeba(OptimizerMeritFunction eMeritFu
                 dSecondWorse=vdDemerit[i];
             }
 
-        //TODO      assert(dBest<=dSecondWorse);
+        assert(dBest<=dSecondWorse);
         assert(dSecondWorse<=dWorse);
 
         //search the best solution on the line (worse,mean)
