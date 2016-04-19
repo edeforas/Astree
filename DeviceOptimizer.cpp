@@ -5,6 +5,8 @@
 #include "DeviceOptimizer.h"
 #include "OpticalDevice.h"
 
+#define ISNAN(a) (a!=a)
+
 #include <cassert>
 ////////////////////////////////////////////////////////////////////////////////
 DeviceOptimizer::DeviceOptimizer()
@@ -71,6 +73,15 @@ double DeviceOptimizer::compute_demerit(OptimizerMeritFunction eMeritFunction)
 {
     const ImageQuality* pQ=_pDevice->get_image_quality();
 
+    for(int i=0;i<pQ->nb_angles();i++)
+    {
+        if(ISNAN(pQ->vdSpotSize[i]))
+            return 1.e99;
+    }
+
+    if(ISNAN(pQ))
+        return 1.e99;
+
     if(eMeritFunction==eCenterOnly)
         return pQ->vdSpotSize[0];
 
@@ -78,7 +89,7 @@ double DeviceOptimizer::compute_demerit(OptimizerMeritFunction eMeritFunction)
     {
         double dMeritMoy=0.;
         for(int i=0;i<pQ->nb_angles();i++)
-            dMeritMoy+=pQ->vdSpotSize[i]; // todo adjust with photon influence surface
+            dMeritMoy+=pQ->vdSpotSize[i];
 
         return dMeritMoy/pQ->nb_angles();
     }
@@ -98,7 +109,7 @@ double DeviceOptimizer::compute_demerit(OptimizerMeritFunction eMeritFunction)
         return dMeritMoy;
     }
 
-    return 1e99;
+    return 1.e99;
 }
 //////////////////////////////////////////////////////////////////////////////
 OptimizerResult DeviceOptimizer::optimise_random(OptimizerMeritFunction eMeritFunction)
@@ -186,13 +197,25 @@ OptimizerResult DeviceOptimizer::optimise_amoeba(OptimizerMeritFunction eMeritFu
     for(unsigned int i=0;i<_parameters.size();i++)
     {
         if(_parameters[i].sParameter=="conic")
-            vdMinResolution[i]=1.e-6;
+            vdMinResolution[i]=1.e-7;
 
         if(_parameters[i].sParameter=="RCurv")
-            vdMinResolution[i]=1.e-6;
+            vdMinResolution[i]=1.e-7;
 
         if(_parameters[i].sParameter=="thick")
-            vdMinResolution[i]=1.e-6;
+            vdMinResolution[i]=1.e-7;
+
+        if(_parameters[i].sParameter=="r4")
+            vdMinResolution[i]=1.e-22;
+
+        if(_parameters[i].sParameter=="r6")
+            vdMinResolution[i]=1.e-24;
+
+        if(_parameters[i].sParameter=="r8")
+            vdMinResolution[i]=1.e-26;
+
+        if(_parameters[i].sParameter=="r10")
+            vdMinResolution[i]=1.e-28;
     }
 
     // init simplex with the center of the definition domain

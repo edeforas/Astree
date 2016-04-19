@@ -468,8 +468,7 @@ void DockSurfacesData::on_cbPolyAspheric_clicked()
         return;
 
     _bDisplayAspheric=m_ui->cbPolyAspheric->isChecked();
-    //  device_changed(_pDevice);
-    //static_cast<MainWindow*>(parent())->update_views(this,USER_INTERFACE_CHANGED);
+    static_cast<MainWindow*>(parent())->update_views(this,USER_INTERFACE_CHANGED);
 }
 //////////////////////////////////////////////////////////////////////////////
 void DockSurfacesData::on_cbInnerDiameter_clicked()
@@ -478,9 +477,7 @@ void DockSurfacesData::on_cbInnerDiameter_clicked()
         return;
 
     _bDisplayInnerDiameter=m_ui->cbInnerDiameter->isChecked();
-    //  device_changed(_pDevice);
-    //static_cast<MainWindow*>(parent())->update_views(this,USER_INTERFACE_CHANGED);
-
+    static_cast<MainWindow*>(parent())->update_views(this,USER_INTERFACE_CHANGED);
 }
 //////////////////////////////////////////////////////////////////////////////
 void DockSurfacesData::on_cbComment_clicked()
@@ -489,9 +486,7 @@ void DockSurfacesData::on_cbComment_clicked()
         return;
 
     _bDisplayComment=m_ui->cbComment->isChecked();
-    // device_changed(_pDevice);
-    //static_cast<MainWindow*>(parent())->update_views(this,USER_INTERFACE_CHANGED);
-
+    static_cast<MainWindow*>(parent())->update_views(this,USER_INTERFACE_CHANGED);
 }
 //////////////////////////////////////////////////////////////////////////////
 void DockSurfacesData::on_comboCoordMode_activated(const QString &arg1)
