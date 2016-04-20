@@ -9,6 +9,10 @@
 #include <vector>
 using namespace std;
 
+#include "ImageQuality.h"
+#include "Surface.h"
+class Light;
+
 #define RADIUS_CURVATURE_INFINITY 9e99
 #define FD_VALID_MAX 1e10
 #define SPOT_SIZE_INFINITY 9e99
@@ -24,11 +28,6 @@ enum eSurfaceparameter
 
 };
 
-#include "ImageQuality.h"
-
-#include "Surface.h"
-
-class Light;
 
 class OpticalDevice
 {

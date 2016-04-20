@@ -19,63 +19,63 @@
     <message>
         <location filename="DialogScaleDevice.ui" line="14"/>
         <source>Scale Device</source>
-        <translation type="unfinished"></translation>
+        <translation>Changer la taille</translation>
     </message>
     <message>
         <location filename="DialogScaleDevice.ui" line="28"/>
         <source>from:</source>
-        <translation type="unfinished"></translation>
+        <translation>de:</translation>
     </message>
     <message>
         <location filename="DialogScaleDevice.ui" line="38"/>
         <source>to:</source>
-        <translation type="unfinished"></translation>
+        <translation>à:</translation>
     </message>
     <message>
         <location filename="DialogScaleDevice.ui" line="45"/>
         <source>Factor</source>
-        <translation type="unfinished"></translation>
+        <translation>Facteur</translation>
     </message>
     <message>
         <location filename="DialogScaleDevice.ui" line="58"/>
         <location filename="DialogScaleDevice.ui" line="75"/>
         <source>1</source>
-        <translation type="unfinished"></translation>
+        <translation>1</translation>
     </message>
     <message>
         <location filename="DialogScaleDevice.ui" line="65"/>
         <source>Size change</source>
-        <translation type="unfinished"></translation>
+        <translation>Changement</translation>
     </message>
     <message>
         <location filename="DialogScaleDevice.ui" line="82"/>
         <source>Percentage</source>
-        <translation type="unfinished"></translation>
+        <translation>Pourcentage</translation>
     </message>
     <message>
         <location filename="DialogScaleDevice.ui" line="89"/>
         <source>1.</source>
-        <translation type="unfinished"></translation>
+        <translation>1.</translation>
     </message>
     <message>
         <location filename="DialogScaleDevice.ui" line="96"/>
         <source>%</source>
-        <translation type="unfinished"></translation>
+        <translation>%</translation>
     </message>
     <message>
         <location filename="DialogScaleDevice.ui" line="106"/>
         <source>100</source>
-        <translation type="unfinished"></translation>
+        <translation>100</translation>
     </message>
     <message>
         <location filename="DialogScaleDevice.ui" line="143"/>
         <source>Cancel</source>
-        <translation type="unfinished"></translation>
+        <translation>Annuler</translation>
     </message>
     <message>
         <location filename="DialogScaleDevice.ui" line="150"/>
         <source>Ok</source>
-        <translation type="unfinished">Ok</translation>
+        <translation>Ok</translation>
     </message>
 </context>
 <context>
@@ -198,7 +198,7 @@
     <message>
         <location filename="DockLightProperties.ui" line="111"/>
         <source>3</source>
-        <translation type="unfinished"></translation>
+        <translation type="unfinished">3</translation>
     </message>
 </context>
 <context>
@@ -216,37 +216,32 @@
     <message>
         <location filename="DockOptimizer.ui" line="37"/>
         <source>Image Center Only</source>
-        <translation type="unfinished"></translation>
+        <translation>Centre de l&apos;image</translation>
     </message>
     <message>
         <location filename="DockOptimizer.ui" line="42"/>
         <source>Mostly Center (linear)</source>
-        <translation type="unfinished"></translation>
+        <translation>Plutôt le centre de l&apos;image (linéaire)</translation>
     </message>
     <message>
         <location filename="DockOptimizer.ui" line="47"/>
         <source>Full Frame Mean</source>
-        <translation type="unfinished"></translation>
+        <translation>En moyenne sur l&apos;image</translation>
     </message>
     <message>
         <location filename="DockOptimizer.ui" line="52"/>
         <source>Full Frame Max</source>
-        <translation type="unfinished"></translation>
+        <translation>Max de l&apos;image</translation>
     </message>
     <message>
         <location filename="DockOptimizer.ui" line="77"/>
         <source>Optimize</source>
-        <translation type="unfinished"></translation>
+        <translation>Optimiser</translation>
     </message>
     <message>
         <location filename="DockOptimizer.ui" line="93"/>
         <source>...</source>
         <translation>...</translation>
-    </message>
-    <message>
-        <location filename="DockOptimizer.ui" line="523"/>
-        <source>The optimizer is not finished and will be updated</source>
-        <translation type="unfinished"></translation>
     </message>
 </context>
 <context>
@@ -308,32 +303,32 @@ calculé à partir du tracé de rayon</translation>
     <message>
         <location filename="DockScatterPlot.ui" line="136"/>
         <source>Vignetting</source>
-        <translation type="unfinished"></translation>
+        <translation>Vignettage</translation>
     </message>
     <message>
         <location filename="DockScatterPlot.ui" line="146"/>
         <source>-1</source>
-        <translation type="unfinished"></translation>
+        <translation>-1</translation>
     </message>
     <message>
         <location filename="DockScatterPlot.ui" line="153"/>
         <source>Show at:</source>
-        <translation type="unfinished"></translation>
+        <translation>Montrer:</translation>
     </message>
     <message>
         <location filename="DockScatterPlot.ui" line="161"/>
         <source>Center</source>
-        <translation type="unfinished"></translation>
+        <translation>Centre</translation>
     </message>
     <message>
         <location filename="DockScatterPlot.ui" line="168"/>
         <source>Middle</source>
-        <translation type="unfinished"></translation>
+        <translation>Intermédiaire</translation>
     </message>
     <message>
         <location filename="DockScatterPlot.ui" line="175"/>
         <source>Edge</source>
-        <translation type="unfinished"></translation>
+        <translation>Bord</translation>
     </message>
     <message>
         <source>F/D</source>
@@ -396,27 +391,27 @@ dans ce cas ,la lumière se concentre dans la tache de diffraction et la qualit�
         <location filename="DockSurfacesData.ui" line="83"/>
         <location filename="DockSurfacesData.ui" line="87"/>
         <source>Absolute</source>
-        <translation type="unfinished"></translation>
+        <translation>Absolue</translation>
     </message>
     <message>
         <location filename="DockSurfacesData.ui" line="92"/>
         <source>Relative</source>
-        <translation type="unfinished"></translation>
+        <translation>Relative</translation>
     </message>
     <message>
         <location filename="DockSurfacesData.ui" line="100"/>
         <source>PolyAspheric</source>
-        <translation type="unfinished"></translation>
+        <translation>AsphériquePolynomial</translation>
     </message>
     <message>
         <location filename="DockSurfacesData.ui" line="107"/>
         <source>InnerDiameter</source>
-        <translation type="unfinished"></translation>
+        <translation>DiamètreInterne</translation>
     </message>
     <message>
         <location filename="DockSurfacesData.ui" line="114"/>
         <source>Comment</source>
-        <translation type="unfinished"></translation>
+        <translation>Commentaire</translation>
     </message>
     <message>
         <location filename="DockSurfacesData.ui" line="45"/>
@@ -593,7 +588,7 @@ dans ce cas ,la lumière se concentre dans la tache de diffraction et la qualit�
     <message>
         <location filename="MainWindow.ui" line="198"/>
         <source>Ctrl+F</source>
-        <translation></translation>
+        <translation>Ctrl+ F</translation>
     </message>
     <message>
         <location filename="MainWindow.ui" line="203"/>
