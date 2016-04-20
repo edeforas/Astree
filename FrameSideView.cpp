@@ -90,8 +90,8 @@ void FrameSideView::device_changed(OpticalDevice* pDevice)
     for (int iSurf=0;iSurf<_pDevice->nb_surface();iSurf++)
     {
         double dZSurf=_pDevice->global_z(iSurf);
-        double dDiameter=_pDevice->diameter(iSurf);
-        double dMinDiameter=_pDevice->inner_diameter(iSurf);
+        double dDiameter=_pDevice->get(iSurf,DIAMETER);
+        double dMinDiameter=_pDevice->get(iSurf,INNER_DIAMETER);
 
         vector<double> viXNew1,viXNew2,viYNew1,viYNew2;
         for (int iStep=0;iStep<=SIDEVIEW_NB_POINTS_SURFACE;iStep++)

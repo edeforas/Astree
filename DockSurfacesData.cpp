@@ -141,7 +141,7 @@ void DockSurfacesData::device_changed(OpticalDevice *pDevice)
     if(_bHaveInnerDiameter)
         _bDisplayInnerDiameter=true;
 
-    _bHaveAspheric=pDevice->is_aspheric();
+    _bHaveAspheric=pDevice->has_aspheric();
     if(_bHaveAspheric)
         _bDisplayAspheric=true;
 
@@ -198,9 +198,9 @@ void DockSurfacesData::update_table()
             qsZ="auto "+qsZ;
         m_ui->twSurfacesDatas->setItem(i,3,new QTableWidgetItem(qsZ));
 
-        double dDiameter=_pDevice->diameter(i);
+        double dDiameter=_pDevice->get(i,DIAMETER);
         QString qsDiameter="";
-        if(_pDevice->get_auto_diameter(i))
+        if(_pDevice->get(i,AUTO_DIAMETER))
             qsDiameter="auto "+QString::number(dDiameter,'f',3);
         else
             qsDiameter=QString::number(dDiameter,'g',10);
@@ -210,9 +210,9 @@ void DockSurfacesData::update_table()
         iIndexCol=5;
         if(_bDisplayInnerDiameter)
         {
-            double dInnerDiameter=_pDevice->inner_diameter(i);
+            double dInnerDiameter=_pDevice->get(i,INNER_DIAMETER);
             QString qsInnerDiameter="";
-            if(_pDevice->get_auto_inner_diameter(i))
+            if(_pDevice->get(i,AUTO_INNER_DIAMETER))
                 qsInnerDiameter="auto "+QString::number(dInnerDiameter,'f',3);
             else
                 qsInnerDiameter=QString::number(dInnerDiameter,'g',10);
@@ -326,8 +326,8 @@ void DockSurfacesData::OnCellChanged(int iRow,int iCol)
         double dVal=0;
         ss >> dVal;
 
-        _pDevice->set_diameter(iRow,dVal);
-        _pDevice->set_auto_diameter(iRow,bAuto);
+        _pDevice->set(iRow,DIAMETER,dVal);
+        _pDevice->set(iRow,AUTO_DIAMETER,bAuto);
     }
 
     int iIndexCol=5;
@@ -345,8 +345,8 @@ void DockSurfacesData::OnCellChanged(int iRow,int iCol)
             double dVal;
             ss >> dVal;
 
-            _pDevice->set_inner_diameter(iRow,dVal);
-            _pDevice->set_auto_inner_diameter(iRow,bAuto);
+            _pDevice->set(iRow,INNER_DIAMETER,dVal);
+            _pDevice->set(iRow,AUTO_INNER_DIAMETER,bAuto);
         }
 
         iIndexCol++;
@@ -407,7 +407,7 @@ void DockSurfacesData::OnAddSurfaceAfter()
     _pDevice->set_type(iLine+1,"void");
 
     if(iLine+1>0)
-        _pDevice->set_auto_diameter(iLine+1,true);
+        _pDevice->set(iLine+1,AUTO_DIAMETER,true);
 
     //  device_changed(_pDevice);
     static_cast<MainWindow*>(parent())->update_views(this,NB_SURFACE_CHANGED);
@@ -429,7 +429,7 @@ void DockSurfacesData::OnAddSurfaceBefore()
     _pDevice->set_type(iLine,"void");
 
     if(iLine>0)
-        _pDevice->set_auto_diameter(iLine,true);
+        _pDevice->set(iLine,AUTO_DIAMETER,true);
 
     //  device_changed(_pDevice);
     static_cast<MainWindow*>(parent())->update_views(this,NB_SURFACE_CHANGED);

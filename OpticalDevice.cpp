@@ -170,7 +170,7 @@ string OpticalDevice::note() const
     return _sNote;
 }
 //////////////////////////////////////////////////////////////////////////////
-bool OpticalDevice::is_aspheric() const
+bool OpticalDevice::has_aspheric() const
 {
     for(int i=0;i<nb_surface();i++)
     {
@@ -179,52 +179,6 @@ bool OpticalDevice::is_aspheric() const
     }
 
     return false;
-}
-//////////////////////////////////////////////////////////////////////////////
-void OpticalDevice::set_diameter(int iSurf,double dDiameter)
-{
-    _theSurf[iSurf].set_diameter(dDiameter);
-    _bMustRetrace=true;
-}
-//////////////////////////////////////////////////////////////////////////////
-void OpticalDevice::set_auto_diameter(int iSurf,bool bAutoDiameter)
-{
-    _theSurf[iSurf].set_auto_diameter(bAutoDiameter);
-    _bMustRetrace=true;
-}
-//////////////////////////////////////////////////////////////////////////////
-bool OpticalDevice::get_auto_diameter(int iSurf)
-{
-    return _theSurf[iSurf].get_auto_diameter();
-}
-//////////////////////////////////////////////////////////////////////////////
-double OpticalDevice::diameter(int iSurf)
-{
-    ray_trace();
-    return _theSurf[iSurf].diameter();
-}
-//////////////////////////////////////////////////////////////////////////////
-void OpticalDevice::set_inner_diameter(int iSurf,double dInnerDiameter)
-{
-    _theSurf[iSurf].set_inner_diameter(dInnerDiameter);
-    _bMustRetrace=true;
-}
-//////////////////////////////////////////////////////////////////////////////
-void OpticalDevice::set_auto_inner_diameter(int iSurf,bool bAutoInnerDiameter)
-{
-    _theSurf[iSurf].set_auto_inner_diameter(bAutoInnerDiameter);
-    _bMustRetrace=true;
-}
-//////////////////////////////////////////////////////////////////////////////
-bool OpticalDevice::get_auto_inner_diameter(int iSurf) const
-{
-    return _theSurf[iSurf].get_auto_inner_diameter();
-}
-//////////////////////////////////////////////////////////////////////////////
-double OpticalDevice::inner_diameter(int iSurf)
-{
-    ray_trace();
-    return _theSurf[iSurf].inner_diameter();
 }
 //////////////////////////////////////////////////////////////////////////////
 bool OpticalDevice::has_inner_diameter() const
@@ -489,9 +443,9 @@ void OpticalDevice::set_nb_intermediate_angles(int iNbAngles)
     _bMustRetrace=true;
 }
 //////////////////////////////////////////////////////////////////////////////
-double OpticalDevice::get(int iSurface,eSurfaceparameter eParam) const
+double OpticalDevice::get(int iSurface,eSurfaceparameter eParam)
 {
-    const Surface& r=_theSurf[iSurface];
+    Surface& r=_theSurf[iSurface];
 
     if(eParam==RADIUS_CURVATURE)
         return r.radius_curvature();
@@ -511,12 +465,38 @@ double OpticalDevice::get(int iSurface,eSurfaceparameter eParam) const
     if(eParam==R10)
         return r.R10();
 
+    if(eParam==AUTO_DIAMETER)
+        return r.get_auto_diameter();
+
+    if(eParam==AUTO_INNER_DIAMETER)
+        return r.get_auto_inner_diameter();
+
+    ray_trace(); //parameters below need full raytrace
+
+    if(eParam==DIAMETER)
+        return r.diameter();
+
+    if(eParam==INNER_DIAMETER)
+        return r.inner_diameter();
+
     return -1;
 }
 //////////////////////////////////////////////////////////////////////////////
 void OpticalDevice::set(int iSurface,eSurfaceparameter eParam,double dParam)
 {
     Surface& r=_theSurf[iSurface];
+
+    if(eParam==DIAMETER)
+        r.set_diameter(dParam);
+
+    if(eParam==AUTO_DIAMETER)
+        r.set_auto_diameter(dParam);
+
+    if(eParam==INNER_DIAMETER)
+        r.set_inner_diameter(dParam);
+
+    if(eParam==AUTO_INNER_DIAMETER)
+        r.set_auto_inner_diameter(dParam);
 
     if(eParam==RADIUS_CURVATURE)
         r.set_radius_curvature(dParam);

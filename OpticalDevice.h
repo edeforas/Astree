@@ -17,15 +17,18 @@ class Light;
 #define FD_VALID_MAX 1e10
 #define SPOT_SIZE_INFINITY 9e99
 
-enum eSurfaceparameter
+enum eSurfaceparameter //to be used with get/set functions
 {
+    DIAMETER,
+    AUTO_DIAMETER, // set with 0 or 1
+    INNER_DIAMETER,
+    AUTO_INNER_DIAMETER, // set with 0 or 1
     CONIC,
     RADIUS_CURVATURE,
     R4,
     R6,
     R8,
     R10
-
 };
 
 
@@ -52,21 +55,10 @@ public:
 
     // surface data accessor
     void set(int iSurface,eSurfaceparameter eParam,double dParam);
-    double get(int iSurface,eSurfaceparameter eParam) const;
+    double get(int iSurface,eSurfaceparameter eParam); //not const due to lazy computation
 
-    // special surface geometry settings
-    bool is_aspheric() const;
-    bool compute_surface_profile(int iSurface,double dX,double dY,double& dZ);
-
-    //diameter settings
-    void set_diameter(int iSurf,double dDiameter);
-    void set_auto_diameter(int iSurf,bool bAutoDiameter);
-    bool get_auto_diameter(int iSurf);
-    double diameter(int iSurf);
-    void set_inner_diameter(int iSurf,double dInnerDiameter);
-    void set_auto_inner_diameter(int iSurf,bool bAutoInnerDiameter);
-    bool get_auto_inner_diameter(int iSurf) const;
-    double inner_diameter(int iSurf);
+    // global properties getter
+    bool has_aspheric() const;
     bool has_inner_diameter() const;
 
     // z settings
@@ -77,6 +69,7 @@ public:
     double global_z(int iSurface);
     void set_autofocus(int iSurface,bool bAutofocus);
     bool get_autofocus(int iSurface);
+    bool compute_surface_profile(int iSurface,double dX,double dY,double& dZ);
 
     // comment settings
     void set_comment(int iSurface,string sComment);

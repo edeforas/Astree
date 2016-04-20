@@ -588,7 +588,7 @@ dans ce cas ,la lumi√®re se concentre dans la tache de diffraction et la qualit√
     <message>
         <location filename="MainWindow.ui" line="198"/>
         <source>Ctrl+F</source>
-        <translation>Ctrl+ F</translation>
+        <translation type="unfinished">Ctrl+F</translation>
     </message>
     <message>
         <location filename="MainWindow.ui" line="203"/>

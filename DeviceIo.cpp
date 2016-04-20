@@ -37,16 +37,16 @@ bool DeviceIo::save(string sFile,OpticalDevice* pD)
         if(pD->get_autofocus((iS)))
             ac.set(sSurfName+".z.autofocus",true);
 
-        double dDiameter=pD->diameter(iS);
+        double dDiameter=pD->get(iS,DIAMETER);
         ac.set(sSurfName+".diameter",dDiameter);
-        if(pD->get_auto_diameter(iS))
+        if(pD->get(iS,AUTO_DIAMETER))
             ac.set(sSurfName+".diameter.auto",true);
 
-        double dInnerDiameter=pD->inner_diameter(iS);
+        double dInnerDiameter=pD->get(iS,INNER_DIAMETER);
         if(dInnerDiameter!=0.)
         {
             ac.set(sSurfName+".inner_diameter",dInnerDiameter);
-            if(pD->get_auto_inner_diameter(iS))
+            if(pD->get(iS,AUTO_INNER_DIAMETER))
                 ac.set(sSurfName+".inner_diameter.auto",true);
         }
 
@@ -127,18 +127,18 @@ OpticalDevice* DeviceIo::load(string sFile)
         if (ac.exist(sSurfName+".diameter"))
         {
             double dDiameter=ac.get_double(sSurfName+".diameter");
-            pD->set_diameter(iS,dDiameter);
+            pD->set(iS,DIAMETER,dDiameter);
         }
         if (ac.exist(sSurfName+".diameter.auto"))
-            pD->set_auto_diameter(iS,ac.get_bool(sSurfName+".diameter.auto"));
+            pD->set(iS,AUTO_DIAMETER,ac.get_bool(sSurfName+".diameter.auto"));
 
         if (ac.exist(sSurfName+".inner_diameter"))
         {
             double dInnerDiameter=ac.get_double(sSurfName+".inner_diameter");
-            pD->set_inner_diameter(iS,dInnerDiameter);
+            pD->set(iS,INNER_DIAMETER,dInnerDiameter);
         }
         if (ac.exist(sSurfName+".inner_diameter.auto"))
-            pD->set_auto_inner_diameter(iS,ac.get_bool(sSurfName+".inner_diameter.auto"));
+            pD->set(iS,AUTO_INNER_DIAMETER,ac.get_bool(sSurfName+".inner_diameter.auto"));
 
 
         if (ac.exist(sSurfName+".radius_curvature"))

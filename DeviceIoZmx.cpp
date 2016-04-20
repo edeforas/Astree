@@ -60,10 +60,10 @@ OpticalDevice* DeviceIoZmx::import(string sFile)
                 pD->set_type(iSurface,sType);
                 pD->set_z(iSurface,dDimensionFactor*dTick);
                 pD->set(iSurface,RADIUS_CURVATURE,dCurvature/dDimensionFactor);
-                pD->set_diameter(iSurface,dDiameter*dDimensionFactor);
+                pD->set(iSurface,DIAMETER,dDiameter*dDimensionFactor);
                 pD->set(iSurface,CONIC,dConic);
                 pD->set_comment(iSurface,sComment);
-                pD->set_inner_diameter(iSurface,dInnerDiameter*dDimensionFactor);
+                pD->set(iSurface,INNER_DIAMETER,dInnerDiameter*dDimensionFactor);
                 bSurfPending=false;
             }
 
