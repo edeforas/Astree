@@ -50,14 +50,15 @@ bool DeviceIo::save(string sFile,OpticalDevice* pD)
                 ac.set(sSurfName+".inner_diameter.auto",true);
         }
 
-        double dRC=pD->radius_curvature(iS);
+        double dRC=pD->get(iS,RADIUS_CURVATURE);
         if(dRC>=RADIUS_CURVATURE_INFINITY/2)
             ac.set(sSurfName+".radius_curvature",string("inf"));
         else
             ac.set(sSurfName+".radius_curvature",dRC);
 
-        if(pD->conic(iS)!=0.)
-            ac.set(sSurfName+".conic",pD->conic(iS));
+        double dConic=pD->get(iS,CONIC);
+        if(dConic!=0.)
+            ac.set(sSurfName+".conic",dConic);
 
         double dR4=pD->get(iS,R4);
         if(dR4!=0.)
@@ -143,31 +144,25 @@ OpticalDevice* DeviceIo::load(string sFile)
         if (ac.exist(sSurfName+".radius_curvature"))
         {
             if(ac.get(sSurfName+".radius_curvature")=="inf")
-                pD->set_radius_curvature(iS,RADIUS_CURVATURE_INFINITY);
+                pD->set(iS,RADIUS_CURVATURE,RADIUS_CURVATURE_INFINITY);
             else
-                pD->set_radius_curvature(iS,ac.get_double(sSurfName+".radius_curvature"));
+                pD->set(iS,RADIUS_CURVATURE,ac.get_double(sSurfName+".radius_curvature"));
         }
 
         if (ac.exist(sSurfName+".conic"))
-            pD->set_conic(iS,ac.get_double(sSurfName+".conic"));
+            pD->set(iS,CONIC,ac.get_double(sSurfName+".conic"));
 
-        double dR4=0.;
         if (ac.exist(sSurfName+".r4"))
-            dR4=ac.get_double(sSurfName+".r4");
+            pD->set(iS,R4,ac.get_double(sSurfName+".r4"));
 
-        double dR6=0.;
         if (ac.exist(sSurfName+".r6"))
-            dR6=ac.get_double(sSurfName+".r6");
+            pD->set(iS,R6,ac.get_double(sSurfName+".r6"));
 
-        double dR8=0.;
         if (ac.exist(sSurfName+".r8"))
-            dR8=ac.get_double(sSurfName+".r8");
+            pD->set(iS,R8,ac.get_double(sSurfName+".r8"));
 
-        double dR10=0.;
         if (ac.exist(sSurfName+".r10"))
-            dR10=ac.get_double(sSurfName+".r10");
-
-        pD->set_poly_aspheric(iS,dR4,dR6,dR8,dR10);
+            pD->set(iS,R10,ac.get_double(sSurfName+".r10"));
 
         if (ac.exist(sSurfName+".comment"))
         {

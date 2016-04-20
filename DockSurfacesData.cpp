@@ -183,13 +183,13 @@ void DockSurfacesData::update_table()
         m_ui->twSurfacesDatas->setCellWidget(i,ITEM_TYPE,qcbType);
         connect(qcbType,SIGNAL(activated(int)),this,SLOT(onTypeChanged()));
 
-        double dRC=_pDevice->radius_curvature(i);
+        double dRC=_pDevice->get(i,RADIUS_CURVATURE);
         if( (dRC<RADIUS_CURVATURE_INFINITY/2.) && (dRC>-RADIUS_CURVATURE_INFINITY/2.) )
             m_ui->twSurfacesDatas->setItem(i,1, new QTableWidgetItem(QString::number(dRC,'g',10)));
         else
             m_ui->twSurfacesDatas->setItem(i,1, new QTableWidgetItem("inf"));
 
-        double dConic=_pDevice->conic(i);
+        double dConic=_pDevice->get(i,CONIC);
         m_ui->twSurfacesDatas->setItem(i,2, new QTableWidgetItem(QString::number(dConic,'g',10)));
 
         double dZ=_pDevice->z(i);
@@ -284,12 +284,9 @@ void DockSurfacesData::OnCellChanged(int iRow,int iCol)
         QString qsText=pItem->text();
 
         if (qsText=="inf")
-            _pDevice->set_radius_curvature(iRow,RADIUS_CURVATURE_INFINITY);
+            _pDevice->set(iRow,RADIUS_CURVATURE,RADIUS_CURVATURE_INFINITY);
         else
-        {
-            double d=qsText.toDouble();
-            _pDevice->set_radius_curvature(iRow,d);
-        }
+            _pDevice->set(iRow,RADIUS_CURVATURE,qsText.toDouble());
     }
 
     if (iCol==2) //"conic"
@@ -298,7 +295,7 @@ void DockSurfacesData::OnCellChanged(int iRow,int iCol)
         QString qsText=pItem->text();
 
         double d=qsText.toDouble();
-        _pDevice->set_conic(iRow,d);
+        _pDevice->set(iRow,CONIC,d);
     }
 
     if (iCol==3) //"z"
@@ -357,36 +354,30 @@ void DockSurfacesData::OnCellChanged(int iRow,int iCol)
 
     if(_bDisplayAspheric)
     {
-        double dR4=_pDevice->get(iRow,R4);
-        double dR6=_pDevice->get(iRow,R6);
-        double dR8=_pDevice->get(iRow,R8);
-        double dR10=_pDevice->get(iRow,R10);
-
         if (iCol==iIndexCol)
         {
             QTableWidgetItem* pItem=m_ui->twSurfacesDatas->item(iRow,iCol);
-            dR4=pItem->text().toDouble();
+            _pDevice->set(iRow,R4,pItem->text().toDouble());
         }
 
         if (iCol==iIndexCol+1)
         {
             QTableWidgetItem* pItem=m_ui->twSurfacesDatas->item(iRow,iCol);
-            dR6=pItem->text().toDouble();
+            _pDevice->set(iRow,R6,pItem->text().toDouble());
         }
 
         if (iCol==iIndexCol+2)
         {
             QTableWidgetItem* pItem=m_ui->twSurfacesDatas->item(iRow,iCol);
-            dR8=pItem->text().toDouble();
+            _pDevice->set(iRow,R8,pItem->text().toDouble());
         }
 
         if (iCol==iIndexCol+3)
         {
             QTableWidgetItem* pItem=m_ui->twSurfacesDatas->item(iRow,iCol);
-            dR10=pItem->text().toDouble();
+            _pDevice->set(iRow,R10,pItem->text().toDouble());
         }
 
-        _pDevice->set_poly_aspheric(iRow,dR4,dR6,dR8,dR10);
         iIndexCol+=4;
     }
 

@@ -19,11 +19,11 @@ bool DeviceScaling::scale(OpticalDevice *pDevice,double dRatio)
     {
         double dZ=pDevice->z(iS);
         double dDiameter=pDevice->diameter(iS);
-        double dRadiusCurvature=pDevice->radius_curvature(iS);
+        double dRadiusCurvature=pDevice->get(iS,RADIUS_CURVATURE);
 
         pDevice->set_z(iS,dZ*dRatio);
         pDevice->set_diameter(iS,dDiameter*dRatio);
-        pDevice->set_radius_curvature(iS,dRadiusCurvature*dRatio);
+        pDevice->set(iS,RADIUS_CURVATURE,dRadiusCurvature*dRatio);
 
         double dRatio2=dRatio*dRatio;
         double dRatio3=dRatio2*dRatio;
@@ -41,7 +41,10 @@ bool DeviceScaling::scale(OpticalDevice *pDevice,double dRatio)
         dR8=dR8/dRatio7;
         dR10=dR10/dRatio9;
 
-        pDevice->set_poly_aspheric(iS,dR4,dR6,dR8,dR10);
+        pDevice->set(iS,R4,dR4);
+        pDevice->set(iS,R6,dR6);
+        pDevice->set(iS,R8,dR8);
+        pDevice->set(iS,R10,dR10);
     }
 
     return true;

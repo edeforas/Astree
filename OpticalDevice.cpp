@@ -455,18 +455,6 @@ double OpticalDevice::half_field_of_view() const
     return _dHalfFov;
 }
 //////////////////////////////////////////////////////////////////////////////
-void OpticalDevice::set_conic(int iSurf,double dConic)
-{
-    _theSurf[iSurf].set_conic(dConic);
-    _bMustRetrace=true;
-}
-//////////////////////////////////////////////////////////////////////////////
-double OpticalDevice::conic(int iSurf)
-{
-    //  ray_trace();
-    return _theSurf[iSurf].conic();
-}
-//////////////////////////////////////////////////////////////////////////////
 void OpticalDevice::set_type(int iSurf,string sType)
 {
     _theSurf[iSurf].set_type(sType);
@@ -476,27 +464,6 @@ void OpticalDevice::set_type(int iSurf,string sType)
 string OpticalDevice::type(int iSurf) const
 {
     return _theSurf[iSurf].type();
-}
-//////////////////////////////////////////////////////////////////////////////
-void OpticalDevice::set_radius_curvature(int iSurf,double dRadiusCurvature)
-{
-    _theSurf[iSurf].set_radius_curvature(dRadiusCurvature);
-    _bMustRetrace=true;
-}
-//////////////////////////////////////////////////////////////////////////////
-double OpticalDevice::radius_curvature(int iSurf) const
-{
-    return _theSurf[iSurf].radius_curvature();
-}
-//////////////////////////////////////////////////////////////////////////////
-void OpticalDevice::set_poly_aspheric(int iSurf,double dR4,double dR6,double dR8,double dR10)
-{
-    _theSurf[iSurf].set_R4(dR4);
-    _theSurf[iSurf].set_R6(dR6);
-    _theSurf[iSurf].set_R8(dR8);
-    _theSurf[iSurf].set_R10(dR10);
-
-    _bMustRetrace=true;
 }
 //////////////////////////////////////////////////////////////////////////////
 const ImageQuality* OpticalDevice::get_image_quality()
@@ -526,6 +493,12 @@ double OpticalDevice::get(int iSurface,eSurfaceparameter eParam) const
 {
     const Surface& r=_theSurf[iSurface];
 
+    if(eParam==RADIUS_CURVATURE)
+        return r.radius_curvature();
+
+    if(eParam==CONIC)
+        return r.conic();
+
     if(eParam==R4)
         return r.R4();
 
@@ -545,6 +518,12 @@ void OpticalDevice::set(int iSurface,eSurfaceparameter eParam,double dParam)
 {
     Surface& r=_theSurf[iSurface];
 
+    if(eParam==RADIUS_CURVATURE)
+        r.set_radius_curvature(dParam);
+
+    if(eParam==CONIC)
+        r.set_conic(dParam);
+
     if(eParam==R4)
         r.set_R4(dParam);
 
@@ -556,5 +535,7 @@ void OpticalDevice::set(int iSurface,eSurfaceparameter eParam,double dParam)
 
     if(eParam==R10)
         r.set_R10(dParam);
+
+    _bMustRetrace=true;
 }
 //////////////////////////////////////////////////////////////////////////////

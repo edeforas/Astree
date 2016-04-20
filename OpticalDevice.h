@@ -15,6 +15,8 @@ using namespace std;
 
 enum eSurfaceparameter
 {
+    CONIC,
+    RADIUS_CURVATURE,
     R4,
     R6,
     R8,
@@ -49,18 +51,13 @@ public:
     void set_note(string sNote);
     string note() const;
 
-    // surface geometry settings
-    void set_conic(int iSurf,double dConic);
-    double conic(int iSurf);
-    bool is_aspheric() const;
-    void set_radius_curvature(int iSurf,double dRadiusCurvature);
-    double radius_curvature(int iSurf) const;
-    void set_poly_aspheric(int iSurf,double dR4,double dR6,double dR8,double dR10);
-    bool compute_surface_profile(int iSurface,double dX,double dY,double& dZ);
-
     // surface data accessor
     void set(int iSurface,eSurfaceparameter eParam,double dParam);
     double get(int iSurface,eSurfaceparameter eParam) const;
+
+    // special surface geometry settings
+    bool is_aspheric() const;
+    bool compute_surface_profile(int iSurface,double dX,double dY,double& dZ);
 
     //diameter settings
     void set_diameter(int iSurf,double dDiameter);

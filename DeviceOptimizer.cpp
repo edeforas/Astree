@@ -41,33 +41,26 @@ void DeviceOptimizer::apply_parameter(const vector<DeviceOptimizerParameter>& pa
         double dVal=parameters[i].dVal;
 
         if(sParam=="conic")
-            _pDevice->set_conic(iSurface,dVal);
+            _pDevice->set(iSurface,CONIC,dVal);
 
         if(sParam=="RCurv")
-            _pDevice->set_radius_curvature(iSurface,dVal);
+            _pDevice->set(iSurface,RADIUS_CURVATURE,dVal);
 
         if(sParam=="thick")
             _pDevice->set_z(iSurface,dVal);
 
-        if( (sParam=="r4") || (sParam=="r6") || (sParam=="r8") || (sParam=="r10") )
-        {
-            double dR4=_pDevice->get(iSurface,R4);
-            double dR6=_pDevice->get(iSurface,R6);
-            double dR8=_pDevice->get(iSurface,R8);
-            double dR10=_pDevice->get(iSurface,R10);
+        if(sParam=="r4")
+            _pDevice->set(iSurface,R4,dVal);
 
-            if(sParam=="r4")
-                _pDevice->set_poly_aspheric(iSurface,dVal,dR6,dR8,dR10);
+        if(sParam=="r6")
+            _pDevice->set(iSurface,R6,dVal);
 
-            if(sParam=="r6")
-                _pDevice->set_poly_aspheric(iSurface,dR4,dVal,dR8,dR10);
+        if(sParam=="r8")
+            _pDevice->set(iSurface,R8,dVal);
 
-            if(sParam=="r8")
-                _pDevice->set_poly_aspheric(iSurface,dR4,dR6,dVal,dR10);
+        if(sParam=="r10")
+            _pDevice->set(iSurface,R10,dVal);
 
-            if(sParam=="r10")
-                _pDevice->set_poly_aspheric(iSurface,dR4,dR6,dR8,dVal);
-        }
     }
 }
 //////////////////////////////////////////////////////////////////////////////
