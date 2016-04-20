@@ -11,6 +11,17 @@ using namespace std;
 
 #include "OpticalDevice.h"
 
+#define MIN_RESOLUTION_CONIC 1.e-7
+#define MIN_RESOLUTION_RCURV 1.e-7
+#define MIN_RESOLUTION_THICK 1.e-7
+
+#define MIN_RESOLUTION_R4 1.e-22
+#define MIN_RESOLUTION_R6 1.e-24
+#define MIN_RESOLUTION_R8 1.e-26
+#define MIN_RESOLUTION_R10 1.e-28
+
+#define AMOEBA_MAX_ITER 500
+
 class DeviceOptimizerParameter
 {
 public:

@@ -90,9 +90,10 @@ Surface& Surface::operator=(const Surface& rSurf)
     set_conic(rSurf.conic());
     set_radius_curvature(rSurf.radius_curvature());
 
-    double dR4=0.,dR6=0.,dR8=0.,dR10=0.;
-    rSurf.poly_aspheric(dR4,dR6,dR8,dR10);
-    set_poly_aspheric(dR4,dR6,dR8,dR10);
+    set_R4(rSurf.R4());
+    set_R6(rSurf.R6());
+    set_R8(rSurf.R8());
+    set_R10(rSurf.R10());
 
     set_comment(rSurf.comment());
 
@@ -772,54 +773,47 @@ double Surface::radius_curvature() const
     return 1./_dCurvature;
 }
 //////////////////////////////////////////////////////////////////////////////
-void Surface::set_poly_aspheric(double dR4,double dR6,double dR8,double dR10)
+void Surface::set_R4(double dR4)
 {
-    _dR4=dR4; _dR6=dR6; _dR8=dR8; _dR10=dR10;
+    _dR4=dR4;
     update_geometry();
 }
 //////////////////////////////////////////////////////////////////////////////
-void Surface::poly_aspheric(double& dR4,double& dR6,double& dR8,double& dR10) const
+void Surface::set_R6(double dR6)
 {
-    dR4=_dR4; dR6=_dR6; dR8=_dR8; dR10=_dR10;
+    _dR6=dR6;
+    update_geometry();
 }
 //////////////////////////////////////////////////////////////////////////////
-#if 0
-
-double t=0;
-for(int iLoop=0;iLoop<NB_ITER_STOP_NEWTON;iLoop++)
+void Surface::set_R8(double dR8)
 {
-    //reproject z on aspheric curve
-    double zProj;
-    compute_z(p.x,p.y,zProj);
-
-    //compute normal on aspheric surface
-    double nx,ny,nz;
-    compute_normal(p.x,p.y,zProj,nx,ny,nz);
-
-    //compute the d value to have the plane x*nx+y*ny+z*nz+d=0
-    double d=-(p.x*nx+p.y*ny+zProj*nz);
-
-    //compute the intersect of this plane and the line defined by p (one newton step)
-    double t=(-d-p.x*nx-p.y*ny-p.z*nz)/(p.dx*nx+p.dy*ny+p.dz*nz); //todo tester !=0
-
-    double dStepLength=*
-
-            double x=p.x+t*p.dx;
-    double y=p.y+t*p.dy;
-    double z=p.z+t*p.dz;
-
-    double distSQ=sqr(x-p.x)+sqr(y-p.y)+sqr(z-p.z);
-
-    //TODO enhance precision using always the same start point
-    p.x=x;
-    p.y=y;
-    p.z=z;
-    /*
-    if(distSQ<sqr(RESOLUTION_STOP_NEWTON))
-    {
-        p.valid=verify_in_surface(p.x,p.y);
-        return;
-    }
-*/
+    _dR8=dR8;
+    update_geometry();
 }
-#endif
+//////////////////////////////////////////////////////////////////////////////
+void Surface::set_R10(double dR10)
+{
+    _dR10=dR10;
+    update_geometry();
+}
+//////////////////////////////////////////////////////////////////////////////
+double Surface::R4() const
+{
+    return _dR4;
+}
+//////////////////////////////////////////////////////////////////////////////
+double Surface::R6() const
+{
+    return _dR6;
+}
+//////////////////////////////////////////////////////////////////////////////
+double Surface::R8() const
+{
+    return _dR8;
+}
+//////////////////////////////////////////////////////////////////////////////
+double Surface::R10() const
+{
+    return _dR10;
+}
+//////////////////////////////////////////////////////////////////////////////

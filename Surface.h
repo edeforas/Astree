@@ -50,12 +50,20 @@ public:
 
     void set_radius_curvature(double dRadiusCurvature);
     double radius_curvature() const;
-    void set_poly_aspheric(double dR4,double dR6,double dR8,double dR10);
-    void poly_aspheric(double& dR4,double& dR6,double& dR8,double& dR10) const;
+
+    void set_R4(double dR4);
+    void set_R6(double dR6);
+    void set_R8(double dR8);
+    void set_R10(double dR10);
+
+    double R4() const;
+    double R6() const;
+    double R8() const;
+    double R10() const;
+    bool is_aspheric() const;
 
     void set_conic(double dConic);
     double conic() const;
-    bool is_aspheric() const;
 
     void receive(Light& l);
 

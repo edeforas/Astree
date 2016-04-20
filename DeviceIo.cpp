@@ -59,17 +59,19 @@ bool DeviceIo::save(string sFile,OpticalDevice* pD)
         if(pD->conic(iS)!=0.)
             ac.set(sSurfName+".conic",pD->conic(iS));
 
-        double dR4,dR6,dR8,dR10;
-        pD->poly_aspheric(iS,dR4,dR6,dR8,dR10);
+        double dR4=pD->get(iS,R4);
         if(dR4!=0.)
             ac.set(sSurfName+".r4",dR4);
 
+        double dR6=pD->get(iS,R6);
         if(dR6!=0.)
             ac.set(sSurfName+".r6",dR6);
 
+        double dR8=pD->get(iS,R8);
         if(dR8!=0.)
             ac.set(sSurfName+".r8",dR8);
 
+        double dR10=pD->get(iS,R10);
         if(dR10!=0.)
             ac.set(sSurfName+".r10",dR10);
 
@@ -150,18 +152,18 @@ OpticalDevice* DeviceIo::load(string sFile)
             pD->set_conic(iS,ac.get_double(sSurfName+".conic"));
 
         double dR4=0.;
-        double dR6=0.;
-        double dR8=0.;
-        double dR10=0.;
         if (ac.exist(sSurfName+".r4"))
             dR4=ac.get_double(sSurfName+".r4");
 
+        double dR6=0.;
         if (ac.exist(sSurfName+".r6"))
             dR6=ac.get_double(sSurfName+".r6");
 
+        double dR8=0.;
         if (ac.exist(sSurfName+".r8"))
             dR8=ac.get_double(sSurfName+".r8");
 
+        double dR10=0.;
         if (ac.exist(sSurfName+".r10"))
             dR10=ac.get_double(sSurfName+".r10");
 

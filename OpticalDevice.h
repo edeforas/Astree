@@ -11,6 +11,16 @@ using namespace std;
 
 #define RADIUS_CURVATURE_INFINITY 9e99
 #define FD_VALID_MAX 1e10
+#define SPOT_SIZE_INFINITY 9e99
+
+enum eSurfaceparameter
+{
+    R4,
+    R6,
+    R8,
+    R10
+
+};
 
 #include "ImageQuality.h"
 
@@ -20,7 +30,7 @@ class Light;
 
 class OpticalDevice
 {
-public:
+public:   
     OpticalDevice();
     OpticalDevice(const OpticalDevice &rDevice);
     OpticalDevice& operator=(const OpticalDevice& rDevice);
@@ -44,10 +54,13 @@ public:
     double conic(int iSurf);
     bool is_aspheric() const;
     void set_radius_curvature(int iSurf,double dRadiusCurvature);
-    double radius_curvature(int iSurf);
+    double radius_curvature(int iSurf) const;
     void set_poly_aspheric(int iSurf,double dR4,double dR6,double dR8,double dR10);
-    void poly_aspheric(int iSurf,double& dR4,double& dR6,double& dR8,double& dR10) const;
     bool compute_surface_profile(int iSurface,double dX,double dY,double& dZ);
+
+    // surface data accessor
+    void set(int iSurface,eSurfaceparameter eParam,double dParam);
+    double get(int iSurface,eSurfaceparameter eParam) const;
 
     //diameter settings
     void set_diameter(int iSurf,double dDiameter);

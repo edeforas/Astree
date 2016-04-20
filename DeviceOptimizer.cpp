@@ -51,8 +51,10 @@ void DeviceOptimizer::apply_parameter(const vector<DeviceOptimizerParameter>& pa
 
         if( (sParam=="r4") || (sParam=="r6") || (sParam=="r8") || (sParam=="r10") )
         {
-            double dR4,dR6,dR8,dR10;
-            _pDevice->poly_aspheric(iSurface,dR4,dR6,dR8,dR10);
+            double dR4=_pDevice->get(iSurface,R4);
+            double dR6=_pDevice->get(iSurface,R6);
+            double dR8=_pDevice->get(iSurface,R8);
+            double dR10=_pDevice->get(iSurface,R10);
 
             if(sParam=="r4")
                 _pDevice->set_poly_aspheric(iSurface,dVal,dR6,dR8,dR10);
@@ -76,11 +78,11 @@ double DeviceOptimizer::compute_demerit(OptimizerMeritFunction eMeritFunction)
     for(int i=0;i<pQ->nb_angles();i++)
     {
         if(ISNAN(pQ->vdSpotSize[i]))
-            return 1.e99;
+            return SPOT_SIZE_INFINITY;
     }
 
     if(ISNAN(pQ))
-        return 1.e99;
+        return SPOT_SIZE_INFINITY;
 
     if(eMeritFunction==eCenterOnly)
         return pQ->vdSpotSize[0];
@@ -96,7 +98,7 @@ double DeviceOptimizer::compute_demerit(OptimizerMeritFunction eMeritFunction)
 
     if(eMeritFunction==eMostlyCenter)
     {
-        return 1.e99; //TODO
+        return SPOT_SIZE_INFINITY; //TODO
     }
 
     if(eMeritFunction==eFullFrameMaxError)
@@ -109,7 +111,7 @@ double DeviceOptimizer::compute_demerit(OptimizerMeritFunction eMeritFunction)
         return dMeritMoy;
     }
 
-    return 1.e99;
+    return SPOT_SIZE_INFINITY;
 }
 //////////////////////////////////////////////////////////////////////////////
 OptimizerResult DeviceOptimizer::optimise_random(OptimizerMeritFunction eMeritFunction)
@@ -123,7 +125,7 @@ OptimizerResult DeviceOptimizer::optimise_random(OptimizerMeritFunction eMeritFu
     OpticalDevice deviceOrig(*_pDevice);
 
     ParameterSet paramBest=_parameters;
-    double dBestMerit=1.e99; // todo init with actual solution
+    double dBestMerit=SPOT_SIZE_INFINITY; // todo init with actual solution
 
     for(int iScale=0;iScale<10;iScale++)
     {
@@ -149,14 +151,12 @@ OptimizerResult DeviceOptimizer::optimise_random(OptimizerMeritFunction eMeritFu
             }
         }
 
-        // todo check dBestMerit
-
         // scale around best solution , divide by 4 each dimension
         for(unsigned int iP=0;iP<paramBest.size();iP++)
         {
             DeviceOptimizerParameter& dop=paramBest[iP];
             double dCenter=dop.dVal;
-            double dRadius=(dop.dMax-dop.dMin)/2./4.;
+            double dRadius=(dop.dMax-dop.dMin)/8.;
 
             dop.dMin=dCenter-dRadius;
             dop.dMax=dCenter+dRadius;
@@ -165,7 +165,7 @@ OptimizerResult DeviceOptimizer::optimise_random(OptimizerMeritFunction eMeritFu
         }
     }
 
-    if(dBestMerit<1.e98)
+    if(dBestMerit<SPOT_SIZE_INFINITY/2)
     {
         if(dBestMerit<dMeritOrig)
         {
@@ -197,25 +197,25 @@ OptimizerResult DeviceOptimizer::optimise_amoeba(OptimizerMeritFunction eMeritFu
     for(unsigned int i=0;i<_parameters.size();i++)
     {
         if(_parameters[i].sParameter=="conic")
-            vdMinResolution[i]=1.e-7;
+            vdMinResolution[i]=MIN_RESOLUTION_CONIC;
 
         if(_parameters[i].sParameter=="RCurv")
-            vdMinResolution[i]=1.e-7;
+            vdMinResolution[i]=MIN_RESOLUTION_RCURV;
 
         if(_parameters[i].sParameter=="thick")
-            vdMinResolution[i]=1.e-7;
+            vdMinResolution[i]=MIN_RESOLUTION_THICK;
 
         if(_parameters[i].sParameter=="r4")
-            vdMinResolution[i]=1.e-22;
+            vdMinResolution[i]=MIN_RESOLUTION_R4;
 
         if(_parameters[i].sParameter=="r6")
-            vdMinResolution[i]=1.e-24;
+            vdMinResolution[i]=MIN_RESOLUTION_R6;
 
         if(_parameters[i].sParameter=="r8")
-            vdMinResolution[i]=1.e-26;
+            vdMinResolution[i]=MIN_RESOLUTION_R8;
 
         if(_parameters[i].sParameter=="r10")
-            vdMinResolution[i]=1.e-28;
+            vdMinResolution[i]=MIN_RESOLUTION_R10;
     }
 
     // init simplex with the center of the definition domain
@@ -225,7 +225,7 @@ OptimizerResult DeviceOptimizer::optimise_amoeba(OptimizerMeritFunction eMeritFu
         param=_parameters;
         for(unsigned int i=0;i<_parameters.size();i++)
         {
-            param[i].dVal=(param[i].dMin+param[i].dMax)/2;
+            param[i].dVal=(param[i].dMin+param[i].dMax)*0.5;
         }
     }
 
@@ -248,7 +248,7 @@ OptimizerResult DeviceOptimizer::optimise_amoeba(OptimizerMeritFunction eMeritFu
         vdDemerit[i]=compute_demerit(eMeritFunction);
     }
 
-    int iIter=0,iMaxIter=1000;
+    int iIter=0,iMaxIter=AMOEBA_MAX_ITER;
     bool bStopCriteria=false;
     int iBest=0;
     double dBest=vdDemerit[0];
@@ -317,7 +317,7 @@ OptimizerResult DeviceOptimizer::optimise_amoeba(OptimizerMeritFunction eMeritFu
                 bOutOfDomain=true;
         }
 
-        double dMirror=1.e99;
+        double dMirror=SPOT_SIZE_INFINITY;
         if(!bOutOfDomain)
         {
             apply_parameter(paramMirror);
@@ -344,7 +344,7 @@ OptimizerResult DeviceOptimizer::optimise_amoeba(OptimizerMeritFunction eMeritFu
                 if( (paramMirrorFar[i].dVal<paramMirrorFar[i].dMin ) || (paramMirrorFar[i].dVal>paramMirrorFar[i].dMax ) )
                     bOutOfDomain=true;
             }
-            double dMirrorFar=1.e99;
+            double dMirrorFar=SPOT_SIZE_INFINITY;
             if(!bOutOfDomain)
             {
                 apply_parameter(paramMirrorFar);
@@ -405,8 +405,8 @@ OptimizerResult DeviceOptimizer::optimise_amoeba(OptimizerMeritFunction eMeritFu
 
         //compute the parameter range
         // stop criteria based on the simplex size
-        vector<double> vdMinParam(_parameters.size(),1e99);
-        vector<double> vdMaxParam(_parameters.size(),-1e99);
+        vector<double> vdMinParam(_parameters.size(),SPOT_SIZE_INFINITY);
+        vector<double> vdMaxParam(_parameters.size(),-SPOT_SIZE_INFINITY);
         for(unsigned int i=0;i<simplex.size();i++)
         {
             const ParameterSet& param=simplex[i];

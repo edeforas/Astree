@@ -224,14 +224,15 @@ void DockSurfacesData::update_table()
 
         if(_bDisplayAspheric)
         {
-            double dA4,dA6,dA8,dA10;
+            double dR4=_pDevice->get(i,R4);
+            double dR6=_pDevice->get(i,R6);
+            double dR8=_pDevice->get(i,R8);
+            double dR10=_pDevice->get(i,R10);
 
-            _pDevice->poly_aspheric(i,dA4,dA6,dA8,dA10);
-
-            m_ui->twSurfacesDatas->setItem(i,iIndexCol,new QTableWidgetItem(QString::number(dA4,'g',10)));
-            m_ui->twSurfacesDatas->setItem(i,iIndexCol+1,new QTableWidgetItem(QString::number(dA6,'g',10)));
-            m_ui->twSurfacesDatas->setItem(i,iIndexCol+2,new QTableWidgetItem(QString::number(dA8,'g',10)));
-            m_ui->twSurfacesDatas->setItem(i,iIndexCol+3,new QTableWidgetItem(QString::number(dA10,'g',10)));
+            m_ui->twSurfacesDatas->setItem(i,iIndexCol,new QTableWidgetItem(QString::number(dR4,'g',10)));
+            m_ui->twSurfacesDatas->setItem(i,iIndexCol+1,new QTableWidgetItem(QString::number(dR6,'g',10)));
+            m_ui->twSurfacesDatas->setItem(i,iIndexCol+2,new QTableWidgetItem(QString::number(dR8,'g',10)));
+            m_ui->twSurfacesDatas->setItem(i,iIndexCol+3,new QTableWidgetItem(QString::number(dR10,'g',10)));
 
             iIndexCol+=4;
         }
@@ -356,8 +357,11 @@ void DockSurfacesData::OnCellChanged(int iRow,int iCol)
 
     if(_bDisplayAspheric)
     {
-        double dR4,dR6,dR8,dR10;
-        _pDevice->poly_aspheric(iRow,dR4,dR6,dR8,dR10);
+        double dR4=_pDevice->get(iRow,R4);
+        double dR6=_pDevice->get(iRow,R6);
+        double dR8=_pDevice->get(iRow,R8);
+        double dR10=_pDevice->get(iRow,R10);
+
         if (iCol==iIndexCol)
         {
             QTableWidgetItem* pItem=m_ui->twSurfacesDatas->item(iRow,iCol);

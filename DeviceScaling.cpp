@@ -31,8 +31,10 @@ bool DeviceScaling::scale(OpticalDevice *pDevice,double dRatio)
         double dRatio7=dRatio2*dRatio5;
         double dRatio9=dRatio2*dRatio7;
 
-        double dR4,dR6,dR8,dR10;
-        pDevice->poly_aspheric(iS,dR4,dR6,dR8,dR10);
+        double dR4=pDevice->get(iS,R4);
+        double dR6=pDevice->get(iS,R6);
+        double dR8=pDevice->get(iS,R8);
+        double dR10=pDevice->get(iS,R10);
 
         dR4=dR4/dRatio3;
         dR6=dR6/dRatio5;

@@ -484,22 +484,19 @@ void OpticalDevice::set_radius_curvature(int iSurf,double dRadiusCurvature)
     _bMustRetrace=true;
 }
 //////////////////////////////////////////////////////////////////////////////
-double OpticalDevice::radius_curvature(int iSurf)
+double OpticalDevice::radius_curvature(int iSurf) const
 {
-    //  ray_trace();
     return _theSurf[iSurf].radius_curvature();
 }
 //////////////////////////////////////////////////////////////////////////////
 void OpticalDevice::set_poly_aspheric(int iSurf,double dR4,double dR6,double dR8,double dR10)
 {
-    _theSurf[iSurf].set_poly_aspheric(dR4,dR6,dR8,dR10);
+    _theSurf[iSurf].set_R4(dR4);
+    _theSurf[iSurf].set_R6(dR6);
+    _theSurf[iSurf].set_R8(dR8);
+    _theSurf[iSurf].set_R10(dR10);
+
     _bMustRetrace=true;
-}
-//////////////////////////////////////////////////////////////////////////////
-void OpticalDevice::poly_aspheric(int iSurf,double& dR4,double& dR6,double& dR8,double& dR10) const
-{
-    //  ray_trace();
-    _theSurf[iSurf].poly_aspheric(dR4,dR6,dR8,dR10);
 }
 //////////////////////////////////////////////////////////////////////////////
 const ImageQuality* OpticalDevice::get_image_quality()
@@ -523,5 +520,41 @@ void OpticalDevice::set_nb_intermediate_angles(int iNbAngles)
 
     _iNbAngles=iNbAngles;
     _bMustRetrace=true;
+}
+//////////////////////////////////////////////////////////////////////////////
+double OpticalDevice::get(int iSurface,eSurfaceparameter eParam) const
+{
+    const Surface& r=_theSurf[iSurface];
+
+    if(eParam==R4)
+        return r.R4();
+
+    if(eParam==R6)
+        return r.R6();
+
+    if(eParam==R8)
+        return r.R8();
+
+    if(eParam==R10)
+        return r.R10();
+
+    return -1;
+}
+//////////////////////////////////////////////////////////////////////////////
+void OpticalDevice::set(int iSurface,eSurfaceparameter eParam,double dParam)
+{
+    Surface& r=_theSurf[iSurface];
+
+    if(eParam==R4)
+        r.set_R4(dParam);
+
+    if(eParam==R6)
+        r.set_R6(dParam);
+
+    if(eParam==R8)
+        r.set_R8(dParam);
+
+    if(eParam==R10)
+        r.set_R10(dParam);
 }
 //////////////////////////////////////////////////////////////////////////////
