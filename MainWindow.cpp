@@ -232,7 +232,7 @@ void MainWindow::update_views(void* pSender,int iReason,bool bMustSave)
 
     //   if (pSender!=(void*)_pDockSurfacesData) // call always for the auto diameter
   //  {
-        _pDockSurfacesData->device_changed(_pDevice);
+        _pDockSurfacesData->device_changed(_pDevice,iReason);
    // }
 
     if (pSender!=(void*)_pDockLightProperties)

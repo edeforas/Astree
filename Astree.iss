@@ -29,7 +29,7 @@ Source: ".\*.cpp"; DestDir: "{app}\src\Astree"; Flags: ignoreversion
 Source: ".\Util\*.*"; DestDir: "{app}\src\Util"; Flags: ignoreversion
 Source: ".\*.pro"; DestDir: "{app}\src\Astree"; Flags: ignoreversion
 Source: ".\*.ui"; DestDir: "{app}\src\Astree"; Flags: ignoreversion
-Source: ".\*.qm"; DestDir: "{app}\src\Astree"; Flags: ignoreversion
+Source: ".\*.qm"; DestDir: "{app}"; Flags: ignoreversion
 Source: ".\*.ts"; DestDir: "{app}\src\Astree"; Flags: ignoreversion
 Source: ".\*.ico"; DestDir: "{app}\src\Astree"; Flags: ignoreversion
 Source: ".\*.iss"; DestDir: "{app}\src\Astree"; Flags: ignoreversion

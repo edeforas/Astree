@@ -15,7 +15,6 @@
 
 #define ITEM_TYPE 0
 
-
 DockSurfacesData::DockSurfacesData(QWidget *parent) :
     QDockWidget(parent),
     m_ui(new Ui::DockSurfacesData)
@@ -57,13 +56,13 @@ void DockSurfacesData::update_labels(OpticalDevice *pDevice)
         if(pDevice->convention()=="absolute")
         {
             qsl+="Z";
-            m_ui->comboCoordMode->setCurrentText("Absolute");
+            m_ui->comboCoordMode->setCurrentIndex(0);
         }
         else
         {
 
             qsl+="Thick";
-            m_ui->comboCoordMode->setCurrentText("Relative");
+            m_ui->comboCoordMode->setCurrentIndex(1);
 
         }}
 
@@ -119,15 +118,15 @@ void DockSurfacesData::changeEvent(QEvent *e)
         break;
     }
 }
-/////////////////////////////////////////////////////////////////////////://///
-void DockSurfacesData::device_changed(OpticalDevice *pDevice)
+//////////////////////////////////////////////////////////////////////////////
+void DockSurfacesData::device_changed(OpticalDevice *pDevice,int iReason)
 {
     assert(pDevice!=0);
     _pDevice=pDevice;
 
     _bCanEmit=false;
 
-    if( (pDevice->nb_surface()!=_pDevice->nb_surface()) || (pDevice!=_pDevice) ) // TODO add cols count test and rewrite all tests here
+    if(iReason==NEW_OPTICAL_DEVICE)
     {
         m_ui->twSurfacesDatas->clearContents();
         m_ui->twSurfacesDatas->setRowCount(pDevice->nb_surface());
@@ -486,10 +485,14 @@ void DockSurfacesData::on_cbComment_clicked()
 //////////////////////////////////////////////////////////////////////////////
 void DockSurfacesData::on_comboCoordMode_activated(const QString &arg1)
 {
-    if(arg1=="Absolute")
+    (void)arg1;
+
+    int iSelected=m_ui->comboCoordMode->currentIndex();
+
+    if(iSelected==0)
         _pDevice->set_convention("absolute");
 
-    if(arg1=="Relative")
+    if(iSelected==1)
         _pDevice->set_convention("relative");
 
     static_cast<MainWindow*>(parent())->update_views(this,PARAMETERS_CHANGED);

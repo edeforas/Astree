@@ -76,7 +76,7 @@ public:
     string comment(int iSurface) const;
     bool has_comment() const;
 
-    // light properties
+    // input light properties
     void set_half_field_of_view(double dHalfFov);
     double half_field_of_view() const;
     int nb_intermediate_angles() const;
@@ -85,7 +85,7 @@ public:
     string light_colors() const;
     void set_light_grid(int iGridX,int iGridY);
 
-    // one light computation
+    // light computation
     void compute_light(Light* pLight,int iSurface, double dTilt, int iGridX, int iGridY);
     const ImageQuality *get_image_quality();
 

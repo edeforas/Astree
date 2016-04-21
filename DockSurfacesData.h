@@ -25,7 +25,7 @@ public:
     explicit DockSurfacesData(QWidget *parent = 0);
     virtual ~DockSurfacesData();
 
-    void device_changed(OpticalDevice* pDevice);
+    void device_changed(OpticalDevice* pDevice, int iReason);
 
 
 public slots:

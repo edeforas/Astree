@@ -11,6 +11,7 @@
 #define SIDEVIEW_NB_POINTS_LIGHT 17
 #define NB_POINTS_SCATTER_PLOT 71
 
+//device changed reasons
 #define NEW_OPTICAL_DEVICE 1
 #define OPTICAL_DEVICE_SAVED 2
 #define PARAMETERS_CHANGED 3
