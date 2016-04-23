@@ -99,23 +99,23 @@
     <message>
         <location filename="DockImageQuality.ui" line="29"/>
         <source>ImageQuality</source>
-        <translation type="unfinished"></translation>
+        <translation>Qualité d&apos;image</translation>
     </message>
     <message>
         <location filename="DockImageQuality.ui" line="38"/>
         <source>F-ratio:</source>
-        <translation type="unfinished"></translation>
+        <translation>F/D:</translation>
     </message>
     <message>
         <location filename="DockImageQuality.ui" line="51"/>
         <location filename="DockImageQuality.ui" line="75"/>
         <source>n/a</source>
-        <translation type="unfinished"></translation>
+        <translation>n/a</translation>
     </message>
     <message>
         <location filename="DockImageQuality.ui" line="65"/>
         <source>Airy Size:</source>
-        <translation type="unfinished"></translation>
+        <translation>Diamètre d&apos;Airy:</translation>
     </message>
 </context>
 <context>
@@ -143,7 +143,7 @@
     <message>
         <location filename="DockLightProperties.ui" line="24"/>
         <source>Wavelength</source>
-        <translation type="unfinished"></translation>
+        <translation>Longueur d&apos;onde</translation>
     </message>
     <message>
         <location filename="DockLightProperties.ui" line="30"/>
@@ -183,22 +183,22 @@
     <message>
         <location filename="DockLightProperties.ui" line="82"/>
         <source>Image Field</source>
-        <translation type="unfinished"></translation>
+        <translation>Plan Focal</translation>
     </message>
     <message>
         <location filename="DockLightProperties.ui" line="90"/>
         <source>Half Field of View(deg)</source>
-        <translation type="unfinished"></translation>
+        <translation>Demi Angle de champ</translation>
     </message>
     <message>
         <location filename="DockLightProperties.ui" line="104"/>
         <source>Nb Intermediates angles</source>
-        <translation type="unfinished"></translation>
+        <translation>Nb d&apos;angles intermédaires</translation>
     </message>
     <message>
         <location filename="DockLightProperties.ui" line="111"/>
         <source>3</source>
-        <translation type="unfinished">3</translation>
+        <translation>3</translation>
     </message>
 </context>
 <context>
@@ -264,12 +264,12 @@ Il est a comparer avec le diamètre d&apos;Airy parfait ci dessous ( Diamètre d
     <message>
         <location filename="DockScatterPlot.ui" line="17"/>
         <source>ScatterPlot</source>
-        <translation type="unfinished"></translation>
+        <translation>Tracé au foyer</translation>
     </message>
     <message>
         <location filename="DockScatterPlot.ui" line="28"/>
         <source>Spot Size</source>
-        <translation type="unfinished"></translation>
+        <translation>Taille Spot</translation>
     </message>
     <message>
         <location filename="DockScatterPlot.ui" line="41"/>
@@ -288,17 +288,17 @@ calculé à partir du tracé de rayon</translation>
     <message>
         <location filename="DockScatterPlot.ui" line="64"/>
         <source>F-ratio</source>
-        <translation type="unfinished"></translation>
+        <translation>F/D</translation>
     </message>
     <message>
         <location filename="DockScatterPlot.ui" line="99"/>
         <source>Airy Size</source>
-        <translation type="unfinished"></translation>
+        <translation>Diamètre Airy</translation>
     </message>
     <message>
         <location filename="DockScatterPlot.ui" line="116"/>
         <source>Spot / Airy</source>
-        <translation type="unfinished"></translation>
+        <translation></translation>
     </message>
     <message>
         <location filename="DockScatterPlot.ui" line="136"/>
@@ -436,23 +436,23 @@ dans ce cas ,la lumière se concentre dans la tache de diffraction et la qualit�
     <name>MainWindow</name>
     <message>
         <location filename="MainWindow.cpp" line="145"/>
-        <location filename="MainWindow.cpp" line="177"/>
+        <location filename="MainWindow.cpp" line="182"/>
         <source>Open Astree File</source>
         <translation>Ouvrir un fichier Astree</translation>
     </message>
     <message>
         <location filename="MainWindow.cpp" line="145"/>
-        <location filename="MainWindow.cpp" line="177"/>
+        <location filename="MainWindow.cpp" line="182"/>
         <source>Astree Files (*.astree)</source>
         <translation>Fichier Astree (*.astree)</translation>
     </message>
     <message>
-        <location filename="MainWindow.cpp" line="299"/>
+        <location filename="MainWindow.cpp" line="304"/>
         <source>Import ZMX File</source>
         <translation>Importer un fichier ZMX</translation>
     </message>
     <message>
-        <location filename="MainWindow.cpp" line="299"/>
+        <location filename="MainWindow.cpp" line="304"/>
         <source>ZMX Files (*.zmx)</source>
         <translation>Fichier ZMX (*.zmx)</translation>
     </message>
@@ -588,7 +588,7 @@ dans ce cas ,la lumière se concentre dans la tache de diffraction et la qualit�
     <message>
         <location filename="MainWindow.ui" line="198"/>
         <source>Ctrl+F</source>
-        <translation type="unfinished">Ctrl+F</translation>
+        <translation>Ctrl+F</translation>
     </message>
     <message>
         <location filename="MainWindow.ui" line="203"/>
