@@ -76,7 +76,7 @@ MainWindow::MainWindow(QWidget *parent)
     tabifyDockWidget(_pDockCommentary,_pDockOptimizer);
     tabifyDockWidget(_pDockOptimizer,_pDockLightProperties);
     tabifyDockWidget(_pDockLightProperties,_pDockScatterPlot);
-  //  tabifyDockWidget(_pDockScatterPlot,_pDockImageQuality);
+    //  tabifyDockWidget(_pDockScatterPlot,_pDockImageQuality);
 
     update_views(0,NEW_OPTICAL_DEVICE);
 }
@@ -120,7 +120,7 @@ void MainWindow::clear_device()
     //_sFileName="";
     delete _pDevice;
     _pDevice=new OpticalDevice;
-        dLightTilt=0.;
+    dLightTilt=0.;
 }
 //////////////////////////////////////////////////////////////////////////////
 void MainWindow::on_actionQuit_triggered()
@@ -164,9 +164,14 @@ void MainWindow::on_actionNew_triggered()
 //////////////////////////////////////////////////////////////////////////////
 void MainWindow::on_actionSave_triggered()
 {
-    DeviceIo::save(_sFileName,_pDevice);
-    _bMustSave=false;
-    update_views(0,OPTICAL_DEVICE_SAVED);
+    if(_sFileName.empty())
+        on_actionSave_as_triggered();
+    else
+    {
+        DeviceIo::save(_sFileName,_pDevice);
+        _bMustSave=false;
+        update_views(0,OPTICAL_DEVICE_SAVED);
+    }
 }
 //////////////////////////////////////////////////////////////////////////////
 void MainWindow::on_actionSave_as_triggered()
@@ -225,15 +230,15 @@ void MainWindow::update_views(void* pSender,int iReason,bool bMustSave)
         _bMustSave=true;
     }
 
-  //  if (pSender!=(void*)_pDockScatterPlot)
+    //  if (pSender!=(void*)_pDockScatterPlot)
     {
         _pDockScatterPlot->device_changed(_pDevice);
     }
 
     //   if (pSender!=(void*)_pDockSurfacesData) // call always for the auto diameter
-  //  {
-        _pDockSurfacesData->device_changed(_pDevice,iReason);
-   // }
+    //  {
+    _pDockSurfacesData->device_changed(_pDevice,iReason);
+    // }
 
     if (pSender!=(void*)_pDockLightProperties)
     {
