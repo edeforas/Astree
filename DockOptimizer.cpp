@@ -81,7 +81,7 @@ void DockOptimizer::on_pushButton_clicked()
             continue;
 */
         QComboBox* qcbSurf=(QComboBox*)ui->twParams->cellWidget(i,1);
-        int iSurface=qcbSurf->currentText().toInt(&bOk);
+        int iSurface=qcbSurf->currentText().toInt(&bOk)-1;
         if(!bOk)
             return;
 
@@ -178,7 +178,7 @@ void DockOptimizer::device_changed(OpticalDevice *pDevice,int iReason)
         {
             QComboBox*  qcbSurf=new QComboBox;
             for(int i=0;i<iNbSurFace;i++)
-                qcbSurf->addItem(QString::number(i));
+                qcbSurf->addItem(QString::number(i+1));
 
             ui->twParams->setCellWidget(i,1,qcbSurf);
         }
