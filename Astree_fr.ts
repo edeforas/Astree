@@ -532,8 +532,9 @@ dans ce cas ,la lumi√®re se concentre dans la tache de diffraction et la qualit√
     </message>
     <message>
         <location filename="MainWindow.ui" line="117"/>
-        <source>New...</source>
-        <translation>Nouveau...</translation>
+        <source>New</source>
+        <oldsource>New...</oldsource>
+        <translation>Nouveau</translation>
     </message>
     <message>
         <location filename="MainWindow.ui" line="120"/>
