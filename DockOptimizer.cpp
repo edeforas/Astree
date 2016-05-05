@@ -40,8 +40,8 @@ DockOptimizer::DockOptimizer(QWidget *parent) :
         QComboBox*  qcbParam=new QComboBox;
         qcbParam->addItem("(none)");
         qcbParam->addItem("RCurv");
-        qcbParam->addItem("conic");
-        qcbParam->addItem("thick");
+        qcbParam->addItem("Conic");
+        qcbParam->addItem("Thick");
         qcbParam->addItem("r4");
         qcbParam->addItem("r6");
         qcbParam->addItem("r8");

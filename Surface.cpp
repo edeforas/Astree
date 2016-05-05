@@ -47,6 +47,7 @@ Surface::Surface():
     _dR8=0.;
     _dR10=0.;
 
+    _bIsPerfect=false;
     update_geometry();
 }
 //////////////////////////////////////////////////////////////////////////////
@@ -252,7 +253,7 @@ void Surface::local_ref(Photon& p) const
 bool Surface::set_type(string sType)
 {
     assert(sType!="");
-    if ( (sType!="reflect") && (sType!="stop") && (sType!="image") && (sType!="transmit") && (sType!="void") )
+    if ( (sType!="reflect") && (sType!="stop") && (sType!="image") && (sType!="transmit") && (sType!="void") && (sType!="perfect_lens") && (sType!="perfect_mirror") )
     {
         MaterialManager::singleton().destroy(_pMaterial);
         _pMaterial=MaterialManager::singleton().create(sType);
@@ -260,6 +261,8 @@ bool Surface::set_type(string sType)
     }
     else
         _pMaterial=0;
+
+    _bIsPerfect = ((sType=="perfect_lens") || (sType=="perfect_mirror"));
 
     _sType=sType;
     return true;
@@ -282,7 +285,7 @@ void Surface::global_ref(Photon& p) const
 void Surface::receive(Light& l)
 {
     assert(_sType!="");
-    if (_sType=="reflect")
+    if( (_sType=="reflect") || (_sType=="perfect_mirror") )
         reflect(l);
     else if (_sType=="stop")
         stop(l);
@@ -290,7 +293,7 @@ void Surface::receive(Light& l)
         stop(l);
     else if (_sType=="void")
         ; // surface does nothing
-    else
+    else //all glasses or "prefect_lens"
         transmit(l);
 }
 //////////////////////////////////////////////////////////////////////////////
@@ -352,7 +355,7 @@ void Surface::transmit(Light& l)
         global_ref(p);
     }
 
-    if(_pMaterial!=0)
+    if( (_pMaterial!=0)  && (_bIsPerfect==false))
         l.set_material(_pMaterial);
 }
 //////////////////////////////////////////////////////////////////////////////
@@ -364,6 +367,43 @@ void Surface::transmit_photon(Photon& p)
     stop_photon(p);
     if (!p.is_valid())
         return;
+
+    if(_bIsPerfect)
+    {
+        //todo optimise and merge tests
+        if(p.dz==0.) //no intersection
+        {
+            p.valid=false;
+            return;
+        }
+
+        //compute AP
+        if( (_dCurvature<1.e-20) && (_dCurvature>-1.e-20))
+            return; //flat lens
+
+        double dFocal=0.5/_dCurvature;
+        double t=dFocal/p.dz;
+
+        if(p.dz<0.)
+            t=-t;
+
+        double ax=p.dx*t;
+        double ay=p.dy*t;
+        double az=p.dz*t;
+
+        p.dx=ax-p.x;
+        p.dy=ay-p.y;
+        p.dz=az-p.z;
+
+        if(dFocal<0.)
+        {
+            p.dx=-p.dx;
+            p.dy=-p.dy;
+            p.dz=-p.dz;
+        }
+
+        return;
+    }
 
     if( (_pMaterialPrev==0) || (_pMaterialNext==0))
         return; //rien a faire car on ne connait pas les Materials
@@ -419,6 +459,47 @@ void Surface::reflect_photon(Photon &p)
     stop_photon(p);
     if (!p.is_valid())
         return;
+
+    if(_bIsPerfect)
+    {
+        //todo optimise and merge tests
+        if(p.dz==0.) //no intersection
+        {
+            p.valid=false;
+            return;
+        }
+
+        //compute AP
+        if( (_dCurvature<1.e-20) && (_dCurvature>-1.e-20))
+        {
+            p.dz=-p.dz;
+            return; //flat mirror
+        }
+
+        double dFocal=0.5/_dCurvature;
+        double t=dFocal/p.dz;
+
+        if(p.dz<0.)
+            t=-t;
+
+        double ax=p.dx*t;
+        double ay=p.dy*t;
+        double az=p.dz*t;
+
+        p.dx=ax-p.x;
+        p.dy=ay-p.y;
+        p.dz=az-p.z;
+
+        if(dFocal<0.)
+        {
+            p.dx=-p.dx;
+            p.dy=-p.dy;
+            p.dz=-p.dz;
+        }
+
+        p.dz=-p.dz; //perfect mirror from perfect lens
+        return;
+    }
 
     double nx,ny,nz;
     compute_normal(p.x,p.y,p.z,nx,ny,nz);
@@ -525,7 +606,7 @@ void Surface::stop_photon(Photon& p)
     p.y+=tmin*p.dy;
     p.z=0.;
 
-    if(_bIsFlat)
+    if(_bIsFlat || _bIsPerfect)
     {
         p.valid=verify_in_surface(p.x,p.y);
         return;
@@ -739,7 +820,7 @@ bool Surface::compute_normal(double x,double y, double z,double& nx,double& ny,d
 //////////////////////////////////////////////////////////////////////////////
 bool Surface::compute_z(double x, double y, double &z)
 {
-    if(_bIsFlat)
+    if(_bIsFlat || _bIsPerfect)
     {
         z=0.;
         return true;

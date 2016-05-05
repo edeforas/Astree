@@ -170,10 +170,13 @@ void DockSurfacesData::update_table()
         //   qcbType->addItem("transmit");
         qcbType->addItem("void");
         qcbType->addItem("image");
+        qcbType->addItem("perfect_lens");
+        qcbType->addItem("perfect_mirror");
+        qcbType->addItem("image");
         for(unsigned int iM=0;iM<vsMaterial.size();iM++) //TODO optimiser
             qcbType->addItem(vsMaterial[iM].c_str());
 
-        qcbType->insertSeparator(4);
+        qcbType->insertSeparator(7);
 
         string sType=_pDevice->type(i);
         int iPosType=qcbType->findText(sType.c_str());

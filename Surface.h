@@ -102,6 +102,7 @@ private:
     bool _bIsSpherical;
     bool _bIsConic;
     bool _bIsAspheric;
+    bool _bIsPerfect; //simple geometricla optic
     double _dR4, _dR6, _dR8, _dR10; // _dR4 = coef of h**4 , etc ( with h**2=x*x+y*y)
 
     string _sType;
