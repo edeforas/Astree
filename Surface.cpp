@@ -211,32 +211,30 @@ double Surface::z() const
 bool Surface::verify_in_surface(double dX,double dY)
 {
     double dDiameterSq=4.*(sqr(dX)+sqr(dY));
-
-    if(_bAutoDiameter || _bAutoInnerDiameter)
-    {
-        double dDiameter=-1; // compute only if dDiameterSq>...
-
-        if( (dDiameterSq>_dDiameter2) && _bAutoDiameter)
-        {
-            dDiameter=sqrt(dDiameterSq);
-            _dDiameter= dDiameter;
-            _dDiameter2= dDiameterSq;
-        }
-
-        if( (dDiameterSq<_dInnerDiameter2) && _bAutoInnerDiameter)
-        {
-            if(dDiameter==-1) // hasnt' been computed before
-                dDiameter=sqrt(dDiameterSq);
-
-            _dInnerDiameter= dDiameter;
-            _dInnerDiameter2= dDiameterSq;
-        }
-
-        return true;
-    }
-
     bool bInDiameter=(dDiameterSq<=_dDiameter2+LARGER_RADIUS_CHECK_TOLERANCIS); //TODO
     bool bInInnerDiameter=(dDiameterSq>=_dInnerDiameter2-LARGER_RADIUS_CHECK_TOLERANCIS); //TODO
+
+    if(bInDiameter && bInInnerDiameter)
+        return true;
+
+    if((!_bAutoDiameter) && (!_bAutoInnerDiameter))
+        return false;
+
+    double dDiameter=sqrt(dDiameterSq);
+
+    if( (dDiameter>_dDiameter) && _bAutoDiameter)
+    {
+        _dDiameter= dDiameter;
+        _dDiameter2= dDiameterSq;
+        bInDiameter=true;
+    }
+
+    if( (dDiameter<_dInnerDiameter) && _bAutoInnerDiameter)
+    {
+        _dInnerDiameter= dDiameter;
+        _dInnerDiameter2= dDiameterSq;
+        bInInnerDiameter=true;
+    }
 
     return (bInDiameter && bInInnerDiameter);
 }

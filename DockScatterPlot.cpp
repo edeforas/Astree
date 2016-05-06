@@ -144,9 +144,13 @@ void DockScatterPlot::changeEvent(QEvent *e)
     }
 }
 
-void DockScatterPlot::device_changed(OpticalDevice* pDevice)
+void DockScatterPlot::device_changed(OpticalDevice* pDevice, int iReason)
 {
     _pDevice=pDevice;
+
+    if( (iReason!=PARAMETERS_CHANGED) && (iReason!=NEW_OPTICAL_DEVICE) && (iReason!=NB_SURFACE_CHANGED) )
+        return;
+
     QGraphicsScene* scene=m_ui->graphicsView->scene();
     scene->clear();
 
@@ -161,6 +165,11 @@ void DockScatterPlot::device_changed(OpticalDevice* pDevice)
     }
 
     Light light;
+
+    //todo simplifier/deplacer in main
+    double dPercentField=m_ui->hsImageFieldPos->value();
+    static_cast<MainWindow*>(parent())->dLightTilt=(double)dPercentField/m_ui->hsImageFieldPos->maximum()*_pDevice->half_field_of_view();
+
     pDevice->compute_light(&light,pDevice->nb_surface()-1, static_cast<MainWindow*>(parent())->dLightTilt,NB_POINTS_SCATTER_PLOT,NB_POINTS_SCATTER_PLOT);
 
     ScatterPlot* sp=new ScatterPlot;
@@ -230,7 +239,7 @@ void DockScatterPlot::device_changed(OpticalDevice* pDevice)
 
 void DockScatterPlot::on_pushButton_clicked()
 {
-        m_ui->hsImageFieldPos->setValue(0);
+    m_ui->hsImageFieldPos->setValue(0);
 }
 
 void DockScatterPlot::on_pushButton_2_clicked()
@@ -245,9 +254,9 @@ void DockScatterPlot::on_pushButton_3_clicked()
 
 void DockScatterPlot::on_hsImageFieldPos_valueChanged(int value)
 {
-    // _pDevice->set_light_tilt((double)value/m_ui->hsImageFieldPos->maximum()*_pDevice->get_half_field_of_view());
-     static_cast<MainWindow*>(parent())->dLightTilt=(double)value/m_ui->hsImageFieldPos->maximum()*_pDevice->half_field_of_view();
+    static_cast<MainWindow*>(parent())->dLightTilt=(double)value/m_ui->hsImageFieldPos->maximum()*_pDevice->half_field_of_view();
 
-   //  if(_bCanEmit==true)
-   static_cast<MainWindow*>(parent())->update_views(this,USER_INTERFACE_CHANGED,false);
+    //  if(_bCanEmit==true)
+device_changed(_pDevice,PARAMETERS_CHANGED);
+    static_cast<MainWindow*>(parent())->update_views(this,USER_INTERFACE_CHANGED,false);
 }

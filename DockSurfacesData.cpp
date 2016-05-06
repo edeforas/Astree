@@ -328,8 +328,8 @@ void DockSurfacesData::OnCellChanged(int iRow,int iCol)
         double dVal=0;
         ss >> dVal;
 
-        _pDevice->set(iRow,DIAMETER,dVal);
         _pDevice->set(iRow,AUTO_DIAMETER,bAuto);
+        _pDevice->set(iRow,DIAMETER,dVal);
     }
 
     int iIndexCol=5;
@@ -347,8 +347,8 @@ void DockSurfacesData::OnCellChanged(int iRow,int iCol)
             double dVal;
             ss >> dVal;
 
-            _pDevice->set(iRow,INNER_DIAMETER,dVal);
             _pDevice->set(iRow,AUTO_INNER_DIAMETER,bAuto);
+            _pDevice->set(iRow,INNER_DIAMETER,dVal);
         }
 
         iIndexCol++;

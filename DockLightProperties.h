@@ -22,7 +22,7 @@ public:
     explicit DockLightProperties(QWidget *parent = 0);
     virtual ~DockLightProperties();
 
-    void device_changed(OpticalDevice* pDevice);
+    void device_changed(OpticalDevice* pDevice, int iReason);
 
 //signals:
   //  void device_changed(void* pSender);
@@ -33,16 +33,9 @@ public slots:
 protected:
     virtual void changeEvent(QEvent *e);
 
-private slots:
-
- //   void on_lineEdit_editingFinished();
-
-   // void on_leNbSteps_editingFinished();
-
 private:
     Ui::DockLightProperties *m_ui;
     OpticalDevice* _pDevice;
-    bool _bCanEmit;
 };
 
 #endif // DOCKLIGHTPROPERTIES_H

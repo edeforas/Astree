@@ -22,7 +22,7 @@ public:
     explicit DockScatterPlot(QWidget *parent = 0);
     virtual ~DockScatterPlot();
 
-    void device_changed(OpticalDevice *pDevice);
+    void device_changed(OpticalDevice *pDevice, int iReason);
 
 protected:
     virtual void changeEvent(QEvent *e);

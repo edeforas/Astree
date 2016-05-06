@@ -13,7 +13,6 @@ DockLightProperties::DockLightProperties(QWidget *parent) :
     QDockWidget(parent),
     m_ui(new Ui::DockLightProperties)
 {
-    _bCanEmit=false;
     m_ui->setupUi(this);
 
     connect(m_ui->leHalfFOV,SIGNAL(editingFinished()),this,SLOT(OnLightChange()));
@@ -46,13 +45,12 @@ void DockLightProperties::changeEvent(QEvent *e)
     }
 }
 
-void DockLightProperties::device_changed(OpticalDevice* pDevice)
+void DockLightProperties::device_changed(OpticalDevice* pDevice,int iReason)
 {
-    //TODO update in case if device change /load
+    if( (iReason!=PARAMETERS_CHANGED) && (iReason!=NEW_OPTICAL_DEVICE) )
+        return;
 
-    _bCanEmit=false;
     _pDevice=pDevice;
-    //double dTiltX=0.,dTiltY=0.;
 
     double dHalfFOV=_pDevice->half_field_of_view();
     m_ui->leHalfFOV->setText(QString("%1").arg(dHalfFOV));
@@ -69,17 +67,12 @@ void DockLightProperties::device_changed(OpticalDevice* pDevice)
     m_ui->cbGreen->setCheckState((sLightColors.find("Green.")!=string::npos)?Qt::Checked:Qt::Unchecked);
     m_ui->cbBlue->setCheckState((sLightColors.find("Blue.")!=string::npos)?Qt::Checked:Qt::Unchecked);
     m_ui->cbUV->setCheckState((sLightColors.find("UV.")!=string::npos)?Qt::Checked:Qt::Unchecked);
-
-    _bCanEmit=true;
 }
 
 void DockLightProperties::OnLightChange()
 {  
     double dHalfFOV=m_ui->leHalfFOV->text().toDouble();
     _pDevice->set_half_field_of_view(dHalfFOV);
-
-    //    _pDevice->set_light_tilt((double)m_ui->hsImageFieldPos->value()/m_ui->hsImageFieldPos->maximum()*_pDevice->get_half_field_of_view());
-    //   ((MainWindow*)parent())->dLightTilt=(double)m_ui->hsImageFieldPos->value()/m_ui->hsImageFieldPos->maximum()*_pDevice->get_half_field_of_view();
 
     string sLightColors;
 
@@ -114,6 +107,5 @@ void DockLightProperties::OnLightChange()
     }
     _pDevice->set_nb_intermediate_angles(iNbStep);
 
-    if(_bCanEmit==true)
-        static_cast<MainWindow*>(parent())->update_views(this,PARAMETERS_CHANGED);
+    static_cast<MainWindow*>(parent())->update_views(this,PARAMETERS_CHANGED);
 }

@@ -78,7 +78,7 @@ MainWindow::MainWindow(QWidget *parent)
     tabifyDockWidget(_pDockLightProperties,_pDockScatterPlot);
     //  tabifyDockWidget(_pDockScatterPlot,_pDockImageQuality);
 
-    update_views(0,NEW_OPTICAL_DEVICE);
+    update_views(0,NEW_OPTICAL_DEVICE,false);
 }
 //////////////////////////////////////////////////////////////////////////////
 MainWindow::~MainWindow()
@@ -225,14 +225,12 @@ bool MainWindow::load_file(string sFile)
 //////////////////////////////////////////////////////////////////////////////
 void MainWindow::update_views(void* pSender,int iReason,bool bMustSave)
 {
-    if ( (pSender!=0) && bMustSave)
-    {
+    if(bMustSave)
         _bMustSave=true;
-    }
 
-    //  if (pSender!=(void*)_pDockScatterPlot)
+    if (pSender!=(void*)_pDockScatterPlot)
     {
-        _pDockScatterPlot->device_changed(_pDevice);
+        _pDockScatterPlot->device_changed(_pDevice,iReason);
     }
 
     //   if (pSender!=(void*)_pDockSurfacesData) // call always for the auto diameter
@@ -242,7 +240,7 @@ void MainWindow::update_views(void* pSender,int iReason,bool bMustSave)
 
     if (pSender!=(void*)_pDockLightProperties)
     {
-        _pDockLightProperties->device_changed(_pDevice);
+        _pDockLightProperties->device_changed(_pDevice,iReason);
     }
 
     if (pSender!=(void*)_pFrameSideView)
