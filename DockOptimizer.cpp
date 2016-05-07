@@ -17,6 +17,7 @@ DockOptimizer::DockOptimizer(QWidget *parent) :
 {
     ui->setupUi(this);
     _pDevice=0;
+    _iNbSurfaces=0;
 
     QStringList qsl;
     qsl+="Optimize";
@@ -75,11 +76,7 @@ void DockOptimizer::on_pushButton_clicked()
         QCheckBox* qcbOptimize=(QCheckBox*)ui->twParams->cellWidget(i,0);
         if(!qcbOptimize->isChecked())
             continue;
-/*
-        QTableWidgetItem* pItemSurf=ui->twParams->item(i,1);
-        if(pItemSurf==0)
-            continue;
-*/
+
         QComboBox* qcbSurf=(QComboBox*)ui->twParams->cellWidget(i,1);
         int iSurface=qcbSurf->currentText().toInt(&bOk)-1;
         if(!bOk)
@@ -132,8 +129,6 @@ void DockOptimizer::on_pushButton_clicked()
     ui->lblResult->setStyleSheet("color: black;");
     ui->lblResult->repaint();
 
-    //    OptimizerResult result=dopt.optimise_brute_force(omf); //todo, put in thread
-//    OptimizerResult result=dopt.optimise_random(omf); //todo, put in thread
     OptimizerResult result=dopt.optimise_amoeba(omf); //todo, put in thread
     if(result==eBetterSolutionFound)
     {
@@ -169,19 +164,20 @@ void DockOptimizer::on_pushButton_clicked()
 void DockOptimizer::device_changed(OpticalDevice *pDevice,int iReason)
 {
     _pDevice=pDevice;
+    int iNbSurfaces=_pDevice->nb_surface();
 
-    if((iReason==NEW_OPTICAL_DEVICE) || (iReason==NB_SURFACE_CHANGED) )
+    if((iReason==NEW_OPTICAL_DEVICE) || (_iNbSurfaces!=iNbSurfaces) )
     {
-        int iNbSurFace=_pDevice->nb_surface();
-
+        //reset all
         for(int i=0;i<NB_PARAM_MAX;i++)
         {
             QComboBox*  qcbSurf=new QComboBox;
-            for(int i=0;i<iNbSurFace;i++)
+            for(int i=0;i<iNbSurfaces;i++)
                 qcbSurf->addItem(QString::number(i+1));
 
             ui->twParams->setCellWidget(i,1,qcbSurf);
         }
+        _iNbSurfaces=iNbSurfaces;
     }
 
     if( (iReason!=COMMENT_CHANGED) && (iReason!=OPTICAL_DEVICE_SAVED) )

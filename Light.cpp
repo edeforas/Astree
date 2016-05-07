@@ -308,6 +308,7 @@ void Light::compute_spot_size()
 {
     double dXS=0., dYS=0.;
     double dMinX=0.,dMaxX=0.,dMinY=0.,dMaxY=0.;
+    double dMinXR=0.,dMaxXR=0.,dMinYR=0.,dMaxYR=0.; //rotated 45deg
 
     double dDxCentral=0.;
     double dDyCentral=0.;
@@ -327,6 +328,11 @@ void Light::compute_spot_size()
             dMaxX=p.x;
             dMinY=p.y;
             dMaxY=p.y;
+
+            dMinXR=p.x-p.y;
+            dMaxXR=dMinXR;
+            dMinYR=p.x+p.y;
+            dMaxYR=dMinYR;
         }
         else
         {
@@ -334,12 +340,17 @@ void Light::compute_spot_size()
             dMaxX=std::max(dMaxX,p.x);
             dMinY=std::min(dMinY,p.y);
             dMaxY=std::max(dMaxY,p.y);
+
+            dMinXR=std::min(dMinXR,p.x-p.y);
+            dMaxXR=std::max(dMaxXR,p.x-p.y);
+            dMinYR=std::min(dMinYR,p.x+p.y);
+            dMaxYR=std::max(dMaxYR,p.x+p.y);
         }
 
         dXS+=p.x;
         dYS+=p.y;
 
-        Vector3D::normalize(p.dx,p.dy,p.dz);
+        Vector3D::normalize(p.dx,p.dy,p.dz); //todo remove using mean axis(max,min)
         dDxCentral+=p.dx;
         dDyCentral+=p.dy;
         dDzCentral+=p.dz;
@@ -397,6 +408,8 @@ void Light::compute_spot_size()
     _dCenterY=dYS/iNbValidPhoton;
 
     _dSpotSize=std::max(dMaxX-dMinX,dMaxY-dMinY);
+    double dSpotSizeRotated=std::max(dMaxXR-dMinXR,dMaxYR-dMinYR)*0.7071067811865475; //sqrt(2)/2
+    _dSpotSize=std::max(_dSpotSize,dSpotSizeRotated);
 
     _dVignetting=100.*(double)iNbValidPhoton/_iNbPhotonsInitVignetting;
 }

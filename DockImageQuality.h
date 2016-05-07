@@ -17,7 +17,7 @@ public:
     explicit DockImageQuality(QWidget *parent = 0);
     ~DockImageQuality();
 
-     void device_changed(OpticalDevice *pDevice);
+     void device_changed(OpticalDevice *pDevice, int iReason);
 
 private:
     Ui::DockImageQuality *ui;

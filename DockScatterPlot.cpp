@@ -148,7 +148,7 @@ void DockScatterPlot::device_changed(OpticalDevice* pDevice, int iReason)
 {
     _pDevice=pDevice;
 
-    if( (iReason!=PARAMETERS_CHANGED) && (iReason!=NEW_OPTICAL_DEVICE) && (iReason!=NB_SURFACE_CHANGED) )
+    if( (iReason!=PARAMETERS_CHANGED) && (iReason!=NEW_OPTICAL_DEVICE) )
         return;
 
     QGraphicsScene* scene=m_ui->graphicsView->scene();

@@ -25,6 +25,7 @@ private slots:
 private:
     Ui::DockOptimizer *ui;
     OpticalDevice* _pDevice;
+    int _iNbSurfaces;
 
 };
 

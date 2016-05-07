@@ -40,13 +40,13 @@ void DeviceOptimizer::apply_parameter(const vector<DeviceOptimizerParameter>& pa
         int iSurface=parameters[i].iSurface;
         double dVal=parameters[i].dVal;
 
-        if(sParam=="conic")
+        if(sParam=="Conic")
             _pDevice->set(iSurface,CONIC,dVal);
 
         if(sParam=="RCurv")
             _pDevice->set(iSurface,RADIUS_CURVATURE,dVal);
 
-        if(sParam=="thick")
+        if(sParam=="Thick")
             _pDevice->set_z(iSurface,dVal);
 
         if(sParam=="r4")

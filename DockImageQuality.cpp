@@ -2,6 +2,7 @@
 #include "ui_DockImageQuality.h"
 
 #include "OpticalDevice.h"
+#include "AstreeDefines.h"
 
 #include <cassert>
 
@@ -17,9 +18,12 @@ DockImageQuality::~DockImageQuality()
     delete ui;
 }
 //////////////////////////////////////////////////////////////////////////////////
-void DockImageQuality::device_changed(OpticalDevice* pDevice)
+void DockImageQuality::device_changed(OpticalDevice* pDevice,int iReason)
 {
     assert(pDevice!=0);
+
+    if( (iReason!=PARAMETERS_CHANGED) && (iReason!=NEW_OPTICAL_DEVICE) )
+        return;
 
     const ImageQuality* pIQ=pDevice->get_image_quality();
     int iNbAngles=pIQ->nb_angles();

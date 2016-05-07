@@ -36,6 +36,7 @@ protected:
 private:
     Ui::DockLightProperties *m_ui;
     OpticalDevice* _pDevice;
+    bool _bCanEmit;
 };
 
 #endif // DOCKLIGHTPROPERTIES_H

@@ -25,6 +25,8 @@ DockLightProperties::DockLightProperties(QWidget *parent) :
     connect(m_ui->cbGreen,SIGNAL(stateChanged(int)),this,SLOT(OnLightChange()));
     connect(m_ui->cbBlue,SIGNAL(stateChanged(int)),this,SLOT(OnLightChange()));
     connect(m_ui->cbUV,SIGNAL(stateChanged(int)),this,SLOT(OnLightChange()));
+
+    _bCanEmit=true;
 }
 
 DockLightProperties::~DockLightProperties()
@@ -50,6 +52,7 @@ void DockLightProperties::device_changed(OpticalDevice* pDevice,int iReason)
     if( (iReason!=PARAMETERS_CHANGED) && (iReason!=NEW_OPTICAL_DEVICE) )
         return;
 
+    _bCanEmit=false;
     _pDevice=pDevice;
 
     double dHalfFOV=_pDevice->half_field_of_view();
@@ -60,17 +63,22 @@ void DockLightProperties::device_changed(OpticalDevice* pDevice,int iReason)
 
     string sLightColors=_pDevice->light_colors();
 
-    m_ui->cbIR->setCheckState((sLightColors.find("IR.")!=string::npos)?Qt::Checked:Qt::Unchecked);
-    m_ui->cbRed->setCheckState((sLightColors.find("Red.")!=string::npos)?Qt::Checked:Qt::Unchecked);
-    m_ui->cbYellowBlack->setCheckState((sLightColors.find("YellowBlack.")!=string::npos)?Qt::Checked:Qt::Unchecked);
-    m_ui->cbYellow->setCheckState((sLightColors.find("Yellow.")!=string::npos)?Qt::Checked:Qt::Unchecked);
-    m_ui->cbGreen->setCheckState((sLightColors.find("Green.")!=string::npos)?Qt::Checked:Qt::Unchecked);
-    m_ui->cbBlue->setCheckState((sLightColors.find("Blue.")!=string::npos)?Qt::Checked:Qt::Unchecked);
-    m_ui->cbUV->setCheckState((sLightColors.find("UV.")!=string::npos)?Qt::Checked:Qt::Unchecked);
+    m_ui->cbIR->setChecked((sLightColors.find("IR.")!=string::npos));
+    m_ui->cbRed->setChecked((sLightColors.find("Red.")!=string::npos));
+    m_ui->cbYellowBlack->setChecked((sLightColors.find("YellowBlack.")!=string::npos));
+    m_ui->cbYellow->setChecked((sLightColors.find("Yellow.")!=string::npos));
+    m_ui->cbGreen->setChecked((sLightColors.find("Green.")!=string::npos));
+    m_ui->cbBlue->setChecked((sLightColors.find("Blue.")!=string::npos));
+    m_ui->cbUV->setChecked((sLightColors.find("UV.")!=string::npos));
+
+    _bCanEmit=true;
 }
 
 void DockLightProperties::OnLightChange()
 {  
+    if(!_bCanEmit)
+        return;
+
     double dHalfFOV=m_ui->leHalfFOV->text().toDouble();
     _pDevice->set_half_field_of_view(dHalfFOV);
 

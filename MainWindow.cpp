@@ -147,7 +147,7 @@ void MainWindow::on_actionLoad_triggered()
     if (!_sFileName.empty())
     {
         clear_device();
-        update_views(0,NEW_OPTICAL_DEVICE);
+        update_views(0,NEW_OPTICAL_DEVICE,false);
         load_file(_sFileName);
     }
 }
@@ -158,7 +158,7 @@ void MainWindow::on_actionNew_triggered()
         return;
 
     clear_device();
-    update_views(0,NEW_OPTICAL_DEVICE);
+    update_views(0,NEW_OPTICAL_DEVICE,false);
     _pFrameSideView->fit_in_view();
 }
 //////////////////////////////////////////////////////////////////////////////
@@ -218,7 +218,7 @@ bool MainWindow::load_file(string sFile)
     delete _pDevice;
     _pDevice=pDevice;
     _sFileName=sFile;
-    update_views(0,NEW_OPTICAL_DEVICE);
+    update_views(0,NEW_OPTICAL_DEVICE,false);
     _pFrameSideView->fit_in_view();
     return true;
 }
@@ -255,7 +255,7 @@ void MainWindow::update_views(void* pSender,int iReason,bool bMustSave)
 
     if(pSender!=_pDockImageQuality)
     {
-        _pDockImageQuality->device_changed(_pDevice);
+        _pDockImageQuality->device_changed(_pDevice,iReason);
     }
 
     if(pSender!=_pDockOptimizer)
