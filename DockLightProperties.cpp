@@ -108,10 +108,10 @@ void DockLightProperties::OnLightChange()
     _pDevice->set_light_colors(sLightColors);
 
     int iNbStep=m_ui->leNbSteps->text().toInt();
-    if(iNbStep<3)
+    if(iNbStep<1)
     {
-        iNbStep=3;
-        m_ui->leNbSteps->setText("3");
+        iNbStep=1;
+        m_ui->leNbSteps->setText("1");
     }
     _pDevice->set_nb_intermediate_angles(iNbStep);
 

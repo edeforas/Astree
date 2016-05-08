@@ -61,9 +61,7 @@ private slots:
     void on_actionScal_device_triggered();
     void on_actionImport_ZMX_file_triggered();
     void on_actionFit_in_View_triggered();
-
     void on_actionZoom_in_triggered();
-
     void on_actionZoom_out_triggered();
 
 private:

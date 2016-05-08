@@ -830,6 +830,7 @@ bool Surface::compute_z(double x, double y, double &z)
         return false;
 
     z= (h2*_dCurvature)/(1.+sqrt(dA));
+    assert(!isnan(z));
 
     if(_bIsAspheric)
     {

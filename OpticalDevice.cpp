@@ -294,7 +294,9 @@ void OpticalDevice::ray_trace()
 
     for(int iStep=0;iStep<_iNbAngles;iStep++)
     {
-        double dTilt=half_field_of_view()*iStep/(double)(_iNbAngles-1);
+        double dTilt=0.;
+        if(_iNbAngles>1)
+            dTilt=half_field_of_view()*iStep/(double)(_iNbAngles-1);
 
         _imageQuality.vdAngles[iStep]=dTilt;
 
@@ -436,8 +438,8 @@ void OpticalDevice::set_nb_intermediate_angles(int iNbAngles)
     if(iNbAngles==_iNbAngles)
         return;
 
-    if(iNbAngles<3)
-        iNbAngles=3;
+    if(iNbAngles<1)
+        iNbAngles=1;
 
     _iNbAngles=iNbAngles;
     _bMustRetrace=true;

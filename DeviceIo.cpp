@@ -100,11 +100,11 @@ OpticalDevice* DeviceIo::load(string sFile)
     if (!ac.load(sFile))
         return 0;
 
-    OpticalDevice* pD=new OpticalDevice();
+    OpticalDevice* pOD=new OpticalDevice();
     if(ac.exist("device.convention"))
-        pD->set_convention(ac.get("device.convention"));
+        pOD->set_convention(ac.get("device.convention"));
     else
-        pD->set_convention("absolute");
+        pOD->set_convention("absolute");
 
 
     int iS=0;
@@ -121,63 +121,63 @@ OpticalDevice* DeviceIo::load(string sFile)
         if(sType=="observe")
             sType="image";
 
-        pD->insert_surface(iS);
-        pD->set_type(iS,sType);
+        pOD->insert_surface(iS);
+        pOD->set_type(iS,sType);
 
         if (ac.exist(sSurfName+".diameter"))
         {
             double dDiameter=ac.get_double(sSurfName+".diameter");
-            pD->set(iS,DIAMETER,dDiameter);
+            pOD->set(iS,DIAMETER,dDiameter);
         }
         if (ac.exist(sSurfName+".diameter.auto"))
-            pD->set(iS,AUTO_DIAMETER,ac.get_bool(sSurfName+".diameter.auto"));
+            pOD->set(iS,AUTO_DIAMETER,ac.get_bool(sSurfName+".diameter.auto"));
 
         if (ac.exist(sSurfName+".inner_diameter"))
         {
             double dInnerDiameter=ac.get_double(sSurfName+".inner_diameter");
-            pD->set(iS,INNER_DIAMETER,dInnerDiameter);
+            pOD->set(iS,INNER_DIAMETER,dInnerDiameter);
         }
         if (ac.exist(sSurfName+".inner_diameter.auto"))
-            pD->set(iS,AUTO_INNER_DIAMETER,ac.get_bool(sSurfName+".inner_diameter.auto"));
+            pOD->set(iS,AUTO_INNER_DIAMETER,ac.get_bool(sSurfName+".inner_diameter.auto"));
 
 
         if (ac.exist(sSurfName+".radius_curvature"))
         {
             if(ac.get(sSurfName+".radius_curvature")=="inf")
-                pD->set(iS,RADIUS_CURVATURE,RADIUS_CURVATURE_INFINITY);
+                pOD->set(iS,RADIUS_CURVATURE,RADIUS_CURVATURE_INFINITY);
             else
-                pD->set(iS,RADIUS_CURVATURE,ac.get_double(sSurfName+".radius_curvature"));
+                pOD->set(iS,RADIUS_CURVATURE,ac.get_double(sSurfName+".radius_curvature"));
         }
 
         if (ac.exist(sSurfName+".conic"))
-            pD->set(iS,CONIC,ac.get_double(sSurfName+".conic"));
+            pOD->set(iS,CONIC,ac.get_double(sSurfName+".conic"));
 
         if (ac.exist(sSurfName+".r4"))
-            pD->set(iS,R4,ac.get_double(sSurfName+".r4"));
+            pOD->set(iS,R4,ac.get_double(sSurfName+".r4"));
 
         if (ac.exist(sSurfName+".r6"))
-            pD->set(iS,R6,ac.get_double(sSurfName+".r6"));
+            pOD->set(iS,R6,ac.get_double(sSurfName+".r6"));
 
         if (ac.exist(sSurfName+".r8"))
-            pD->set(iS,R8,ac.get_double(sSurfName+".r8"));
+            pOD->set(iS,R8,ac.get_double(sSurfName+".r8"));
 
         if (ac.exist(sSurfName+".r10"))
-            pD->set(iS,R10,ac.get_double(sSurfName+".r10"));
+            pOD->set(iS,R10,ac.get_double(sSurfName+".r10"));
 
         if (ac.exist(sSurfName+".comment"))
         {
-            pD->set_comment(iS,ac.get(sSurfName+".comment"));
+            pOD->set_comment(iS,ac.get(sSurfName+".comment"));
         }
 
         if (ac.exist(sSurfName+".z"))
         {
             double dZ=ac.get_double(sSurfName+".z");
-            pD->set_z(iS,dZ);
+            pOD->set_z(iS,dZ);
         }
 
         if (ac.exist(sSurfName+".z.autofocus"))
         {
-            pD->set_autofocus(iS,ac.get_bool(sSurfName+".z.autofocus"));
+            pOD->set_autofocus(iS,ac.get_bool(sSurfName+".z.autofocus"));
         }
 
         iS++;
@@ -188,27 +188,27 @@ OpticalDevice* DeviceIo::load(string sFile)
     while (ac.exist(sSurfName+".kind") || ac.exist(sSurfName+".type")); // comptatibility mode
 
     if (ac.exist("half_field_of_view"))
-        pD->set_half_field_of_view(ac.get_double("half_field_of_view"));
+        pOD->set_half_field_of_view(ac.get_double("half_field_of_view"));
 
     if (ac.exist("light.nbsteps"))
-        pD->set_nb_intermediate_angles(ac.get_double("light.nbsteps"));
+        pOD->set_nb_intermediate_angles(ac.get_double("light.nbsteps"));
     else
-        pD->set_nb_intermediate_angles(3);
+        pOD->set_nb_intermediate_angles(3);
 
     if (ac.exist("light.colors"))
     {
-        pD->set_light_colors(ac.get("light.colors"));
+        pOD->set_light_colors(ac.get("light.colors"));
     }
     else
-        pD->set_light_colors(""); //temporaire
+        pOD->set_light_colors(""); //temporaire
 
     //lit le commentaire
     if(ac.exist("note"))
     {
         string sNote=ac.get("note");
-        pD->set_note(sNote);
+        pOD->set_note(sNote);
     }
 
-    return pD;
+    return pOD;
 }
 ////////////////////////////////////////////////////////////////////////////////
