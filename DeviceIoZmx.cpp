@@ -27,6 +27,7 @@ OpticalDevice* DeviceIoZmx::import(string sFile)
     double dDiameter=0;
     double dConic=0.;
     double dInnerDiameter=0.;
+    double dApertureDiameter=-1.;
     string sComment;
     string sNote;
 
@@ -151,6 +152,11 @@ OpticalDevice* DeviceIoZmx::import(string sFile)
             dDiameter*=2;
         }
 
+        if(sKey=="ENPD") //aperture diameter
+        {
+            stringstream ss(sVal); ss >> dApertureDiameter;
+        }
+
         if(sKey=="GLAS")
         {
             string sFirstWord;
@@ -182,7 +188,12 @@ OpticalDevice* DeviceIoZmx::import(string sFile)
 
     // set the last surface type as image, todo better check
     if(pOD->nb_surface()!=0)
-        pOD->set_type(pOD->nb_surface()-1,"image");
+    {    pOD->set_type(pOD->nb_surface()-1,"image");
+
+    if(dApertureDiameter>=0.)
+        pOD->set(0,DIAMETER,dApertureDiameter*dDimensionFactor);
+    }
+
 
     return pOD;
 }
