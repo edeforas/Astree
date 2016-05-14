@@ -25,6 +25,7 @@ enum eSurfaceparameter //to be used with get/set functions
     AUTO_INNER_DIAMETER, // set with 0 or 1
     CONIC,
     RADIUS_CURVATURE,
+    CURVATURE,
     R4,
     R6,
     R8,

@@ -447,12 +447,12 @@ dans ce cas ,la lumi√®re se concentre dans la tache de diffraction et la qualit√
         <translation>Fichier Astree (*.astree)</translation>
     </message>
     <message>
-        <location filename="MainWindow.cpp" line="304"/>
+        <location filename="MainWindow.cpp" line="302"/>
         <source>Import ZMX File</source>
         <translation>Importer un fichier ZMX</translation>
     </message>
     <message>
-        <location filename="MainWindow.cpp" line="304"/>
+        <location filename="MainWindow.cpp" line="302"/>
         <source>ZMX Files (*.zmx)</source>
         <translation>Fichier ZMX (*.zmx)</translation>
     </message>
@@ -574,7 +574,7 @@ dans ce cas ,la lumi√®re se concentre dans la tache de diffraction et la qualit√
     <message>
         <location filename="MainWindow.ui" line="179"/>
         <source>Import Zmx file...</source>
-        <translation>Importer les fichiers ZMX...</translation>
+        <translation>Importer un fichiers ZMX...</translation>
     </message>
     <message>
         <location filename="MainWindow.ui" line="190"/>

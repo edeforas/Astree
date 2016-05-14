@@ -13,8 +13,8 @@ using namespace std;
 ////////////////////////////////////////////////////////////////////////////////
 OpticalDevice* DeviceIoZmx::import(string sFile)
 {
-    OpticalDevice* pD=new OpticalDevice();
-    pD->set_convention("relative");
+    OpticalDevice* pOD=new OpticalDevice();
+    pOD->set_convention("relative");
 
     ifstream f(sFile.c_str(),ios::in);
 
@@ -56,14 +56,14 @@ OpticalDevice* DeviceIoZmx::import(string sFile)
         {
             if(bSurfPending)
             {
-                pD->insert_surface(iSurface);
-                pD->set_type(iSurface,sType);
-                pD->set_z(iSurface,dDimensionFactor*dTick);
-                pD->set(iSurface,RADIUS_CURVATURE,dCurvature/dDimensionFactor);
-                pD->set(iSurface,DIAMETER,dDiameter*dDimensionFactor);
-                pD->set(iSurface,CONIC,dConic);
-                pD->set_comment(iSurface,sComment);
-                pD->set(iSurface,INNER_DIAMETER,dInnerDiameter*dDimensionFactor);
+                pOD->insert_surface(iSurface);
+                pOD->set_type(iSurface,sType);
+                pOD->set_z(iSurface,dDimensionFactor*dTick);
+                pOD->set(iSurface,CURVATURE,dCurvature/dDimensionFactor);
+                pOD->set(iSurface,DIAMETER,dDiameter*dDimensionFactor);
+                pOD->set(iSurface,CONIC,dConic);
+                pOD->set_comment(iSurface,sComment);
+                pOD->set(iSurface,INNER_DIAMETER,dInnerDiameter*dDimensionFactor);
                 bSurfPending=false;
             }
 
@@ -73,7 +73,7 @@ OpticalDevice* DeviceIoZmx::import(string sFile)
                 stringstream ss(sVal); ss >> iSurface;
 
                 if(iSurface==-1)
-                { delete pD; return 0; } // not a valid field
+                { delete pOD; return 0; } // not a valid field
 
                 bSurfPending=true;
 
@@ -106,7 +106,7 @@ OpticalDevice* DeviceIoZmx::import(string sFile)
         if(sKey=="TYPE")
         {
             if( (sVal!="STANDARD") && (sVal!="EVENASPH") )
-            { delete pD; return 0; } // dont' know how to parse
+            { delete pOD; return 0; } // dont' know how to parse
         }
 
         if(sKey=="CURV")
@@ -145,7 +145,6 @@ OpticalDevice* DeviceIoZmx::import(string sFile)
             stringstream ss(sVal); ss >> dConic;
         }
 
-
         if(sKey=="DIAM")
         {
             stringstream ss(sVal); ss >> dDiameter;
@@ -165,22 +164,26 @@ OpticalDevice* DeviceIoZmx::import(string sFile)
                 sType="reflect";
 
             if(sFirstWord=="BK7")
-                sType=sVal;
+                sType=sFirstWord;
 
             if(sFirstWord=="silica")
-                sType=sVal;
+                sType=sFirstWord;
 
             if(sFirstWord=="F2")
-                sType=sVal;
+                sType=sFirstWord;
 
             if(sFirstWord=="SF5")
-                sType=sVal;
+                sType=sFirstWord;
         }
     }
 
     if(!sNote.empty())
-        pD->set_note(sNote);
+        pOD->set_note(sNote);
 
-    return pD;
+    // set the last surface type as image, todo better check
+    if(pOD->nb_surface()!=0)
+        pOD->set_type(pOD->nb_surface()-1,"image");
+
+    return pOD;
 }
 ////////////////////////////////////////////////////////////////////////////////

@@ -403,8 +403,8 @@ void Surface::transmit_photon(Photon& p)
         return;
     }
 
-    if( (_pMaterialPrev==0) || (_pMaterialNext==0))
-        return; //rien a faire car on ne connait pas les Materials
+   // if( (_pMaterialPrev==0) || (_pMaterialNext==0))
+   //     return; //rien a faire car on ne connait pas les Materials
 
     assert(_pMaterialNext!=0);
     assert(_pMaterialPrev!=0);
