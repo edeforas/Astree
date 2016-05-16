@@ -11,85 +11,86 @@ using namespace std;
 #include "Properties.h"
 
 ////////////////////////////////////////////////////////////////////////////////
-bool DeviceIo::save(string sFile,OpticalDevice* pD)
+bool DeviceIo::save(string sFile,OpticalDevice* pOD)
 {
     Properties ac;
 
-    for (int iS=0;iS<pD->nb_surface();iS++)
+    for (int iS=0;iS<pOD->nb_surface();iS++)
     {
         stringstream ss;
         string sSurfName;
         ss << iS;
         ss >> sSurfName;
 
-        ac.set(sSurfName+".type",pD->type(iS));
-        /*
-        double dX;
-        pD->get(iS,"x",dX);
-        ac.set(sSurfName+".x",dX);
+        ac.set(sSurfName+".type",pOD->type(iS));
 
-        double dY;
-        pD->get(iS,"y",dY);
-        ac.set(sSurfName+".y",dY);
-*/
-        double dZ=pD->z(iS);
-        ac.set(sSurfName+".z",dZ);
-        if(pD->get_autofocus((iS)))
+        if(pOD->relative_convention())
+        {
+            double dThick=pOD->get(iS,THICK);
+            ac.set(sSurfName+".thick",dThick);
+        }
+        else
+        {
+            double dZ=pOD->get(iS,Z);
+            ac.set(sSurfName+".z",dZ);
+        }
+
+        if(pOD->get_autofocus((iS)))
             ac.set(sSurfName+".z.autofocus",true);
 
-        double dDiameter=pD->get(iS,DIAMETER);
+        double dDiameter=pOD->get(iS,DIAMETER);
         ac.set(sSurfName+".diameter",dDiameter);
-        if(pD->get(iS,AUTO_DIAMETER))
+        if(pOD->get(iS,AUTO_DIAMETER))
             ac.set(sSurfName+".diameter.auto",true);
 
-        double dInnerDiameter=pD->get(iS,INNER_DIAMETER);
+        double dInnerDiameter=pOD->get(iS,INNER_DIAMETER);
         if(dInnerDiameter!=0.)
         {
             ac.set(sSurfName+".inner_diameter",dInnerDiameter);
-            if(pD->get(iS,AUTO_INNER_DIAMETER))
+            if(pOD->get(iS,AUTO_INNER_DIAMETER))
                 ac.set(sSurfName+".inner_diameter.auto",true);
         }
 
-        double dRC=pD->get(iS,RADIUS_CURVATURE);
+        double dRC=pOD->get(iS,RADIUS_CURVATURE);
         if(dRC>=RADIUS_CURVATURE_INFINITY/2)
             ac.set(sSurfName+".radius_curvature",string("inf"));
         else
             ac.set(sSurfName+".radius_curvature",dRC);
 
-        double dConic=pD->get(iS,CONIC);
+        double dConic=pOD->get(iS,CONIC);
         if(dConic!=0.)
             ac.set(sSurfName+".conic",dConic);
 
-        double dR4=pD->get(iS,R4);
+        double dR4=pOD->get(iS,R4);
         if(dR4!=0.)
             ac.set(sSurfName+".r4",dR4);
 
-        double dR6=pD->get(iS,R6);
+        double dR6=pOD->get(iS,R6);
         if(dR6!=0.)
             ac.set(sSurfName+".r6",dR6);
 
-        double dR8=pD->get(iS,R8);
+        double dR8=pOD->get(iS,R8);
         if(dR8!=0.)
             ac.set(sSurfName+".r8",dR8);
 
-        double dR10=pD->get(iS,R10);
+        double dR10=pOD->get(iS,R10);
         if(dR10!=0.)
             ac.set(sSurfName+".r10",dR10);
 
-        if (pD->comment(iS).empty()==false)
-            ac.set(sSurfName+".comment",pD->comment(iS));
+        if (pOD->comment(iS).empty()==false)
+            ac.set(sSurfName+".comment",pOD->comment(iS));
     }
 
-    ac.set("half_field_of_view",pD->half_field_of_view());
-    ac.set("light.colors",pD->light_colors());
-    ac.set("light.nbsteps",pD->nb_intermediate_angles());
+    ac.set("half_field_of_view",pOD->half_field_of_view());
+    ac.set("light.colors",pOD->light_colors());
+    ac.set("light.nbsteps",pOD->nb_intermediate_angles());
 
-    //sauve le commentaire
-    string sNote=pD->note();
+    //save commentary
+    string sNote=pOD->note();
     if(!sNote.empty())
         ac.set("note",sNote);
 
-    ac.set("device.convention",pD->convention());
+    ac.set("device.convention",pOD->relative_convention()?string("relative"):string("absolute"));
 
     return ac.save(sFile);
 }
@@ -102,10 +103,9 @@ OpticalDevice* DeviceIo::load(string sFile)
 
     OpticalDevice* pOD=new OpticalDevice();
     if(ac.exist("device.convention"))
-        pOD->set_convention(ac.get("device.convention"));
+        pOD->set_relative_convention(ac.get("device.convention")=="relative");
     else
-        pOD->set_convention("absolute");
-
+        pOD->set_relative_convention(false);
 
     int iS=0;
     string sSurfName="0";
@@ -172,7 +172,13 @@ OpticalDevice* DeviceIo::load(string sFile)
         if (ac.exist(sSurfName+".z"))
         {
             double dZ=ac.get_double(sSurfName+".z");
-            pOD->set_z(iS,dZ);
+            pOD->set(iS,Z,dZ);
+        }
+
+        if (ac.exist(sSurfName+".thick"))
+        {
+            double dThick=ac.get_double(sSurfName+".thick");
+            pOD->set(iS,THICK,dThick);
         }
 
         if (ac.exist(sSurfName+".z.autofocus"))

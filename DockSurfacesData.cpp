@@ -53,7 +53,7 @@ void DockSurfacesData::update_labels(OpticalDevice *pDevice)
         qsl+="Z";
     else
     {
-        if(pDevice->convention()=="absolute")
+        if(!pDevice->relative_convention())
         {
             qsl+="Z";
             m_ui->comboCoordMode->setCurrentIndex(0);
@@ -64,7 +64,8 @@ void DockSurfacesData::update_labels(OpticalDevice *pDevice)
             qsl+="Thick";
             m_ui->comboCoordMode->setCurrentIndex(1);
 
-        }}
+        }
+    }
 
     qsl+="Diameter";
 
@@ -194,7 +195,12 @@ void DockSurfacesData::update_table()
         double dConic=_pDevice->get(i,CONIC);
         m_ui->twSurfacesDatas->setItem(i,2, new QTableWidgetItem(QString::number(dConic,'g',10)));
 
-        double dZ=_pDevice->z(i);
+        double dZ;
+        if(!_pDevice->relative_convention())
+            dZ=_pDevice->get(i,Z);
+        else
+            dZ=_pDevice->get(i,THICK);
+
         QString qsZ=QString::number(dZ,'g',10);
         if(_pDevice->get_autofocus(i))
             qsZ="auto "+qsZ;
@@ -300,7 +306,7 @@ void DockSurfacesData::OnCellChanged(int iRow,int iCol)
         _pDevice->set(iRow,CONIC,d);
     }
 
-    if (iCol==3) //"z"
+    if (iCol==3) //"z" or "thick"
     {
         string sItem=m_ui->twSurfacesDatas->item(iRow,iCol)->text().toStdString();
         bool bAuto=sItem.find("auto")!=string::npos;
@@ -312,7 +318,11 @@ void DockSurfacesData::OnCellChanged(int iRow,int iCol)
         double dVal=0;
         ss >> dVal;
 
-        _pDevice->set_z(iRow,dVal);
+        if(_pDevice->relative_convention())
+            _pDevice->set(iRow,THICK,dVal);
+        else
+            _pDevice->set(iRow,Z,dVal);
+
         _pDevice->set_autofocus(iRow,bAuto);
     }
 
@@ -489,10 +499,10 @@ void DockSurfacesData::on_comboCoordMode_activated(const QString &arg1)
     int iSelected=m_ui->comboCoordMode->currentIndex();
 
     if(iSelected==0)
-        _pDevice->set_convention("absolute");
+        _pDevice->set_relative_convention(false);
 
     if(iSelected==1)
-        _pDevice->set_convention("relative");
+        _pDevice->set_relative_convention(true);
 
     static_cast<MainWindow*>(parent())->update_views(this,PARAMETERS_CHANGED);
 }

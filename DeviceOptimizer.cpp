@@ -46,8 +46,14 @@ void DeviceOptimizer::apply_parameter(const vector<DeviceOptimizerParameter>& pa
         if(sParam=="RCurv")
             _pDevice->set(iSurface,RADIUS_CURVATURE,dVal);
 
+        if(sParam=="Curvature")
+            _pDevice->set(iSurface,CURVATURE,dVal);
+
+        if(sParam=="Z")
+            _pDevice->set(iSurface,Z,dVal);
+
         if(sParam=="Thick")
-            _pDevice->set_z(iSurface,dVal);
+            _pDevice->set(iSurface,THICK,dVal);
 
         if(sParam=="r4")
             _pDevice->set(iSurface,R4,dVal);
@@ -195,7 +201,13 @@ OptimizerResult DeviceOptimizer::optimise_amoeba(OptimizerMeritFunction eMeritFu
         if(_parameters[i].sParameter=="RCurv")
             vdMinResolution[i]=MIN_RESOLUTION_RCURV;
 
+        if(_parameters[i].sParameter=="Curvature")
+            vdMinResolution[i]=MIN_RESOLUTION_CURVATURE;
+
         if(_parameters[i].sParameter=="thick")
+            vdMinResolution[i]=MIN_RESOLUTION_THICK;
+
+        if(_parameters[i].sParameter=="Z")
             vdMinResolution[i]=MIN_RESOLUTION_THICK;
 
         if(_parameters[i].sParameter=="r4")

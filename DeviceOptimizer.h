@@ -13,6 +13,7 @@ using namespace std;
 
 #define MIN_RESOLUTION_CONIC 1.e-7
 #define MIN_RESOLUTION_RCURV 1.e-7
+#define MIN_RESOLUTION_CURVATURE 1.e-7 //TODO?
 #define MIN_RESOLUTION_THICK 1.e-7
 
 #define MIN_RESOLUTION_R4 1.e-22

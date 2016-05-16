@@ -15,10 +15,8 @@
 3.type=observe
 3.radius_curvature=-600
 3.z=-299.9926567
-autofocus_z_max=-100
-autofocus_z_min=-400
-autofocus_z_step=0.001
-note=Paul backer telescop as described at:
+
+note=Paul backer telescope as described at:
 note=
 note=http://www.telescope-optics.net/paul-baker_telescope.htm
 note=

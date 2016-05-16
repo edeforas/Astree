@@ -2,13 +2,14 @@
 0.diameter=400
 0.radius_curvature=-6400
 0.type=reflect
-0.z=-3200
+0.thick=-3200
 1.diameter=31.3778924
 1.diameter.auto=1
 1.radius_curvature=inf
 1.type=image
-1.z=0
+1.thick=0
 device.convention=relative
 half_field_of_view=0.28
 light.colors=YellowBlack.
 light.nbsteps=3
+note=Simple parabolic newton

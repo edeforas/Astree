@@ -32,7 +32,7 @@
 device.convention=absolute
 half_field_of_view=0.7
 light.colors=Red.Yellow.Green.Blue.
-note=Telescope usign a hyperbolic mirror, with a two lens Ross corrector using BK7 glass
+note=Telescope using a hyperbolic mirror, with a two lens Ross corrector using BK7 glass
 note=
 note=Limited by diffraction on nearly all image field
 note=

@@ -801,7 +801,7 @@ bool Surface::compute_normal(double x,double y, double z,double& nx,double& ny,d
             dTangRadius+=4.*_dR4*h4+6.*_dR6*h4*h2+8.*_dR8*h8+10.*_dR10*h8*h2;  //todo use horner rule
         }
 
-        // le vecteur tangent is parallel a la circonference
+        // tangent vector is parallel to circumference
         // produit vectoriel pour calculer la normale
         nx=-x*dTangRadius;
         ny=-y*dTangRadius;

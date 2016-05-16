@@ -170,7 +170,7 @@ void MainWindow::on_actionSave_triggered()
     {
         DeviceIo::save(_sFileName,_pDevice);
         _bMustSave=false;
-        update_views(0,OPTICAL_DEVICE_SAVED);
+        update_views(0,OPTICAL_DEVICE_SAVED,false);
     }
 }
 //////////////////////////////////////////////////////////////////////////////
@@ -186,7 +186,7 @@ void MainWindow::on_actionSave_as_triggered()
         _sFileName=sFileName;
         DeviceIo::save(_sFileName,_pDevice);
         _bMustSave=false;
-        update_views(0,OPTICAL_DEVICE_SAVED);
+        update_views(0,OPTICAL_DEVICE_SAVED,false);
     }
 }
 //////////////////////////////////////////////////////////////////////////////
@@ -197,7 +197,7 @@ void MainWindow::on_actionClose_triggered()
 
     clear_device();
     _sFileName="";
-    update_views(0,NEW_OPTICAL_DEVICE);
+    update_views(0,NEW_OPTICAL_DEVICE,false);
     _pFrameSideView->fit_in_view();
 }
 //////////////////////////////////////////////////////////////////////////////

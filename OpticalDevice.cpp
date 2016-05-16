@@ -19,7 +19,7 @@ OpticalDevice::OpticalDevice()
     _dHalfFov=0.;
     _bMustRetrace=false;
 
-    set_convention("relative");
+    set_relative_convention(true);
 }
 //////////////////////////////////////////////////////////////////////////////
 OpticalDevice::OpticalDevice(const OpticalDevice &rDevice)
@@ -29,18 +29,12 @@ OpticalDevice::OpticalDevice(const OpticalDevice &rDevice)
 //////////////////////////////////////////////////////////////////////////////
 OpticalDevice& OpticalDevice::operator=(const OpticalDevice& rDevice)
 {
-    _vdRelativeTick=rDevice._vdRelativeTick; //todo remove
+    _vdThicks=rDevice._vdThicks; //todo remove
 
-    _theSurf.clear();
-    _theSurf=rDevice._theSurf;
-    /*
-    for(int i=0;i<rDevice.nb_surface();i++)
-    {
-        insert_surface(i);
-        *_theSurf[i]=*rDevice._theSurf[i]; //todo
-    }
-*/
-    set_convention(rDevice.convention());
+    _vSurfaces.clear();
+    _vSurfaces=rDevice._vSurfaces;
+
+    set_relative_convention(rDevice.relative_convention());
     set_note(rDevice.note());
 
     set_half_field_of_view(rDevice.half_field_of_view());
@@ -52,111 +46,87 @@ OpticalDevice& OpticalDevice::operator=(const OpticalDevice& rDevice)
     set_light_colors(rDevice.light_colors());
 
     _bMustRetrace=true;
-    //_imageQuality=rDevice._imageQuality;
 
     return *this;
 }
 //////////////////////////////////////////////////////////////////////////////
 OpticalDevice::~OpticalDevice()
-{
-    /*
-    for (unsigned int iPos=0;iPos<_theSurf.size();iPos++)
-    {
-        delete _theSurf[iPos];
-    }
-    */
-}
+{ }
 //////////////////////////////////////////////////////////////////////////////
 void OpticalDevice::insert_surface(int iPos)
 {
-    _vdRelativeTick.insert(_vdRelativeTick.begin()+iPos,0);
+    assert(iPos>=0);
+    assert(iPos<=(int)nb_surface());
 
-    Surface surf;
-  //  surf.set_diameter(0.);
-  //  surf.set_conic(0.);
-  //  surf.set_radius_curvature(RADIUS_CURVATURE_INFINITY);
- //   surf.set_z(0.);
- //   surf.set_type("void");
+    _vSurfaces.insert(_vSurfaces.begin()+iPos,Surface());
+    _vdThicks.insert(_vdThicks.begin()+iPos,0);
 
-    _theSurf.insert(_theSurf.begin()+iPos,surf);
+    _vdThicks[iPos]=0;
 
-    update_absolute_surfaces();
-    _bMustRetrace=true;
+    if(nb_surface()==1) //first time
+    {
+        _vSurfaces[0].set_z(0);
+        return;
+    }
+
+    if(iPos<nb_surface()-1)
+    {
+        //intermediate position
+        _vSurfaces[iPos].set_z(_vSurfaces[iPos+1].z());
+    }
+    else
+    {
+        //last position
+        _vSurfaces[iPos].set_z(_vSurfaces[iPos-1].z()+_vdThicks[iPos-1]);
+    }
 }
 //////////////////////////////////////////////////////////////////////////////
 void OpticalDevice::delete_surface(int iPos)
 {
-    _vdRelativeTick.erase(_vdRelativeTick.begin()+iPos);
-
     assert(iPos>=0);
-    assert(iPos<(int)_theSurf.size());
+    assert(iPos<(int)_vSurfaces.size());
 
-    _theSurf.erase(_theSurf.begin()+iPos);
+    _vdThicks.erase(_vdThicks.begin()+iPos);
+    _vSurfaces.erase(_vSurfaces.begin()+iPos);
 
-    update_absolute_surfaces();
+    update_thicks();
     _bMustRetrace=true;
 }
 //////////////////////////////////////////////////////////////////////////////
-void OpticalDevice::set_convention(string sConvention)
+void OpticalDevice::set_relative_convention(bool bRelativeConvention)
 {
-    if(_sConvention==sConvention)
-        return;
-
-    _sConvention=sConvention;
-    _bIsRelativeSurface=(_sConvention=="relative");
-
-    update_relative_surfaces();
+    _bRelativeConvention=bRelativeConvention;
 }
 //////////////////////////////////////////////////////////////////////////////
-string OpticalDevice::convention() const
+bool OpticalDevice::relative_convention() const
 {
-    return _sConvention;
+    return _bRelativeConvention;
 }
 //////////////////////////////////////////////////////////////////////////////
-void OpticalDevice::update_relative_surfaces()
+void OpticalDevice::update_thicks()
 {
-    if(!_bIsRelativeSurface)
-    {
-        //absolute
-        for(int i=0;i<nb_surface();i++)
-        {
-            _vdRelativeTick[i]=_theSurf[i].z();
-        }
-
+    if(nb_surface()==0)
         return;
-    }
-    else
-    {
-        //relative
-        for(int i=0;i<nb_surface()-1;i++)
-        {
-            double z1=_theSurf[i].z();
-            double z2=_theSurf[i+1].z();
-            _vdRelativeTick[i]=z2-z1;
-        }
 
-        if(nb_surface()!=0)
-            _vdRelativeTick[nb_surface()-1]=0;
+    for(int i=0;i<nb_surface()-1;i++)
+    {
+        double z1=_vSurfaces[i].z();
+        double z2=_vSurfaces[i+1].z();
+        _vdThicks[i]=z2-z1;
     }
 }
 //////////////////////////////////////////////////////////////////////////////
-void OpticalDevice::update_absolute_surfaces()
+void OpticalDevice::update_z()
 {
-    if(!_bIsRelativeSurface)
-    {
-        for(int i=0;i<nb_surface();i++)
-        {
-            _theSurf[i].set_z(_vdRelativeTick[i]);
-        }
-
+    if(nb_surface()==0)
         return;
-    }
 
-    double dStart=0.;
+    double dZ=_vSurfaces[0].z();
+
     for(int i=0;i<nb_surface();i++)
     {
-        _theSurf[i].set_z(dStart);
-        dStart+=_vdRelativeTick[i];
+        _vSurfaces[i].set_z(dZ);
+        dZ+=_vdThicks[i];
     }
 }
 //////////////////////////////////////////////////////////////////////////////
@@ -174,7 +144,7 @@ bool OpticalDevice::has_aspheric() const
 {
     for(int i=0;i<nb_surface();i++)
     {
-        if(_theSurf[i].is_aspheric())
+        if(_vSurfaces[i].is_aspheric())
             return true;
     }
 
@@ -185,61 +155,42 @@ bool OpticalDevice::has_inner_diameter() const
 {
     for(int i=0;i<nb_surface();i++)
     {
-        if(_theSurf[i].inner_diameter()!=0.)
+        if(_vSurfaces[i].inner_diameter()!=0.)
             return true;
     }
 
     return false;
 }
 //////////////////////////////////////////////////////////////////////////////
-void OpticalDevice::set_z(int iSurface,double dVal)
-{
-    _vdRelativeTick[iSurface]=dVal;
-    update_absolute_surfaces();
-    _bMustRetrace=true;
-}
-//////////////////////////////////////////////////////////////////////////////
-double OpticalDevice::z(int iSurface)
-{
-    ray_trace();
-    return  _vdRelativeTick[iSurface];
-}
-//////////////////////////////////////////////////////////////////////////////
-double OpticalDevice::global_z(int iSurface)
-{
-    ray_trace();
-    return _theSurf[iSurface].z();
-}
-//////////////////////////////////////////////////////////////////////////////
 void OpticalDevice::set_autofocus(int iSurface,bool bAutofocus)
 {
-    if(bAutofocus && _theSurf[iSurface].type()!="image")
+    if(bAutofocus && _vSurfaces[iSurface].type()!="image")
         return;
 
-    _theSurf[iSurface].set_autofocus(bAutofocus);
+    _vSurfaces[iSurface].set_autofocus(bAutofocus);
     _bMustRetrace=true;
 }
 //////////////////////////////////////////////////////////////////////////////
 bool OpticalDevice::get_autofocus(int iSurface)
 {
-    return _theSurf[iSurface].get_autofocus();
+    return _vSurfaces[iSurface].get_autofocus();
 }
 //////////////////////////////////////////////////////////////////////////////
 void OpticalDevice::set_comment(int iSurface,string sComment)
 {
-    _theSurf[iSurface].set_comment(sComment);
+    _vSurfaces[iSurface].set_comment(sComment);
 }
 //////////////////////////////////////////////////////////////////////////////
 string OpticalDevice::comment(int iSurface) const
 {
-    return _theSurf[iSurface].comment();
+    return _vSurfaces[iSurface].comment();
 }
 //////////////////////////////////////////////////////////////////////////////
 bool OpticalDevice::has_comment() const
 {
     for(int i=0;i<nb_surface();i++)
     {
-        if(_theSurf[i].comment().empty()==false)
+        if(_vSurfaces[i].comment().empty()==false)
             return true;
     }
 
@@ -248,7 +199,7 @@ bool OpticalDevice::has_comment() const
 //////////////////////////////////////////////////////////////////////////////
 int OpticalDevice::nb_surface() const
 {
-    return _theSurf.size();
+    return _vSurfaces.size();
 }
 //////////////////////////////////////////////////////////////////////////////
 void OpticalDevice::ray_trace()
@@ -264,30 +215,30 @@ void OpticalDevice::ray_trace()
     // reset autodiameter
     for (int i=0;i<nb_surface();i++)
     {
-        _theSurf[i].set_auto_diameter(_theSurf[i].get_auto_diameter());
-        _theSurf[i].set_auto_inner_diameter(_theSurf[i].get_auto_inner_diameter());
+        _vSurfaces[i].set_auto_diameter(_vSurfaces[i].get_auto_diameter());
+        _vSurfaces[i].set_auto_inner_diameter(_vSurfaces[i].get_auto_inner_diameter());
     }
 
     //init autofocus
-    Surface& pSurf=_theSurf[nb_surface()-1];
+    Surface& pSurf=_vSurfaces[nb_surface()-1];
     Light light;
 
     bool bAutoFocus=(pSurf.type()=="image") && pSurf.get_autofocus();
     if(bAutoFocus) //TODO move in main loop
     {
         // init z pos with autofocus on axis
-        initialise_light(&light,0,_iGridX,_iGridY);
+        initialize_light(&light,0,_iGridX,_iGridY);
         for (int i=0;i<nb_surface()-1;i++)
         {
-            _theSurf[i].receive(light);
+            _vSurfaces[i].receive(light);
         }
 
         //compute AF on light
         LightAutofocus la;
         double dZ=la.autofocus(light);
-        _theSurf[nb_surface()-1].set_z(dZ);
+        _vSurfaces[nb_surface()-1].set_z(dZ);
 
-        update_relative_surfaces();
+        update_thicks();
     }
 
     //todo re use last computation at tilt=0 if AF
@@ -300,10 +251,10 @@ void OpticalDevice::ray_trace()
 
         _imageQuality.vdAngles[iStep]=dTilt;
 
-        initialise_light(&light,dTilt,_iGridX,_iGridY);
+        initialize_light(&light,dTilt,_iGridX,_iGridY);
         for (int i=0;i<nb_surface();i++)
         {
-            _theSurf[i].receive(light);
+            _vSurfaces[i].receive(light);
             if(i==0)
                 light.init_vignetting();
         }
@@ -346,11 +297,11 @@ void OpticalDevice::set_light_grid(int iGridX,int iGridY)
 void OpticalDevice::compute_light(Light* pLight,int iSurface,double dTilt,int iGridX,int iGridY)
 {
     ray_trace(); // for auto diameter and autofocus
-    initialise_light(pLight,dTilt,iGridX,iGridY);
+    initialize_light(pLight,dTilt,iGridX,iGridY);
 
     for (int i=0;i<=iSurface;i++)
     {
-        _theSurf[i].receive(*pLight);
+        _vSurfaces[i].receive(*pLight);
         if(i==0)
             pLight->init_vignetting();
     }
@@ -362,17 +313,17 @@ void OpticalDevice::compute_light(Light* pLight,int iSurface,double dTilt,int iG
 bool OpticalDevice::compute_surface_profile(int iSurface,double dX,double dY,double& dZ)
 {
     ray_trace(); //for the auto diameter
-    return _theSurf[iSurface].compute_z(dX,dY,dZ);
+    return _vSurfaces[iSurface].compute_z(dX,dY,dZ);
 }
 //////////////////////////////////////////////////////////////////////////////
-void OpticalDevice::initialise_light(Light* pLight,double dTilt,int iGridX,int iGridY)
+void OpticalDevice::initialize_light(Light* pLight,double dTilt,int iGridX,int iGridY)
 {
     assert(pLight);
 
-    if(_theSurf.empty())
+    if(_vSurfaces.empty())
         return;
 
-    Surface& pSurf=_theSurf[0];
+    Surface& pSurf=_vSurfaces[0];
 
     pLight->set_nb_photons(iGridX,iGridY);
     pLight->set_tilt(dTilt,0);
@@ -413,13 +364,13 @@ double OpticalDevice::half_field_of_view() const
 //////////////////////////////////////////////////////////////////////////////
 void OpticalDevice::set_type(int iSurf,string sType)
 {
-    _theSurf[iSurf].set_type(sType);
+    _vSurfaces[iSurf].set_type(sType);
     _bMustRetrace=true;
 }
 //////////////////////////////////////////////////////////////////////////////
 string OpticalDevice::type(int iSurf) const
 {
-    return _theSurf[iSurf].type();
+    return _vSurfaces[iSurf].type();
 }
 //////////////////////////////////////////////////////////////////////////////
 const ImageQuality* OpticalDevice::get_image_quality()
@@ -447,16 +398,16 @@ void OpticalDevice::set_nb_intermediate_angles(int iNbAngles)
 //////////////////////////////////////////////////////////////////////////////
 double OpticalDevice::get(int iSurface,eSurfaceparameter eParam)
 {
-    Surface& r=_theSurf[iSurface];
+    Surface& r=_vSurfaces[iSurface];
+
+    if(eParam==CONIC)
+        return r.conic();
 
     if(eParam==RADIUS_CURVATURE)
         return r.radius_curvature();
 
     if(eParam==CURVATURE)
         return 1./r.radius_curvature();
-
-    if(eParam==CONIC)
-        return r.conic();
 
     if(eParam==R4)
         return r.R4();
@@ -476,7 +427,13 @@ double OpticalDevice::get(int iSurface,eSurfaceparameter eParam)
     if(eParam==AUTO_INNER_DIAMETER)
         return r.get_auto_inner_diameter();
 
-    ray_trace(); //parameters below need full raytrace
+    ray_trace(); //parameters below need full raytrace because of auto keyword
+
+    if(eParam==Z)
+        return r.z();
+
+    if(eParam==THICK)
+        return _vdThicks[iSurface];
 
     if(eParam==DIAMETER)
         return r.diameter();
@@ -489,7 +446,7 @@ double OpticalDevice::get(int iSurface,eSurfaceparameter eParam)
 //////////////////////////////////////////////////////////////////////////////
 void OpticalDevice::set(int iSurface,eSurfaceparameter eParam,double dParam)
 {
-    Surface& r=_theSurf[iSurface];
+    Surface& r=_vSurfaces[iSurface];
 
     if(eParam==DIAMETER)
         r.set_diameter(dParam);
@@ -511,6 +468,18 @@ void OpticalDevice::set(int iSurface,eSurfaceparameter eParam,double dParam)
 
     if(eParam==CONIC)
         r.set_conic(dParam);
+
+    if(eParam==Z)
+    {
+        r.set_z(dParam);
+        update_thicks();
+    }
+
+    if(eParam==THICK)
+    {
+        _vdThicks[iSurface]=dParam;
+        update_z();
+    }
 
     if(eParam==R4)
         r.set_R4(dParam);

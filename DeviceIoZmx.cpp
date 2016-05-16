@@ -14,7 +14,7 @@ using namespace std;
 OpticalDevice* DeviceIoZmx::import(string sFile)
 {
     OpticalDevice* pOD=new OpticalDevice();
-    pOD->set_convention("relative");
+    pOD->set_relative_convention(true);
 
     ifstream f(sFile.c_str(),ios::in);
 
@@ -59,7 +59,7 @@ OpticalDevice* DeviceIoZmx::import(string sFile)
             {
                 pOD->insert_surface(iSurface);
                 pOD->set_type(iSurface,sType);
-                pOD->set_z(iSurface,dDimensionFactor*dTick);
+                pOD->set(iSurface,THICK,dDimensionFactor*dTick);
                 pOD->set(iSurface,CURVATURE,dCurvature/dDimensionFactor);
                 pOD->set(iSurface,DIAMETER,dDiameter*dDimensionFactor);
                 pOD->set(iSurface,CONIC,dConic);

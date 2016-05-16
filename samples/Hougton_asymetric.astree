@@ -22,9 +22,7 @@
 5.type=observe
 5.radius_curvature=inf
 5.z=-1198.636336
-autofocus_z_max=1300
-autofocus_z_min=1000
-autofocus_z_step=1e-009
+
 device.convention=absolute
 half_field_of_view=0.6
 light.colors=Red.Yellow.Green.Blue.

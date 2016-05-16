@@ -89,7 +89,7 @@ void FrameSideView::device_changed(OpticalDevice* pDevice)
     int iLastSolidColor=0xffffff;
     for (int iSurf=0;iSurf<_pDevice->nb_surface();iSurf++)
     {
-        double dZSurf=_pDevice->global_z(iSurf);
+        double dZSurf=_pDevice->get(iSurf,Z);
         double dDiameter=_pDevice->get(iSurf,DIAMETER);
         double dMinDiameter=_pDevice->get(iSurf,INNER_DIAMETER);
 

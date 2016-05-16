@@ -17,7 +17,7 @@ class Light;
 #define FD_VALID_MAX 1e10
 #define SPOT_SIZE_INFINITY 9e99
 
-enum eSurfaceparameter //to be used with get/set functions
+enum eSurfaceparameter //to be used with get/set functions below
 {
     DIAMETER,
     AUTO_DIAMETER, // set with 0 or 1
@@ -25,7 +25,9 @@ enum eSurfaceparameter //to be used with get/set functions
     AUTO_INNER_DIAMETER, // set with 0 or 1
     CONIC,
     RADIUS_CURVATURE,
-    CURVATURE,
+    CURVATURE, //inverse of radius curvature
+    Z, //absolute coord
+    THICK, //relative coord
     R4,
     R6,
     R8,
@@ -63,14 +65,12 @@ public:
     bool has_inner_diameter() const;
 
     // z settings
-    void set_convention(string sConvention);
-    string convention() const;
-    void set_z(int iSurface, double dVal);
-    double z(int iSurface);
-    double global_z(int iSurface);
+    void set_relative_convention(bool bRelativeConvention);
+    bool relative_convention() const;
+
     void set_autofocus(int iSurface,bool bAutofocus);
     bool get_autofocus(int iSurface);
-    bool compute_surface_profile(int iSurface,double dX,double dY,double& dZ);
+    bool compute_surface_profile(int iSurface,double dX,double dY,double& dZ); //todo add slope computation
 
     // comment settings
     void set_comment(int iSurface,string sComment);
@@ -91,16 +91,14 @@ public:
     const ImageQuality *get_image_quality();
 
 private:
-    void initialise_light(Light *pLight, double dTilt, int iGridX, int iGridY);
+    void initialize_light(Light *pLight, double dTilt, int iGridX, int iGridY);
     void ray_trace();
-    void update_absolute_surfaces();
-    void update_relative_surfaces();
+    void update_z();
+    void update_thicks();
 
-    vector<double> _vdRelativeTick;
-    vector<Surface> _theSurf;
-
-    string _sConvention;
-    bool _bIsRelativeSurface;
+    vector<double> _vdThicks;
+    vector<Surface> _vSurfaces;
+    bool _bRelativeConvention;
 
     string _sNote;
 
