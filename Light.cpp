@@ -76,10 +76,11 @@ int Light::nb_photon()
 //////////////////////////////////////////////////////////////////////////////
 Photon& Light::get_photon(int iPos)
 {
+    init();
+
     assert(iPos>=0);
     assert(iPos<_iNbPhotons);
 
-    init();
     return _vPhotons[iPos];
 }
 //////////////////////////////////////////////////////////////////////////////
@@ -99,6 +100,8 @@ void Light::set_geometry(double dZ,double dDiameter)
 //////////////////////////////////////////////////////////////////////////////
 void Light::init()
 {
+    //todo remove init or set public or use lazy + acccessor
+
     if (_bMustInit==false)
         return;
 

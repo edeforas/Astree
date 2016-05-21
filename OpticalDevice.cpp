@@ -220,10 +220,10 @@ void OpticalDevice::ray_trace()
     }
 
     //init autofocus
-    Surface& pSurf=_vSurfaces[nb_surface()-1];
+    Surface& pLastSurf=_vSurfaces[nb_surface()-1];
     Light light;
 
-    bool bAutoFocus=(pSurf.type()=="image") && pSurf.get_autofocus();
+    bool bAutoFocus=(pLastSurf.type()=="image") && pLastSurf.get_autofocus();
     if(bAutoFocus) //TODO move in main loop
     {
         // init z pos with autofocus on axis
@@ -332,6 +332,7 @@ void OpticalDevice::initialize_light(Light* pLight,double dTilt,int iGridX,int i
     double dDecal;
     pSurf.compute_z(0,pSurf.diameter()/2.,dDecal);
     pLight->set_geometry(pSurf.z()+dDecal,pSurf.diameter());
+    pLight->get_photon(0); // to force light->init ) todo
 }
 //////////////////////////////////////////////////////////////////////////////
 void OpticalDevice::set_light_colors(const string & sLightColors)
