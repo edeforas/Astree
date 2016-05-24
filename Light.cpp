@@ -90,6 +90,11 @@ vector<Photon> Light::get_all_photons()
     return _vPhotons;
 }
 //////////////////////////////////////////////////////////////////////////////
+const vector<Photon>& Light::photons() const
+{
+    return _vPhotons; //warning _vPhotons may uninitialized todo
+}
+//////////////////////////////////////////////////////////////////////////////
 void Light::set_geometry(double dZ,double dDiameter)
 {
     assert(dDiameter!=-1.);

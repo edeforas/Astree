@@ -6,19 +6,19 @@
 #include "Light.h"
 #include "Photon.h"
 
-#include <cassert>
+#define SPOT_SIZE_INFINITY 1.e99
 
 ////////////////////////////////////////////////////////////////////////////////
-double LightAutofocus::autofocus(Light& l)
+double LightAutofocus::autofocus(const Light& l)
 {
-    double dA=-10000.;
-    double dC=10000.;
+    double dA=-10000.; //todo
+    double dC=10000.; //todo
     double dB=(dA+dC)/2.;
     double dZStep=1.e-9;
 
-  //  double dQA=compute_spot_size(l,dA);
+    //  double dQA=compute_spot_size(l,dA);
     double dQB=compute_spot_size(l,dB);
-  //  double dQC=compute_spot_size(l,dC);
+    //  double dQC=compute_spot_size(l,dC);
 
     while (dC-dA>dZStep)
     {
@@ -61,7 +61,7 @@ double LightAutofocus::autofocus(Light& l)
     return dB;
 }
 //////////////////////////////////////////////////////////////////////////////
-double LightAutofocus::compute_spot_size(Light& l,double z)
+double LightAutofocus::compute_spot_size(const Light& l,double z)
 {
     // compute the intersection of all valid photon with plane at (0,0,z) with normal (1,0,0)
 
@@ -75,9 +75,11 @@ double LightAutofocus::compute_spot_size(Light& l,double z)
     double yMin=1e99;
     bool bOneFound=false;
 
-    for(int i=0;i<l.nb_photon();i++)
+    const vector<Photon>& photons=l.photons();
+
+    for(unsigned int i=0;i<photons.size();i++)
     {
-        Photon& p=l.get_photon(i);
+        const Photon& p=photons[i];
         if(!p.is_valid())
             continue;
 
@@ -88,7 +90,7 @@ double LightAutofocus::compute_spot_size(Light& l,double z)
         double t=(z-p.z)/p.dz;
 
         if(t<=0.)
-            return 1.e99; //all photons must be used in autofocus
+            return SPOT_SIZE_INFINITY; //all photons must be used in autofocus  for now
 
         double x=p.x+t*p.dx;
         double y=p.y+t*p.dy;
@@ -116,7 +118,7 @@ double LightAutofocus::compute_spot_size(Light& l,double z)
     }
 
     if(!bOneFound)
-        return 1.e99;
+        return SPOT_SIZE_INFINITY;
 
     if(xMax-xMin>yMax-yMin)
         return xMax-xMin;

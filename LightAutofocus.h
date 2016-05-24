@@ -10,10 +10,10 @@ class Light;
 class LightAutofocus
 {
 public:
-	double autofocus(Light& l);
+    double autofocus(const Light& l);
 
 private:
-    double compute_spot_size(Light& l,double z);
+    double compute_spot_size(const Light& l,double z);
 };
 
 #endif

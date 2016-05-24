@@ -68,9 +68,12 @@ public:
     void set_relative_convention(bool bRelativeConvention);
     bool relative_convention() const;
 
-    void set_autofocus(int iSurface,bool bAutofocus);
-    bool get_autofocus(int iSurface);
+    void set_autofocus(bool bAutofocus);
+    bool get_autofocus();
     bool compute_surface_profile(int iSurface,double dX,double dY,double& dZ); //todo add slope computation
+
+    void set_image_autocurvature(bool bAutoCurvature);
+    bool get_image_autocurvature();
 
     // comment settings
     void set_comment(int iSurface,string sComment);
@@ -99,6 +102,8 @@ private:
     vector<double> _vdThicks;
     vector<Surface> _vSurfaces;
     bool _bRelativeConvention;
+    bool _bAutoCurvature;
+    bool _bAutoFocus;
 
     string _sNote;
 

@@ -15,12 +15,13 @@ class Material;
 class Light
 {
 public:
-    Light(/*int iDimX=35,int iDimY=35*/);
+    Light();
     virtual ~Light();
     vector<Photon> get_all_photons();
     void set_nb_photons(int iNbX,int iNbY);
 
     Photon& get_photon(int iPos);
+    const vector<Photon>& photons() const;
     int nb_photon();
 
     void set_tilt(double dTiltX,double dTiltY);

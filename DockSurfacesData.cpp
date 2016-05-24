@@ -202,7 +202,7 @@ void DockSurfacesData::update_table()
             dZ=_pDevice->get(i,THICK);
 
         QString qsZ=QString::number(dZ,'g',10);
-        if(_pDevice->get_autofocus(i))
+        if(_pDevice->get_autofocus() && (i==_pDevice->nb_surface()-1) )
             qsZ="auto "+qsZ;
         m_ui->twSurfacesDatas->setItem(i,3,new QTableWidgetItem(qsZ));
 
@@ -323,7 +323,8 @@ void DockSurfacesData::OnCellChanged(int iRow,int iCol)
         else
             _pDevice->set(iRow,Z,dVal);
 
-        _pDevice->set_autofocus(iRow,bAuto);
+        if(iRow==_pDevice->nb_surface()-1)
+            _pDevice->set_autofocus(bAuto);
     }
 
     if (iCol==4) //"Diameter"

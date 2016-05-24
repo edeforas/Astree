@@ -19,6 +19,9 @@ OpticalDevice::OpticalDevice()
     _dHalfFov=0.;
     _bMustRetrace=false;
 
+    _bAutoCurvature=false;
+    _bAutoFocus=false;
+
     set_relative_convention(true);
 }
 //////////////////////////////////////////////////////////////////////////////
@@ -162,18 +165,26 @@ bool OpticalDevice::has_inner_diameter() const
     return false;
 }
 //////////////////////////////////////////////////////////////////////////////
-void OpticalDevice::set_autofocus(int iSurface,bool bAutofocus)
+void OpticalDevice::set_autofocus(bool bAutofocus)
 {
-    if(bAutofocus && _vSurfaces[iSurface].type()!="image")
-        return;
-
-    _vSurfaces[iSurface].set_autofocus(bAutofocus);
+    _bAutoFocus=bAutofocus;
     _bMustRetrace=true;
 }
 //////////////////////////////////////////////////////////////////////////////
-bool OpticalDevice::get_autofocus(int iSurface)
+bool OpticalDevice::get_autofocus()
 {
-    return _vSurfaces[iSurface].get_autofocus();
+    return _bAutoFocus;
+}
+//////////////////////////////////////////////////////////////////////////////
+void OpticalDevice::set_image_autocurvature(bool bAutoCurvature)
+{
+    _bAutoCurvature=bAutoCurvature;
+    _bMustRetrace=true;
+}
+//////////////////////////////////////////////////////////////////////////////
+bool OpticalDevice::get_image_autocurvature()
+{
+    return _bAutoCurvature;
 }
 //////////////////////////////////////////////////////////////////////////////
 void OpticalDevice::set_comment(int iSurface,string sComment)
@@ -219,30 +230,8 @@ void OpticalDevice::ray_trace()
         _vSurfaces[i].set_auto_inner_diameter(_vSurfaces[i].get_auto_inner_diameter());
     }
 
-    //init autofocus
-    Surface& pLastSurf=_vSurfaces[nb_surface()-1];
+    // main ray tracing loop
     Light light;
-
-    bool bAutoFocus=(pLastSurf.type()=="image") && pLastSurf.get_autofocus();
-    if(bAutoFocus) //TODO move in main loop
-    {
-        // init z pos with autofocus on axis
-        initialize_light(&light,0,_iGridX,_iGridY);
-        for (int i=0;i<nb_surface()-1;i++)
-        {
-            _vSurfaces[i].receive(light);
-        }
-
-        //compute AF on light
-        LightAutofocus la;
-        double dZ=la.autofocus(light);
-        _vSurfaces[nb_surface()-1].set_z(dZ);
-
-        update_thicks();
-    }
-
-    //todo re use last computation at tilt=0 if AF
-
     for(int iStep=0;iStep<_iNbAngles;iStep++)
     {
         double dTilt=0.;
@@ -252,12 +241,25 @@ void OpticalDevice::ray_trace()
         _imageQuality.vdAngles[iStep]=dTilt;
 
         initialize_light(&light,dTilt,_iGridX,_iGridY);
-        for (int i=0;i<nb_surface();i++)
+        for (int i=0;i<nb_surface()-1;i++)
         {
             _vSurfaces[i].receive(light);
             if(i==0)
                 light.init_vignetting();
         }
+
+        // if autofocus, compute z before last receive
+        if( (iStep==0) && _bAutoFocus)
+        {
+            //compute AF on light
+            LightAutofocus la;
+            double dZ=la.autofocus(light);
+            _vSurfaces[nb_surface()-1].set_z(dZ);
+            update_thicks();
+        }
+
+        //finish receiving
+        _vSurfaces[nb_surface()-1].receive(light);
 
         light.compute_spot_size();
 
