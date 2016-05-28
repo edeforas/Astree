@@ -296,12 +296,15 @@ void DockSurfacesData::OnCellChanged(int iRow,int iCol)
         string sItem=m_ui->twSurfacesDatas->item(iRow,iCol)->text().toStdString();
         bool bAuto=sItem.find("auto")!=string::npos;
         bool bInf=sItem.find("inf")!=string::npos;
+        bool bLastSurf=iRow==_pDevice->nb_surface()-1;
 
-        if(bAuto &&(iRow==_pDevice->nb_surface()-1))
+        if(bAuto && bLastSurf)
             _pDevice->set_image_autocurvature(bAuto);
         else
         {
-            _pDevice->set_image_autocurvature(false);
+            if(bLastSurf)
+                _pDevice->set_image_autocurvature(false);
+
             if(bInf)
                 _pDevice->set(iRow,RADIUS_CURVATURE,RADIUS_CURVATURE_INFINITY);
             else
@@ -310,7 +313,6 @@ void DockSurfacesData::OnCellChanged(int iRow,int iCol)
                     sItem=sItem.substr(sItem.find("auto")+4,string::npos);
 
                 stringstream ss(sItem);
-                //     ss << sItem;
                 double dVal=0;
                 ss >> dVal;
                 _pDevice->set(iRow,RADIUS_CURVATURE,dVal);
@@ -335,7 +337,6 @@ void DockSurfacesData::OnCellChanged(int iRow,int iCol)
             sItem=sItem.substr(sItem.find("auto")+4,string::npos);
 
         stringstream ss(sItem);
-        //   ss << sItem;
         double dVal=0;
         ss >> dVal;
 
@@ -355,8 +356,7 @@ void DockSurfacesData::OnCellChanged(int iRow,int iCol)
         if(bAuto)
             sItem=sItem.substr(sItem.find("auto")+4,string::npos);
 
-        stringstream ss;
-        ss << sItem;
+        stringstream ss(sItem);
         double dVal=0;
         ss >> dVal;
 
@@ -374,8 +374,7 @@ void DockSurfacesData::OnCellChanged(int iRow,int iCol)
             if(bAuto)
                 sItem=sItem.substr(sItem.find("auto")+4,string::npos);
 
-            stringstream ss;
-            ss << sItem;
+            stringstream ss(sItem);
             double dVal;
             ss >> dVal;
 
@@ -442,7 +441,6 @@ void DockSurfacesData::OnAddSurfaceAfter()
     if(iLine+1>0)
         _pDevice->set(iLine+1,AUTO_DIAMETER,true);
 
-    //  device_changed(_pDevice);
     static_cast<MainWindow*>(parent())->update_views(this,PARAMETERS_CHANGED);
 
     m_ui->twSurfacesDatas->selectRow(iLine+1);
