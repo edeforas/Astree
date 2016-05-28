@@ -232,57 +232,93 @@ void OpticalDevice::ray_trace()
 
     // main ray tracing loop
     Light light;
-    for(int iStep=0;iStep<_iNbAngles;iStep++)
-    {
-        double dTilt=0.;
-        if(_iNbAngles>1)
-            dTilt=half_field_of_view()*iStep/(double)(_iNbAngles-1);
+    ray_trace_step(light,0,_bAutoFocus,false);
+    //get quality result
+    double dCenterX,dCenterY;
+    light.get_spot_center(dCenterX,dCenterY);
+    _imageQuality.vdAngles[0]=0;
+    _imageQuality.vdDist[0]=-dCenterX;
+    _imageQuality.vdVignetting[0]=light.vignetting();
+    _imageQuality.vdSpotSize[0]=light.spot_size();
+    _imageQuality.vdSpotvsAiry[0]=light.spot_vs_airy();
 
+    //for autofocus and on-axis stats
+    _imageQuality.dFNumber=light.get_FD();
+    _imageQuality.dAirySize=light.airy_radius()*2;
+
+    if(_iNbAngles>1)
+    {
+        ray_trace_step(light,half_field_of_view(),false,_bAutoCurvature); //for autocurvature
+        //get quality result
+        double dCenterX,dCenterY;
+        light.get_spot_center(dCenterX,dCenterY);
+        _imageQuality.vdAngles[_iNbAngles-1]=half_field_of_view();
+        _imageQuality.vdDist[_iNbAngles-1]=-dCenterX;
+        _imageQuality.vdVignetting[_iNbAngles-1]=light.vignetting();
+        _imageQuality.vdSpotSize[_iNbAngles-1]=light.spot_size();
+        _imageQuality.vdSpotvsAiry[_iNbAngles-1]=light.spot_vs_airy();
+    }
+
+    for(int iStep=1;iStep<_iNbAngles-1;iStep++)
+    {
+        double dTilt=half_field_of_view()*iStep/(double)(_iNbAngles-1);
         _imageQuality.vdAngles[iStep]=dTilt;
 
-        initialize_light(&light,dTilt,_iGridX,_iGridY);
-        for (int i=0;i<nb_surface()-1;i++)
-        {
-            _vSurfaces[i].receive(light);
-            if(i==0)
-                light.init_vignetting();
-        }
-
-        // if autofocus, compute z before last receive
-        if( (iStep==0) && _bAutoFocus)
-        {
-            //compute AF on light
-            LightAutofocus la;
-            double dZ=la.autofocus(light);
-            _vSurfaces[nb_surface()-1].set_z(dZ);
-            update_thicks();
-        }
-
-        //finish receiving
-        _vSurfaces[nb_surface()-1].receive(light);
-
-        light.compute_spot_size();
-
-        if(iStep==0)
-        {
-            _imageQuality.dFNumber=light.get_FD();
-            _imageQuality.dAirySize=light.airy_radius()*2;
-        }
+        ray_trace_step(light,dTilt,false,false);
 
         //get quality result
         double dCenterX,dCenterY;
         light.get_spot_center(dCenterX,dCenterY);
-        dCenterX=-dCenterX;
-        if(fabs(dCenterX)<1.e-8)
-            dCenterX=0;
-
-        _imageQuality.vdDist[iStep]=dCenterX;
+        _imageQuality.vdDist[iStep]=-dCenterX;
         _imageQuality.vdVignetting[iStep]=light.vignetting();
         _imageQuality.vdSpotSize[iStep]=light.spot_size();
         _imageQuality.vdSpotvsAiry[iStep]=light.spot_vs_airy();
     }
 
     _bMustRetrace=false;
+}
+//////////////////////////////////////////////////////////////////////////////
+void OpticalDevice::ray_trace_step(Light& light,double dTilt,bool bAutofocus,bool bAutocurvature)
+{
+    initialize_light(&light,dTilt,_iGridX,_iGridY);
+    for (int i=0;i<nb_surface()-1;i++)
+    {
+        _vSurfaces[i].receive(light);
+        if(i==0)
+            light.init_vignetting();
+    }
+
+    // if autofocus, compute z before last receive
+    if(bAutofocus)
+    {
+        //compute AF on light
+        LightAutofocus la;
+        double dZ=la.autofocus(light);
+        _vSurfaces[nb_surface()-1].set_z(dZ);
+        update_thicks();
+    }
+
+    if(bAutocurvature)
+    {
+        //compute AF on light
+        LightAutofocus la;
+        double dZ=la.autofocus(light);
+
+        double dCenterX,dCenterY;
+        la.get_center(dCenterX,dCenterY);
+
+        // set new curvature
+        double dX1=dCenterX;
+        double dZ1=_vSurfaces[nb_surface()-1].z()-dZ;
+        double dR=-0.5*(dX1*dX1+dZ1*dZ1)/dZ1; // R =0.5*(x1*x1+z1*z1)/z1
+        //todo test dR
+        _vSurfaces[nb_surface()-1].set_radius_curvature(dR);
+    }
+
+    //finish receiving
+    _vSurfaces[nb_surface()-1].receive(light);
+
+    light.compute_spot_size();
 }
 //////////////////////////////////////////////////////////////////////////////
 void OpticalDevice::set_light_grid(int iGridX,int iGridY)

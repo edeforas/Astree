@@ -186,26 +186,31 @@ void DockSurfacesData::update_table()
         m_ui->twSurfacesDatas->setCellWidget(i,ITEM_TYPE,qcbType);
         connect(qcbType,SIGNAL(activated(int)),this,SLOT(onTypeChanged()));
 
+        // radius curvature
         double dRC=_pDevice->get(i,RADIUS_CURVATURE);
+        QString qsRadius="inf";
         if( (dRC<RADIUS_CURVATURE_INFINITY/2.) && (dRC>-RADIUS_CURVATURE_INFINITY/2.) )
-            m_ui->twSurfacesDatas->setItem(i,1, new QTableWidgetItem(QString::number(dRC,'g',10)));
-        else
-            m_ui->twSurfacesDatas->setItem(i,1, new QTableWidgetItem("inf"));
+            qsRadius=QString::number(dRC,'g',10);
+        if(_pDevice->get_image_autocurvature() && (i==_pDevice->nb_surface()-1) )
+            qsRadius="auto "+qsRadius;
+        m_ui->twSurfacesDatas->setItem(i,1, new QTableWidgetItem(qsRadius));
 
+        //conic
         double dConic=_pDevice->get(i,CONIC);
         m_ui->twSurfacesDatas->setItem(i,2, new QTableWidgetItem(QString::number(dConic,'g',10)));
 
+        // z or thick
         double dZ;
         if(!_pDevice->relative_convention())
             dZ=_pDevice->get(i,Z);
         else
             dZ=_pDevice->get(i,THICK);
-
         QString qsZ=QString::number(dZ,'g',10);
         if(_pDevice->get_autofocus() && (i==_pDevice->nb_surface()-1) )
             qsZ="auto "+qsZ;
         m_ui->twSurfacesDatas->setItem(i,3,new QTableWidgetItem(qsZ));
 
+        //diameter
         double dDiameter=_pDevice->get(i,DIAMETER);
         QString qsDiameter="";
         if(_pDevice->get(i,AUTO_DIAMETER))
@@ -288,13 +293,29 @@ void DockSurfacesData::OnCellChanged(int iRow,int iCol)
 
     if (iCol==1) //"radius_curvature"
     {
-        QTableWidgetItem* pItem=m_ui->twSurfacesDatas->item(iRow,iCol);
-        QString qsText=pItem->text();
+        string sItem=m_ui->twSurfacesDatas->item(iRow,iCol)->text().toStdString();
+        bool bAuto=sItem.find("auto")!=string::npos;
+        bool bInf=sItem.find("inf")!=string::npos;
 
-        if (qsText=="inf")
-            _pDevice->set(iRow,RADIUS_CURVATURE,RADIUS_CURVATURE_INFINITY);
+        if(bAuto &&(iRow==_pDevice->nb_surface()-1))
+            _pDevice->set_image_autocurvature(bAuto);
         else
-            _pDevice->set(iRow,RADIUS_CURVATURE,qsText.toDouble());
+        {
+            _pDevice->set_image_autocurvature(false);
+            if(bInf)
+                _pDevice->set(iRow,RADIUS_CURVATURE,RADIUS_CURVATURE_INFINITY);
+            else
+            {
+                if(bAuto)
+                    sItem=sItem.substr(sItem.find("auto")+4,string::npos);
+
+                stringstream ss(sItem);
+                //     ss << sItem;
+                double dVal=0;
+                ss >> dVal;
+                _pDevice->set(iRow,RADIUS_CURVATURE,dVal);
+            }
+        }
     }
 
     if (iCol==2) //"conic"
@@ -313,8 +334,8 @@ void DockSurfacesData::OnCellChanged(int iRow,int iCol)
         if(bAuto)
             sItem=sItem.substr(sItem.find("auto")+4,string::npos);
 
-        stringstream ss;
-        ss << sItem;
+        stringstream ss(sItem);
+        //   ss << sItem;
         double dVal=0;
         ss >> dVal;
 

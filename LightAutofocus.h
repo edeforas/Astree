@@ -10,10 +10,15 @@ class Light;
 class LightAutofocus
 {
 public:
+    LightAutofocus();
     double autofocus(const Light& l);
+
+    void get_center(double& xCenter,double& yCenter);
 
 private:
     double compute_spot_size(const Light& l,double z);
+
+    double _xCenter,_yCenter;
 };
 
 #endif

@@ -96,6 +96,7 @@ public:
 private:
     void initialize_light(Light *pLight, double dTilt, int iGridX, int iGridY);
     void ray_trace();
+    void ray_trace_step(Light &light, double dTilt, bool bAutofocus, bool bAutocurvature);
     void update_z();
     void update_thicks();
 

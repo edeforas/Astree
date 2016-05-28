@@ -9,6 +9,12 @@
 #define SPOT_SIZE_INFINITY 1.e99
 
 ////////////////////////////////////////////////////////////////////////////////
+LightAutofocus::LightAutofocus()
+{
+    _xCenter=0;
+    _xCenter=0;
+}
+////////////////////////////////////////////////////////////////////////////////
 double LightAutofocus::autofocus(const Light& l)
 {
     double dA=-10000.; //todo
@@ -120,9 +126,18 @@ double LightAutofocus::compute_spot_size(const Light& l,double z)
     if(!bOneFound)
         return SPOT_SIZE_INFINITY;
 
+    _xCenter=(xMax+xMin)/2.;
+    _yCenter=(yMax+yMin)/2.;
+
     if(xMax-xMin>yMax-yMin)
         return xMax-xMin;
     else
         return yMax-yMin;
+}
+//////////////////////////////////////////////////////////////////////////////
+void LightAutofocus::get_center(double& xCenter,double& yCenter)
+{
+    xCenter=_xCenter;
+    yCenter=_yCenter;
 }
 //////////////////////////////////////////////////////////////////////////////

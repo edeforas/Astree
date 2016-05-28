@@ -81,19 +81,24 @@ bool DeviceIo::save(string sFile,OpticalDevice* pOD)
             prop.set(sSurfName+".comment",pOD->comment(iS));
     }
 
-    //prop.set("autofocus",pOD->get_autofocus());
+    prop.set("image.autofocus",pOD->get_autofocus());
+    prop.set("image.autocurvature",pOD->get_image_autocurvature());
 
     prop.set("half_field_of_view",pOD->half_field_of_view());
+    prop.set("light.half_field_of_view",pOD->half_field_of_view());
     prop.set("light.colors",pOD->light_colors());
     prop.set("light.nbsteps",pOD->nb_intermediate_angles());
 
     //save commentary
     string sNote=pOD->note();
     if(!sNote.empty())
+    {
         prop.set("note",sNote);
+        prop.set("device.note",sNote);
+    }
 
     prop.set("device.convention",pOD->relative_convention()?string("relative"):string("absolute"));
-    //prop.set("relative_convention",pOD->relative_convention());
+    prop.set("device.relative_convention",pOD->relative_convention());
 
     return prop.save(sFile);
 }
@@ -111,8 +116,8 @@ OpticalDevice* DeviceIo::load(string sFile)
         pOD->set_relative_convention(false);
 
     //new way
- //   if(prop.exist("relative_convention"))
- //       pOD->set_relative_convention(prop.get_bool("relative_convention"));
+    if(prop.exist("device.relative_convention"))
+        pOD->set_relative_convention(prop.get_bool("device.relative_convention"));
 
     int iS=0;
     string sSurfName="0";
@@ -190,15 +195,14 @@ OpticalDevice* DeviceIo::load(string sFile)
 
         //old format
         if (prop.exist(sSurfName+".z.autofocus"))
-        {
             pOD->set_autofocus(prop.get_bool(sSurfName+".z.autofocus"));
-        }
 
         //new_format
-        if (prop.exist("autofocus"))
-        {
-            pOD->set_autofocus(prop.get_bool("autofocus"));
-        }
+        if (prop.exist("image.autofocus"))
+            pOD->set_autofocus(prop.get_bool("image.autofocus"));
+
+        if (prop.exist("image.autocurvature"))
+            pOD->set_image_autocurvature(prop.get_bool("image.autocurvature"));
 
         iS++;
         stringstream ss2;
@@ -207,8 +211,13 @@ OpticalDevice* DeviceIo::load(string sFile)
     }
     while (prop.exist(sSurfName+".kind") || prop.exist(sSurfName+".type")); // comptatibility mode
 
+    //old format
     if (prop.exist("half_field_of_view"))
         pOD->set_half_field_of_view(prop.get_double("half_field_of_view"));
+
+    // new format
+    if (prop.exist("light.half_field_of_view"))
+        pOD->set_half_field_of_view(prop.get_double("light.half_field_of_view"));
 
     if (prop.exist("light.nbsteps"))
         pOD->set_nb_intermediate_angles(prop.get_double("light.nbsteps"));
@@ -216,16 +225,22 @@ OpticalDevice* DeviceIo::load(string sFile)
         pOD->set_nb_intermediate_angles(3);
 
     if (prop.exist("light.colors"))
-    {
         pOD->set_light_colors(prop.get("light.colors"));
-    }
     else
         pOD->set_light_colors(""); //temporaire
 
+    //old format
     //lit le commentaire
     if(prop.exist("note"))
     {
         string sNote=prop.get("note");
+        pOD->set_note(sNote);
+    }
+
+    //new format
+    if(prop.exist("device.note"))
+    {
+        string sNote=prop.get("device.note");
         pOD->set_note(sNote);
     }
 
