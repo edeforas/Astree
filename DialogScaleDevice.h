@@ -16,6 +16,8 @@ public:
     ~DialogScaleDevice();
 
     double get_scale();
+    bool get_scale_diameter();
+    bool get_scale_focal();
 
 private slots:
     void on_pushButton_clicked();
@@ -32,6 +34,8 @@ private:
     Ui::DialogScaleDevice *ui;
 
     double _dScale;
+    bool _bScaleDiameter;
+    bool _bScaleFocal;
 };
 
 #endif // DIALOGSCALEDEVICE_H

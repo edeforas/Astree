@@ -8,7 +8,7 @@
 #include <cassert>
 
 ////////////////////////////////////////////////////////////////////////////////
-bool DeviceScaling::scale(OpticalDevice *pDevice,double dRatio)
+bool DeviceScaling::scale(OpticalDevice *pDevice, double dRatio, bool bScaleDiameter, bool bScaleFocal)
 {
     assert(pDevice!=0);
 
@@ -22,31 +22,39 @@ bool DeviceScaling::scale(OpticalDevice *pDevice,double dRatio)
         double dInnerDiameter=pDevice->get(iS,INNER_DIAMETER);
         double dRadiusCurvature=pDevice->get(iS,RADIUS_CURVATURE);
 
-        pDevice->set(iS,Z,dZ*dRatio);
-        pDevice->set(iS,DIAMETER,dDiameter*dRatio);
-        pDevice->set(iS,INNER_DIAMETER,dInnerDiameter*dRatio);
-        pDevice->set(iS,RADIUS_CURVATURE,dRadiusCurvature*dRatio);
+        if(bScaleDiameter)
+        {
+            pDevice->set(iS,DIAMETER,dDiameter*dRatio);
+            pDevice->set(iS,INNER_DIAMETER,dInnerDiameter*dRatio);
+        }
 
-        double dRatio2=dRatio*dRatio;
-        double dRatio3=dRatio2*dRatio;
-        double dRatio5=dRatio2*dRatio3;
-        double dRatio7=dRatio2*dRatio5;
-        double dRatio9=dRatio2*dRatio7;
+        if(bScaleFocal)
+        {
+            pDevice->set(iS,Z,dZ*dRatio);
+            pDevice->set(iS,RADIUS_CURVATURE,dRadiusCurvature*dRatio);
 
-        double dR4=pDevice->get(iS,R4);
-        double dR6=pDevice->get(iS,R6);
-        double dR8=pDevice->get(iS,R8);
-        double dR10=pDevice->get(iS,R10);
+            double dRatio2=dRatio*dRatio;
+            double dRatio3=dRatio2*dRatio;
+            double dRatio5=dRatio2*dRatio3;
+            double dRatio7=dRatio2*dRatio5;
+            double dRatio9=dRatio2*dRatio7;
 
-        dR4=dR4/dRatio3;
-        dR6=dR6/dRatio5;
-        dR8=dR8/dRatio7;
-        dR10=dR10/dRatio9;
+            double dR4=pDevice->get(iS,R4);
+            double dR6=pDevice->get(iS,R6);
+            double dR8=pDevice->get(iS,R8);
+            double dR10=pDevice->get(iS,R10);
 
-        pDevice->set(iS,R4,dR4);
-        pDevice->set(iS,R6,dR6);
-        pDevice->set(iS,R8,dR8);
-        pDevice->set(iS,R10,dR10);
+            dR4=dR4/dRatio3;
+            dR6=dR6/dRatio5;
+            dR8=dR8/dRatio7;
+            dR10=dR10/dRatio9;
+
+
+            pDevice->set(iS,R4,dR4);
+            pDevice->set(iS,R6,dR6);
+            pDevice->set(iS,R8,dR8);
+            pDevice->set(iS,R10,dR10);
+        }
     }
 
     return true;

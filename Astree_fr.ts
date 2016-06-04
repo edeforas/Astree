@@ -45,7 +45,7 @@
     <message>
         <location filename="DialogScaleDevice.ui" line="65"/>
         <source>Size change</source>
-        <translation>Changement</translation>
+        <translation>Dimension</translation>
     </message>
     <message>
         <location filename="DialogScaleDevice.ui" line="82"/>
@@ -68,12 +68,22 @@
         <translation>100</translation>
     </message>
     <message>
-        <location filename="DialogScaleDevice.ui" line="143"/>
+        <location filename="DialogScaleDevice.ui" line="124"/>
+        <source>Scale Diameter</source>
+        <translation>Changer le diamètre</translation>
+    </message>
+    <message>
+        <location filename="DialogScaleDevice.ui" line="134"/>
+        <source>Scale Focal</source>
+        <translation>Changer la focale</translation>
+    </message>
+    <message>
+        <location filename="DialogScaleDevice.ui" line="174"/>
         <source>Cancel</source>
         <translation>Annuler</translation>
     </message>
     <message>
-        <location filename="DialogScaleDevice.ui" line="150"/>
+        <location filename="DialogScaleDevice.ui" line="181"/>
         <source>Ok</source>
         <translation>Ok</translation>
     </message>

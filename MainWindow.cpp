@@ -287,7 +287,7 @@ void MainWindow::on_actionScal_device_triggered()
     {
         DeviceScaling dmc;
 
-        dmc.scale(_pDevice,sd.get_scale());
+        dmc.scale(_pDevice,sd.get_scale(),sd.get_scale_diameter(),sd.get_scale_focal());
         _bMustSave=true;
         update_views(0,PARAMETERS_CHANGED);
         _pFrameSideView->fit_in_view();

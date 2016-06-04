@@ -9,7 +9,9 @@ DialogScaleDevice::DialogScaleDevice(QWidget *parent) :
 {
     ui->setupUi(this);
 
-    _dScale=1.;
+    _dScale=-1.;
+    _bScaleDiameter=false;
+    _bScaleFocal=false;
 }
 
 DialogScaleDevice::~DialogScaleDevice()
@@ -59,6 +61,9 @@ void DialogScaleDevice::on_pushButton_clicked()
         _dScale=dNewSize/dOldSize;
     }
 
+    _bScaleDiameter=ui->cbScaleDiameter->isChecked();
+    _bScaleFocal=ui->cbScaleFocal->isChecked();
+
     accept();
 }
 
@@ -94,4 +99,15 @@ void DialogScaleDevice::on_rbSizeChange_clicked()
 double DialogScaleDevice::get_scale()
 {
     return _dScale;
+}
+
+bool DialogScaleDevice::get_scale_diameter()
+{
+    return _bScaleDiameter;
+}
+
+
+bool DialogScaleDevice::get_scale_focal()
+{
+    return _bScaleFocal;
 }
