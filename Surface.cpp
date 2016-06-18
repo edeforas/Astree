@@ -403,8 +403,8 @@ void Surface::transmit_photon(Photon& p)
         return;
     }
 
-   // if( (_pMaterialPrev==0) || (_pMaterialNext==0))
-   //     return; //rien a faire car on ne connait pas les Materials
+    // if( (_pMaterialPrev==0) || (_pMaterialNext==0))
+    //     return; //rien a faire car on ne connait pas les Materials
 
     assert(_pMaterialNext!=0);
     assert(_pMaterialPrev!=0);
@@ -476,26 +476,42 @@ void Surface::reflect_photon(Photon &p)
 
         double dFocal=0.5/_dCurvature;
         double t=dFocal/p.dz;
-
-        if(p.dz<0.)
-            t=-t;
-
         double ax=p.dx*t;
         double ay=p.dy*t;
         double az=p.dz*t;
 
-        p.dx=ax-p.x;
-        p.dy=ay-p.y;
-        p.dz=az-p.z;
-
-        if(dFocal<0.)
+        //todo optimise tests
+        if(_dCurvature>0.)
         {
-            p.dx=-p.dx;
-            p.dy=-p.dy;
-            p.dz=-p.dz;
+            if(p.dz>0)
+            {
+                p.dx=+ax+p.x;
+                p.dy=+ay+p.y;
+                p.dz=-az-p.z;
+            }
+            else
+            {
+                p.dx=-ax-p.x;
+                p.dy=-ay-p.y;
+                p.dz=+az-p.z;
+            }
+        }
+        else
+        {
+            if(p.dz>0.)
+            {
+                p.dx=-ax-p.x;
+                p.dy=-ay-p.y;
+                p.dz=+az-p.z;
+            }
+            else
+            {
+                p.dx=+ax+p.x;
+                p.dy=+ay+p.y;
+                p.dz=-az-p.z;
+            }
         }
 
-        p.dz=-p.dz; //perfect mirror from perfect lens
         return;
     }
 
@@ -848,9 +864,20 @@ void Surface::set_radius_curvature(double dRadiusCurvature)
     update_geometry();
 }
 //////////////////////////////////////////////////////////////////////////////
+void Surface::set_curvature(double dCurvature)
+{
+    _dCurvature=dCurvature;
+    update_geometry();
+}
+//////////////////////////////////////////////////////////////////////////////
 double Surface::radius_curvature() const
 {
     return 1./_dCurvature;
+}
+//////////////////////////////////////////////////////////////////////////////
+double Surface::curvature() const
+{
+    return _dCurvature;
 }
 //////////////////////////////////////////////////////////////////////////////
 void Surface::set_R4(double dR4)

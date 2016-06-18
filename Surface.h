@@ -51,6 +51,9 @@ public:
     void set_radius_curvature(double dRadiusCurvature);
     double radius_curvature() const;
 
+    void set_curvature(double dCurvature);
+    double curvature() const;
+
     void set_R4(double dR4);
     void set_R6(double dR6);
     void set_R8(double dR8);

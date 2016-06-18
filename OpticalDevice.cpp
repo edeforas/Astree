@@ -446,7 +446,7 @@ double OpticalDevice::get(int iSurface,eSurfaceparameter eParam)
         return r.radius_curvature();
 
     if(eParam==CURVATURE)
-        return 1./r.radius_curvature();
+        return r.curvature();
 
     if(eParam==R4)
         return r.R4();
@@ -503,7 +503,7 @@ void OpticalDevice::set(int iSurface,eSurfaceparameter eParam,double dParam)
         r.set_radius_curvature(dParam);
 
     if(eParam==CURVATURE)
-        r.set_radius_curvature(1./dParam);
+        r.set_curvature(dParam);
 
     if(eParam==CONIC)
         r.set_conic(dParam);

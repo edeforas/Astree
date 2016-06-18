@@ -17,19 +17,20 @@ bool DeviceScaling::scale(OpticalDevice *pDevice, double dRatio, bool bScaleDiam
 
     for(int iS=0;iS<pDevice->nb_surface();iS++)
     {
-        double dZ=pDevice->get(iS,Z);
-        double dDiameter=pDevice->get(iS,DIAMETER);
-        double dInnerDiameter=pDevice->get(iS,INNER_DIAMETER);
-        double dRadiusCurvature=pDevice->get(iS,RADIUS_CURVATURE);
-
         if(bScaleDiameter)
         {
+            double dDiameter=pDevice->get(iS,DIAMETER);
+            double dInnerDiameter=pDevice->get(iS,INNER_DIAMETER);
+
             pDevice->set(iS,DIAMETER,dDiameter*dRatio);
             pDevice->set(iS,INNER_DIAMETER,dInnerDiameter*dRatio);
         }
 
         if(bScaleFocal)
         {
+            double dZ=pDevice->get(iS,Z);
+            double dRadiusCurvature=pDevice->get(iS,RADIUS_CURVATURE);
+
             pDevice->set(iS,Z,dZ*dRatio);
             pDevice->set(iS,RADIUS_CURVATURE,dRadiusCurvature*dRatio);
 
@@ -48,7 +49,6 @@ bool DeviceScaling::scale(OpticalDevice *pDevice, double dRatio, bool bScaleDiam
             dR6=dR6/dRatio5;
             dR8=dR8/dRatio7;
             dR10=dR10/dRatio9;
-
 
             pDevice->set(iS,R4,dR4);
             pDevice->set(iS,R6,dR6);

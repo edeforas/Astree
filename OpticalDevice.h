@@ -24,8 +24,8 @@ enum eSurfaceparameter //to be used with get/set functions below
     INNER_DIAMETER,
     AUTO_INNER_DIAMETER, // set with 0 or 1
     CONIC,
-    RADIUS_CURVATURE,
-    CURVATURE, //inverse of radius curvature
+    RADIUS_CURVATURE, //in mm
+    CURVATURE, //inverse of radius curvature, unit is 1/mm
     Z, //absolute coord
     THICK, //relative coord
     R4,
@@ -70,10 +70,10 @@ public:
 
     void set_autofocus(bool bAutofocus);
     bool get_autofocus();
-    bool compute_surface_profile(int iSurface,double dX,double dY,double& dZ); //todo add slope computation
-
     void set_image_autocurvature(bool bAutoCurvature);
     bool get_image_autocurvature();
+
+    bool compute_surface_profile(int iSurface,double dX,double dY,double& dZ); //todo add slope computation
 
     // comment settings
     void set_comment(int iSurface,string sComment);
