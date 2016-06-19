@@ -12,7 +12,7 @@
 LightAutofocus::LightAutofocus()
 {
     _xCenter=0;
-    _xCenter=0;
+    _yCenter=0;
 }
 ////////////////////////////////////////////////////////////////////////////////
 double LightAutofocus::autofocus(const Light& l)

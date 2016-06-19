@@ -255,7 +255,7 @@ void DockSurfacesData::update_table()
             string sComment=_pDevice->comment(i);
             m_ui->twSurfacesDatas->setItem(i,iIndexCol,new QTableWidgetItem(sComment.c_str()));
 
-            iIndexCol+=1;
+      //      iIndexCol+=1; //
         }
     }
 

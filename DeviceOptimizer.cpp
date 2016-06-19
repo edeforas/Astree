@@ -314,7 +314,7 @@ OptimizerResult DeviceOptimizer::optimise_amoeba()
         for(unsigned int i=1;i<simplex.size();i++)
             if( ((int)i!=iWorse) && (vdDemerit[i]>dSecondWorse) )
             {
-                iSecondWorse=i;
+             //   iSecondWorse=i; //TODO not used?
                 dSecondWorse=vdDemerit[i];
             }
 
@@ -433,7 +433,7 @@ OptimizerResult DeviceOptimizer::optimise_amoeba()
                     vdDemerit[i]=compute_demerit();
                 }
             }
-            bFound=true;
+            //bFound=true; // TODO keep ?
         }
 
         assert(bFound==true);

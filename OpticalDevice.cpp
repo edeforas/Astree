@@ -48,6 +48,9 @@ OpticalDevice& OpticalDevice::operator=(const OpticalDevice& rDevice)
     set_nb_intermediate_angles(rDevice.nb_intermediate_angles());
     set_light_colors(rDevice.light_colors());
 
+    _bAutoCurvature=rDevice._bAutoCurvature;
+    _bAutoFocus=rDevice._bAutoFocus;
+
     _bMustRetrace=true;
 
     return *this;

@@ -714,7 +714,7 @@ void Surface::stop_photon(Photon& p)
 
     double x=p.x;
     double y=p.y;
-    double z=p.z;
+   // double z=p.z;
     double dOldT=0;
     for(int iLoop=0;iLoop<NB_ITER_STOP_NEWTON;iLoop++)
     {
@@ -734,7 +734,7 @@ void Surface::stop_photon(Photon& p)
         double distSQ=sqr(t-dOldT)*(sqr(p.dx)+sqr(p.dy)+sqr(p.dz));
         x=p.x+t*p.dx;
         y=p.y+t*p.dy;
-        z=p.z+t*p.dz;
+        double z=p.z+t*p.dz;
 
         if(distSQ<sqr(RESOLUTION_STOP_NEWTON))
         {
