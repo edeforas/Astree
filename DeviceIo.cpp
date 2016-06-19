@@ -11,7 +11,7 @@ using namespace std;
 #include "Properties.h"
 
 ////////////////////////////////////////////////////////////////////////////////
-bool DeviceIo::save(string sFile,OpticalDevice* pOD)
+bool DeviceIo::save(string sFile, OpticalDevice* pOD)
 {
     Properties prop;
 

@@ -376,7 +376,7 @@ void Surface::transmit_photon(Photon& p)
         }
 
         //compute AP
-        if( (_dCurvature<1.e-20) && (_dCurvature>-1.e-20))
+        if( (_dCurvature<CURVATURE_FLAT) && (_dCurvature>-CURVATURE_FLAT))
             return; //flat lens
 
         double dFocal=0.5/_dCurvature;
@@ -468,7 +468,7 @@ void Surface::reflect_photon(Photon &p)
         }
 
         //compute AP
-        if( (_dCurvature<1.e-20) && (_dCurvature>-1.e-20))
+        if( (_dCurvature<CURVATURE_FLAT) && (_dCurvature>-CURVATURE_FLAT))
         {
             p.dz=-p.dz;
             return; //flat mirror
@@ -480,10 +480,10 @@ void Surface::reflect_photon(Photon &p)
         double ay=p.dy*t;
         double az=p.dz*t;
 
-        //todo optimise tests
+        //todo optimise tests with sign(t)
         if(_dCurvature>0.)
         {
-            if(p.dz>0)
+            if(p.dz>0.)
             {
                 p.dx=+ax+p.x;
                 p.dy=+ay+p.y;
@@ -569,7 +569,7 @@ void Surface::update_geometry()
     if(_bIsAspheric)
         return;
 
-    if(abs(_dCurvature)<=1.e-20)
+    if(abs(_dCurvature)<=CURVATURE_FLAT)
     {
         _bIsFlat=true;
         return;

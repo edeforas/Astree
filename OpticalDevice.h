@@ -93,6 +93,8 @@ public:
     void compute_light(Light* pLight,int iSurface, double dTilt, int iGridX, int iGridY);
     const ImageQuality *get_image_quality();
 
+    //other parameters, not used in computation
+
 private:
     void initialize_light(Light *pLight, double dTilt, int iGridX, int iGridY);
     void ray_trace();

@@ -67,9 +67,8 @@ void DockOptimizer::on_pushButton_clicked()
     if(_pDevice==0)
         return;
 
-    DeviceOptimizer dopt;
-
-    dopt.set_device(_pDevice);
+    _dopt.clear();
+    _dopt.set_device(_pDevice);
 
     for(int i=0;i<NB_PARAM_MAX;i++)
     {
@@ -109,7 +108,7 @@ void DockOptimizer::on_pushButton_clicked()
         if(!bOk)
             return;
 
-        dopt.add_parameter(iSurface,sParam,dMin,dMax);
+        _dopt.add_parameter(iSurface,sParam,dMin,dMax);
     }
 
     int iCriteria=ui->cbCriteria->currentIndex();
@@ -131,7 +130,8 @@ void DockOptimizer::on_pushButton_clicked()
     ui->lblResult->setStyleSheet("color: black;");
     ui->lblResult->repaint();
 
-    OptimizerResult result=dopt.optimise_amoeba(omf); //todo, put in thread
+    _dopt.set_merit_function(omf);
+    OptimizerResult result=_dopt.optimise(); //todo, put in thread
     if(result==eBetterSolutionFound)
     {
         ui->lblResult->setText("Better Solution found.");

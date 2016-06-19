@@ -13,7 +13,7 @@ using namespace std;
 
 #define MIN_RESOLUTION_CONIC 1.e-7
 #define MIN_RESOLUTION_RCURV 1.e-7
-#define MIN_RESOLUTION_CURVATURE 1.e-7 //TODO?
+#define MIN_RESOLUTION_CURVATURE 1.e-13 //TODO? !!
 #define MIN_RESOLUTION_THICK 1.e-7
 
 #define MIN_RESOLUTION_R4 1.e-22
@@ -55,17 +55,23 @@ class DeviceOptimizer
 {
 public:
     DeviceOptimizer();
+
+    void clear();
     void set_device(OpticalDevice* pDevice);
     void add_parameter(int iSurface,string sParameter,double dMin,double dMax);
-    OptimizerResult optimise_random(OptimizerMeritFunction eMeritFunction);
-    OptimizerResult optimise_amoeba(OptimizerMeritFunction eMeritFunction);
+    void set_merit_function(OptimizerMeritFunction eMeritFunction);
+
+    OptimizerResult optimise();
 
 private:
+    OptimizerResult optimise_random();
+    OptimizerResult optimise_amoeba();
     void apply_parameter(const vector<DeviceOptimizerParameter>& parameters);
-    double compute_demerit(OptimizerMeritFunction eMeritFunction); //return demerit value: lower is better
+    double compute_demerit(); //return demerit value: lower is better
 
     OpticalDevice* _pDevice;
     ParameterSet _parameters;
+    OptimizerMeritFunction _meritFunction;
 };
 
 #endif

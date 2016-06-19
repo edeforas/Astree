@@ -9,11 +9,12 @@
 using namespace std;
 
 class OpticalDevice;
+class Properties;
 
 class DeviceIo
 {
 public:
-    static bool save(string sFile,OpticalDevice* pD);
+    static bool save(string sFile, OpticalDevice* pD);
     static OpticalDevice* load(string sFile);
 };
 

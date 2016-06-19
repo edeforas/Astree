@@ -3,6 +3,8 @@
 
 #include <QDockWidget>
 
+#include "DeviceOptimizer.h"
+
 namespace Ui {
 class DockOptimizer;
 }
@@ -25,6 +27,7 @@ private slots:
 private:
     Ui::DockOptimizer *ui;
     OpticalDevice* _pDevice;
+    DeviceOptimizer _dopt;
     int _iNbSurfaces;
 
 };

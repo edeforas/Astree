@@ -12,6 +12,14 @@
 DeviceOptimizer::DeviceOptimizer()
 {
     _pDevice=0;
+    _meritFunction=eFullFrameMaxError;
+}
+////////////////////////////////////////////////////////////////////////////////
+void DeviceOptimizer::clear()
+{
+    _pDevice=0;
+    _meritFunction=eFullFrameMaxError;
+    _parameters.clear();
 }
 ////////////////////////////////////////////////////////////////////////////////
 void DeviceOptimizer::set_device(OpticalDevice* pDevice)
@@ -22,12 +30,35 @@ void DeviceOptimizer::set_device(OpticalDevice* pDevice)
 void DeviceOptimizer::add_parameter(int iSurface,string sParameter,double dMin,double dMax)
 {
     DeviceOptimizerParameter dop;
+
+    if(sParameter=="RCurv") //always optimise with Curvature instead of RCurv
+    {
+        sParameter="Curvature";
+        dMin=1./dMin;
+        dMax=1./dMax;
+    }
+
     dop.iSurface=iSurface;
     dop.sParameter=sParameter;
-    dop.dMin=dMin;
-    dop.dMax=dMax;
+
+    if(dMin<dMax)
+    {
+        dop.dMin=dMin;
+        dop.dMax=dMax;
+    }
+    else
+    {
+        dop.dMin=dMax;
+        dop.dMax=dMin;
+    }
+
     dop.dVal=(dMin+dMax)/2.;
     _parameters.push_back(dop);
+}
+//////////////////////////////////////////////////////////////////////////////
+void DeviceOptimizer::set_merit_function(OptimizerMeritFunction eMeritFunction)
+{
+    _meritFunction=eMeritFunction;
 }
 //////////////////////////////////////////////////////////////////////////////
 void DeviceOptimizer::apply_parameter(const vector<DeviceOptimizerParameter>& parameters)
@@ -66,11 +97,10 @@ void DeviceOptimizer::apply_parameter(const vector<DeviceOptimizerParameter>& pa
 
         if(sParam=="r10")
             _pDevice->set(iSurface,R10,dVal);
-
     }
 }
 //////////////////////////////////////////////////////////////////////////////
-double DeviceOptimizer::compute_demerit(OptimizerMeritFunction eMeritFunction)
+double DeviceOptimizer::compute_demerit()
 {
     const ImageQuality* pQ=_pDevice->get_image_quality();
 
@@ -83,10 +113,10 @@ double DeviceOptimizer::compute_demerit(OptimizerMeritFunction eMeritFunction)
     if(ISNAN(pQ))
         return SPOT_SIZE_INFINITY;
 
-    if(eMeritFunction==eCenterOnly)
+    if(_meritFunction==eCenterOnly)
         return pQ->vdSpotSize[0];
 
-    if(eMeritFunction==eFullFrameMean)
+    if(_meritFunction==eFullFrameMean)
     {
         double dMeritMoy=0.;
         for(int i=0;i<pQ->nb_angles();i++)
@@ -95,12 +125,12 @@ double DeviceOptimizer::compute_demerit(OptimizerMeritFunction eMeritFunction)
         return dMeritMoy/pQ->nb_angles();
     }
 
-    if(eMeritFunction==eMostlyCenter)
+    if(_meritFunction==eMostlyCenter)
     {
         return SPOT_SIZE_INFINITY; //TODO
     }
 
-    if(eMeritFunction==eFullFrameMaxError)
+    if(_meritFunction==eFullFrameMaxError)
     {
         double dMeritMoy=0.;
         for(int i=0;i<pQ->nb_angles();i++)
@@ -113,14 +143,14 @@ double DeviceOptimizer::compute_demerit(OptimizerMeritFunction eMeritFunction)
     return SPOT_SIZE_INFINITY;
 }
 //////////////////////////////////////////////////////////////////////////////
-OptimizerResult DeviceOptimizer::optimise_random(OptimizerMeritFunction eMeritFunction)
+OptimizerResult DeviceOptimizer::optimise_random()
 {
     assert(_pDevice!=0);
 
     if(_parameters.empty())
         return eNothingToOptimize;
 
-    double dMeritOrig=compute_demerit(eMeritFunction);
+    double dMeritOrig=compute_demerit();
     OpticalDevice deviceOrig(*_pDevice);
 
     ParameterSet paramBest=_parameters;
@@ -141,7 +171,7 @@ OptimizerResult DeviceOptimizer::optimise_random(OptimizerMeritFunction eMeritFu
             }
 
             apply_parameter(newParamBest);
-            double dMerit=compute_demerit(eMeritFunction);
+            double dMerit=compute_demerit();
 
             if(dMerit<dBestMerit)
             {
@@ -179,13 +209,13 @@ OptimizerResult DeviceOptimizer::optimise_random(OptimizerMeritFunction eMeritFu
     return eNoBetterSolution;
 }
 //////////////////////////////////////////////////////////////////////////////
-OptimizerResult DeviceOptimizer::optimise_amoeba(OptimizerMeritFunction eMeritFunction)
+OptimizerResult DeviceOptimizer::optimise_amoeba()
 {
     // see algo at : https://en.wikipedia.org/wiki/Nelder%E2%80%93Mead_method
 
     assert(_pDevice!=0);
 
-    double dMeritOrig=compute_demerit(eMeritFunction);
+    double dMeritOrig=compute_demerit();
     OpticalDevice deviceOrig(*_pDevice);
 
     if(_parameters.empty())
@@ -250,7 +280,7 @@ OptimizerResult DeviceOptimizer::optimise_amoeba(OptimizerMeritFunction eMeritFu
     for(unsigned int i=0;i<simplex.size();i++)
     {
         apply_parameter(simplex[i]);
-        vdDemerit[i]=compute_demerit(eMeritFunction);
+        vdDemerit[i]=compute_demerit();
     }
 
     int iIter=0,iMaxIter=AMOEBA_MAX_ITER;
@@ -326,7 +356,7 @@ OptimizerResult DeviceOptimizer::optimise_amoeba(OptimizerMeritFunction eMeritFu
         if(!bOutOfDomain)
         {
             apply_parameter(paramMirror);
-            dMirror=compute_demerit(eMeritFunction);
+            dMirror=compute_demerit();
         }
 
         if( (dBest<=dMirror) && (dMirror<dSecondWorse) )
@@ -353,7 +383,7 @@ OptimizerResult DeviceOptimizer::optimise_amoeba(OptimizerMeritFunction eMeritFu
             if(!bOutOfDomain)
             {
                 apply_parameter(paramMirrorFar);
-                dMirrorFar=compute_demerit(eMeritFunction);
+                dMirrorFar=compute_demerit();
             }
 
             if(dMirrorFar<dBest)
@@ -378,7 +408,7 @@ OptimizerResult DeviceOptimizer::optimise_amoeba(OptimizerMeritFunction eMeritFu
             for(unsigned int i=0;i<paramMirrorContracted.size();i++)
                 paramMirrorContracted[i].dVal+=0.5*(paramWorse[i].dVal-paramMean[i].dVal);
             apply_parameter(paramMirrorContracted);
-            double dContracted=compute_demerit(eMeritFunction);
+            double dContracted=compute_demerit();
             if(dContracted<dWorse)
             {
                 simplex[iWorse]=paramMirrorContracted;
@@ -400,7 +430,7 @@ OptimizerResult DeviceOptimizer::optimise_amoeba(OptimizerMeritFunction eMeritFu
                         paramReducted[j].dVal=paramBest[j].dVal+0.5*(paramReducted[j].dVal-paramBest[j].dVal);
 
                     apply_parameter(paramReducted);
-                    vdDemerit[i]=compute_demerit(eMeritFunction);
+                    vdDemerit[i]=compute_demerit();
                 }
             }
             bFound=true;
@@ -444,5 +474,10 @@ OptimizerResult DeviceOptimizer::optimise_amoeba(OptimizerMeritFunction eMeritFu
     //restore device original settings
     *_pDevice=deviceOrig;
     return eNoBetterSolution;
+}
+//////////////////////////////////////////////////////////////////////////////
+OptimizerResult DeviceOptimizer::optimise()
+{
+    return optimise_amoeba();
 }
 //////////////////////////////////////////////////////////////////////////////

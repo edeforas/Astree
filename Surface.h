@@ -10,6 +10,7 @@ using namespace std;
 
 #define MAX_DIAMETER 1.e10
 #define LARGER_RADIUS_CHECK_TOLERANCIS 1e-8
+#define CURVATURE_FLAT 1e-20
 
 class Light;
 class Material;
