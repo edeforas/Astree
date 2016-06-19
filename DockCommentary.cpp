@@ -2,14 +2,14 @@
 #include "ui_DockCommentary.h"
 
 #include "MainWindow.h"
-
 #include "OpticalDevice.h"
+
+#include <cassert>
 
 DockCommentary::DockCommentary(QWidget *parent) :
     QDockWidget(parent),
     ui(new Ui::DockComment)
 {
-    _bCanEmit=false;
     ui->setupUi(this);
 }
 
@@ -29,33 +29,26 @@ void DockCommentary::changeEvent(QEvent *e)
         break;
     }
 }
-
+////////////////////////////////////////////////////////////////////////
 void DockCommentary::device_changed(OpticalDevice* pDevice,int iReason)
 {
-    (void)iReason; //TODO
-
-    _bCanEmit=false;
+    assert(pDevice!=0);
     _pDevice=pDevice;
-    if(_pDevice!=0)
-    {
-        string sComment;
-        sComment=_pDevice->note();
-        ui->textEdit->setText(sComment.c_str());
-    }
-    else
-        ui->textEdit->clear();
-    _bCanEmit=true;
-}
 
+    if(iReason!=NEW_OPTICAL_DEVICE)
+        return;
+
+    ui->textEdit->blockSignals(true);
+    ui->textEdit->setText(_pDevice->note().c_str());
+    ui->textEdit->blockSignals(false);
+}
 ////////////////////////////////////////////////////////////////////////
 void DockCommentary::on_textEdit_textChanged()
 {
-    if(_pDevice!=0)
-    {
-        if(_bCanEmit)
-        {
-            _pDevice->set_note(ui->textEdit->document()->toPlainText().toStdString());
-            static_cast<MainWindow*>(parent())->update_views(this,COMMENT_CHANGED);
-        }
-    }
+    if(_pDevice==0)
+        return;
+
+    _pDevice->set_note(ui->textEdit->document()->toPlainText().toStdString());
+    static_cast<MainWindow*>(parent())->update_views(this,COMMENT_CHANGED);
 }
+////////////////////////////////////////////////////////////////////////

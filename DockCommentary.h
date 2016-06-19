@@ -25,7 +25,6 @@ protected:
 private:
     Ui::DockComment *ui;
     OpticalDevice* _pDevice;
-    bool _bCanEmit;
 
 private slots:
     void on_textEdit_textChanged();
