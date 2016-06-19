@@ -7,6 +7,7 @@
 
 #include <string>
 #include <vector>
+#include <map>
 using namespace std;
 
 #include "ImageQuality.h"
@@ -93,7 +94,9 @@ public:
     void compute_light(Light* pLight,int iSurface, double dTilt, int iGridX, int iGridY);
     const ImageQuality *get_image_quality();
 
-    //other parameters, not used in computation
+    //other parameters, not used in computation, saved in files
+    bool get_parameter(const string sKey,double & dValue);
+    void set_parameter(const string sKey,double dValue);
 
 private:
     void initialize_light(Light *pLight, double dTilt, int iGridX, int iGridY);
@@ -116,6 +119,9 @@ private:
     string _sLightColors;
     bool _bMustRetrace;
     ImageQuality _imageQuality;
+
+    // other parameters
+    map<string,string> _sOtherParameters;
 };
 
 #endif

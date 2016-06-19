@@ -64,21 +64,20 @@ bool Properties::exist(string sKey)
 ///////////////////////////////////////////////////////////////////////////////
 string Properties::get(string sKey)
 {
-    map<string,string>::iterator it=_pairs.find(sKey);
+    auto it=_pairs.find(sKey);
     if(it!=_pairs.end())
-        return (*it).second;
+        return it->second;
     else
         return "";
 }
 ///////////////////////////////////////////////////////////////////////////////
 int Properties::get_int(string sKey)
 {
-    map<string,string>::iterator it=_pairs.find(sKey);
+    auto it=_pairs.find(sKey);
     if(it!=_pairs.end())
     {
-        stringstream ss;
+        stringstream ss(it->second);
         int iTmp;
-        ss << (*it).second;
         ss >> iTmp;
         return iTmp;
     } else
@@ -87,12 +86,11 @@ int Properties::get_int(string sKey)
 ///////////////////////////////////////////////////////////////////////////////
 unsigned int Properties::get_unsigned_int(string sKey)
 {
-    map<string,string>::iterator it=_pairs.find(sKey);
+    auto it=_pairs.find(sKey);
     if(it!=_pairs.end())
     {
-        stringstream ss;
+        stringstream ss(it->second);
         unsigned int uiTmp;
-        ss << (*it).second;
         ss >> uiTmp;
         return uiTmp;
     } else
@@ -101,9 +99,9 @@ unsigned int Properties::get_unsigned_int(string sKey)
 ///////////////////////////////////////////////////////////////////////////////
 bool Properties::get_bool(string sKey)
 {
-    map<string,string>::iterator it=_pairs.find(sKey);
+    auto it=_pairs.find(sKey);
     if(it!=_pairs.end())
-        return (*it).second!="0";
+        return it->second!="0";
     else
         return false;
 }
@@ -111,12 +109,11 @@ bool Properties::get_bool(string sKey)
 ///////////////////////////////////////////////////////////////////////////////
 double Properties::get_double(string sKey)
 {
-    map<string,string>::iterator it=_pairs.find(sKey);
+    auto it=_pairs.find(sKey);
     if(it!=_pairs.end())
     {
-        stringstream ss;
+        stringstream ss(it->second);
         double dTmp;
-        ss << (*it).second;
         ss >> dTmp;
         return dTmp;
     } else
@@ -151,11 +148,10 @@ bool Properties::save(string sFileName)
     if(!f)
         return false;
 
-    map<string,string>::iterator it;
-    for(it=_pairs.begin();it!= _pairs.end();++it)
+    for(auto it=_pairs.begin();it!= _pairs.end();++it)
     {
-        string sValue=(*it).second;
-        string sKey=(*it).first;
+        string sValue=it->second;
+        string sKey=it->first;
 
         if(!sValue.empty())
         {

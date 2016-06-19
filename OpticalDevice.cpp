@@ -4,6 +4,7 @@
 
 #include <cassert>
 #include <cmath>
+#include <sstream>
 
 #include "OpticalDevice.h"
 #include "Light.h"
@@ -536,5 +537,23 @@ void OpticalDevice::set(int iSurface,eSurfaceparameter eParam,double dParam)
         r.set_R10(dParam);
 
     _bMustRetrace=true;
+}
+//////////////////////////////////////////////////////////////////////////////
+bool OpticalDevice::get_parameter(const string sKey,double & dValue)
+{
+    auto iter= _sOtherParameters.find(sKey);
+    if( iter==_sOtherParameters.end())
+        return false;
+
+    stringstream ss(iter->second);
+    ss >> dValue;
+    return true; //todo test ss result
+}
+//////////////////////////////////////////////////////////////////////////////
+void OpticalDevice::set_parameter(const string sKey,double dValue)
+{
+    stringstream ss;
+    ss << dValue;
+    _sOtherParameters[sKey]=ss.str();
 }
 //////////////////////////////////////////////////////////////////////////////
