@@ -433,10 +433,10 @@ OptimizerResult DeviceOptimizer::optimise_amoeba()
                     vdDemerit[i]=compute_demerit();
                 }
             }
-            //bFound=true; // TODO keep ?
+            bFound=true; //  keep for debug
         }
 
-        assert(bFound==true);
+        assert(bFound);
 
         //compute the parameter range
         // stop criteria based on the simplex size
