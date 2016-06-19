@@ -49,7 +49,7 @@ void DockLightProperties::changeEvent(QEvent *e)
 
 void DockLightProperties::device_changed(OpticalDevice* pDevice,int iReason)
 {
-    if( (iReason!=PARAMETERS_CHANGED) && (iReason!=NEW_OPTICAL_DEVICE) )
+    if( (iReason!=OPTICAL_DEVICE_CHANGED) && (iReason!=NEW_OPTICAL_DEVICE) )
         return;
 
     _bCanEmit=false;
@@ -115,5 +115,5 @@ void DockLightProperties::OnLightChange()
     }
     _pDevice->set_nb_intermediate_angles(iNbStep);
 
-    static_cast<MainWindow*>(parent())->update_views(this,PARAMETERS_CHANGED);
+    static_cast<MainWindow*>(parent())->update_views(this,OPTICAL_DEVICE_CHANGED);
 }

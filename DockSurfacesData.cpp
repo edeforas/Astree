@@ -423,7 +423,7 @@ void DockSurfacesData::OnCellChanged(int iRow,int iCol)
         //    iCol++;
     }
 
-    static_cast<MainWindow*>(parent())->update_views(this,PARAMETERS_CHANGED);
+    static_cast<MainWindow*>(parent())->update_views(this,OPTICAL_DEVICE_CHANGED);
 }
 //////////////////////////////////////////////////////////////////////////////
 void DockSurfacesData::OnAddSurfaceAfter()
@@ -441,7 +441,7 @@ void DockSurfacesData::OnAddSurfaceAfter()
     if(iLine+1>0)
         _pDevice->set(iLine+1,AUTO_DIAMETER,true);
 
-    static_cast<MainWindow*>(parent())->update_views(this,PARAMETERS_CHANGED);
+    static_cast<MainWindow*>(parent())->update_views(this,OPTICAL_DEVICE_CHANGED);
 
     m_ui->twSurfacesDatas->selectRow(iLine+1);
 }
@@ -462,7 +462,7 @@ void DockSurfacesData::OnAddSurfaceBefore()
     if(iLine>0)
         _pDevice->set(iLine,AUTO_DIAMETER,true);
 
-    static_cast<MainWindow*>(parent())->update_views(this,PARAMETERS_CHANGED);
+    static_cast<MainWindow*>(parent())->update_views(this,OPTICAL_DEVICE_CHANGED);
 
     m_ui->twSurfacesDatas->selectRow(iLine);
 }
@@ -474,7 +474,7 @@ void DockSurfacesData::OnDeleteSurface()
         return;
 
     _pDevice->delete_surface(iLine);
-    static_cast<MainWindow*>(parent())->update_views(this,PARAMETERS_CHANGED);
+    static_cast<MainWindow*>(parent())->update_views(this,OPTICAL_DEVICE_CHANGED);
 
     if(iLine>=m_ui->twSurfacesDatas->rowCount())
         iLine =m_ui->twSurfacesDatas->rowCount()-1;
@@ -524,6 +524,6 @@ void DockSurfacesData::on_comboCoordMode_activated(const QString &arg1)
     if(iSelected==1)
         _pDevice->set_relative_convention(true);
 
-    static_cast<MainWindow*>(parent())->update_views(this,PARAMETERS_CHANGED);
+    static_cast<MainWindow*>(parent())->update_views(this,OPTICAL_DEVICE_CHANGED);
 }
 //////////////////////////////////////////////////////////////////////////////

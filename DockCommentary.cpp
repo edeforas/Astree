@@ -30,8 +30,10 @@ void DockCommentary::changeEvent(QEvent *e)
     }
 }
 
-void DockCommentary::device_changed(OpticalDevice* pDevice)
+void DockCommentary::device_changed(OpticalDevice* pDevice,int iReason)
 {
+    (void)iReason; //TODO
+
     _bCanEmit=false;
     _pDevice=pDevice;
     if(_pDevice!=0)

@@ -74,8 +74,10 @@ void FrameSideView::changeEvent(QEvent *e)
     }
 }
 /////////////////////////////////////////////////////////////////////////////////////
-void FrameSideView::device_changed(OpticalDevice* pDevice)
+void FrameSideView::device_changed(OpticalDevice* pDevice, int iReason)
 {
+    (void)iReason; //TODO
+
     bool bSameDevice=(_pDevice==pDevice);
     _pDevice=pDevice;
     QGraphicsScene* scene=m_ui->graphicsView->scene();
@@ -154,12 +156,18 @@ void FrameSideView::device_changed(OpticalDevice* pDevice)
 
     // plot ray fan
     Light light;
-    double dLightTilt=static_cast<MainWindow*>(parent())->dLightTilt;
-    _pDevice->compute_light(&light,-1,dLightTilt,SIDEVIEW_NB_POINTS_LIGHT,1);
+
+    double dPercentField=-1;
+    if(!pDevice->get_parameter("showLightOffAxis",dPercentField))
+        dPercentField=0.;
+
+    double dTilt=dPercentField*pDevice->half_field_of_view()/100.;
+
+    _pDevice->compute_light(&light,-1,dTilt,SIDEVIEW_NB_POINTS_LIGHT,1);
     vector<Photon> vp1=light.get_all_photons();
     for (int iS=0;iS<_pDevice->nb_surface();iS++)
     {
-        _pDevice->compute_light(&light,iS,dLightTilt,SIDEVIEW_NB_POINTS_LIGHT,1); //TODO use ref
+        _pDevice->compute_light(&light,iS,dTilt,SIDEVIEW_NB_POINTS_LIGHT,1); //TODO use ref
         vector<Photon> vp2=light.get_all_photons();
         for (unsigned int iP=0;iP<vp2.size();iP++)
         {

@@ -100,9 +100,10 @@ bool DeviceIo::save(string sFile, OpticalDevice* pOD)
     prop.set("device.convention",pOD->relative_convention()?string("relative"):string("absolute"));
     prop.set("device.relative_convention",pOD->relative_convention());
 
-    //save otherparameters
-    //TODO
-
+    //save other parameters
+    auto otherParams=pOD->all_parameters();
+    for(auto it=otherParams.begin();it!=otherParams.end();++it)
+        prop.set("parameter."+it->first,it->second);
 
     return prop.save(sFile);
 }
@@ -248,9 +249,18 @@ OpticalDevice* DeviceIo::load(string sFile)
         pOD->set_note(sNote);
     }
 
-    //get otherparameters //TODO
-
-
+    //load other parameters
+    auto otherParams=prop.all();
+    for(auto it=otherParams.begin();it!=otherParams.end();++it)
+    {
+        string sKey=it->first;
+        if(sKey.size()>10)
+        {
+            string sSubKey=sKey.substr(0,10);
+            if(sSubKey=="parameter.")
+                pOD->set_parameter(sKey.substr(10,string::npos),it->second);
+        }
+    }
 
     return pOD;
 }

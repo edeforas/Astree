@@ -143,12 +143,12 @@ void DockScatterPlot::changeEvent(QEvent *e)
         break;
     }
 }
-
+////////////////////////////////////////////////////////////////////////////////
 void DockScatterPlot::device_changed(OpticalDevice* pDevice, int iReason)
 {
     _pDevice=pDevice;
 
-    if( (iReason!=PARAMETERS_CHANGED) && (iReason!=NEW_OPTICAL_DEVICE) )
+    if( (iReason!=PARAMETERS_CHANGED) && (iReason!=OPTICAL_DEVICE_CHANGED) && (iReason!=NEW_OPTICAL_DEVICE) )
         return;
 
     QGraphicsScene* scene=m_ui->graphicsView->scene();
@@ -166,11 +166,12 @@ void DockScatterPlot::device_changed(OpticalDevice* pDevice, int iReason)
 
     Light light;
 
-    //todo simplifier/deplacer in main
-    double dPercentField=m_ui->hsImageFieldPos->value();
-    static_cast<MainWindow*>(parent())->dLightTilt=(double)dPercentField/m_ui->hsImageFieldPos->maximum()*_pDevice->half_field_of_view();
+    double dPercentField=-1;
+    if(!pDevice->get_parameter("showLightOffAxis",dPercentField))
+        dPercentField=0.;
 
-    pDevice->compute_light(&light,pDevice->nb_surface()-1, static_cast<MainWindow*>(parent())->dLightTilt,NB_POINTS_SCATTER_PLOT,NB_POINTS_SCATTER_PLOT);
+    double dTilt=dPercentField*pDevice->half_field_of_view()/100.;
+    pDevice->compute_light(&light,pDevice->nb_surface()-1, dTilt,NB_POINTS_SCATTER_PLOT,NB_POINTS_SCATTER_PLOT);
 
     ScatterPlot* sp=new ScatterPlot;
     sp->setZValue(10);
@@ -254,9 +255,10 @@ void DockScatterPlot::on_pushButton_3_clicked()
 
 void DockScatterPlot::on_hsImageFieldPos_valueChanged(int value)
 {
-    static_cast<MainWindow*>(parent())->dLightTilt=(double)value/m_ui->hsImageFieldPos->maximum()*_pDevice->half_field_of_view();
+    double dShowLightOffAxisPercent=value;
+    _pDevice->set_parameter("showLightOffAxis",dShowLightOffAxisPercent);
 
     //  if(_bCanEmit==true)
-device_changed(_pDevice,PARAMETERS_CHANGED);
-    static_cast<MainWindow*>(parent())->update_views(this,USER_INTERFACE_CHANGED,false);
+    device_changed(_pDevice,PARAMETERS_CHANGED);
+    static_cast<MainWindow*>(parent())->update_views(this,PARAMETERS_CHANGED,false);
 }

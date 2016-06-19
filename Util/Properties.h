@@ -31,8 +31,8 @@ public:
     void set(string sKey, double dValue);
     void set(string sKey, const vector<double>& vdValue);
 
-
     bool exist(string sKey);
+    void remove(string sKey);
 
     string get(string sKey);
     int get_int(string sKey);
@@ -41,6 +41,7 @@ public:
     double get_double(string sKey);
     vector<double> get_vector_double(string sKey);
 
+    const map<string,string>& all() const;
 private:
     map<string,string> _pairs;
 };

@@ -22,7 +22,7 @@ void DockImageQuality::device_changed(OpticalDevice* pDevice,int iReason)
 {
     assert(pDevice!=0);
 
-    if( (iReason!=PARAMETERS_CHANGED) && (iReason!=NEW_OPTICAL_DEVICE) )
+    if( (iReason!=OPTICAL_DEVICE_CHANGED) && (iReason!=NEW_OPTICAL_DEVICE) )
         return;
 
     const ImageQuality* pIQ=pDevice->get_image_quality();

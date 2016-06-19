@@ -160,7 +160,7 @@ void DockOptimizer::on_pushButton_clicked()
 
     // update results
     if( (result==eBetterSolutionFound)|| (result==eSolutionOnEdge) )
-        static_cast<MainWindow*>(parent())->update_views(this,PARAMETERS_CHANGED);
+        static_cast<MainWindow*>(parent())->update_views(this,OPTICAL_DEVICE_CHANGED);
 }
 /////////////////////////////////////////////////////////////
 void DockOptimizer::device_changed(OpticalDevice *pDevice,int iReason)

@@ -24,7 +24,7 @@ class FrameSideView : public QFrame
 public:
     FrameSideView(QWidget *parent = 0);
     virtual ~FrameSideView();
-    void device_changed(OpticalDevice *pDevice);
+    void device_changed(OpticalDevice *pDevice, int iReason);
 
     void fit_in_view();
     void zoom_in();

@@ -180,6 +180,9 @@ Its should stay under 1., so the light flow goes fully in the diffraction  spot,
        </item>
        <item row="1" column="0">
         <widget class="QSlider" name="hsImageFieldPos">
+         <property name="maximum">
+          <number>100</number>
+         </property>
          <property name="orientation">
           <enum>Qt::Horizontal</enum>
          </property>

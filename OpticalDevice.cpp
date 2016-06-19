@@ -539,10 +539,22 @@ void OpticalDevice::set(int iSurface,eSurfaceparameter eParam,double dParam)
     _bMustRetrace=true;
 }
 //////////////////////////////////////////////////////////////////////////////
-bool OpticalDevice::get_parameter(const string sKey,double & dValue)
+void OpticalDevice::set_parameter(const string & sKey,const string & sValue)
 {
-    auto iter= _sOtherParameters.find(sKey);
-    if( iter==_sOtherParameters.end())
+    _otherParameters[sKey]=sValue;
+}
+//////////////////////////////////////////////////////////////////////////////
+void OpticalDevice::set_parameter(const string & sKey,double dValue)
+{
+    stringstream ss;
+    ss << dValue;
+    _otherParameters[sKey]=ss.str();
+}
+//////////////////////////////////////////////////////////////////////////////
+bool OpticalDevice::get_parameter(const string& sKey,double & dValue)
+{
+    auto iter= _otherParameters.find(sKey);
+    if( iter==_otherParameters.end())
         return false;
 
     stringstream ss(iter->second);
@@ -550,10 +562,18 @@ bool OpticalDevice::get_parameter(const string sKey,double & dValue)
     return true; //todo test ss result
 }
 //////////////////////////////////////////////////////////////////////////////
-void OpticalDevice::set_parameter(const string sKey,double dValue)
+bool OpticalDevice::get_parameter(const string& sKey,string & sValue)
 {
-    stringstream ss;
-    ss << dValue;
-    _sOtherParameters[sKey]=ss.str();
+    auto iter= _otherParameters.find(sKey);
+    if( iter==_otherParameters.end())
+        return false;
+
+    sValue=iter->second;
+    return true;
+}
+//////////////////////////////////////////////////////////////////////////////
+const map<string,string>& OpticalDevice::all_parameters() const
+{
+    return _otherParameters;
 }
 //////////////////////////////////////////////////////////////////////////////

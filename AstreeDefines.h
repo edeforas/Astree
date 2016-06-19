@@ -14,8 +14,9 @@
 //device changed reasons
 #define NEW_OPTICAL_DEVICE 1
 #define OPTICAL_DEVICE_SAVED 2
-#define PARAMETERS_CHANGED 3
+#define OPTICAL_DEVICE_CHANGED 3
 #define COMMENT_CHANGED 4
 #define USER_INTERFACE_CHANGED 5
+#define PARAMETERS_CHANGED 6
 
 #endif

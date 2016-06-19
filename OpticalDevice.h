@@ -95,8 +95,11 @@ public:
     const ImageQuality *get_image_quality();
 
     //other parameters, not used in computation, saved in files
-    bool get_parameter(const string sKey,double & dValue);
-    void set_parameter(const string sKey,double dValue);
+    void set_parameter(const string& sKey,double dValue);
+    void set_parameter(const string& sKey,const string& sValue);
+    bool get_parameter(const string& sKey,double & dValue);
+    bool get_parameter(const string& sKey,string & sValue);
+    const map<string,string>& all_parameters() const;
 
 private:
     void initialize_light(Light *pLight, double dTilt, int iGridX, int iGridY);
@@ -121,7 +124,7 @@ private:
     ImageQuality _imageQuality;
 
     // other parameters
-    map<string,string> _sOtherParameters;
+    map<string,string> _otherParameters;
 };
 
 #endif

@@ -233,7 +233,7 @@ void MainWindow::update_views(void* pSender,int iReason,bool bMustSave)
         _pDockScatterPlot->device_changed(_pDevice,iReason);
     }
 
-    //   if (pSender!=(void*)_pDockSurfacesData) // call always for the auto diameter
+    //   if (pSender!=(void*)_pDockSurfacesData) // call always for the auto diameter TODO
     //  {
     _pDockSurfacesData->device_changed(_pDevice,iReason);
     // }
@@ -245,12 +245,12 @@ void MainWindow::update_views(void* pSender,int iReason,bool bMustSave)
 
     if (pSender!=(void*)_pFrameSideView)
     {
-        _pFrameSideView->device_changed(_pDevice);
+        _pFrameSideView->device_changed(_pDevice,iReason);
     }
 
     if(pSender!=_pDockCommentary)
     {
-        _pDockCommentary->device_changed(_pDevice);
+        _pDockCommentary->device_changed(_pDevice,iReason);
     }
 
     if(pSender!=_pDockImageQuality)
@@ -289,7 +289,7 @@ void MainWindow::on_actionScal_device_triggered()
 
         dmc.scale(_pDevice,sd.get_scale(),sd.get_scale_diameter(),sd.get_scale_focal());
         _bMustSave=true;
-        update_views(0,PARAMETERS_CHANGED);
+        update_views(0,OPTICAL_DEVICE_CHANGED);
         _pFrameSideView->fit_in_view();
     }
 }

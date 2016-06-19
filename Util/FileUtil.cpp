@@ -30,7 +30,7 @@ vector<string> FileUtil::list(string sPathAndMask) //TODO faire qq chose portabl
     HANDLE hfind;
     WIN32_FIND_DATAA wfd;
 
-    // Liste le contenu du répertoire
+    // Liste le contenu du repertoire
     hfind = FindFirstFileA(sPathAndMask.c_str(), &wfd );
     if (hfind != INVALID_HANDLE_VALUE)
     {
