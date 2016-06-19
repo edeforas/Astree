@@ -151,6 +151,17 @@ void DockScatterPlot::device_changed(OpticalDevice* pDevice, int iReason)
     if( (iReason!=PARAMETERS_CHANGED) && (iReason!=OPTICAL_DEVICE_CHANGED) && (iReason!=NEW_OPTICAL_DEVICE) )
         return;
 
+    double dPercentField=-1;
+    if(!pDevice->get_parameter("showLightOffAxis",dPercentField))
+        dPercentField=0.;
+
+    if(iReason==NEW_OPTICAL_DEVICE)
+    {
+        m_ui->hsImageFieldPos->blockSignals(true);
+        m_ui->hsImageFieldPos->setValue((int)dPercentField);
+        m_ui->hsImageFieldPos->blockSignals(false);
+    }
+
     QGraphicsScene* scene=m_ui->graphicsView->scene();
     scene->clear();
 
@@ -165,13 +176,8 @@ void DockScatterPlot::device_changed(OpticalDevice* pDevice, int iReason)
     }
 
     Light light;
-
-    double dPercentField=-1;
-    if(!pDevice->get_parameter("showLightOffAxis",dPercentField))
-        dPercentField=0.;
-
-    double dTilt=dPercentField*pDevice->half_field_of_view()/100.;
-    pDevice->compute_light(&light,pDevice->nb_surface()-1, dTilt,NB_POINTS_SCATTER_PLOT,NB_POINTS_SCATTER_PLOT);
+    double dTiltDegree=dPercentField*pDevice->half_field_of_view()/100.;
+    pDevice->compute_light(&light,pDevice->nb_surface()-1, dTiltDegree,NB_POINTS_SCATTER_PLOT,NB_POINTS_SCATTER_PLOT);
 
     ScatterPlot* sp=new ScatterPlot;
     sp->setZValue(10);
@@ -255,10 +261,7 @@ void DockScatterPlot::on_pushButton_3_clicked()
 
 void DockScatterPlot::on_hsImageFieldPos_valueChanged(int value)
 {
-    double dShowLightOffAxisPercent=value;
-    _pDevice->set_parameter("showLightOffAxis",dShowLightOffAxisPercent);
-
-    //  if(_bCanEmit==true)
+    _pDevice->set_parameter("showLightOffAxis",value); // in percent
     device_changed(_pDevice,PARAMETERS_CHANGED);
     static_cast<MainWindow*>(parent())->update_views(this,PARAMETERS_CHANGED,false);
 }
