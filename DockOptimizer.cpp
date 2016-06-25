@@ -1,6 +1,8 @@
 #include "DockOptimizer.h"
 #include "ui_DockOptimizer.h"
 
+#include <sstream>
+
 #include <QComboBox>
 #include <QCheckBox>
 
@@ -39,7 +41,7 @@ DockOptimizer::DockOptimizer(QWidget *parent) :
         ui->twParams->setCellWidget(i,0,qcbOptimize);
 
         QComboBox*  qcbParam=new QComboBox;
-        qcbParam->addItem("(none)");
+        qcbParam->addItem("");
         qcbParam->addItem("RCurv");
         qcbParam->addItem("Curvature");
         qcbParam->addItem("Conic");
@@ -50,9 +52,13 @@ DockOptimizer::DockOptimizer(QWidget *parent) :
         qcbParam->addItem("r8");
         qcbParam->addItem("r10");
 
-        //   qcbParam->setCurrentIndex(0);
         ui->twParams->setCellWidget(i,2,qcbParam);
-        //connect(qcbType,SIGNAL(activated(int)),this&,SLOT(onTypeChanged()));
+
+        QTableWidgetItem* pItemMin=new QTableWidgetItem;
+        ui->twParams->setItem(i,3,pItemMin);
+
+        QTableWidgetItem* pItemMax=new QTableWidgetItem;
+        ui->twParams->setItem(i,4,pItemMax);
     }
     ui->twParams->resizeColumnsToContents();
 }
@@ -81,32 +87,26 @@ void DockOptimizer::on_pushButton_clicked()
         QComboBox* qcbSurf=(QComboBox*)ui->twParams->cellWidget(i,1);
         int iSurface=qcbSurf->currentText().toInt(&bOk)-1;
         if(!bOk)
-            return;
+            continue;
 
         QComboBox* qcbParam=(QComboBox*)ui->twParams->cellWidget(i,2);
         std::string sParam=qcbParam->currentText().toStdString();
-        if(sParam=="(none)")
+        if(sParam=="")
             continue;
 
         QTableWidgetItem* pItemMin=ui->twParams->item(i,3);
         if(pItemMin==0)
             continue;
-        if(pItemMin->text().size()==0)
+        double dMin=pItemMin->text().toDouble(&bOk);
+        if(!bOk)
             continue;
 
         QTableWidgetItem* pItemMax=ui->twParams->item(i,4);
         if(pItemMax==0)
             continue;
-        if(pItemMax->text().size()==0)
-            continue;
-
-        double dMin=pItemMin->text().toDouble(&bOk);
-        if(!bOk)
-            return;
-
         double dMax=pItemMax->text().toDouble(&bOk);
         if(!bOk)
-            return;
+            continue;
 
         _dopt.add_parameter(iSurface,sParam,dMin,dMax);
     }
@@ -174,18 +174,95 @@ void DockOptimizer::device_changed(OpticalDevice *pDevice,int iReason)
         for(int i=0;i<NB_PARAM_MAX;i++)
         {
             QComboBox*  qcbSurf=new QComboBox;
+            qcbSurf->addItem("");
             for(int i=0;i<iNbSurfaces;i++)
                 qcbSurf->addItem(QString::number(i+1));
 
             ui->twParams->setCellWidget(i,1,qcbSurf);
         }
         _iNbSurfaces=iNbSurfaces;
+
+        //init with parameters
+        if(iReason==NEW_OPTICAL_DEVICE)
+            load_from_device();
     }
 
     if( (iReason!=COMMENT_CHANGED) && (iReason!=OPTICAL_DEVICE_SAVED) )
     {
         ui->lblResult->setText("...");
         ui->lblResult->setStyleSheet("color: black;");
+    }
+}
+/////////////////////////////////////////////////////////////
+void DockOptimizer::save_to_device()
+{
+    if(_pDevice==0)
+        return;
+
+    for(int iRow=0;iRow<ui->twParams->rowCount();iRow++)
+    {
+        stringstream ss;
+        ss << iRow;
+
+        //todo write only if no default parameter
+        //todo clean parameter if void
+
+        QCheckBox* qcbOptimize=(QCheckBox*)ui->twParams->cellWidget(iRow,0);
+        if(qcbOptimize)
+            _pDevice->set_parameter("optimizer."+ss.str()+".checked",qcbOptimize->isChecked()?1:0);
+
+        QComboBox* qcbSurf=(QComboBox*)ui->twParams->cellWidget(iRow,1);
+        if(qcbSurf)
+            _pDevice->set_parameter("optimizer."+ss.str()+".surface",qcbSurf->currentText().toStdString());
+
+        QComboBox* qcbParam=(QComboBox*)ui->twParams->cellWidget(iRow,2);
+        if(qcbParam)
+            _pDevice->set_parameter("optimizer."+ss.str()+".parameter",qcbParam->currentText().toStdString());
+
+        QTableWidgetItem* pItemMin=ui->twParams->item(iRow,3);
+        if(pItemMin)
+            _pDevice->set_parameter("optimizer."+ss.str()+".min",pItemMin->text().toStdString());
+
+        QTableWidgetItem* pItemMax=ui->twParams->item(iRow,4);
+        if(pItemMax)
+            _pDevice->set_parameter("optimizer."+ss.str()+".max",pItemMax->text().toStdString());
+    }
+}
+/////////////////////////////////////////////////////////////
+void DockOptimizer::load_from_device()
+{
+    if(_pDevice==0)
+        return;
+
+    for(int iRow=0;iRow<ui->twParams->rowCount();iRow++)
+    {
+        stringstream ss;
+        ss << iRow;
+
+        QCheckBox* qcbOptimize=(QCheckBox*)ui->twParams->cellWidget(iRow,0);
+        string sOptimize="0";
+        _pDevice->get_parameter("optimizer."+ss.str()+".checked",sOptimize);
+        qcbOptimize->setChecked(sOptimize!="0");
+
+        QComboBox* qcbSurf=(QComboBox*)ui->twParams->cellWidget(iRow,1);
+        string sSurface;
+        _pDevice->get_parameter("optimizer."+ss.str()+".surface",sSurface);
+        qcbSurf->setCurrentText(sSurface.c_str());
+
+        QComboBox* qcbParam=(QComboBox*)ui->twParams->cellWidget(iRow,2);
+        string sParam;
+        _pDevice->get_parameter("optimizer."+ss.str()+".parameter",sParam);
+        qcbParam->setCurrentText(sParam.c_str());
+
+        QTableWidgetItem* pItemMin=ui->twParams->item(iRow,3);
+        string sMin;
+        _pDevice->get_parameter("optimizer."+ss.str()+".min",sMin);
+        pItemMin->setText(sMin.c_str());
+
+        QTableWidgetItem* pItemMax=ui->twParams->item(iRow,4);
+        string sMax;
+        _pDevice->get_parameter("optimizer."+ss.str()+".max",sMax);
+        pItemMax->setText(sMax.c_str());
     }
 }
 /////////////////////////////////////////////////////////////

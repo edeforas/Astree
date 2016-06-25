@@ -105,6 +105,7 @@ bool MainWindow::ask_save_and_action()
 
         if (iRet==QMessageBox::Yes)
         {
+            _pDockOptimizer->save_to_device();
             DeviceIo::save(_sFileName,_pDevice);
             _bMustSave=false;
             update_views(0,OPTICAL_DEVICE_SAVED);
@@ -168,6 +169,7 @@ void MainWindow::on_actionSave_triggered()
         on_actionSave_as_triggered();
     else
     {
+        _pDockOptimizer->save_to_device();
         DeviceIo::save(_sFileName,_pDevice);
         _bMustSave=false;
         update_views(0,OPTICAL_DEVICE_SAVED,false);
@@ -184,6 +186,7 @@ void MainWindow::on_actionSave_as_triggered()
     if (sFileName.empty()==false)
     {
         _sFileName=sFileName;
+        _pDockOptimizer->save_to_device();
         DeviceIo::save(_sFileName,_pDevice);
         _bMustSave=false;
         update_views(0,OPTICAL_DEVICE_SAVED,false);
