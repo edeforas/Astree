@@ -5,25 +5,27 @@
 #ifndef _MaterialSellmeier_
 #define _MaterialSellmeier_
 
-#include "Material.h"
+#include "Glass.h"
 
-class MaterialSellmeier : public Material
+class GlassSellmeier : public Glass
 {
 public:
-    MaterialSellmeier();
-    MaterialSellmeier(const MaterialSellmeier& m);
+    GlassSellmeier();
+    GlassSellmeier(const GlassSellmeier& m);
+    virtual Glass* clone() const;
 
-    virtual Material* clone() const;
+    void set_coefs(double B1,double B2,double B3,double C1,double C2,double C3);
 
+protected:
+    virtual double calc_index(double dLambdaMicrons);
+
+private:
     double _B1;
     double _B2;
     double _B3;
     double _C1;
     double _C2;
     double _C3;
-
-protected:
-    virtual double calc_index(double dLambdaMicrons);
 };
 
 #endif

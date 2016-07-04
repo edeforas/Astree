@@ -5,10 +5,10 @@
 #include "MaterialIo.h"
 #include "Properties.h"
 
-#include "MaterialSellmeier.h"
+#include "GlassSellmeier.h"
 
 //////////////////////////////////////////////////////////////////////////////
-Material* MaterialIo::load(string sFile)
+Glass* MaterialIo::load(string sFile)
 {
     Properties p;
     if(p.load(sFile)==false)
@@ -27,9 +27,9 @@ Material* MaterialIo::load(string sFile)
         double C2=p.get_double("C2");
         double C3=p.get_double("C3");
 
-        MaterialSellmeier* m=new MaterialSellmeier;
+        GlassSellmeier* m=new GlassSellmeier;
         m->set_name(sName);
-
+/*
         m->_B1=B1;
         m->_B2=B2;
         m->_B3=B3;
@@ -38,7 +38,7 @@ Material* MaterialIo::load(string sFile)
         m->_C3=C3;
 
         m->set_solid_color(iSolidColor);
-
+*/
         return m;
     }
 

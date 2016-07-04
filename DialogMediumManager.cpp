@@ -1,8 +1,8 @@
 #include "DialogMediumManager.h"
 #include "ui_DialogMediumManager.h"
 
-#include "MaterialManager.h"
-#include "Material.h"
+#include "GlassManager.h"
+#include "Glass.h"
 DialogMediumManager::DialogMediumManager(QWidget *parent) :
     QDialog(parent),
     ui(new Ui::DialogMediumManager)
@@ -10,7 +10,7 @@ DialogMediumManager::DialogMediumManager(QWidget *parent) :
     ui->setupUi(this);
 
     vector<string> lsM;
-    MaterialManager::singleton().list_available(lsM);
+    GlassManager::singleton().list_available(lsM);
 
     ui->twMedium->setRowCount(lsM.size());
     ui->twMedium->setColumnCount(4);
@@ -24,7 +24,7 @@ DialogMediumManager::DialogMediumManager(QWidget *parent) :
 
     for(unsigned int i=0;i<lsM.size();i++)
     {
-        Material* m=MaterialManager::singleton().create(lsM[i]);
+        Glass* m=GlassManager::singleton().create(lsM[i]);
 
         QTableWidgetItem* qwti=new QTableWidgetItem(m->name().c_str());
         ui->twMedium->setItem(i,0,qwti);

@@ -9,7 +9,7 @@
 #include <cassert>
 #include <sstream>
 #include "OpticalDevice.h"
-#include "MaterialManager.h"
+#include "GlassManager.h"
 #include "MainWindow.h"
 #include "AstreeDefines.h"
 
@@ -158,7 +158,7 @@ void DockSurfacesData::update_table()
     _bCanEmit=false;
 
     vector<string> vsMaterial;
-    MaterialManager::singleton().list_available(vsMaterial);
+    GlassManager::singleton().list_available(vsMaterial);
 
     m_ui->twSurfacesDatas->setRowCount(_pDevice->nb_surface());
 

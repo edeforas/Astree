@@ -13,7 +13,7 @@ using namespace std;
 #define CURVATURE_FLAT 1e-20
 
 class Light;
-class Material;
+class Glass;
 class Photon;
 
 class Surface
@@ -95,9 +95,9 @@ private:
     bool compute_normal(double x,double y, double z,double& nx,double& ny,double &nz);
     void update_geometry();
 
-    Material* _pMaterial;
-    Material* _pMaterialPrev;
-    Material* _pMaterialNext;
+    Glass* _pMaterial;
+    Glass* _pMaterialPrev;
+    Glass* _pMaterialNext;
 
     double _dConic;
     double _dCurvature;

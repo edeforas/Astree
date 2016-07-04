@@ -12,10 +12,10 @@ MaterialVacuum::MaterialVacuum()
     _iSolidColor=0xf0f0f0;
 }
 //////////////////////////////////////////////////////////////////////////////
-MaterialVacuum::MaterialVacuum(const MaterialVacuum& m):  Material(m)
+MaterialVacuum::MaterialVacuum(const MaterialVacuum& m):  Glass(m)
 { }
 //////////////////////////////////////////////////////////////////////////////
-Material* MaterialVacuum::clone() const
+Glass* MaterialVacuum::clone() const
 {
     return new MaterialVacuum(*this);
 }

@@ -5,15 +5,15 @@
 #ifndef _MaterialWater_
 #define _MaterialWater_
 
-#include "Material.h"
+#include "Glass.h"
 
-class MaterialWater : public Material
+class MaterialWater : public Glass
 {
 public:
     MaterialWater();
     MaterialWater(const MaterialWater& m);
 
-    virtual Material* clone() const;
+    virtual Glass* clone() const;
 
 protected:
     virtual double calc_index(double dLambda);

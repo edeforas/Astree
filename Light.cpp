@@ -9,7 +9,7 @@ using namespace std;
 
 #include "Light.h"
 #include "Photon.h"
-#include "MaterialManager.h"
+#include "GlassManager.h"
 
 #include "Vector3D.h"
 
@@ -65,7 +65,7 @@ Light::Light(/*int iDimX,int iDimY*/)
 //////////////////////////////////////////////////////////////////////////////
 Light::~Light()
 {
-    MaterialManager::singleton().destroy(_pFirstMaterial);
+    GlassManager::singleton().destroy(_pFirstMaterial);
 }
 //////////////////////////////////////////////////////////////////////////////
 int Light::nb_photon()
@@ -165,8 +165,8 @@ void Light::init()
         }
     }
 
-    MaterialManager::singleton().destroy(_pFirstMaterial);
-    _pFirstMaterial=MaterialManager::singleton().create("Air");
+    GlassManager::singleton().destroy(_pFirstMaterial);
+    _pFirstMaterial=GlassManager::singleton().create("Air");
     _pMaterial=_pFirstMaterial;
     _bMustInit=false;
 }
@@ -287,14 +287,14 @@ void Light::set_nb_photons(int iNbX,int iNbY)
     _bMustInit=true;
 }
 //////////////////////////////////////////////////////////////////////////////
-Material& Light::material()
+Glass& Light::material()
 {
     init();
     assert(_pMaterial);
     return *_pMaterial;
 }
 //////////////////////////////////////////////////////////////////////////////
-void Light::set_material(Material* pM)
+void Light::set_material(Glass* pM)
 {
     assert(pM!=0);
     _pMaterial=pM;

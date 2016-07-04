@@ -9,26 +9,27 @@
 #include <vector>
 using namespace std;
 
-class Material;
+class Glass;
 
-class MaterialManager
+class GlassManager
 {
 public:
-    static MaterialManager& singleton();
-    Material* create(string sMaterial) const;
-    void destroy(Material* pMaterial);
+    static GlassManager& singleton();
+    Glass* create(string sMaterial) const;
+    void destroy(Glass* pMaterial);
 
     void list_available(vector<string>& vsAvailable);
 
     bool load(string sFile);
     unsigned int solid_color(string sMaterial);
 
+    void inject(Glass* pGlass); //take ownership of pGlass
 private:
-    MaterialManager();
-    ~MaterialManager();
+    GlassManager();
+    ~GlassManager();
 
-    static MaterialManager* _pMaterialManager;
-    vector<Material*> _vMaterial;
+    static GlassManager* _pGlassManager;
+    vector<Glass*> _vGlass; // todo use map
 };
 
 #endif

@@ -9,7 +9,7 @@
         <translation>Gestionnaire de verres</translation>
     </message>
     <message>
-        <location filename="DialogMediumManager.ui" line="44"/>
+        <location filename="DialogMediumManager.ui" line="47"/>
         <source>Ok</source>
         <translation>Ok</translation>
     </message>
@@ -445,24 +445,24 @@ dans ce cas ,la lumi√®re se concentre dans la tache de diffraction et la qualit√
 <context>
     <name>MainWindow</name>
     <message>
-        <location filename="MainWindow.cpp" line="145"/>
-        <location filename="MainWindow.cpp" line="182"/>
+        <location filename="MainWindow.cpp" line="156"/>
+        <location filename="MainWindow.cpp" line="194"/>
         <source>Open Astree File</source>
         <translation>Ouvrir un fichier Astree</translation>
     </message>
     <message>
-        <location filename="MainWindow.cpp" line="145"/>
-        <location filename="MainWindow.cpp" line="182"/>
+        <location filename="MainWindow.cpp" line="156"/>
+        <location filename="MainWindow.cpp" line="194"/>
         <source>Astree Files (*.astree)</source>
         <translation>Fichier Astree (*.astree)</translation>
     </message>
     <message>
-        <location filename="MainWindow.cpp" line="302"/>
+        <location filename="MainWindow.cpp" line="315"/>
         <source>Import ZMX File</source>
         <translation>Importer un fichier ZMX</translation>
     </message>
     <message>
-        <location filename="MainWindow.cpp" line="302"/>
+        <location filename="MainWindow.cpp" line="315"/>
         <source>ZMX Files (*.zmx)</source>
         <translation>Fichier ZMX (*.zmx)</translation>
     </message>

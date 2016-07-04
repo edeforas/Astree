@@ -10,7 +10,7 @@
 using namespace std;
 
 class Photon;
-class Material;
+class Glass;
 
 class Light
 {
@@ -26,8 +26,8 @@ public:
 
     void set_tilt(double dTiltX,double dTiltY);
     void get_tilt(double& dTiltX,double& dTiltY) const;
-    Material& material();
-    void set_material(Material* pM);
+    Glass& material();
+    void set_material(Glass* pM);
 
     void set_colors(const string & vsAllColors);
     static void calc_colors(string sColors,vector<double>& vdLambda,vector<int>& vdVisualColors);
@@ -51,8 +51,8 @@ private:
     void init();
 
     vector<Photon> _vPhotons;
-    Material* _pFirstMaterial;
-    Material* _pMaterial;
+    Glass* _pFirstMaterial;
+    Glass* _pMaterial;
     bool _bMustInit;
     double _dTiltX,_dTiltY;
     int _iDimX,_iDimY,_iNbPhotons;

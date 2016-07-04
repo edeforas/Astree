@@ -5,15 +5,15 @@
 #ifndef _MaterialAir_
 #define _MaterialAir_
 
-#include "Material.h"
+#include "Glass.h"
 
-class MaterialAir : public Material
+class MaterialAir : public Glass
 {
 public:
     MaterialAir();
     MaterialAir(const MaterialAir& m);
 
-    virtual Material* clone() const;
+    virtual Glass* clone() const;
 
 protected:
     virtual double calc_index(double dLambda);

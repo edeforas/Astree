@@ -8,14 +8,14 @@
 #include <string>
 using namespace std;
 
-class Material
+class Glass
 {
 public:
-    Material();
-    Material(const Material& m);
+    Glass();
+    Glass(const Glass& m);
 
-    virtual Material* clone() const =0;
-    virtual ~Material();
+    virtual Glass* clone() const =0;
+    virtual ~Glass();
 
     double index(double dLambdaMicrons);
     int solid_color() const;

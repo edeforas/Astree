@@ -194,7 +194,6 @@ OpticalDevice* DeviceIoZmx::import(string sFile)
         pOD->set(0,DIAMETER,dApertureDiameter*dDimensionFactor);
     }
 
-
     return pOD;
 }
 ////////////////////////////////////////////////////////////////////////////////

@@ -2,19 +2,18 @@
 // please see GPL.html for more details and licensing issues
 // copyright Etienne de Foras ( the author )  mailto: etienne.deforas@gmail.com
 
-#ifndef _MaterialIo_
-#define _MaterialIo_
+#ifndef GlassCatalogIO_
+#define GlassCatalogIO_
 
 #include <string>
 using namespace std;
 
-class Glass;
+class GlassManager;
 
-class MaterialIo
+class GlassCatalogIO
 {
 public:
-    static Glass* load(string sFile);
-
+    static bool load(string sFile, GlassManager &pManager);
 };
 
 #endif

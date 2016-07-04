@@ -18,7 +18,7 @@
 #include "OpticalDevice.h"
 #include "Light.h"
 #include "Photon.h"
-#include "Materialmanager.h"
+#include "GlassManager.h"
 ///////////////////////////////////////////////////////////////////////////////
 class MySceneFrame : public QGraphicsScene
 {
@@ -146,7 +146,7 @@ void FrameSideView::device_changed(OpticalDevice* pDevice, int iReason)
             scene->addPolygon(polygon2,qp,QBrush(QColor(QRgb(iLastSolidColor))))->setZValue(10);
         }
 
-        iLastSolidColor=MaterialManager::singleton().solid_color(_pDevice->type(iSurf));
+        iLastSolidColor=GlassManager::singleton().solid_color(_pDevice->type(iSurf));
 
         viX1=viXNew1;
         viX2=viXNew2;

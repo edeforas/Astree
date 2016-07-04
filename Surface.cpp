@@ -10,8 +10,8 @@
 #include "Vector3D.h"
 #include "Photon.h"
 #include "Light.h"
-#include "MaterialManager.h"
-#include "Material.h"
+#include "GlassManager.h"
+#include "Glass.h"
 
 inline double sqr(double a) { return a*a; }
 
@@ -253,9 +253,12 @@ bool Surface::set_type(string sType)
     assert(sType!="");
     if ( (sType!="reflect") && (sType!="stop") && (sType!="image") && (sType!="transmit") && (sType!="void") && (sType!="perfect_lens") && (sType!="perfect_mirror") )
     {
-        MaterialManager::singleton().destroy(_pMaterial);
-        _pMaterial=MaterialManager::singleton().create(sType);
+        GlassManager::singleton().destroy(_pMaterial);
+        _pMaterial=GlassManager::singleton().create(sType);
         assert(_pMaterial!=0);
+
+        //todo add glass catalog managment
+
     }
     else
         _pMaterial=0;

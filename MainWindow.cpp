@@ -22,9 +22,11 @@
 #include "FrameSideView.h"
 #include "AstreeDefines.h"
 #include "FileUtil.h"
-#include "MaterialManager.h"
+#include "GlassManager.h"
 #include "DialogMediumManager.h"
 #include "DialogScaleDevice.h"
+
+#include "GlassCatalogIo.h"
 
 #include "DeviceScaling.h"
 //////////////////////////////////////////////////////////////////////////////
@@ -37,16 +39,24 @@ MainWindow::MainWindow(QWidget *parent)
     dLightTilt=0.;
 
     string sExepath=FileUtil::get_path(FileUtil::get_executable_path());
-
+/*
     //load all materials
     vector<string> vsMaterials=FileUtil::list(sExepath+"\\glass\\*.glass");
-
     for(unsigned int i=0;i<vsMaterials.size();i++)
     {
-        bool bOk=MaterialManager::singleton().load(sExepath+"\\glass\\"+vsMaterials[i]);
+        bool bOk=GlassManager::singleton().load(sExepath+"\\glass\\"+vsMaterials[i]);
 
         if(bOk==false)
             QMessageBox::warning(this,"Warning:","Unable to load material file: "+QString(vsMaterials[i].c_str()));
+    }
+*/
+    //load all glass catalog
+    vector<string> vsCatalog=FileUtil::list(sExepath+"\\glass\\*.agf");
+    for(unsigned int i=0;i<vsCatalog.size();i++)
+    {
+        bool bOk=GlassCatalogIO::load(sExepath+"\\glass\\"+vsCatalog[i],GlassManager::singleton());
+        if(bOk==false)
+            QMessageBox::warning(this,"Warning:","Unable to load glass catalog: "+QString(vsCatalog[i].c_str()));
     }
 
     _bMustSave=false;

@@ -5,15 +5,15 @@
 #ifndef _MaterialUnknow_
 #define _MaterialUnknow_
 
-#include "Material.h"
+#include "Glass.h"
 
-class MaterialUnknow : public Material
+class MaterialUnknow : public Glass
 {
 public:
     MaterialUnknow();
     MaterialUnknow(const MaterialUnknow& m);
 
-    virtual Material* clone() const;
+    virtual Glass* clone() const;
 
 protected:
     virtual double calc_index(double dLambda);

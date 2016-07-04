@@ -12,10 +12,10 @@ MaterialWater::MaterialWater()
     _iSolidColor=0xf0f0f0;
 }
 //////////////////////////////////////////////////////////////////////////////
-MaterialWater::MaterialWater(const MaterialWater& m):  Material(m)
+MaterialWater::MaterialWater(const MaterialWater& m):  Glass(m)
 { }
 //////////////////////////////////////////////////////////////////////////////
-Material* MaterialWater::clone() const
+Glass* MaterialWater::clone() const
 {
     return new MaterialWater(*this);
 }

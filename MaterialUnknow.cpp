@@ -12,10 +12,10 @@ MaterialUnknow::MaterialUnknow()
     _iSolidColor=0xf0f0f0;
 }
 //////////////////////////////////////////////////////////////////////////////
-MaterialUnknow::MaterialUnknow(const MaterialUnknow& m):  Material(m)
+MaterialUnknow::MaterialUnknow(const MaterialUnknow& m):  Glass(m)
 { }
 //////////////////////////////////////////////////////////////////////////////
-Material* MaterialUnknow::clone() const
+Glass* MaterialUnknow::clone() const
 {
     return new MaterialUnknow(*this);
 }

@@ -2,8 +2,8 @@
 // please see GPL.html for more details and licensing issues
 // copyright Etienne de Foras ( the author )  mailto: etienne.deforas@gmail.com
 
-#include "MaterialManager.h"
-#include "Material.h"
+#include "GlassManager.h"
+#include "Glass.h"
 #include "MaterialAir.h"
 #include "MaterialVacuum.h"
 #include "MaterialWater.h"
@@ -12,74 +12,79 @@
 
 #include <cassert>
 
-MaterialManager* MaterialManager::_pMaterialManager=0;
+GlassManager* GlassManager::_pGlassManager=0;
 
 //////////////////////////////////////////////////////////////////////////////
-MaterialManager::MaterialManager()
+GlassManager::GlassManager()
 {
-    _vMaterial.push_back(new MaterialAir);
-    _vMaterial.push_back(new MaterialVacuum);
-    _vMaterial.push_back(new MaterialWater);
+    _vGlass.push_back(new MaterialAir);
+    _vGlass.push_back(new MaterialVacuum);
+    _vGlass.push_back(new MaterialWater);
 }
 //////////////////////////////////////////////////////////////////////////////
-MaterialManager::~MaterialManager()
+GlassManager::~GlassManager()
 {
     // TODO delete _vMaterial
 }
 //////////////////////////////////////////////////////////////////////////////
-Material* MaterialManager::create(string sMaterial) const
+Glass* GlassManager::create(string sMaterial) const
 {
-    for(unsigned int i=0;i<_vMaterial.size();i++)
+    for(unsigned int i=0;i<_vGlass.size();i++)
     {
-        if(_vMaterial[i]->name()==sMaterial)
-            return _vMaterial[i]->clone();
+        if(_vGlass[i]->name()==sMaterial)
+            return _vGlass[i]->clone();
     }
 
     //error case
-    Material* pM=new MaterialUnknow;
+    Glass* pM=new MaterialUnknow;
     pM->set_formulae("placeholder for "+sMaterial);
     return pM;
 }
 //////////////////////////////////////////////////////////////////////////////
-void MaterialManager::destroy(Material* pMaterial)
+void GlassManager::destroy(Glass* pMaterial)
 {
     delete pMaterial;
 }
 //////////////////////////////////////////////////////////////////////////////
-MaterialManager& MaterialManager::singleton()
+GlassManager& GlassManager::singleton()
 {
-    if(_pMaterialManager==0)
-        _pMaterialManager= new MaterialManager; //TODO delete at exit
+    if(_pGlassManager==0)
+        _pGlassManager= new GlassManager; //TODO delete at exit
 
-    assert(_pMaterialManager);
-    return *_pMaterialManager;
+    assert(_pGlassManager);
+    return *_pGlassManager;
 }
 //////////////////////////////////////////////////////////////////////////////
-void MaterialManager::list_available(vector<string>& vsAvailable)
+void GlassManager::list_available(vector<string>& vsAvailable)
 {
     vsAvailable.clear();
-    for(unsigned int i=0;i<_vMaterial.size();i++)
-        vsAvailable.push_back(_vMaterial[i]->name());
+    for(unsigned int i=0;i<_vGlass.size();i++)
+        vsAvailable.push_back(_vGlass[i]->name());
 }
 //////////////////////////////////////////////////////////////////////////////
-bool MaterialManager::load(string sFile)
+bool GlassManager::load(string sFile)
 {
-    Material* pMat=MaterialIo::load(sFile);
+    Glass* pMat=MaterialIo::load(sFile);
     if(pMat==0)
         return false;
 
     //TODO verifier existence avant ajout
-    _vMaterial.push_back(pMat);
+    _vGlass.push_back(pMat);
     return true;
 }
 //////////////////////////////////////////////////////////////////////////////
-unsigned int MaterialManager::solid_color(string sMaterial)
+unsigned int GlassManager::solid_color(string sMaterial)
 {
-    for(unsigned int i=0;i<_vMaterial.size();i++)
+    for(unsigned int i=0;i<_vGlass.size();i++)
     {
-        if(_vMaterial[i]->name()==sMaterial)
-            return _vMaterial[i]->solid_color();
+        if(_vGlass[i]->name()==sMaterial)
+            return _vGlass[i]->solid_color();
     }
     return 0xffffff;
+}
+//////////////////////////////////////////////////////////////////////////////
+void GlassManager::inject(Glass* pGlass) //take ownership of pGlass
+{
+  _vGlass.push_back(pGlass);
 }
 //////////////////////////////////////////////////////////////////////////////

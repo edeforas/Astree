@@ -12,10 +12,10 @@ MaterialAir::MaterialAir()
     _iSolidColor=0xffffff;
 }
 //////////////////////////////////////////////////////////////////////////////
-MaterialAir::MaterialAir(const MaterialAir& m):  Material(m)
+MaterialAir::MaterialAir(const MaterialAir& m):  Glass(m)
 { }
 //////////////////////////////////////////////////////////////////////////////
-Material* MaterialAir::clone() const
+Glass* MaterialAir::clone() const
 {
     return new MaterialAir(*this);
 }

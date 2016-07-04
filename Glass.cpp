@@ -2,10 +2,10 @@
 // please see GPL.html for more details and licensing issues
 // copyright Etienne de Foras ( the author )  mailto: etienne.deforas@gmail.com
 
-#include "Material.h"
+#include "Glass.h"
 
 //////////////////////////////////////////////////////////////////////////////
-Material::Material():
+Glass::Glass():
     _sName("unknow"),
     _sFormulae("unknow"),
     _iSolidColor(0),
@@ -13,7 +13,7 @@ Material::Material():
     _dLastIndex(-1.)
 { }
 //////////////////////////////////////////////////////////////////////////////
-Material::Material(const Material& m):
+Glass::Glass(const Glass& m):
     _sName(m._sName),
     _sFormulae(m._sFormulae)
 {
@@ -22,10 +22,10 @@ Material::Material(const Material& m):
     _dLastLambda=0.;
 }
 //////////////////////////////////////////////////////////////////////////////
-Material::~Material()
+Glass::~Glass()
 { }
 //////////////////////////////////////////////////////////////////////////////
-double Material::index(double dLambdaMicrons)
+double Glass::index(double dLambdaMicrons)
 {
     if(dLambdaMicrons!=_dLastLambda)
     {
@@ -36,37 +36,37 @@ double Material::index(double dLambdaMicrons)
     return _dLastIndex;
 }
 //////////////////////////////////////////////////////////////////////////////
-string Material::name() const
+string Glass::name() const
 {
     return _sName;
 }
 //////////////////////////////////////////////////////////////////////////////
-void Material::set_name(string sName)
+void Glass::set_name(string sName)
 {
     _sName=sName;
 }
 //////////////////////////////////////////////////////////////////////////////
-void Material::set_formulae(string sFormulae)
+void Glass::set_formulae(string sFormulae)
 {
     _sFormulae=sFormulae;
 }
 //////////////////////////////////////////////////////////////////////////////
-int Material::solid_color() const
+int Glass::solid_color() const
 {
     return _iSolidColor;
 }
 //////////////////////////////////////////////////////////////////////////////
-void Material::set_solid_color(int iSolidColor)
+void Glass::set_solid_color(int iSolidColor)
 {
     _iSolidColor=iSolidColor;
 }
 //////////////////////////////////////////////////////////////////////////////
-string Material::formulae() const
+string Glass::formulae() const
 {
     return _sFormulae;
 }
 //////////////////////////////////////////////////////////////////////////////
-void Material::compute_abbe_number(double &Nd,double& Vd)
+void Glass::compute_abbe_number(double &Nd,double& Vd)
 {
     double dLambdaD=583.9*1e-3; //sodium
     double dLambdaF=486.1*1e-3; //hydrogen1

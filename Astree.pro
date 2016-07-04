@@ -14,6 +14,7 @@ SOURCES += main.cpp \
     MainWindow.cpp \
     DockLightProperties.cpp \
     FrameSideView.cpp \
+    GlassCatalogIo.cpp \
     DockScatterPlot.cpp \
     DockSurfacesData.cpp \
     DockCommentary.cpp \
@@ -29,7 +30,10 @@ SOURCES += main.cpp \
     ImageQuality.cpp \
     DockOptimizer.cpp \
     DeviceOptimizer.cpp \
-    Util/FileUtil.cpp
+    Util/FileUtil.cpp \
+    Glass.cpp \
+    GlassManager.cpp \
+    GlassSellmeier.cpp
 	
 HEADERS += MainWindow.h \
     DockLightProperties.h \
@@ -50,7 +54,11 @@ HEADERS += MainWindow.h \
     DockImageQuality.h \
     ImageQuality.h \
     DockOptimizer.h \
-    DeviceOptimizer.h
+    DeviceOptimizer.h \
+    GlassManager.h \
+    GlassCatalogIo.h \
+    Glass.h \
+    GlassSellmeier.h
 	
 FORMS += MainWindow.ui \
     DockLightProperties.ui \
@@ -72,12 +80,9 @@ SOURCES += \
     Referential.cpp \
     Light.cpp \
     Photon.h \
-    MaterialSellmeier.cpp \
-    MaterialManager.cpp \
     MaterialUnknow.cpp \
     MaterialAir.cpp \
     MaterialWater.cpp \
-    Material.cpp \
     Util/Properties.cpp
 
 HEADERS += \
@@ -86,12 +91,9 @@ HEADERS += \
     Referential.h \
     Light.h \
     Photon.h \
-    MaterialSellmeier.h \
-    MaterialManager.h \
     MaterialAir.h \
     MaterialWater.h \
     MaterialUnknow.h \
-    Material.h \
     Util/Properties.h \
     Util/Vector3D.h \
     AstreeDefines.h

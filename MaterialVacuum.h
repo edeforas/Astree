@@ -5,15 +5,15 @@
 #ifndef _MaterialVacuum_
 #define _MaterialVacuum_
 
-#include "Material.h"
+#include "Glass.h"
 
-class MaterialVacuum : public Material
+class MaterialVacuum : public Glass
 {
 public:
     MaterialVacuum();
     MaterialVacuum(const MaterialVacuum& m);
 
-    virtual Material* clone() const;
+    virtual Glass* clone() const;
 
 protected:
     virtual double calc_index(double dLambda);

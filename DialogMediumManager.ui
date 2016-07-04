@@ -17,6 +17,9 @@
    <iconset resource="Astree.qrc">
     <normaloff>:/Astree/Astree.ico</normaloff>:/Astree/Astree.ico</iconset>
   </property>
+  <property name="sizeGripEnabled">
+   <bool>true</bool>
+  </property>
   <layout class="QGridLayout" name="gridLayout">
    <item row="0" column="0">
     <layout class="QVBoxLayout" name="verticalLayout">
