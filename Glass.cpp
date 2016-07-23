@@ -6,6 +6,7 @@
 
 //////////////////////////////////////////////////////////////////////////////
 Glass::Glass():
+    _sMaker("unknow"),
     _sName("unknow"),
     _sFormulae("unknow"),
     _iSolidColor(0),
@@ -14,6 +15,7 @@ Glass::Glass():
 { }
 //////////////////////////////////////////////////////////////////////////////
 Glass::Glass(const Glass& m):
+    _sMaker(m._sMaker),
     _sName(m._sName),
     _sFormulae(m._sFormulae)
 {
@@ -34,6 +36,16 @@ double Glass::index(double dLambdaMicrons)
     }
 
     return _dLastIndex;
+}
+//////////////////////////////////////////////////////////////////////////////
+string Glass::maker() const
+{
+    return _sMaker;
+}
+//////////////////////////////////////////////////////////////////////////////
+void Glass::set_maker(string sMaker)
+{
+    _sMaker=sMaker;
 }
 //////////////////////////////////////////////////////////////////////////////
 string Glass::name() const
@@ -68,9 +80,9 @@ string Glass::formulae() const
 //////////////////////////////////////////////////////////////////////////////
 void Glass::compute_abbe_number(double &Nd,double& Vd)
 {
-    double dLambdaD=583.9*1e-3; //sodium
-    double dLambdaF=486.1*1e-3; //hydrogen1
-    double dLambdaC=656.3*1e-3; //hydrogen2
+    double dLambdaD=583.9*1e-3; //sodium in microns
+    double dLambdaF=486.1*1e-3; //hydrogen1 in microns
+    double dLambdaC=656.3*1e-3; //hydrogen2 in microns
 
     Nd=index(dLambdaD);
     double Nf=index(dLambdaF);

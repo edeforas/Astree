@@ -20,7 +20,6 @@ public:
 
     void list_available(vector<string>& vsAvailable);
 
-    bool load(string sFile);
     unsigned int solid_color(string sMaterial);
 
     void inject(Glass* pGlass); //take ownership of pGlass

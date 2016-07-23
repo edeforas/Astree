@@ -18,7 +18,6 @@ SOURCES += main.cpp \
     DockScatterPlot.cpp \
     DockSurfacesData.cpp \
     DockCommentary.cpp \
-    MaterialIo.cpp \
     MaterialVacuum.cpp \
     DialogMediumManager.cpp \
     OpticalDevice.cpp \
@@ -42,7 +41,6 @@ HEADERS += MainWindow.h \
     DockSurfacesData.h \
     DockCommentary.h \
     MyViewFrame.h \
-    MaterialIo.h \
     Util/FileUtil.h \
     MaterialVacuum.h \
     DialogMediumManager.h \

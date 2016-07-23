@@ -38,19 +38,8 @@ MainWindow::MainWindow(QWidget *parent)
 
     dLightTilt=0.;
 
-    string sExepath=FileUtil::get_path(FileUtil::get_executable_path());
-/*
-    //load all materials
-    vector<string> vsMaterials=FileUtil::list(sExepath+"\\glass\\*.glass");
-    for(unsigned int i=0;i<vsMaterials.size();i++)
-    {
-        bool bOk=GlassManager::singleton().load(sExepath+"\\glass\\"+vsMaterials[i]);
-
-        if(bOk==false)
-            QMessageBox::warning(this,"Warning:","Unable to load material file: "+QString(vsMaterials[i].c_str()));
-    }
-*/
     //load all glass catalog
+    string sExepath=FileUtil::get_path(FileUtil::get_executable_path());
     vector<string> vsCatalog=FileUtil::list(sExepath+"\\glass\\*.agf");
     for(unsigned int i=0;i<vsCatalog.size();i++)
     {

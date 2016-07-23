@@ -70,9 +70,9 @@ public:
     bool relative_convention() const;
 
     void set_autofocus(bool bAutofocus);
-    bool get_autofocus();
+    bool get_autofocus() const;
     void set_image_autocurvature(bool bAutoCurvature);
-    bool get_image_autocurvature();
+    bool get_image_autocurvature() const;
 
     bool compute_surface_profile(int iSurface,double dX,double dY,double& dZ); //todo add slope computation
 
@@ -97,8 +97,8 @@ public:
     //other parameters, not used in computation, saved in files
     void set_parameter(const string& sKey,double dValue);
     void set_parameter(const string& sKey,const string& sValue);
-    bool get_parameter(const string& sKey,double & dValue);
-    bool get_parameter(const string& sKey,string & sValue);
+    bool get_parameter(const string& sKey,double & dValue) const;
+    bool get_parameter(const string& sKey,string & sValue) const;
     const map<string,string>& all_parameters() const;
 
 private:

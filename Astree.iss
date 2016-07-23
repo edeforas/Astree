@@ -41,7 +41,7 @@ Source: ".\samples\refractors\*.astree"; DestDir: "{app}\samples\refractors"; Fl
 Source: ".\samples\two_mirrors\*.astree"; DestDir: "{app}\samples\two_mirrors"; Flags: ignoreversion
 Source: ".\samples\eyepieces\*.astree"; DestDir: "{app}\samples\eyepieces"; Flags: ignoreversion
 Source: ".\samples\optimizer\*.astree"; DestDir: "{app}\samples\optimizer"; Flags: ignoreversion
-Source: ".\glass\*.glass"; DestDir: "{app}\glass"; Flags: ignoreversion
+Source: ".\glass\*.*"; DestDir: "{app}\glass"; Flags: ignoreversion
 Source: "C:\Qt\Qt5.7.0\5.7\mingw53_32\bin\Qt5Core.dll"; DestDir: "{app}"
 Source: "C:\Qt\Qt5.7.0\5.7\mingw53_32\bin\Qt5Gui.dll"; DestDir: "{app}"
 Source: "C:\Qt\Qt5.7.0\5.7\mingw53_32\bin\Qt5Widgets.dll"; DestDir: "{app}"

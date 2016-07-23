@@ -11,8 +11,8 @@
 ////////////////////////////////////////////////////////////////////////////////
 LightAutofocus::LightAutofocus()
 {
-    _xCenter=0;
-    _yCenter=0;
+    _xCenter=0.;
+    _yCenter=0.;
 }
 ////////////////////////////////////////////////////////////////////////////////
 double LightAutofocus::autofocus(const Light& l)
@@ -74,11 +74,11 @@ double LightAutofocus::compute_spot_size(const Light& l,double z)
     // todo add 45deg (or more) calliper
 
     // todo add early abort tests on previous spot size
-    double xMax=-1e99;
-    double xMin=1e99;
+    double xMax=-1.e99;
+    double xMin=1.e99;
 
-    double yMax=-1e99;
-    double yMin=1e99;
+    double yMax=-1.e99;
+    double yMin=1.e99;
     bool bOneFound=false;
 
     const vector<Photon>& photons=l.photons();
@@ -135,7 +135,7 @@ double LightAutofocus::compute_spot_size(const Light& l,double z)
         return yMax-yMin;
 }
 //////////////////////////////////////////////////////////////////////////////
-void LightAutofocus::get_center(double& xCenter,double& yCenter)
+void LightAutofocus::get_center(double& xCenter,double& yCenter) const
 {
     xCenter=_xCenter;
     yCenter=_yCenter;

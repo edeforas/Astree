@@ -21,6 +21,9 @@ public:
     int solid_color() const;
     void set_solid_color(int iSolidColor);
 
+    string maker() const;
+    void set_maker(string sMaker);
+
     string name() const;
     void set_name(string sName);
 
@@ -31,6 +34,7 @@ public:
 protected:
     virtual double calc_index(double dLambdaMicrons)=0;
 
+    string _sMaker;
     string _sName;
     string _sFormulae;
     int _iSolidColor;

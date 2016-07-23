@@ -18,12 +18,22 @@ bool GlassCatalogIO::load(string sFile,GlassManager& pManager)
     bool bGlassPending=false;
 
     string sName;
+    string sMaker;
     double B1;
     double B2;
     double B3;
     double C1;
     double C2;
     double C3;
+
+    auto iIndexStartMaker=sFile.find_last_of('\\');
+    if( (iIndexStartMaker!=string::npos) )
+        sMaker=sFile.substr(iIndexStartMaker+1);
+    auto iIndexSeparator=sMaker.find_first_of('_');
+    if( (iIndexSeparator!=string::npos) )
+        sMaker=sMaker.substr(0,iIndexSeparator);
+
+    //TODO
 
     while(!f.eof())
     {
@@ -57,7 +67,8 @@ bool GlassCatalogIO::load(string sFile,GlassManager& pManager)
             {
                 //create and store the glass
                 GlassSellmeier* pGlass=new GlassSellmeier;
-                pGlass->set_name(sName);
+                pGlass->set_maker(sMaker);
+                pGlass->set_name(sName);               
                 pGlass->set_coefs(B1,B2,B3,C1,C2,C3);
                 pGlass->set_solid_color(8844025); //todo
                 pManager.inject(pGlass);

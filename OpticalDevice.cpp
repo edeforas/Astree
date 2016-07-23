@@ -175,7 +175,7 @@ void OpticalDevice::set_autofocus(bool bAutofocus)
     _bMustRetrace=true;
 }
 //////////////////////////////////////////////////////////////////////////////
-bool OpticalDevice::get_autofocus()
+bool OpticalDevice::get_autofocus() const
 {
     return _bAutoFocus;
 }
@@ -186,7 +186,7 @@ void OpticalDevice::set_image_autocurvature(bool bAutoCurvature)
     _bMustRetrace=true;
 }
 //////////////////////////////////////////////////////////////////////////////
-bool OpticalDevice::get_image_autocurvature()
+bool OpticalDevice::get_image_autocurvature() const
 {
     return _bAutoCurvature;
 }
@@ -551,7 +551,7 @@ void OpticalDevice::set_parameter(const string & sKey,double dValue)
     _otherParameters[sKey]=ss.str();
 }
 //////////////////////////////////////////////////////////////////////////////
-bool OpticalDevice::get_parameter(const string& sKey,double & dValue)
+bool OpticalDevice::get_parameter(const string& sKey,double & dValue) const
 {
     auto iter= _otherParameters.find(sKey);
     if( iter==_otherParameters.end())
@@ -562,7 +562,7 @@ bool OpticalDevice::get_parameter(const string& sKey,double & dValue)
     return true; //todo test ss result
 }
 //////////////////////////////////////////////////////////////////////////////
-bool OpticalDevice::get_parameter(const string& sKey,string & sValue)
+bool OpticalDevice::get_parameter(const string& sKey,string & sValue) const
 {
     auto iter= _otherParameters.find(sKey);
     if( iter==_otherParameters.end())

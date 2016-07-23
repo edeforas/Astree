@@ -8,7 +8,6 @@
 #include "MaterialVacuum.h"
 #include "MaterialWater.h"
 #include "MaterialUnknow.h"
-#include "MaterialIo.h"
 
 #include <cassert>
 
@@ -24,7 +23,8 @@ GlassManager::GlassManager()
 //////////////////////////////////////////////////////////////////////////////
 GlassManager::~GlassManager()
 {
-    // TODO delete _vMaterial
+    for(unsigned int i=0;i<_vGlass.size();i++)
+        delete _vGlass[i]; //todo check destucror is called
 }
 //////////////////////////////////////////////////////////////////////////////
 Glass* GlassManager::create(string sMaterial) const
@@ -62,17 +62,6 @@ void GlassManager::list_available(vector<string>& vsAvailable)
         vsAvailable.push_back(_vGlass[i]->name());
 }
 //////////////////////////////////////////////////////////////////////////////
-bool GlassManager::load(string sFile)
-{
-    Glass* pMat=MaterialIo::load(sFile);
-    if(pMat==0)
-        return false;
-
-    //TODO verifier existence avant ajout
-    _vGlass.push_back(pMat);
-    return true;
-}
-//////////////////////////////////////////////////////////////////////////////
 unsigned int GlassManager::solid_color(string sMaterial)
 {
     for(unsigned int i=0;i<_vGlass.size();i++)
@@ -85,6 +74,6 @@ unsigned int GlassManager::solid_color(string sMaterial)
 //////////////////////////////////////////////////////////////////////////////
 void GlassManager::inject(Glass* pGlass) //take ownership of pGlass
 {
-  _vGlass.push_back(pGlass);
+    _vGlass.push_back(pGlass);
 }
 //////////////////////////////////////////////////////////////////////////////

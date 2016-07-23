@@ -13,7 +13,7 @@ public:
     LightAutofocus();
     double autofocus(const Light& l);
 
-    void get_center(double& xCenter,double& yCenter);
+    void get_center(double& xCenter,double& yCenter) const;
 
 private:
     double compute_spot_size(const Light& l,double z);
