@@ -27,8 +27,8 @@ public:
     string name() const;
     void set_name(string sName);
 
-    string formulae() const;
-    void set_formulae(string sFormulae);
+    string formula() const;
+    void set_formula(string sFormula);
 
     void compute_abbe_number(double &Nd,double& Vd);
 protected:
@@ -36,7 +36,7 @@ protected:
 
     string _sMaker;
     string _sName;
-    string _sFormulae;
+    string _sFormula;
     int _iSolidColor;
 
 private:

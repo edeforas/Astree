@@ -10,7 +10,7 @@
 GlassSellmeier::GlassSellmeier()
 {
     _sName="Sellmeier";
-    _sFormulae="Sellmeier";
+    _sFormula="Sellmeier";
 
     _B1=0.;
     _B2=0.;
@@ -28,7 +28,7 @@ Glass* GlassSellmeier::clone() const
 GlassSellmeier::GlassSellmeier(const GlassSellmeier& m):
     Glass(m)
 {
-    assert(m._sFormulae=="Sellmeier");
+    assert(m._sFormula=="Sellmeier");
 
     _B1=m._B1;
     _B2=m._B2;

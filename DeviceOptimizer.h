@@ -64,7 +64,7 @@ public:
     OptimizerResult optimise();
 
 private:
-    OptimizerResult optimise_random();
+    OptimizerResult optimise_random(); //keep for later use
     OptimizerResult optimise_amoeba();
     void apply_parameter(const vector<DeviceOptimizerParameter>& parameters);
     double compute_demerit(); //return demerit value: lower is better

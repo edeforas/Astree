@@ -8,7 +8,7 @@
 MaterialWater::MaterialWater()
 {
     _sName="Water";
-    _sFormulae="Constant";
+    _sFormula="Constant";
     _iSolidColor=0xf0f0f0;
 }
 //////////////////////////////////////////////////////////////////////////////

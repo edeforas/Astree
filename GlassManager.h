@@ -23,6 +23,7 @@ public:
     unsigned int solid_color(string sMaterial);
 
     void inject(Glass* pGlass); //take ownership of pGlass
+
 private:
     GlassManager();
     ~GlassManager();

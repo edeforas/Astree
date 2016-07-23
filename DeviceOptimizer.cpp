@@ -9,11 +9,10 @@
 
 #include <cassert>
 ////////////////////////////////////////////////////////////////////////////////
-DeviceOptimizer::DeviceOptimizer()
-{
-    _pDevice=0;
-    _meritFunction=eFullFrameMaxError;
-}
+DeviceOptimizer::DeviceOptimizer():
+    _pDevice(0),
+    _meritFunction(eFullFrameMaxError)
+{ }
 ////////////////////////////////////////////////////////////////////////////////
 void DeviceOptimizer::clear()
 {

@@ -8,7 +8,7 @@
 MaterialAir::MaterialAir()
 {
     _sName="Air";
-    _sFormulae="Custom";
+    _sFormula="Custom";
     _iSolidColor=0xffffff;
 }
 //////////////////////////////////////////////////////////////////////////////

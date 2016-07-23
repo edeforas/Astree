@@ -30,6 +30,7 @@ OpticalDevice* DeviceIoZmx::import(string sFile)
     double dApertureDiameter=-1.;
     string sComment;
     string sNote;
+    string sGlassCatalog;
 
     while(!f.eof())
     {
@@ -135,6 +136,11 @@ OpticalDevice* DeviceIoZmx::import(string sFile)
             stringstream ss(sVal); ss >> dTick;
         }
 
+        if(sKey=="GCAT")
+        {
+            stringstream ss(sVal); ss >> sGlassCatalog; //todo use
+        }
+
         if(sKey=="OBSC")
         {
             double dTemp;
@@ -164,11 +170,13 @@ OpticalDevice* DeviceIoZmx::import(string sFile)
             if(iPos!=string::npos)
                 sFirstWord=sVal.substr(0,iPos);
 
-            sType="BK7"; // TODO use glass catalog
-
             if(sFirstWord=="MIRROR")
                 sType="reflect";
+            else
+                sType=sFirstWord; //todo more robust test
 
+            /*
+            sType="BK7"; // TODO use glass catalog
             if(sFirstWord=="BK7")
                 sType=sFirstWord;
 
@@ -180,6 +188,7 @@ OpticalDevice* DeviceIoZmx::import(string sFile)
 
             if(sFirstWord=="SF5")
                 sType=sFirstWord;
+                */
         }
     }
 
@@ -190,8 +199,8 @@ OpticalDevice* DeviceIoZmx::import(string sFile)
     if(pOD->nb_surface()!=0)
     {    pOD->set_type(pOD->nb_surface()-1,"image");
 
-    if(dApertureDiameter>=0.)
-        pOD->set(0,DIAMETER,dApertureDiameter*dDimensionFactor);
+        if(dApertureDiameter>=0.)
+            pOD->set(0,DIAMETER,dApertureDiameter*dDimensionFactor);
     }
 
     return pOD;

@@ -24,7 +24,7 @@ GlassManager::GlassManager()
 GlassManager::~GlassManager()
 {
     for(unsigned int i=0;i<_vGlass.size();i++)
-        delete _vGlass[i]; //todo check destucror is called
+        delete _vGlass[i]; //todo check destructor is called
 }
 //////////////////////////////////////////////////////////////////////////////
 Glass* GlassManager::create(string sMaterial) const
@@ -37,7 +37,7 @@ Glass* GlassManager::create(string sMaterial) const
 
     //error case
     Glass* pM=new MaterialUnknow;
-    pM->set_formulae("placeholder for "+sMaterial);
+    pM->set_formula("placeholder for "+sMaterial);
     return pM;
 }
 //////////////////////////////////////////////////////////////////////////////

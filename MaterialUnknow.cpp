@@ -8,7 +8,7 @@
 MaterialUnknow::MaterialUnknow()
 {
     _sName="Unknow";
-    _sFormulae="Unknow";
+    _sFormula="Unknow";
     _iSolidColor=0xf0f0f0;
 }
 //////////////////////////////////////////////////////////////////////////////

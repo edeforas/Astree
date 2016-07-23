@@ -174,7 +174,7 @@ void FrameSideView::device_changed(OpticalDevice* pDevice, int iReason)
             const Photon& p1=vp1[iP];
             const Photon& p2=vp2[iP];
 
-            if (p1.is_valid() & p2.is_valid())
+            if (p1.is_valid() && p2.is_valid())
             {
                 QPen qpl;
                 qpl.setColor(QColor(QRgb(light.get_visual_color(p1.lambda()))));

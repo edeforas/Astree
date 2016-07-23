@@ -8,7 +8,7 @@
 Glass::Glass():
     _sMaker("unknow"),
     _sName("unknow"),
-    _sFormulae("unknow"),
+    _sFormula("unknow"),
     _iSolidColor(0),
     _dLastLambda(0.),
     _dLastIndex(-1.)
@@ -17,7 +17,7 @@ Glass::Glass():
 Glass::Glass(const Glass& m):
     _sMaker(m._sMaker),
     _sName(m._sName),
-    _sFormulae(m._sFormulae)
+    _sFormula(m._sFormula)
 {
     _iSolidColor=m._iSolidColor;
     _dLastIndex=-1.;
@@ -58,9 +58,9 @@ void Glass::set_name(string sName)
     _sName=sName;
 }
 //////////////////////////////////////////////////////////////////////////////
-void Glass::set_formulae(string sFormulae)
+void Glass::set_formula(string sFormula)
 {
-    _sFormulae=sFormulae;
+    _sFormula=sFormula;
 }
 //////////////////////////////////////////////////////////////////////////////
 int Glass::solid_color() const
@@ -73,9 +73,9 @@ void Glass::set_solid_color(int iSolidColor)
     _iSolidColor=iSolidColor;
 }
 //////////////////////////////////////////////////////////////////////////////
-string Glass::formulae() const
+string Glass::formula() const
 {
-    return _sFormulae;
+    return _sFormula;
 }
 //////////////////////////////////////////////////////////////////////////////
 void Glass::compute_abbe_number(double &Nd,double& Vd)

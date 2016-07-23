@@ -4,6 +4,7 @@
 
 #include <sstream>
 #include <fstream>
+#include <cassert>
 using namespace std;
 
 #include "GlassCatalogIO.h"
@@ -18,6 +19,7 @@ bool GlassCatalogIO::load(string sFile,GlassManager& pManager)
     bool bGlassPending=false;
 
     string sName;
+    int iGlassFormula;
     string sMaker;
     double B1;
     double B2;
@@ -65,18 +67,25 @@ bool GlassCatalogIO::load(string sFile,GlassManager& pManager)
         {
             if(bGlassPending)
             {
-                //create and store the glass
-                GlassSellmeier* pGlass=new GlassSellmeier;
-                pGlass->set_maker(sMaker);
-                pGlass->set_name(sName);               
-                pGlass->set_coefs(B1,B2,B3,C1,C2,C3);
-                pGlass->set_solid_color(8844025); //todo
-                pManager.inject(pGlass);
+                if(iGlassFormula==2) //Sellmeier
+                {
+                    //create and store the glass
+                    GlassSellmeier* pGlass=new GlassSellmeier;
+                    pGlass->set_maker(sMaker);
+                    pGlass->set_name(sName);
+                    pGlass->set_coefs(B1,B2,B3,C1,C2,C3);
+                    pGlass->set_solid_color(8844025); //todo
+                    pManager.inject(pGlass);
+                }
+                else
+                {
+                    //TODO
+                }
             }
 
             //compute subkey
             stringstream ss(sVal);
-            ss >> sName;
+            ss >> sName >> iGlassFormula;
 
             bGlassPending=true;
         }

@@ -34,7 +34,7 @@ DialogMediumManager::DialogMediumManager(QWidget *parent) :
         QTableWidgetItem* qwname=new QTableWidgetItem(m->name().c_str());
         ui->twMedium->setItem(i,1,qwname);
 
-        QTableWidgetItem* qwformula=new QTableWidgetItem(m->formulae().c_str());
+        QTableWidgetItem* qwformula=new QTableWidgetItem(m->formula().c_str());
         ui->twMedium->setItem(i,2,qwformula);
 
         double dN,dV;
