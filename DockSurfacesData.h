@@ -49,7 +49,7 @@ private:
     void update_table();
 
     Ui::DockSurfacesData* m_ui;
-    OpticalDevice* _pDevice;
+    OpticalDevice* pOD;
     bool _bCanEmit;
 
     bool _bHaveAspheric;

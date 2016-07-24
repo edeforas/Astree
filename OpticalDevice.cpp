@@ -63,7 +63,7 @@ OpticalDevice::~OpticalDevice()
 void OpticalDevice::insert_surface(int iPos)
 {
     assert(iPos>=0);
-    assert(iPos<=(int)nb_surface());
+    assert(iPos<=nb_surface());
 
     _vSurfaces.insert(_vSurfaces.begin()+iPos,Surface());
     _vdThicks.insert(_vdThicks.begin()+iPos,0);
@@ -214,7 +214,7 @@ bool OpticalDevice::has_comment() const
 //////////////////////////////////////////////////////////////////////////////
 int OpticalDevice::nb_surface() const
 {
-    return _vSurfaces.size();
+    return (int)_vSurfaces.size();
 }
 //////////////////////////////////////////////////////////////////////////////
 void OpticalDevice::ray_trace()

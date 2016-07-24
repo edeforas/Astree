@@ -40,14 +40,14 @@ bool DeviceIo::save(string sFile, OpticalDevice* pOD)
 
         double dDiameter=pOD->get(iS,DIAMETER);
         prop.set(sSurfName+".diameter",dDiameter);
-        if(pOD->get(iS,AUTO_DIAMETER))
+        if(pOD->get(iS,AUTO_DIAMETER)!=0.)
             prop.set(sSurfName+".diameter.auto",true);
 
         double dInnerDiameter=pOD->get(iS,INNER_DIAMETER);
         if(dInnerDiameter!=0.)
         {
             prop.set(sSurfName+".inner_diameter",dInnerDiameter);
-            if(pOD->get(iS,AUTO_INNER_DIAMETER))
+            if(pOD->get(iS,AUTO_INNER_DIAMETER)!=0.)
                 prop.set(sSurfName+".inner_diameter.auto",true);
         }
 
@@ -225,7 +225,7 @@ OpticalDevice* DeviceIo::load(string sFile)
         pOD->set_half_field_of_view(prop.get_double("light.half_field_of_view"));
 
     if (prop.exist("light.nbsteps"))
-        pOD->set_nb_intermediate_angles(prop.get_double("light.nbsteps"));
+        pOD->set_nb_intermediate_angles(prop.get_int("light.nbsteps"));
     else
         pOD->set_nb_intermediate_angles(3);
 

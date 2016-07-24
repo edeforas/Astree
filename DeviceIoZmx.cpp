@@ -13,6 +13,8 @@ using namespace std;
 ////////////////////////////////////////////////////////////////////////////////
 OpticalDevice* DeviceIoZmx::import(string sFile)
 {
+    //todo test and reject if format=utf16
+
     OpticalDevice* pOD=new OpticalDevice();
     pOD->set_relative_convention(true);
 
@@ -174,21 +176,6 @@ OpticalDevice* DeviceIoZmx::import(string sFile)
                 sType="reflect";
             else
                 sType=sFirstWord; //todo more robust test
-
-            /*
-            sType="BK7"; // TODO use glass catalog
-            if(sFirstWord=="BK7")
-                sType=sFirstWord;
-
-            if(sFirstWord=="silica")
-                sType=sFirstWord;
-
-            if(sFirstWord=="F2")
-                sType=sFirstWord;
-
-            if(sFirstWord=="SF5")
-                sType=sFirstWord;
-                */
         }
     }
 
@@ -202,6 +189,8 @@ OpticalDevice* DeviceIoZmx::import(string sFile)
         if(dApertureDiameter>=0.)
             pOD->set(0,DIAMETER,dApertureDiameter*dDimensionFactor);
     }
+
+    // todo add field of view
 
     return pOD;
 }

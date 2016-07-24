@@ -19,7 +19,7 @@ DockSurfacesData::DockSurfacesData(QWidget *parent) :
     QDockWidget(parent),
     m_ui(new Ui::DockSurfacesData)
 {
-    _pDevice=0;
+    pOD=0;
     m_ui->setupUi(this);
 
     m_ui->twSurfacesDatas->setColumnCount(8);
@@ -123,7 +123,7 @@ void DockSurfacesData::changeEvent(QEvent *e)
 void DockSurfacesData::device_changed(OpticalDevice *pDevice,int iReason)
 {
     assert(pDevice!=0);
-    _pDevice=pDevice;
+    pOD=pDevice;
 
     _bCanEmit=false;
 
@@ -160,9 +160,9 @@ void DockSurfacesData::update_table()
     vector<string> vsMaterial;
     GlassManager::singleton().list_available(vsMaterial);
 
-    m_ui->twSurfacesDatas->setRowCount(_pDevice->nb_surface());
+    m_ui->twSurfacesDatas->setRowCount(pOD->nb_surface());
 
-    for (int i=0;i<_pDevice->nb_surface();i++)
+    for (int i=0;i<pOD->nb_surface();i++)
     {
         int iIndexCol=0;
         QComboBox*  qcbType=new QComboBox;
@@ -179,41 +179,48 @@ void DockSurfacesData::update_table()
 
         qcbType->insertSeparator(7);
 
-        string sType=_pDevice->type(i);
+        string sType=pOD->type(i);
         int iPosType=qcbType->findText(sType.c_str());
-        assert(iPosType!=-1);
-        qcbType->setCurrentIndex(iPosType);
+        if(iPosType==-1)
+        {
+            //non existent glass : TODO add warning
+            qcbType->addItem(sType.c_str());
+            qcbType->setCurrentText(sType.c_str());
+        }
+        else
+            qcbType->setCurrentIndex(iPosType);
+
         m_ui->twSurfacesDatas->setCellWidget(i,ITEM_TYPE,qcbType);
         connect(qcbType,SIGNAL(activated(int)),this,SLOT(onTypeChanged()));
 
         // radius curvature
-        double dRC=_pDevice->get(i,RADIUS_CURVATURE);
+        double dRC=pOD->get(i,RADIUS_CURVATURE);
         QString qsRadius="inf";
         if( (dRC<RADIUS_CURVATURE_INFINITY/2.) && (dRC>-RADIUS_CURVATURE_INFINITY/2.) )
             qsRadius=QString::number(dRC,'g',10);
-        if(_pDevice->get_image_autocurvature() && (i==_pDevice->nb_surface()-1) )
+        if(pOD->get_image_autocurvature() && (i==pOD->nb_surface()-1) )
             qsRadius="auto "+qsRadius;
         m_ui->twSurfacesDatas->setItem(i,1, new QTableWidgetItem(qsRadius));
 
         //conic
-        double dConic=_pDevice->get(i,CONIC);
+        double dConic=pOD->get(i,CONIC);
         m_ui->twSurfacesDatas->setItem(i,2, new QTableWidgetItem(QString::number(dConic,'g',10)));
 
         // z or thick
         double dZ;
-        if(!_pDevice->relative_convention())
-            dZ=_pDevice->get(i,Z);
+        if(!pOD->relative_convention())
+            dZ=pOD->get(i,Z);
         else
-            dZ=_pDevice->get(i,THICK);
+            dZ=pOD->get(i,THICK);
         QString qsZ=QString::number(dZ,'g',10);
-        if(_pDevice->get_autofocus() && (i==_pDevice->nb_surface()-1) )
+        if(pOD->get_autofocus() && (i==pOD->nb_surface()-1) )
             qsZ="auto "+qsZ;
         m_ui->twSurfacesDatas->setItem(i,3,new QTableWidgetItem(qsZ));
 
         //diameter
-        double dDiameter=_pDevice->get(i,DIAMETER);
+        double dDiameter=pOD->get(i,DIAMETER);
         QString qsDiameter="";
-        if(_pDevice->get(i,AUTO_DIAMETER))
+        if(pOD->get(i,AUTO_DIAMETER)!=0.)
             qsDiameter="auto "+QString::number(dDiameter,'f',3);
         else
             qsDiameter=QString::number(dDiameter,'g',10);
@@ -223,9 +230,9 @@ void DockSurfacesData::update_table()
         iIndexCol=5;
         if(_bDisplayInnerDiameter)
         {
-            double dInnerDiameter=_pDevice->get(i,INNER_DIAMETER);
+            double dInnerDiameter=pOD->get(i,INNER_DIAMETER);
             QString qsInnerDiameter="";
-            if(_pDevice->get(i,AUTO_INNER_DIAMETER))
+            if(pOD->get(i,AUTO_INNER_DIAMETER)!=0.)
                 qsInnerDiameter="auto "+QString::number(dInnerDiameter,'f',3);
             else
                 qsInnerDiameter=QString::number(dInnerDiameter,'g',10);
@@ -237,10 +244,10 @@ void DockSurfacesData::update_table()
 
         if(_bDisplayAspheric)
         {
-            double dR4=_pDevice->get(i,R4);
-            double dR6=_pDevice->get(i,R6);
-            double dR8=_pDevice->get(i,R8);
-            double dR10=_pDevice->get(i,R10);
+            double dR4=pOD->get(i,R4);
+            double dR6=pOD->get(i,R6);
+            double dR8=pOD->get(i,R8);
+            double dR10=pOD->get(i,R10);
 
             m_ui->twSurfacesDatas->setItem(i,iIndexCol,new QTableWidgetItem(QString::number(dR4,'g',10)));
             m_ui->twSurfacesDatas->setItem(i,iIndexCol+1,new QTableWidgetItem(QString::number(dR6,'g',10)));
@@ -252,7 +259,7 @@ void DockSurfacesData::update_table()
 
         if(_bDisplayComment)
         {
-            string sComment=_pDevice->comment(i);
+            string sComment=pOD->comment(i);
             m_ui->twSurfacesDatas->setItem(i,iIndexCol,new QTableWidgetItem(sComment.c_str()));
 
       //      iIndexCol+=1; //
@@ -267,11 +274,11 @@ void DockSurfacesData::update_table()
 void DockSurfacesData::onTypeChanged()
 {
     //todo remove this fcn?
-    for(int i=0;i<_pDevice->nb_surface();i++)
+    for(int i=0;i<pOD->nb_surface();i++)
     {
         QComboBox* pComboBox=dynamic_cast<QComboBox*>(m_ui->twSurfacesDatas->cellWidget(i,ITEM_TYPE));
         assert(pComboBox!=0);
-        string sType=_pDevice->type(i);
+        string sType=pOD->type(i);
         if(pComboBox->currentText()!=sType.c_str())
             OnCellChanged(i,ITEM_TYPE);
     }
@@ -288,7 +295,7 @@ void DockSurfacesData::OnCellChanged(int iRow,int iCol)
         assert(pComboBox!=0);
         QString qsText=pComboBox->currentText();
         string sType=qsText.toStdString();
-        _pDevice->set_type(iRow,sType);
+        pOD->set_type(iRow,sType);
     }
 
     if (iCol==1) //"radius_curvature"
@@ -296,17 +303,17 @@ void DockSurfacesData::OnCellChanged(int iRow,int iCol)
         string sItem=m_ui->twSurfacesDatas->item(iRow,iCol)->text().toStdString();
         bool bAuto=sItem.find("auto")!=string::npos;
         bool bInf=sItem.find("inf")!=string::npos;
-        bool bLastSurf=iRow==_pDevice->nb_surface()-1;
+        bool bLastSurf=iRow==pOD->nb_surface()-1;
 
         if(bAuto && bLastSurf)
-            _pDevice->set_image_autocurvature(bAuto);
+            pOD->set_image_autocurvature(bAuto);
         else
         {
             if(bLastSurf)
-                _pDevice->set_image_autocurvature(false);
+                pOD->set_image_autocurvature(false);
 
             if(bInf)
-                _pDevice->set(iRow,RADIUS_CURVATURE,RADIUS_CURVATURE_INFINITY);
+                pOD->set(iRow,RADIUS_CURVATURE,RADIUS_CURVATURE_INFINITY);
             else
             {
                 if(bAuto)
@@ -315,7 +322,7 @@ void DockSurfacesData::OnCellChanged(int iRow,int iCol)
                 stringstream ss(sItem);
                 double dVal=0;
                 ss >> dVal;
-                _pDevice->set(iRow,RADIUS_CURVATURE,dVal);
+                pOD->set(iRow,RADIUS_CURVATURE,dVal);
             }
         }
     }
@@ -326,7 +333,7 @@ void DockSurfacesData::OnCellChanged(int iRow,int iCol)
         QString qsText=pItem->text();
 
         double d=qsText.toDouble();
-        _pDevice->set(iRow,CONIC,d);
+        pOD->set(iRow,CONIC,d);
     }
 
     if (iCol==3) //"z" or "thick"
@@ -340,13 +347,13 @@ void DockSurfacesData::OnCellChanged(int iRow,int iCol)
         double dVal=0;
         ss >> dVal;
 
-        if(_pDevice->relative_convention())
-            _pDevice->set(iRow,THICK,dVal);
+        if(pOD->relative_convention())
+            pOD->set(iRow,THICK,dVal);
         else
-            _pDevice->set(iRow,Z,dVal);
+            pOD->set(iRow,Z,dVal);
 
-        if(iRow==_pDevice->nb_surface()-1)
-            _pDevice->set_autofocus(bAuto);
+        if(iRow==pOD->nb_surface()-1)
+            pOD->set_autofocus(bAuto);
     }
 
     if (iCol==4) //"Diameter"
@@ -360,8 +367,8 @@ void DockSurfacesData::OnCellChanged(int iRow,int iCol)
         double dVal=0;
         ss >> dVal;
 
-        _pDevice->set(iRow,AUTO_DIAMETER,bAuto);
-        _pDevice->set(iRow,DIAMETER,dVal);
+        pOD->set(iRow,AUTO_DIAMETER,bAuto);
+        pOD->set(iRow,DIAMETER,dVal);
     }
 
     int iIndexCol=5;
@@ -378,8 +385,8 @@ void DockSurfacesData::OnCellChanged(int iRow,int iCol)
             double dVal;
             ss >> dVal;
 
-            _pDevice->set(iRow,AUTO_INNER_DIAMETER,bAuto);
-            _pDevice->set(iRow,INNER_DIAMETER,dVal);
+            pOD->set(iRow,AUTO_INNER_DIAMETER,bAuto);
+            pOD->set(iRow,INNER_DIAMETER,dVal);
         }
 
         iIndexCol++;
@@ -390,25 +397,25 @@ void DockSurfacesData::OnCellChanged(int iRow,int iCol)
         if (iCol==iIndexCol)
         {
             QTableWidgetItem* pItem=m_ui->twSurfacesDatas->item(iRow,iCol);
-            _pDevice->set(iRow,R4,pItem->text().toDouble());
+            pOD->set(iRow,R4,pItem->text().toDouble());
         }
 
         if (iCol==iIndexCol+1)
         {
             QTableWidgetItem* pItem=m_ui->twSurfacesDatas->item(iRow,iCol);
-            _pDevice->set(iRow,R6,pItem->text().toDouble());
+            pOD->set(iRow,R6,pItem->text().toDouble());
         }
 
         if (iCol==iIndexCol+2)
         {
             QTableWidgetItem* pItem=m_ui->twSurfacesDatas->item(iRow,iCol);
-            _pDevice->set(iRow,R8,pItem->text().toDouble());
+            pOD->set(iRow,R8,pItem->text().toDouble());
         }
 
         if (iCol==iIndexCol+3)
         {
             QTableWidgetItem* pItem=m_ui->twSurfacesDatas->item(iRow,iCol);
-            _pDevice->set(iRow,R10,pItem->text().toDouble());
+            pOD->set(iRow,R10,pItem->text().toDouble());
         }
 
         iIndexCol+=4;
@@ -419,7 +426,7 @@ void DockSurfacesData::OnCellChanged(int iRow,int iCol)
         QTableWidgetItem* pItem=m_ui->twSurfacesDatas->item(iRow,iCol);
         QString qsText=pItem->text();
 
-        _pDevice->set_comment(iRow,qsText.toStdString());
+        pOD->set_comment(iRow,qsText.toStdString());
         //    iCol++;
     }
 
@@ -431,15 +438,15 @@ void DockSurfacesData::OnAddSurfaceAfter()
     int iLine=m_ui->twSurfacesDatas->currentRow();
     if(iLine==-1)
     {
-        if(_pDevice->nb_surface()!=0)
+        if(pOD->nb_surface()!=0)
             return;
     }
 
-    _pDevice->insert_surface(iLine+1);
-    _pDevice->set_type(iLine+1,"void");
+    pOD->insert_surface(iLine+1);
+    pOD->set_type(iLine+1,"void");
 
     if(iLine+1>0)
-        _pDevice->set(iLine+1,AUTO_DIAMETER,true);
+        pOD->set(iLine+1,AUTO_DIAMETER,true);
 
     static_cast<MainWindow*>(parent())->update_views(this,OPTICAL_DEVICE_CHANGED);
 
@@ -451,16 +458,16 @@ void DockSurfacesData::OnAddSurfaceBefore()
     int iLine=m_ui->twSurfacesDatas->currentRow();
     if(iLine==-1)
     {
-        if(_pDevice->nb_surface()!=0)
+        if(pOD->nb_surface()!=0)
             return;
         iLine=0;
     }
 
-    _pDevice->insert_surface(iLine);
-    _pDevice->set_type(iLine,"void");
+    pOD->insert_surface(iLine);
+    pOD->set_type(iLine,"void");
 
     if(iLine>0)
-        _pDevice->set(iLine,AUTO_DIAMETER,true);
+        pOD->set(iLine,AUTO_DIAMETER,true);
 
     static_cast<MainWindow*>(parent())->update_views(this,OPTICAL_DEVICE_CHANGED);
 
@@ -473,7 +480,7 @@ void DockSurfacesData::OnDeleteSurface()
     if(iLine==-1)
         return;
 
-    _pDevice->delete_surface(iLine);
+    pOD->delete_surface(iLine);
     static_cast<MainWindow*>(parent())->update_views(this,OPTICAL_DEVICE_CHANGED);
 
     if(iLine>=m_ui->twSurfacesDatas->rowCount())
@@ -519,10 +526,10 @@ void DockSurfacesData::on_comboCoordMode_activated(const QString &arg1)
     int iSelected=m_ui->comboCoordMode->currentIndex();
 
     if(iSelected==0)
-        _pDevice->set_relative_convention(false);
+        pOD->set_relative_convention(false);
 
     if(iSelected==1)
-        _pDevice->set_relative_convention(true);
+        pOD->set_relative_convention(true);
 
     static_cast<MainWindow*>(parent())->update_views(this,OPTICAL_DEVICE_CHANGED);
 }

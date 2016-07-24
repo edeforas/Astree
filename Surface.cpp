@@ -257,15 +257,17 @@ bool Surface::set_type(string sType)
         _pMaterial=GlassManager::singleton().create(sType);
         assert(_pMaterial!=0);
 
-        //todo add glass catalog managment
-
+        _sType=_pMaterial->name();
+        //todo add glass catalog management
     }
     else
+    {
+        _sType=sType;
         _pMaterial=0;
+    }
 
     _bIsPerfect = ((sType=="perfect_lens") || (sType=="perfect_mirror"));
 
-    _sType=sType;
     return true;
 }
 //////////////////////////////////////////////////////////////////////////////
@@ -664,7 +666,7 @@ void Surface::stop_photon(Photon& p)
 
         double t1,t2;
 
-        if (delta!=dB2) // alors les denum existent (test a parfaire)
+        if (delta!=dB2) // alors les denum existent (todo enhnace test)
         {
             double sqrtDelta=sqrt(delta);
             t1=(2.*dC)/(+sqrtDelta-dB);
@@ -674,7 +676,7 @@ void Surface::stop_photon(Photon& p)
         {
             // ici delta~=dB2
             // on utilise une solution approchee:
-            if (dB!=0)
+            if (dB!=0.)
             {
                 t1=-dC/dB;
                 t2=10.*t1; // pour etre sur de choisir t1
@@ -717,7 +719,7 @@ void Surface::stop_photon(Photon& p)
 
     double x=p.x;
     double y=p.y;
-   // double z=p.z;
+    // double z=p.z;
     double dOldT=0;
     for(int iLoop=0;iLoop<NB_ITER_STOP_NEWTON;iLoop++)
     {

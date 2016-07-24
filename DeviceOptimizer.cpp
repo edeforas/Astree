@@ -284,7 +284,7 @@ OptimizerResult DeviceOptimizer::optimise_amoeba()
 
     int iIter=0,iMaxIter=AMOEBA_MAX_ITER;
     bool bStopCriteria=false;
-    int iBest=0;
+    unsigned int iBest=0;
     double dBest=vdDemerit[0];
     while((iIter<iMaxIter) && (bStopCriteria==false))
     {
@@ -422,7 +422,7 @@ OptimizerResult DeviceOptimizer::optimise_amoeba()
             for(unsigned int i=0;i<simplex.size();i++)
             {
                 const ParameterSet& paramBest=simplex[iBest];
-                if((int)i!=iBest)
+                if(i!=iBest)
                 {
                     ParameterSet& paramReducted=simplex[i];
                     for(unsigned int j=0;j<paramReducted.size();j++)

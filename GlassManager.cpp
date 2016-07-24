@@ -37,7 +37,9 @@ Glass* GlassManager::create(string sMaterial) const
 
     //error case
     Glass* pM=new MaterialUnknow;
-    pM->set_formula("placeholder for "+sMaterial);
+    pM->set_formula("unknown");
+    pM->set_name(sMaterial);
+    pM->set_maker("unknown_glass");
     return pM;
 }
 //////////////////////////////////////////////////////////////////////////////

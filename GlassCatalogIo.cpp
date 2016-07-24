@@ -19,14 +19,14 @@ bool GlassCatalogIO::load(string sFile,GlassManager& pManager)
     bool bGlassPending=false;
 
     string sName;
-    int iGlassFormula;
+    int iGlassFormula = 0;
     string sMaker;
-    double B1;
-    double B2;
-    double B3;
-    double C1;
-    double C2;
-    double C3;
+    double B1=0.;
+    double B2=0.;
+    double B3=0.;
+    double C1=0.;
+    double C2=0.;
+    double C3=0.;
 
     auto iIndexStartMaker=sFile.find_last_of('\\');
     if( (iIndexStartMaker!=string::npos) )
