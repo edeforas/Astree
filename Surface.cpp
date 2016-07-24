@@ -253,19 +253,18 @@ bool Surface::set_type(string sType)
     assert(sType!="");
     if ( (sType!="reflect") && (sType!="stop") && (sType!="image") && (sType!="transmit") && (sType!="void") && (sType!="perfect_lens") && (sType!="perfect_mirror") )
     {
+        //test if glass exist
+        bool bExist=GlassManager::singleton().exist(sType);
+        if(!bExist)
+            set_comment("Glass "+sType+" doesn't exist in catalog!");
+
         GlassManager::singleton().destroy(_pMaterial);
         _pMaterial=GlassManager::singleton().create(sType);
-        assert(_pMaterial!=0);
-
-        _sType=_pMaterial->name();
-        //todo add glass catalog management
     }
     else
-    {
-        _sType=sType;
         _pMaterial=0;
-    }
 
+    _sType=sType;
     _bIsPerfect = ((sType=="perfect_lens") || (sType=="perfect_mirror"));
 
     return true;

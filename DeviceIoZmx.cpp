@@ -61,12 +61,12 @@ OpticalDevice* DeviceIoZmx::import(string sFile)
             if(bSurfPending)
             {
                 pOD->insert_surface(iSurface);
+                pOD->set_comment(iSurface,sComment);
                 pOD->set_type(iSurface,sType);
                 pOD->set(iSurface,THICK,dDimensionFactor*dTick);
                 pOD->set(iSurface,CURVATURE,dCurvature/dDimensionFactor);
                 pOD->set(iSurface,DIAMETER,dDiameter*dDimensionFactor);
                 pOD->set(iSurface,CONIC,dConic);
-                pOD->set_comment(iSurface,sComment);
                 pOD->set(iSurface,INNER_DIAMETER,dInnerDiameter*dDimensionFactor);
                 bSurfPending=false;
             }

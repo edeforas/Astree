@@ -64,6 +64,17 @@ void GlassManager::list_available(vector<string>& vsAvailable)
         vsAvailable.push_back(_vGlass[i]->name());
 }
 //////////////////////////////////////////////////////////////////////////////
+bool GlassManager::exist(string sGlass) const
+{
+    for(unsigned int i=0;i<_vGlass.size();i++)
+    {
+        if(_vGlass[i]->name()==sGlass)
+            return true;
+    }
+
+    return false;
+}
+//////////////////////////////////////////////////////////////////////////////
 unsigned int GlassManager::solid_color(string sMaterial)
 {
     for(unsigned int i=0;i<_vGlass.size();i++)

@@ -20,6 +20,8 @@ public:
 
     void list_available(vector<string>& vsAvailable);
 
+    bool exist(string sGlass) const;
+
     unsigned int solid_color(string sMaterial);
 
     void inject(Glass* pGlass); //take ownership of pGlass

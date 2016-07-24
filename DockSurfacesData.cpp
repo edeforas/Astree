@@ -168,7 +168,6 @@ void DockSurfacesData::update_table()
         QComboBox*  qcbType=new QComboBox;
         qcbType->addItem("stop");
         qcbType->addItem("reflect");
-        //   qcbType->addItem("transmit");
         qcbType->addItem("void");
         qcbType->addItem("image");
         qcbType->addItem("perfect_lens");
