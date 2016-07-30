@@ -19,12 +19,15 @@ DialogMediumManager::DialogMediumManager(QWidget *parent) :
     qsl+="Maker";
     qsl+="Name";
     qsl+="Formulae";
-    qsl+="N_Index";
-    qsl+="V_Abbe";
+    qsl+="Nd";
+    qsl+="Vd";
+    qsl+="Ne";
+    qsl+="Ve";
+
     ui->twMedium->setColumnCount(qsl.size());
     ui->twMedium->setHorizontalHeaderLabels (qsl);
 
-    for(unsigned int i=0;i<lsM.size();i++)
+    for(int i=0;i<(int)lsM.size();i++)
     {
         Glass* m=GlassManager::singleton().create(lsM[i]);
 
@@ -37,14 +40,21 @@ DialogMediumManager::DialogMediumManager(QWidget *parent) :
         QTableWidgetItem* qwformula=new QTableWidgetItem(m->formula().c_str());
         ui->twMedium->setItem(i,2,qwformula);
 
-        double dN,dV;
-        m->compute_abbe_number(dN,dV);
+        double dNd,dVd,dNe,dVe;
+        m->compute_NdVd(dNd,dVd);
+        m->compute_NeVe(dNe,dVe);
 
-        QTableWidgetItem* qwtiN=new QTableWidgetItem(QString::number(dN,'f',4));
-        ui->twMedium->setItem(i,3,qwtiN);
+        QTableWidgetItem* qwtiNd=new QTableWidgetItem(QString::number(dNd,'f',5));
+        ui->twMedium->setItem(i,3,qwtiNd);
 
-        QTableWidgetItem* qwtiV=new QTableWidgetItem(QString::number(dV,'f',3));
-        ui->twMedium->setItem(i,4,qwtiV);
+        QTableWidgetItem* qwtiVd=new QTableWidgetItem(QString::number(dVd,'f',3));
+        ui->twMedium->setItem(i,4,qwtiVd);
+
+        QTableWidgetItem* qwtiNe=new QTableWidgetItem(QString::number(dNe,'f',5));
+        ui->twMedium->setItem(i,5,qwtiNe);
+
+        QTableWidgetItem* qwtiVe=new QTableWidgetItem(QString::number(dVe,'f',3));
+        ui->twMedium->setItem(i,6,qwtiVe);
 
         delete m;
     }

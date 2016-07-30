@@ -30,7 +30,9 @@ public:
     string formula() const;
     void set_formula(string sFormula);
 
-    void compute_abbe_number(double &Nd,double& Vd);
+    void compute_NdVd(double &Nd,double& Vd);
+    void compute_NeVe(double &Ne,double& Ve);
+
 protected:
     virtual double calc_index(double dLambdaMicrons)=0;
 

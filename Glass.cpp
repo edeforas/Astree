@@ -78,11 +78,11 @@ string Glass::formula() const
     return _sFormula;
 }
 //////////////////////////////////////////////////////////////////////////////
-void Glass::compute_abbe_number(double &Nd,double& Vd)
+void Glass::compute_NdVd(double &Nd,double& Vd)
 {
-    double dLambdaD=583.9*1e-3; //sodium in microns
-    double dLambdaF=486.1*1e-3; //hydrogen1 in microns
-    double dLambdaC=656.3*1e-3; //hydrogen2 in microns
+    double dLambdaD=587.5618e-3; // He in microns
+    double dLambdaF=486.13e-3; // H in microns
+    double dLambdaC=656.27e-3; // H in microns
 
     Nd=index(dLambdaD);
     double Nf=index(dLambdaF);
@@ -92,5 +92,21 @@ void Glass::compute_abbe_number(double &Nd,double& Vd)
         Vd=(Nd-1.)/(Nf-Nc);
     else
         Vd=-1.; //not applicable
+}
+//////////////////////////////////////////////////////////////////////////////
+void Glass::compute_NeVe(double &Ne, double& Ve)
+{
+    double dLambdae=546.07e-3; // Hg in microns
+    double dLambdaFp=479.99e-3; // Cd in microns
+    double dLambdaCp=643.85e-3; // Cd in microns
+
+    Ne=index(dLambdae);
+    double Nfp=index(dLambdaFp);
+    double Ncp=index(dLambdaCp);
+
+    if(Nfp!=Ncp)
+        Ve=(Ne-1.)/(Nfp-Ncp);
+    else
+        Ve=-1.; //not applicable
 }
 //////////////////////////////////////////////////////////////////////////////
