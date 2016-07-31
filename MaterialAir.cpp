@@ -9,6 +9,7 @@ MaterialAir::MaterialAir()
 {
     _sName="Air";
     _sFormula="Custom";
+    set_maker("internal");
     _iSolidColor=0xffffff;
 }
 //////////////////////////////////////////////////////////////////////////////

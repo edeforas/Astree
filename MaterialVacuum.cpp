@@ -9,6 +9,7 @@ MaterialVacuum::MaterialVacuum()
 {
     _sName="Vacuum";
     _sFormula="Constant";
+    set_maker("internal");
     _iSolidColor=0xf0f0f0;
 }
 //////////////////////////////////////////////////////////////////////////////
