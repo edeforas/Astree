@@ -227,6 +227,21 @@ void DockOptimizer::save_to_device()
         if(pItemMax)
             _pDevice->set_parameter("optimizer."+ss.str()+".max",pItemMax->text().toStdString());
     }
+
+    //save merit function
+    int iCriteria=ui->cbCriteria->currentIndex();
+    string sMeritFunction="invalid";
+    if(iCriteria==0)
+        _pDevice->set_parameter("optimizer.merit","CenterOnly");
+
+    if(iCriteria==1)
+        _pDevice->set_parameter("optimizer.merit","MostlyCenter");
+
+    if(iCriteria==2)
+        _pDevice->set_parameter("optimizer.merit","FullFrameMean");
+
+    if(iCriteria==3)
+        _pDevice->set_parameter("optimizer.merit","FullFrameMaxError");
 }
 /////////////////////////////////////////////////////////////
 void DockOptimizer::load_from_device()
@@ -264,5 +279,21 @@ void DockOptimizer::load_from_device()
         _pDevice->get_parameter("optimizer."+ss.str()+".max",sMax);
         pItemMax->setText(sMax.c_str());
     }
+
+    //load merit function
+    string sMeritFunction="CenterOnly";
+    _pDevice->get_parameter("optimizer.merit",sMeritFunction);
+
+    if(sMeritFunction=="CenterOnly")
+        ui->cbCriteria->setCurrentIndex(0);
+
+    if(sMeritFunction=="MostlyCenter")
+        ui->cbCriteria->setCurrentIndex(1);
+
+    if(sMeritFunction=="FullFrameMean")
+        ui->cbCriteria->setCurrentIndex(2);
+
+    if(sMeritFunction=="FullFrameMaxError")
+        ui->cbCriteria->setCurrentIndex(3);
 }
 /////////////////////////////////////////////////////////////

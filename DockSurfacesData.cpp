@@ -261,7 +261,7 @@ void DockSurfacesData::update_table()
             string sComment=pOD->comment(i);
             m_ui->twSurfacesDatas->setItem(i,iIndexCol,new QTableWidgetItem(sComment.c_str()));
 
-      //      iIndexCol+=1; //
+            //      iIndexCol+=1; //
         }
     }
 
@@ -272,7 +272,7 @@ void DockSurfacesData::update_table()
 //////////////////////////////////////////////////////////////////////////////
 void DockSurfacesData::onTypeChanged()
 {
-    //todo remove this fcn?
+    //todo remove this function?
     for(int i=0;i<pOD->nb_surface();i++)
     {
         QComboBox* pComboBox=dynamic_cast<QComboBox*>(m_ui->twSurfacesDatas->cellWidget(i,ITEM_TYPE));
