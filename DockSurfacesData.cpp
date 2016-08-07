@@ -155,6 +155,7 @@ void DockSurfacesData::device_changed(OpticalDevice *pDevice,int iReason)
 /////////////////////////////////////////////////////////////////////////://///
 void DockSurfacesData::update_table()
 {
+    int iRefSurfAlias;
     _bCanEmit=false;
 
     vector<string> vsMaterial;
@@ -199,11 +200,16 @@ void DockSurfacesData::update_table()
             qsRadius=QString::number(dRC,'g',10);
         if(pOD->get_image_autocurvature() && (i==pOD->nb_surface()-1) )
             qsRadius="auto "+qsRadius;
+        if(pOD->get_alias(i,RADIUS_CURVATURE,iRefSurfAlias))
+            qsRadius="#"+QString::number(i)+" "+qsRadius;
         m_ui->twSurfacesDatas->setItem(i,1, new QTableWidgetItem(qsRadius));
 
         //conic
         double dConic=pOD->get(i,CONIC);
-        m_ui->twSurfacesDatas->setItem(i,2, new QTableWidgetItem(QString::number(dConic,'g',10)));
+        QString qsConic=QString::number(dConic,'g',10);
+        if(pOD->get_alias(i,CONIC,iRefSurfAlias))
+            qsConic="#"+QString::number(i)+" "+qsConic;
+        m_ui->twSurfacesDatas->setItem(i,2, new QTableWidgetItem(qsConic));
 
         // z or thick
         double dZ;
@@ -302,37 +308,61 @@ void DockSurfacesData::OnCellChanged(int iRow,int iCol)
         string sItem=m_ui->twSurfacesDatas->item(iRow,iCol)->text().toStdString();
         bool bAuto=sItem.find("auto")!=string::npos;
         bool bInf=sItem.find("inf")!=string::npos;
+        bool bAlias=sItem.find("#")!=string::npos;
         bool bLastSurf=iRow==pOD->nb_surface()-1;
 
-        if(bAuto && bLastSurf)
-            pOD->set_image_autocurvature(bAuto);
+        if(bAlias)
+        {
+            sItem[sItem.find("#")]=' '; //TODO something more robust
+            stringstream ss(sItem);
+            int iVal=0;
+            ss >> iVal;
+            pOD->set_alias(iRow,RADIUS_CURVATURE,iVal);
+        }
         else
         {
-            if(bLastSurf)
-                pOD->set_image_autocurvature(false);
-
-            if(bInf)
-                pOD->set(iRow,RADIUS_CURVATURE,RADIUS_CURVATURE_INFINITY);
+            if(bAuto && bLastSurf)
+                pOD->set_image_autocurvature(bAuto);
             else
             {
-                if(bAuto)
-                    sItem=sItem.substr(sItem.find("auto")+4,string::npos);
+                if(bLastSurf)
+                    pOD->set_image_autocurvature(false);
 
-                stringstream ss(sItem);
-                double dVal=0;
-                ss >> dVal;
-                pOD->set(iRow,RADIUS_CURVATURE,dVal);
+                if(bInf)
+                    pOD->set(iRow,RADIUS_CURVATURE,RADIUS_CURVATURE_INFINITY);
+                else
+                {
+                    if(bAuto)
+                        sItem=sItem.substr(sItem.find("auto")+4,string::npos);
+
+                    stringstream ss(sItem);
+                    double dVal=0;
+                    ss >> dVal;
+                    pOD->set(iRow,RADIUS_CURVATURE,dVal);
+                }
             }
         }
     }
 
     if (iCol==2) //"conic"
     {
-        QTableWidgetItem* pItem=m_ui->twSurfacesDatas->item(iRow,iCol);
-        QString qsText=pItem->text();
-
-        double d=qsText.toDouble();
-        pOD->set(iRow,CONIC,d);
+        string sItem=m_ui->twSurfacesDatas->item(iRow,iCol)->text().toStdString();
+        bool bAlias=sItem.find("#")!=string::npos;
+        if(bAlias)
+        {
+            sItem[sItem.find("#")]=' '; //TODO something more robust
+            stringstream ss(sItem);
+            int iVal=0;
+            ss >> iVal;
+            pOD->set_alias(iRow,CONIC,iVal);
+        }
+        else
+        {
+            stringstream ss(sItem);
+            double dVal=0;
+            ss >> dVal;
+            pOD->set(iRow,CONIC,dVal);
+        }
     }
 
     if (iCol==3) //"z" or "thick"

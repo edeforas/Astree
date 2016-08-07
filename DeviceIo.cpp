@@ -14,6 +14,7 @@ using namespace std;
 bool DeviceIo::save(string sFile, OpticalDevice* pOD)
 {
     Properties prop;
+    int iSurfAlias;
 
     for (int iS=0;iS<pOD->nb_surface();iS++)
     {
@@ -51,15 +52,21 @@ bool DeviceIo::save(string sFile, OpticalDevice* pOD)
                 prop.set(sSurfName+".inner_diameter.auto",true);
         }
 
+        // save radius curvature
         double dRC=pOD->get(iS,RADIUS_CURVATURE);
         if(dRC>=RADIUS_CURVATURE_INFINITY/2)
             prop.set(sSurfName+".radius_curvature",string("inf"));
         else
             prop.set(sSurfName+".radius_curvature",dRC);
+        if(pOD->get_alias(iS,RADIUS_CURVATURE,iSurfAlias))
+            prop.set(sSurfName+".radius_curvature.alias",iSurfAlias);
 
+        //save conic
         double dConic=pOD->get(iS,CONIC);
         if(dConic!=0.)
             prop.set(sSurfName+".conic",dConic);
+        if(pOD->get_alias(iS,CONIC,iSurfAlias))
+            prop.set(sSurfName+".conic.alias",iSurfAlias);
 
         double dR4=pOD->get(iS,R4);
         if(dR4!=0.)
@@ -164,10 +171,17 @@ OpticalDevice* DeviceIo::load(string sFile)
                 pOD->set(iS,RADIUS_CURVATURE,RADIUS_CURVATURE_INFINITY);
             else
                 pOD->set(iS,RADIUS_CURVATURE,prop.get_double(sSurfName+".radius_curvature"));
+
+            if(prop.exist(sSurfName+".radius_curvature.alias"))
+                pOD->set_alias(iS,RADIUS_CURVATURE,prop.get_int(sSurfName+".radius_curvature.alias"));
         }
 
         if (prop.exist(sSurfName+".conic"))
+        {
             pOD->set(iS,CONIC,prop.get_double(sSurfName+".conic"));
+            if(prop.exist(sSurfName+".conic.alias"))
+                pOD->set_alias(iS,CONIC,prop.get_int(sSurfName+".conic.alias"));
+        }
 
         if (prop.exist(sSurfName+".r4"))
             pOD->set(iS,R4,prop.get_double(sSurfName+".r4"));

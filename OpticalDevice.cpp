@@ -234,6 +234,13 @@ void OpticalDevice::ray_trace()
         _vSurfaces[i].set_auto_inner_diameter(_vSurfaces[i].get_auto_inner_diameter());
     }
 
+    //update alias parameters
+    for(unsigned int i=0;i<_alias.size();i++)
+    {
+        Alias& a=_alias[i];
+        set(a.iSurface,a.param,get(a.iRefSurface,a.param));
+    }
+
     // main ray tracing loop
     Light light;
     ray_trace_step(light,0,_bAutoFocus,false);
@@ -575,5 +582,45 @@ bool OpticalDevice::get_parameter(const string& sKey,string & sValue) const
 const map<string,string>& OpticalDevice::all_parameters() const
 {
     return _otherParameters;
+}
+//////////////////////////////////////////////////////////////////////////////
+// surface aliasing
+void OpticalDevice::set_alias(int iSurface,eSurfaceparameter eParam,int iRefSurface)
+{
+    for(unsigned int i=0;i<_alias.size();i++)
+        if( (_alias[i].iSurface==iSurface) && (_alias[i].param==eParam) )
+        {
+            if(iRefSurface!=-1)
+            {
+                // already existing, updating
+                _alias[i].iRefSurface=iRefSurface;
+            }
+            else
+            {
+                //remove alias
+                _alias.erase(_alias.begin()+i);
+            }
+            return;
+        }
+
+    //create new entry
+    Alias alias;
+    alias.iSurface=iSurface;
+    alias.param=eParam;
+    alias.iRefSurface=iRefSurface;
+
+    _alias.push_back(alias);
+}
+//////////////////////////////////////////////////////////////////////////////
+bool OpticalDevice::get_alias(int iSurface,eSurfaceparameter eParam,int& iRefSurface)
+{
+    for(unsigned int i=0;i<_alias.size();i++)
+        if( (_alias[i].iSurface==iSurface) && (_alias[i].param==eParam) )
+        {
+            iRefSurface=_alias[i].iRefSurface;
+            return true;
+        }
+
+    return false;
 }
 //////////////////////////////////////////////////////////////////////////////

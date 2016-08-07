@@ -29,12 +29,18 @@ enum eSurfaceparameter //to be used with get/set functions below
     CURVATURE, //inverse of radius curvature, unit is 1/mm
     Z, //absolute coord
     THICK, //relative coord
-    R4,
-    R6,
-    R8,
-    R10
+    R4, //surface polynomial coef of r4
+    R6, //surface polynomial coef of r6
+    R8, //surface polynomial coef of r8
+    R10 //surface polynomial coef of r10
 };
 
+struct Alias
+{
+     eSurfaceparameter  param;
+     int iSurface;
+     int iRefSurface;
+};
 
 class OpticalDevice
 {
@@ -60,6 +66,10 @@ public:
     // surface data accessor
     void set(int iSurface,eSurfaceparameter eParam,double dParam);
     double get(int iSurface,eSurfaceparameter eParam); //not const due to lazy computation
+
+    // surface aliasing
+    void set_alias(int iSurface,eSurfaceparameter eParam,int iRefSurface); //set iRefSurface=-1 to remove
+    bool get_alias(int iSurface,eSurfaceparameter eParam,int& iRefSurface); //return false if no exist
 
     // global properties getter
     bool has_aspheric() const;
@@ -125,6 +135,9 @@ private:
 
     // other parameters
     map<string,string> _otherParameters;
+
+    //alias parameters
+    vector<Alias> _alias;
 };
 
 #endif
