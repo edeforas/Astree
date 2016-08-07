@@ -155,7 +155,7 @@ void DockSurfacesData::device_changed(OpticalDevice *pDevice,int iReason)
 /////////////////////////////////////////////////////////////////////////://///
 void DockSurfacesData::update_table()
 {
-    int iRefSurfAlias;
+    int iRefAlias;
     _bCanEmit=false;
 
     vector<string> vsMaterial;
@@ -200,15 +200,15 @@ void DockSurfacesData::update_table()
             qsRadius=QString::number(dRC,'g',10);
         if(pOD->get_image_autocurvature() && (i==pOD->nb_surface()-1) )
             qsRadius="auto "+qsRadius;
-        if(pOD->get_alias(i,RADIUS_CURVATURE,iRefSurfAlias))
-            qsRadius="#"+QString::number(i)+" "+qsRadius;
+        if(pOD->get_alias(i,RADIUS_CURVATURE,iRefAlias))
+            qsRadius="#"+QString::number(iRefAlias+1)+" "+qsRadius;
         m_ui->twSurfacesDatas->setItem(i,1, new QTableWidgetItem(qsRadius));
 
         //conic
         double dConic=pOD->get(i,CONIC);
         QString qsConic=QString::number(dConic,'g',10);
-        if(pOD->get_alias(i,CONIC,iRefSurfAlias))
-            qsConic="#"+QString::number(i)+" "+qsConic;
+        if(pOD->get_alias(i,CONIC,iRefAlias))
+            qsConic="#"+QString::number(iRefAlias+1)+" "+qsConic;
         m_ui->twSurfacesDatas->setItem(i,2, new QTableWidgetItem(qsConic));
 
         // z or thick
@@ -317,10 +317,11 @@ void DockSurfacesData::OnCellChanged(int iRow,int iCol)
             stringstream ss(sItem);
             int iVal=0;
             ss >> iVal;
-            pOD->set_alias(iRow,RADIUS_CURVATURE,iVal);
+            pOD->set_alias(iRow,RADIUS_CURVATURE,iVal-1);
         }
         else
         {
+            pOD->set_alias(iRow,RADIUS_CURVATURE,-1);
             if(bAuto && bLastSurf)
                 pOD->set_image_autocurvature(bAuto);
             else
@@ -354,10 +355,11 @@ void DockSurfacesData::OnCellChanged(int iRow,int iCol)
             stringstream ss(sItem);
             int iVal=0;
             ss >> iVal;
-            pOD->set_alias(iRow,CONIC,iVal);
+            pOD->set_alias(iRow,CONIC,iVal-1);
         }
         else
         {
+            pOD->set_alias(iRow,CONIC,-1);
             stringstream ss(sItem);
             double dVal=0;
             ss >> dVal;

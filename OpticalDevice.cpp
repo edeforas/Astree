@@ -86,6 +86,9 @@ void OpticalDevice::insert_surface(int iPos)
         //last position
         _vSurfaces[iPos].set_z(_vSurfaces[iPos-1].z()+_vdThicks[iPos-1]);
     }
+
+    //TODO update alias
+
 }
 //////////////////////////////////////////////////////////////////////////////
 void OpticalDevice::delete_surface(int iPos)
@@ -98,6 +101,8 @@ void OpticalDevice::delete_surface(int iPos)
 
     update_thicks();
     _bMustRetrace=true;
+
+    //TODO update alias
 }
 //////////////////////////////////////////////////////////////////////////////
 void OpticalDevice::set_relative_convention(bool bRelativeConvention)
@@ -587,10 +592,13 @@ const map<string,string>& OpticalDevice::all_parameters() const
 // surface aliasing
 void OpticalDevice::set_alias(int iSurface,eSurfaceparameter eParam,int iRefSurface)
 {
+    if(iRefSurface>=nb_surface())
+        return;
+
     for(unsigned int i=0;i<_alias.size();i++)
         if( (_alias[i].iSurface==iSurface) && (_alias[i].param==eParam) )
         {
-            if(iRefSurface!=-1)
+            if(iRefSurface>=0)
             {
                 // already existing, updating
                 _alias[i].iRefSurface=iRefSurface;
@@ -602,6 +610,9 @@ void OpticalDevice::set_alias(int iSurface,eSurfaceparameter eParam,int iRefSurf
             }
             return;
         }
+
+    if(iRefSurface<0) //nothing to remove
+        return;
 
     //create new entry
     Alias alias;
