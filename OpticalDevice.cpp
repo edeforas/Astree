@@ -87,8 +87,13 @@ void OpticalDevice::insert_surface(int iPos)
         _vSurfaces[iPos].set_z(_vSurfaces[iPos-1].z()+_vdThicks[iPos-1]);
     }
 
-    //TODO update alias
-
+    // update alias
+    for(unsigned int i=0;i<_alias.size();i++)
+    {
+        // if alias to after removed, increment ref
+        if(_alias[i].iRefSurface>=iPos)
+            _alias[i].iRefSurface++;
+    }
 }
 //////////////////////////////////////////////////////////////////////////////
 void OpticalDevice::delete_surface(int iPos)
@@ -102,7 +107,20 @@ void OpticalDevice::delete_surface(int iPos)
     update_thicks();
     _bMustRetrace=true;
 
-    //TODO update alias
+    // update alias
+    for(unsigned int i=0;i<_alias.size();i++)
+    {
+        if(_alias[i].iRefSurface==iPos)
+        {
+            _alias.erase(_alias.begin()+i);
+        }
+        else
+        {
+            // if alias to after removed, decrement ref
+            if(_alias[i].iRefSurface>iPos)
+                _alias[i].iRefSurface--;
+        }
+    }
 }
 //////////////////////////////////////////////////////////////////////////////
 void OpticalDevice::set_relative_convention(bool bRelativeConvention)
@@ -593,6 +611,9 @@ const map<string,string>& OpticalDevice::all_parameters() const
 void OpticalDevice::set_alias(int iSurface,eSurfaceparameter eParam,int iRefSurface)
 {
     if(iRefSurface>=nb_surface())
+        return;
+
+    if(iRefSurface==iSurface)
         return;
 
     for(unsigned int i=0;i<_alias.size();i++)
