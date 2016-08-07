@@ -602,6 +602,7 @@ void OpticalDevice::set_alias(int iSurface,eSurfaceparameter eParam,int iRefSurf
             {
                 // already existing, updating
                 _alias[i].iRefSurface=iRefSurface;
+                set(iSurface,eParam,get(iRefSurface,eParam));
             }
             else
             {
@@ -621,6 +622,8 @@ void OpticalDevice::set_alias(int iSurface,eSurfaceparameter eParam,int iRefSurf
     alias.iRefSurface=iRefSurface;
 
     _alias.push_back(alias);
+
+    set(iSurface,eParam,get(iRefSurface,eParam));
 }
 //////////////////////////////////////////////////////////////////////////////
 bool OpticalDevice::get_alias(int iSurface,eSurfaceparameter eParam,int& iRefSurface)
