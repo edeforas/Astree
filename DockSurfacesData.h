@@ -50,7 +50,7 @@ private:
 
     Ui::DockSurfacesData* m_ui;
     OpticalDevice* pOD;
-    bool _bCanEmit;
+//    bool _bCanEmit;
 
     bool _bHaveAspheric;
     bool _bDisplayAspheric;

@@ -30,7 +30,7 @@ DockSurfacesData::DockSurfacesData(QWidget *parent) :
     connect(m_ui->btnAddSurfaceBefore,SIGNAL(clicked()),this,SLOT(OnAddSurfaceBefore()));
     connect(m_ui->btnDeleteSurface,SIGNAL(clicked()),this,SLOT(OnDeleteSurface()));
 
-    _bCanEmit=false;
+    //_bCanEmit=false;
 
     _bHaveAspheric=false;
     _bDisplayAspheric=false;
@@ -125,7 +125,8 @@ void DockSurfacesData::device_changed(OpticalDevice *pDevice,int iReason)
     assert(pDevice!=0);
     pOD=pDevice;
 
-    _bCanEmit=false;
+    m_ui->twSurfacesDatas->blockSignals(true);
+    blockSignals(true);//_bCanEmit=false;
 
     if(iReason==NEW_OPTICAL_DEVICE)
     {
@@ -151,12 +152,14 @@ void DockSurfacesData::device_changed(OpticalDevice *pDevice,int iReason)
 
     update_labels(pDevice);
     update_table();
+    m_ui->twSurfacesDatas->blockSignals(false);
+    blockSignals(false);
 }
 /////////////////////////////////////////////////////////////////////////://///
 void DockSurfacesData::update_table()
 {
     int iRefAlias;
-    _bCanEmit=false;
+    //    _bCanEmit=false;
 
     vector<string> vsMaterial;
     GlassManager::singleton().list_available(vsMaterial);
@@ -272,8 +275,6 @@ void DockSurfacesData::update_table()
     }
 
     m_ui->twSurfacesDatas->resizeColumnsToContents();
-
-    _bCanEmit=true;
 }
 //////////////////////////////////////////////////////////////////////////////
 void DockSurfacesData::onTypeChanged()
@@ -291,8 +292,8 @@ void DockSurfacesData::onTypeChanged()
 //////////////////////////////////////////////////////////////////////////////
 void DockSurfacesData::OnCellChanged(int iRow,int iCol)
 {
-    if(!_bCanEmit)
-        return;
+    //   if(!_bCanEmit)
+    //     return;
 
     if (iCol==ITEM_TYPE) //"type"
     {
@@ -525,8 +526,8 @@ void DockSurfacesData::OnDeleteSurface()
 //////////////////////////////////////////////////////////////////////////////
 void DockSurfacesData::on_cbPolyAspheric_clicked()
 {
-    if(!_bCanEmit)
-        return;
+    //if(!_bCanEmit)
+    //    return;
 
     _bDisplayAspheric=m_ui->cbPolyAspheric->isChecked();
     static_cast<MainWindow*>(parent())->update_views(this,USER_INTERFACE_CHANGED);
@@ -534,8 +535,8 @@ void DockSurfacesData::on_cbPolyAspheric_clicked()
 //////////////////////////////////////////////////////////////////////////////
 void DockSurfacesData::on_cbInnerDiameter_clicked()
 {
-    if(!_bCanEmit)
-        return;
+    //if(!_bCanEmit)
+    //    return;
 
     _bDisplayInnerDiameter=m_ui->cbInnerDiameter->isChecked();
     static_cast<MainWindow*>(parent())->update_views(this,USER_INTERFACE_CHANGED);
@@ -543,8 +544,8 @@ void DockSurfacesData::on_cbInnerDiameter_clicked()
 //////////////////////////////////////////////////////////////////////////////
 void DockSurfacesData::on_cbComment_clicked()
 {
-    if(!_bCanEmit)
-        return;
+    //if(!_bCanEmit)
+    //    return;
 
     _bDisplayComment=m_ui->cbComment->isChecked();
     static_cast<MainWindow*>(parent())->update_views(this,USER_INTERFACE_CHANGED);

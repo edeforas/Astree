@@ -90,9 +90,11 @@ void OpticalDevice::insert_surface(int iPos)
     // update alias
     for(unsigned int i=0;i<_alias.size();i++)
     {
-        // if alias to after removed, increment ref
+        // if alias gap increased, increment ref
         if(_alias[i].iRefSurface>=iPos)
             _alias[i].iRefSurface++;
+        if(_alias[i].iSurface>=iPos)
+            _alias[i].iSurface++;
     }
 }
 //////////////////////////////////////////////////////////////////////////////
@@ -108,17 +110,21 @@ void OpticalDevice::delete_surface(int iPos)
     _bMustRetrace=true;
 
     // update alias
-    for(unsigned int i=0;i<_alias.size();i++)
+    unsigned int i=0;
+    while(i<_alias.size())
     {
-        if(_alias[i].iRefSurface==iPos)
+        if((_alias[i].iSurface==iPos) || (_alias[i].iRefSurface==iPos) ) //link broken, remove
         {
             _alias.erase(_alias.begin()+i);
         }
         else
         {
-            // if alias to after removed, decrement ref
+            // if alias removed, decrement ref or orig
             if(_alias[i].iRefSurface>iPos)
                 _alias[i].iRefSurface--;
+            if(_alias[i].iSurface>iPos)
+                _alias[i].iSurface--;
+            i++;
         }
     }
 }

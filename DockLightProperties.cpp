@@ -26,7 +26,7 @@ DockLightProperties::DockLightProperties(QWidget *parent) :
     connect(m_ui->cbBlue,SIGNAL(stateChanged(int)),this,SLOT(OnLightChange()));
     connect(m_ui->cbUV,SIGNAL(stateChanged(int)),this,SLOT(OnLightChange()));
 
-    _bCanEmit=true;
+    //_bCanEmit=true;
 }
 
 DockLightProperties::~DockLightProperties()
@@ -52,7 +52,7 @@ void DockLightProperties::device_changed(OpticalDevice* pDevice,int iReason)
     if( (iReason!=OPTICAL_DEVICE_CHANGED) && (iReason!=NEW_OPTICAL_DEVICE) )
         return;
 
-    _bCanEmit=false;
+    blockSignals(true);
     _pDevice=pDevice;
 
     double dHalfFOV=_pDevice->half_field_of_view();
@@ -71,14 +71,11 @@ void DockLightProperties::device_changed(OpticalDevice* pDevice,int iReason)
     m_ui->cbBlue->setChecked((sLightColors.find("Blue.")!=string::npos));
     m_ui->cbUV->setChecked((sLightColors.find("UV.")!=string::npos));
 
-    _bCanEmit=true;
+    blockSignals(false);
 }
 
 void DockLightProperties::OnLightChange()
 {  
-    if(!_bCanEmit)
-        return;
-
     double dHalfFOV=m_ui->leHalfFOV->text().toDouble();
     _pDevice->set_half_field_of_view(dHalfFOV);
 
