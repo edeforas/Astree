@@ -19,6 +19,8 @@ DockSurfacesData::DockSurfacesData(QWidget *parent) :
     QDockWidget(parent),
     m_ui(new Ui::DockSurfacesData)
 {
+    _bBlockSignals=true;
+
     pOD=0;
     m_ui->setupUi(this);
 
@@ -30,8 +32,6 @@ DockSurfacesData::DockSurfacesData(QWidget *parent) :
     connect(m_ui->btnAddSurfaceBefore,SIGNAL(clicked()),this,SLOT(OnAddSurfaceBefore()));
     connect(m_ui->btnDeleteSurface,SIGNAL(clicked()),this,SLOT(OnDeleteSurface()));
 
-    //_bCanEmit=false;
-
     _bHaveAspheric=false;
     _bDisplayAspheric=false;
 
@@ -40,6 +40,8 @@ DockSurfacesData::DockSurfacesData(QWidget *parent) :
 
     _bHaveComment=false;
     _bDisplayComment=false;
+
+    _bBlockSignals=false;
 }
 /////////////////////////////////////////////////////////////////////////://///
 void DockSurfacesData::update_labels(OpticalDevice *pDevice)
@@ -126,7 +128,7 @@ void DockSurfacesData::device_changed(OpticalDevice *pDevice,int iReason)
     pOD=pDevice;
 
     m_ui->twSurfacesDatas->blockSignals(true);
-    blockSignals(true);//_bCanEmit=false;
+    _bBlockSignals=true;
 
     if(iReason==NEW_OPTICAL_DEVICE)
     {
@@ -153,7 +155,7 @@ void DockSurfacesData::device_changed(OpticalDevice *pDevice,int iReason)
     update_labels(pDevice);
     update_table();
     m_ui->twSurfacesDatas->blockSignals(false);
-    blockSignals(false);
+    _bBlockSignals=false;
 }
 /////////////////////////////////////////////////////////////////////////://///
 void DockSurfacesData::update_table()
@@ -279,6 +281,9 @@ void DockSurfacesData::update_table()
 //////////////////////////////////////////////////////////////////////////////
 void DockSurfacesData::onTypeChanged()
 {
+    if(_bBlockSignals)
+        return;
+
     //todo remove this function?
     for(int i=0;i<pOD->nb_surface();i++)
     {
@@ -292,8 +297,8 @@ void DockSurfacesData::onTypeChanged()
 //////////////////////////////////////////////////////////////////////////////
 void DockSurfacesData::OnCellChanged(int iRow,int iCol)
 {
-    //   if(!_bCanEmit)
-    //     return;
+    if(_bBlockSignals)
+        return;
 
     if (iCol==ITEM_TYPE) //"type"
     {
@@ -462,7 +467,7 @@ void DockSurfacesData::OnCellChanged(int iRow,int iCol)
         //    iCol++;
     }
 
-    static_cast<MainWindow*>(parent())->update_views(this,OPTICAL_DEVICE_CHANGED);
+    static_cast<MainWindow*>(parent())->device_changed(this,OPTICAL_DEVICE_CHANGED);
 }
 //////////////////////////////////////////////////////////////////////////////
 void DockSurfacesData::OnAddSurfaceAfter()
@@ -480,7 +485,7 @@ void DockSurfacesData::OnAddSurfaceAfter()
     if(iLine+1>0)
         pOD->set(iLine+1,AUTO_DIAMETER,true);
 
-    static_cast<MainWindow*>(parent())->update_views(this,OPTICAL_DEVICE_CHANGED);
+    static_cast<MainWindow*>(parent())->device_changed(this,OPTICAL_DEVICE_CHANGED);
 
     m_ui->twSurfacesDatas->selectRow(iLine+1);
 }
@@ -501,7 +506,7 @@ void DockSurfacesData::OnAddSurfaceBefore()
     if(iLine>0)
         pOD->set(iLine,AUTO_DIAMETER,true);
 
-    static_cast<MainWindow*>(parent())->update_views(this,OPTICAL_DEVICE_CHANGED);
+    static_cast<MainWindow*>(parent())->device_changed(this,OPTICAL_DEVICE_CHANGED);
 
     m_ui->twSurfacesDatas->selectRow(iLine);
 }
@@ -513,7 +518,7 @@ void DockSurfacesData::OnDeleteSurface()
         return;
 
     pOD->delete_surface(iLine);
-    static_cast<MainWindow*>(parent())->update_views(this,OPTICAL_DEVICE_CHANGED);
+    static_cast<MainWindow*>(parent())->device_changed(this,OPTICAL_DEVICE_CHANGED);
 
     if(iLine>=m_ui->twSurfacesDatas->rowCount())
         iLine =m_ui->twSurfacesDatas->rowCount()-1;
@@ -526,33 +531,36 @@ void DockSurfacesData::OnDeleteSurface()
 //////////////////////////////////////////////////////////////////////////////
 void DockSurfacesData::on_cbPolyAspheric_clicked()
 {
-    //if(!_bCanEmit)
-    //    return;
+    if(_bBlockSignals)
+        return;
 
     _bDisplayAspheric=m_ui->cbPolyAspheric->isChecked();
-    static_cast<MainWindow*>(parent())->update_views(this,USER_INTERFACE_CHANGED);
+    static_cast<MainWindow*>(parent())->device_changed(this,USER_INTERFACE_CHANGED);
 }
 //////////////////////////////////////////////////////////////////////////////
 void DockSurfacesData::on_cbInnerDiameter_clicked()
 {
-    //if(!_bCanEmit)
-    //    return;
+    if(_bBlockSignals)
+        return;
 
     _bDisplayInnerDiameter=m_ui->cbInnerDiameter->isChecked();
-    static_cast<MainWindow*>(parent())->update_views(this,USER_INTERFACE_CHANGED);
+    static_cast<MainWindow*>(parent())->device_changed(this,USER_INTERFACE_CHANGED);
 }
 //////////////////////////////////////////////////////////////////////////////
 void DockSurfacesData::on_cbComment_clicked()
 {
-    //if(!_bCanEmit)
-    //    return;
+    if(_bBlockSignals)
+        return;
 
     _bDisplayComment=m_ui->cbComment->isChecked();
-    static_cast<MainWindow*>(parent())->update_views(this,USER_INTERFACE_CHANGED);
+    static_cast<MainWindow*>(parent())->device_changed(this,USER_INTERFACE_CHANGED);
 }
 //////////////////////////////////////////////////////////////////////////////
 void DockSurfacesData::on_comboCoordMode_activated(const QString &arg1)
 {
+    if(_bBlockSignals)
+        return;
+
     (void)arg1;
 
     int iSelected=m_ui->comboCoordMode->currentIndex();
@@ -563,6 +571,6 @@ void DockSurfacesData::on_comboCoordMode_activated(const QString &arg1)
     if(iSelected==1)
         pOD->set_relative_convention(true);
 
-    static_cast<MainWindow*>(parent())->update_views(this,OPTICAL_DEVICE_CHANGED);
+    static_cast<MainWindow*>(parent())->device_changed(this,OPTICAL_DEVICE_CHANGED);
 }
 //////////////////////////////////////////////////////////////////////////////

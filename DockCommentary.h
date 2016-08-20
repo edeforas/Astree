@@ -5,7 +5,7 @@
 
 class OpticalDevice;
 namespace Ui {
-    class DockComment;
+class DockComment;
 }
 
 class DockCommentary : public QDockWidget {
@@ -25,7 +25,7 @@ protected:
 private:
     Ui::DockComment *ui;
     OpticalDevice* _pDevice;
-
+    bool _bBlockSignals;
 private slots:
     void on_textEdit_textChanged();
 };

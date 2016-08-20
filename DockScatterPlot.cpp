@@ -117,6 +117,8 @@ DockScatterPlot::DockScatterPlot(QWidget *parent) :
     QDockWidget(parent),
     m_ui(new Ui::DockScatterPlot)
 {
+    _bBlockSignals=true;
+
     m_ui->setupUi(this);
     m_ui->graphicsView->setScene(new myScene); //TODO deleter la scene?
 
@@ -124,6 +126,8 @@ DockScatterPlot::DockScatterPlot(QWidget *parent) :
     m_ui->graphicsView->setHorizontalScrollBarPolicy(Qt::ScrollBarAlwaysOff);
     m_ui->graphicsView->setVerticalScrollBarPolicy(Qt::ScrollBarAlwaysOff);
     m_ui->graphicsView->setRenderHints( QPainter::Antialiasing );
+
+    _bBlockSignals=false;
 }
 
 DockScatterPlot::~DockScatterPlot()
@@ -150,6 +154,8 @@ void DockScatterPlot::device_changed(OpticalDevice* pDevice, int iReason)
 
     if( (iReason!=PARAMETERS_CHANGED) && (iReason!=OPTICAL_DEVICE_CHANGED) && (iReason!=NEW_OPTICAL_DEVICE) )
         return;
+
+    _bBlockSignals=true;
 
     double dPercentField=-1;
     if(!pDevice->get_parameter("showLightOffAxis",dPercentField))
@@ -242,6 +248,8 @@ void DockScatterPlot::device_changed(OpticalDevice* pDevice, int iReason)
     m_ui->qlLFro->setText(QString::number(dLfro,'g',3));
 
     m_ui->qlVignetting->setText(QString::number(light.vignetting(),'f',1)+" %");
+
+    _bBlockSignals=false;
 }
 
 void DockScatterPlot::on_pushButton_clicked()
@@ -261,7 +269,10 @@ void DockScatterPlot::on_pushButton_3_clicked()
 
 void DockScatterPlot::on_hsImageFieldPos_valueChanged(int value)
 {
+    if(_bBlockSignals)
+        return;
+
     _pDevice->set_parameter("showLightOffAxis",value); // in percent
     device_changed(_pDevice,PARAMETERS_CHANGED);
-    static_cast<MainWindow*>(parent())->update_views(this,PARAMETERS_CHANGED,false);
+    static_cast<MainWindow*>(parent())->device_changed(this,PARAMETERS_CHANGED,false);
 }

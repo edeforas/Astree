@@ -17,6 +17,8 @@ DockOptimizer::DockOptimizer(QWidget *parent) :
     QDockWidget(parent),
     ui(new Ui::DockOptimizer)
 {
+    _bBlockSignals=true;
+
     ui->setupUi(this);
     _pDevice=0;
     _iNbSurfaces=0;
@@ -61,6 +63,7 @@ DockOptimizer::DockOptimizer(QWidget *parent) :
         ui->twParams->setItem(i,4,pItemMax);
     }
     ui->twParams->resizeColumnsToContents();
+    _bBlockSignals=false;
 }
 /////////////////////////////////////////////////////////////
 DockOptimizer::~DockOptimizer()
@@ -108,11 +111,13 @@ void DockOptimizer::on_pushButton_clicked()
         if(!bOk)
             continue;
 
+        //TODO use device properties instead of reading from the UI
+
         _dopt.add_parameter(iSurface,sParam,dMin,dMax);
     }
 
     int iCriteria=ui->cbCriteria->currentIndex();
-    OptimizerMeritFunction omf;
+    OptimizerMeritFunction omf=eCenterOnly;
     if(iCriteria==0)
         omf=eCenterOnly;
 
@@ -160,12 +165,15 @@ void DockOptimizer::on_pushButton_clicked()
 
     // update results
     if( (result==eBetterSolutionFound)|| (result==eSolutionOnEdge) )
-        static_cast<MainWindow*>(parent())->update_views(this,OPTICAL_DEVICE_CHANGED);
+        static_cast<MainWindow*>(parent())->device_changed(this,OPTICAL_DEVICE_CHANGED);
 }
 /////////////////////////////////////////////////////////////
 void DockOptimizer::device_changed(OpticalDevice *pDevice,int iReason)
 {
     _pDevice=pDevice;
+
+    _bBlockSignals=true;
+
     int iNbSurfaces=_pDevice->nb_surface();
 
     if((iReason==NEW_OPTICAL_DEVICE) || (_iNbSurfaces!=iNbSurfaces) )
@@ -184,7 +192,54 @@ void DockOptimizer::device_changed(OpticalDevice *pDevice,int iReason)
 
         //init with parameters
         if(iReason==NEW_OPTICAL_DEVICE)
-            load_from_device();
+        {
+            for(int iRow=0;iRow<ui->twParams->rowCount();iRow++)
+            {
+                stringstream ss;
+                ss << iRow;
+
+                QCheckBox* qcbOptimize=(QCheckBox*)ui->twParams->cellWidget(iRow,0);
+                string sOptimize="0";
+                _pDevice->get_parameter("optimizer."+ss.str()+".checked",sOptimize);
+                qcbOptimize->setChecked(sOptimize!="0");
+
+                QComboBox* qcbSurf=(QComboBox*)ui->twParams->cellWidget(iRow,1);
+                string sSurface;
+                _pDevice->get_parameter("optimizer."+ss.str()+".surface",sSurface);
+                qcbSurf->setCurrentText(sSurface.c_str());
+
+                QComboBox* qcbParam=(QComboBox*)ui->twParams->cellWidget(iRow,2);
+                string sParam;
+                _pDevice->get_parameter("optimizer."+ss.str()+".parameter",sParam);
+                qcbParam->setCurrentText(sParam.c_str());
+
+                QTableWidgetItem* pItemMin=ui->twParams->item(iRow,3);
+                string sMin;
+                _pDevice->get_parameter("optimizer."+ss.str()+".min",sMin);
+                pItemMin->setText(sMin.c_str());
+
+                QTableWidgetItem* pItemMax=ui->twParams->item(iRow,4);
+                string sMax;
+                _pDevice->get_parameter("optimizer."+ss.str()+".max",sMax);
+                pItemMax->setText(sMax.c_str());
+            }
+
+            //load merit function
+            string sMeritFunction="CenterOnly";
+            _pDevice->get_parameter("optimizer.merit",sMeritFunction);
+
+            if(sMeritFunction=="CenterOnly")
+                ui->cbCriteria->setCurrentIndex(0);
+
+            if(sMeritFunction=="MostlyCenter")
+                ui->cbCriteria->setCurrentIndex(1);
+
+            if(sMeritFunction=="FullFrameMean")
+                ui->cbCriteria->setCurrentIndex(2);
+
+            if(sMeritFunction=="FullFrameMaxError")
+                ui->cbCriteria->setCurrentIndex(3);
+        }
     }
 
     if( (iReason!=COMMENT_CHANGED) && (iReason!=OPTICAL_DEVICE_SAVED) )
@@ -192,41 +247,52 @@ void DockOptimizer::device_changed(OpticalDevice *pDevice,int iReason)
         ui->lblResult->setText("...");
         ui->lblResult->setStyleSheet("color: black;");
     }
+
+    _bBlockSignals=false;
 }
 /////////////////////////////////////////////////////////////
-void DockOptimizer::save_to_device()
+void DockOptimizer::on_twParams_cellChanged(int row, int column)
 {
-    if(_pDevice==0)
+    (void)column;
+
+    if(_bBlockSignals)
         return;
 
-    for(int iRow=0;iRow<ui->twParams->rowCount();iRow++)
-    {
-        stringstream ss;
-        ss << iRow;
+    stringstream ss;
+    ss << row;
 
-        //todo write only if no default parameter
-        //todo clean parameter if void
+    //TODO write only if no default parameter
+    //TODO clean parameter if void FIXME
 
-        QCheckBox* qcbOptimize=(QCheckBox*)ui->twParams->cellWidget(iRow,0);
-        if(qcbOptimize)
-            _pDevice->set_parameter("optimizer."+ss.str()+".checked",qcbOptimize->isChecked()?1:0);
+    QCheckBox* qcbOptimize=(QCheckBox*)ui->twParams->cellWidget(row,0);
+    if(qcbOptimize)
+        _pDevice->set_parameter("optimizer."+ss.str()+".checked",qcbOptimize->isChecked()?1:0);
 
-        QComboBox* qcbSurf=(QComboBox*)ui->twParams->cellWidget(iRow,1);
-        if(qcbSurf)
-            _pDevice->set_parameter("optimizer."+ss.str()+".surface",qcbSurf->currentText().toStdString());
+    QComboBox* qcbSurf=(QComboBox*)ui->twParams->cellWidget(row,1);
+    if(qcbSurf)
+        _pDevice->set_parameter("optimizer."+ss.str()+".surface",qcbSurf->currentText().toStdString());
 
-        QComboBox* qcbParam=(QComboBox*)ui->twParams->cellWidget(iRow,2);
-        if(qcbParam)
-            _pDevice->set_parameter("optimizer."+ss.str()+".parameter",qcbParam->currentText().toStdString());
+    QComboBox* qcbParam=(QComboBox*)ui->twParams->cellWidget(row,2);
+    if(qcbParam)
+        _pDevice->set_parameter("optimizer."+ss.str()+".parameter",qcbParam->currentText().toStdString());
 
-        QTableWidgetItem* pItemMin=ui->twParams->item(iRow,3);
-        if(pItemMin)
-            _pDevice->set_parameter("optimizer."+ss.str()+".min",pItemMin->text().toStdString());
+    QTableWidgetItem* pItemMin=ui->twParams->item(row,3);
+    if(pItemMin)
+        _pDevice->set_parameter("optimizer."+ss.str()+".min",pItemMin->text().toStdString());
 
-        QTableWidgetItem* pItemMax=ui->twParams->item(iRow,4);
-        if(pItemMax)
-            _pDevice->set_parameter("optimizer."+ss.str()+".max",pItemMax->text().toStdString());
-    }
+    QTableWidgetItem* pItemMax=ui->twParams->item(row,4);
+    if(pItemMax)
+        _pDevice->set_parameter("optimizer."+ss.str()+".max",pItemMax->text().toStdString());
+
+    static_cast<MainWindow*>(parent())->device_changed(this,OPTIMIZER_CHANGED);
+}
+//////////////////////////////////////////////////////////
+void DockOptimizer::on_cbCriteria_currentTextChanged(const QString &arg1)
+{
+    (void)arg1;
+
+    if(_bBlockSignals)
+        return;
 
     //save merit function
     int iCriteria=ui->cbCriteria->currentIndex();
@@ -242,58 +308,7 @@ void DockOptimizer::save_to_device()
 
     if(iCriteria==3)
         _pDevice->set_parameter("optimizer.merit","FullFrameMaxError");
-}
-/////////////////////////////////////////////////////////////
-void DockOptimizer::load_from_device()
-{
-    if(_pDevice==0)
-        return;
 
-    for(int iRow=0;iRow<ui->twParams->rowCount();iRow++)
-    {
-        stringstream ss;
-        ss << iRow;
-
-        QCheckBox* qcbOptimize=(QCheckBox*)ui->twParams->cellWidget(iRow,0);
-        string sOptimize="0";
-        _pDevice->get_parameter("optimizer."+ss.str()+".checked",sOptimize);
-        qcbOptimize->setChecked(sOptimize!="0");
-
-        QComboBox* qcbSurf=(QComboBox*)ui->twParams->cellWidget(iRow,1);
-        string sSurface;
-        _pDevice->get_parameter("optimizer."+ss.str()+".surface",sSurface);
-        qcbSurf->setCurrentText(sSurface.c_str());
-
-        QComboBox* qcbParam=(QComboBox*)ui->twParams->cellWidget(iRow,2);
-        string sParam;
-        _pDevice->get_parameter("optimizer."+ss.str()+".parameter",sParam);
-        qcbParam->setCurrentText(sParam.c_str());
-
-        QTableWidgetItem* pItemMin=ui->twParams->item(iRow,3);
-        string sMin;
-        _pDevice->get_parameter("optimizer."+ss.str()+".min",sMin);
-        pItemMin->setText(sMin.c_str());
-
-        QTableWidgetItem* pItemMax=ui->twParams->item(iRow,4);
-        string sMax;
-        _pDevice->get_parameter("optimizer."+ss.str()+".max",sMax);
-        pItemMax->setText(sMax.c_str());
-    }
-
-    //load merit function
-    string sMeritFunction="CenterOnly";
-    _pDevice->get_parameter("optimizer.merit",sMeritFunction);
-
-    if(sMeritFunction=="CenterOnly")
-        ui->cbCriteria->setCurrentIndex(0);
-
-    if(sMeritFunction=="MostlyCenter")
-        ui->cbCriteria->setCurrentIndex(1);
-
-    if(sMeritFunction=="FullFrameMean")
-        ui->cbCriteria->setCurrentIndex(2);
-
-    if(sMeritFunction=="FullFrameMaxError")
-        ui->cbCriteria->setCurrentIndex(3);
+    static_cast<MainWindow*>(parent())->device_changed(this,OPTIMIZER_CHANGED);
 }
 /////////////////////////////////////////////////////////////

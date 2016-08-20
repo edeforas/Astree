@@ -77,7 +77,7 @@ MainWindow::MainWindow(QWidget *parent)
     tabifyDockWidget(_pDockLightProperties,_pDockScatterPlot);
     //  tabifyDockWidget(_pDockScatterPlot,_pDockImageQuality);
 
-    update_views(0,NEW_OPTICAL_DEVICE,false);
+    device_changed(0,NEW_OPTICAL_DEVICE,false);
 }
 //////////////////////////////////////////////////////////////////////////////
 MainWindow::~MainWindow()
@@ -104,10 +104,9 @@ bool MainWindow::ask_save_and_action()
 
         if (iRet==QMessageBox::Yes)
         {
-            _pDockOptimizer->save_to_device();
             DeviceIo::save(_sFileName,_pDevice);
             _bMustSave=false;
-            update_views(0,OPTICAL_DEVICE_SAVED);
+            device_changed(0,OPTICAL_DEVICE_SAVED);
         }
     }
 
@@ -147,7 +146,7 @@ void MainWindow::on_actionLoad_triggered()
     if (!_sFileName.empty())
     {
         clear_device();
-        update_views(0,NEW_OPTICAL_DEVICE,false);
+        device_changed(0,NEW_OPTICAL_DEVICE,false);
         load_file(_sFileName);
     }
 }
@@ -158,7 +157,7 @@ void MainWindow::on_actionNew_triggered()
         return;
 
     clear_device();
-    update_views(0,NEW_OPTICAL_DEVICE,false);
+    device_changed(0,NEW_OPTICAL_DEVICE,false);
     _pFrameSideView->fit_in_view();
 }
 //////////////////////////////////////////////////////////////////////////////
@@ -168,10 +167,9 @@ void MainWindow::on_actionSave_triggered()
         on_actionSave_as_triggered();
     else
     {
-        _pDockOptimizer->save_to_device();
         DeviceIo::save(_sFileName,_pDevice);
         _bMustSave=false;
-        update_views(0,OPTICAL_DEVICE_SAVED,false);
+        device_changed(0,OPTICAL_DEVICE_SAVED,false);
     }
 }
 //////////////////////////////////////////////////////////////////////////////
@@ -185,10 +183,9 @@ void MainWindow::on_actionSave_as_triggered()
     if (sFileName.empty()==false)
     {
         _sFileName=sFileName;
-        _pDockOptimizer->save_to_device();
         DeviceIo::save(_sFileName,_pDevice);
         _bMustSave=false;
-        update_views(0,OPTICAL_DEVICE_SAVED,false);
+        device_changed(0,OPTICAL_DEVICE_SAVED,false);
     }
 }
 //////////////////////////////////////////////////////////////////////////////
@@ -199,7 +196,7 @@ void MainWindow::on_actionClose_triggered()
 
     clear_device();
     _sFileName="";
-    update_views(0,NEW_OPTICAL_DEVICE,false);
+    device_changed(0,NEW_OPTICAL_DEVICE,false);
     _pFrameSideView->fit_in_view();
 }
 //////////////////////////////////////////////////////////////////////////////
@@ -220,12 +217,12 @@ bool MainWindow::load_file(string sFile)
     delete _pDevice;
     _pDevice=pDevice;
     _sFileName=sFile;
-    update_views(0,NEW_OPTICAL_DEVICE,false);
+    device_changed(0,NEW_OPTICAL_DEVICE,false);
     _pFrameSideView->fit_in_view();
     return true;
 }
 //////////////////////////////////////////////////////////////////////////////
-void MainWindow::update_views(void* pSender,int iReason,bool bMustSave)
+void MainWindow::device_changed(void* pSender,int iReason,bool bMustSave)
 {
     if(bMustSave)
         _bMustSave=true;
@@ -291,7 +288,7 @@ void MainWindow::on_actionScal_device_triggered()
 
         dmc.scale(_pDevice,sd.get_scale(),sd.get_scale_diameter(),sd.get_scale_focal());
         _bMustSave=true;
-        update_views(0,OPTICAL_DEVICE_CHANGED);
+        device_changed(0,OPTICAL_DEVICE_CHANGED);
         _pFrameSideView->fit_in_view();
     }
 }
@@ -307,7 +304,7 @@ void MainWindow::on_actionImport_ZMX_file_triggered()
     {
         _sFileName="";
         clear_device();
-        update_views(0,NEW_OPTICAL_DEVICE);
+        device_changed(0,NEW_OPTICAL_DEVICE);
 
         _bMustSave=false;
         clear_device();
@@ -323,7 +320,7 @@ void MainWindow::on_actionImport_ZMX_file_triggered()
         delete _pDevice;
         _pDevice=pDevice;
         _sFileName=sFile;
-        update_views(0,NEW_OPTICAL_DEVICE);
+        device_changed(0,NEW_OPTICAL_DEVICE);
         _pFrameSideView->fit_in_view();
     }
 }

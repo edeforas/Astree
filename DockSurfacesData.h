@@ -9,7 +9,7 @@
 
 namespace Ui
 {
-    class DockSurfacesData;
+class DockSurfacesData;
 }
 
 class MainWindow;
@@ -50,7 +50,7 @@ private:
 
     Ui::DockSurfacesData* m_ui;
     OpticalDevice* pOD;
-//    bool _bCanEmit;
+    bool _bBlockSignals;
 
     bool _bHaveAspheric;
     bool _bDisplayAspheric;

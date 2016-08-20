@@ -24,9 +24,6 @@ public:
 
     void device_changed(OpticalDevice* pDevice, int iReason);
 
-//signals:
-  //  void device_changed(void* pSender);
-
 public slots:
     void OnLightChange();
 
@@ -36,7 +33,7 @@ protected:
 private:
     Ui::DockLightProperties *m_ui;
     OpticalDevice* _pDevice;
-//    bool _bCanEmit;
+    bool _bBlockSignals;
 };
 
 #endif // DOCKLIGHTPROPERTIES_H

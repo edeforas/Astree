@@ -10,7 +10,9 @@ DockCommentary::DockCommentary(QWidget *parent) :
     QDockWidget(parent),
     ui(new Ui::DockComment)
 {
+    _bBlockSignals=true;
     ui->setupUi(this);
+    _bBlockSignals=false;
 }
 
 DockCommentary::~DockCommentary()
@@ -38,17 +40,17 @@ void DockCommentary::device_changed(OpticalDevice* pDevice,int iReason)
     if(iReason!=NEW_OPTICAL_DEVICE)
         return;
 
-    ui->textEdit->blockSignals(true);
+    _bBlockSignals=true;
     ui->textEdit->setText(_pDevice->note().c_str());
-    ui->textEdit->blockSignals(false);
+    _bBlockSignals=false;
 }
 ////////////////////////////////////////////////////////////////////////
 void DockCommentary::on_textEdit_textChanged()
-{
-    if(_pDevice==0)
+{   
+    if(_bBlockSignals)
         return;
 
     _pDevice->set_note(ui->textEdit->document()->toPlainText().toStdString());
-    static_cast<MainWindow*>(parent())->update_views(this,COMMENT_CHANGED);
+    static_cast<MainWindow*>(parent())->device_changed(this,COMMENT_CHANGED);
 }
 ////////////////////////////////////////////////////////////////////////

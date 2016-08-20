@@ -39,6 +39,7 @@ private slots:
 private:
     Ui::DockScatterPlot *m_ui;
     OpticalDevice* _pDevice;
+    bool _bBlockSignals;
 
     static void enlarge(QRectF& r,double dRatio);
 };

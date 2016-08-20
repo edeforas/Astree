@@ -42,7 +42,7 @@ public:
     double dLightTilt;
 
 public slots:
-    void update_views(void* pSender, int iReason, bool bMustSave=true);
+    void device_changed(void* pSender, int iReason, bool bMustSave=true);
 
 protected:
     virtual void closeEvent ( QCloseEvent * event );
