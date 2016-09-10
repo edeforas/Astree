@@ -37,7 +37,6 @@ Surface::Surface():
 
     _bAutoDiameter=false;
     _bAutoInnerDiameter=false;
-    _bAutoFocus=false;
 
     _dConic=0.;
     _dCurvature=0.;
@@ -69,7 +68,6 @@ Surface::Surface(const Surface &rSurf):
 
     _bAutoDiameter=false;
     _bAutoInnerDiameter=false;
-    _bAutoFocus=false;
 
     _dConic=0.;
     _dCurvature=0.;
@@ -107,8 +105,6 @@ Surface& Surface::operator=(const Surface& rSurf)
 
     set_inner_diameter(rSurf.inner_diameter());
     set_auto_inner_diameter(rSurf.get_auto_inner_diameter());
-
-    set_autofocus(rSurf.get_autofocus());
 
     return *this;
 }
@@ -541,16 +537,6 @@ string Surface::comment() const
     return _sComment;
 }
 ///////////////////////////////////////////////////////////////////////////////
-void Surface::set_autofocus(bool bAutoFocus)
-{
-    _bAutoFocus= bAutoFocus;
-}
-///////////////////////////////////////////////////////////////////////////////
-bool Surface::get_autofocus() const
-{
-    return _bAutoFocus;
-}
-///////////////////////////////////////////////////////////////////////////////
 void Surface::set_conic(double dConic)
 {
     _dConic=dConic;
@@ -665,7 +651,7 @@ void Surface::stop_photon(Photon& p)
 
         double t1,t2;
 
-        if (delta!=dB2) // alors les denum existent (todo enhnace test)
+        if (delta!=dB2) // alors les denum existent (todo enhance test)
         {
             double sqrtDelta=sqrt(delta);
             t1=(2.*dC)/(+sqrtDelta-dB);

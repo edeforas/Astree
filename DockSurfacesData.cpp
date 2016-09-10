@@ -127,7 +127,6 @@ void DockSurfacesData::device_changed(OpticalDevice *pDevice,int iReason)
     assert(pDevice!=0);
     pOD=pDevice;
 
-    m_ui->twSurfacesDatas->blockSignals(true);
     _bBlockSignals=true;
 
     if(iReason==NEW_OPTICAL_DEVICE)
@@ -154,14 +153,13 @@ void DockSurfacesData::device_changed(OpticalDevice *pDevice,int iReason)
 
     update_labels(pDevice);
     update_table();
-    m_ui->twSurfacesDatas->blockSignals(false);
+
     _bBlockSignals=false;
 }
 /////////////////////////////////////////////////////////////////////////://///
 void DockSurfacesData::update_table()
 {
-    int iRefAlias;
-    //    _bCanEmit=false;
+    _bBlockSignals=true;
 
     vector<string> vsMaterial;
     GlassManager::singleton().list_available(vsMaterial);
@@ -170,6 +168,7 @@ void DockSurfacesData::update_table()
 
     for (int i=0;i<pOD->nb_surface();i++)
     {
+        int iRefAlias;
         int iIndexCol=0;
         QComboBox*  qcbType=new QComboBox;
         qcbType->addItem("stop");
@@ -277,6 +276,7 @@ void DockSurfacesData::update_table()
     }
 
     m_ui->twSurfacesDatas->resizeColumnsToContents();
+    _bBlockSignals=false;
 }
 //////////////////////////////////////////////////////////////////////////////
 void DockSurfacesData::onTypeChanged()
@@ -467,6 +467,9 @@ void DockSurfacesData::OnCellChanged(int iRow,int iCol)
         //    iCol++;
     }
 
+    if(pOD->has_auto())
+        update_table(); // an auto parameter need to be recomputed
+
     static_cast<MainWindow*>(parent())->device_changed(this,OPTICAL_DEVICE_CHANGED);
 }
 //////////////////////////////////////////////////////////////////////////////
@@ -484,6 +487,8 @@ void DockSurfacesData::OnAddSurfaceAfter()
 
     if(iLine+1>0)
         pOD->set(iLine+1,AUTO_DIAMETER,true);
+
+    update_table(); // an auto parameter need to be recomputed
 
     static_cast<MainWindow*>(parent())->device_changed(this,OPTICAL_DEVICE_CHANGED);
 
@@ -506,6 +511,8 @@ void DockSurfacesData::OnAddSurfaceBefore()
     if(iLine>0)
         pOD->set(iLine,AUTO_DIAMETER,true);
 
+    update_table(); // an auto parameter need to be recomputed
+
     static_cast<MainWindow*>(parent())->device_changed(this,OPTICAL_DEVICE_CHANGED);
 
     m_ui->twSurfacesDatas->selectRow(iLine);
@@ -525,6 +532,8 @@ void DockSurfacesData::OnDeleteSurface()
 
     if(iLine<0)
         iLine=0;
+
+    update_table(); // an auto parameter need to be recomputed
 
     m_ui->twSurfacesDatas->selectRow(iLine);
 }

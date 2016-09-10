@@ -76,9 +76,6 @@ public:
     void set_comment(string sComment);
     string comment() const;
 
-    void set_autofocus(bool bAutoFocus);
-    bool get_autofocus() const;
-
 private:
     bool verify_in_surface(double dX,double dY);
     void local_ref(Photon& p) const;

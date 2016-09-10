@@ -12,7 +12,6 @@ namespace Ui
 class DockSurfacesData;
 }
 
-class MainWindow;
 class OpticalDevice;
 
 class DockSurfacesData : public QDockWidget
@@ -27,18 +26,15 @@ public:
 
     void device_changed(OpticalDevice* pDevice, int iReason);
 
+protected:
+    virtual void changeEvent(QEvent *e);
 
-public slots:
+private slots:
     void OnCellChanged(int iRow,int iCol);
     void OnAddSurfaceAfter();
     void OnAddSurfaceBefore();
     void OnDeleteSurface();
     void onTypeChanged();
-
-protected:
-    virtual void changeEvent(QEvent *e);
-
-private slots:
     void on_cbPolyAspheric_clicked();
     void on_cbInnerDiameter_clicked();
     void on_cbComment_clicked();

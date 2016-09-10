@@ -227,22 +227,22 @@ void MainWindow::device_changed(void* pSender,int iReason,bool bMustSave)
     if(bMustSave)
         _bMustSave=true;
 
-    if (pSender!=(void*)_pDockScatterPlot)
+    if (pSender!=_pDockScatterPlot)
     {
         _pDockScatterPlot->device_changed(_pDevice,iReason);
     }
 
-    //   if (pSender!=(void*)_pDockSurfacesData) // call always for the auto diameter TODO
-    //  {
-    _pDockSurfacesData->device_changed(_pDevice,iReason);
-    // }
+    if (pSender!=_pDockSurfacesData)
+    {
+        _pDockSurfacesData->device_changed(_pDevice,iReason);
+    }
 
-    if (pSender!=(void*)_pDockLightProperties)
+    if (pSender!=_pDockLightProperties)
     {
         _pDockLightProperties->device_changed(_pDevice,iReason);
     }
 
-    if (pSender!=(void*)_pFrameSideView)
+    if (pSender!=_pFrameSideView)
     {
         _pFrameSideView->device_changed(_pDevice,iReason);
     }

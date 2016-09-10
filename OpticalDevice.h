@@ -74,6 +74,7 @@ public:
     // global properties getter
     bool has_aspheric() const;
     bool has_inner_diameter() const;
+    bool has_auto() const;
 
     // z settings
     void set_relative_convention(bool bRelativeConvention);

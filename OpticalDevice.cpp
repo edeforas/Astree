@@ -198,6 +198,25 @@ bool OpticalDevice::has_inner_diameter() const
     return false;
 }
 //////////////////////////////////////////////////////////////////////////////
+bool OpticalDevice::has_auto() const
+{
+    if(_bAutoFocus)
+        return true;
+
+    if(_bAutoCurvature)
+        return true;
+
+    for(int i=0;i<nb_surface();i++)
+    {
+        const Surface& s=_vSurfaces[i];
+        bool bAuto=s.get_auto_diameter() || s.get_auto_inner_diameter();
+        if(bAuto)
+            return true;
+    }
+
+    return false;
+}
+//////////////////////////////////////////////////////////////////////////////
 void OpticalDevice::set_autofocus(bool bAutofocus)
 {
     _bAutoFocus=bAutofocus;
@@ -284,7 +303,7 @@ void OpticalDevice::ray_trace()
 
     //for autofocus and on-axis stats
     _imageQuality.dFNumber=light.get_FD();
-    _imageQuality.dAirySize=light.airy_radius()*2;
+    _imageQuality.dAirySize=light.airy_radius()*2.;
 
     if(_iNbAngles>1)
     {
