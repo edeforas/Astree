@@ -25,13 +25,11 @@ public:
 
 private slots:
     void on_pushButton_clicked();
-
     void on_twParams_cellChanged(int row, int column);
-
     void on_cbCriteria_currentTextChanged(const QString &arg1);
+    void tableChanged();
 
 private:
-
     Ui::DockOptimizer *ui;
     OpticalDevice* _pDevice;
     DeviceOptimizer _dopt;

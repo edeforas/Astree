@@ -30,22 +30,24 @@ protected:
     virtual void changeEvent(QEvent *e);
 
 private slots:
-    void OnCellChanged(int iRow,int iCol);
-    void OnAddSurfaceAfter();
-    void OnAddSurfaceBefore();
-    void OnDeleteSurface();
     void onTypeChanged();
     void on_cbPolyAspheric_clicked();
     void on_cbInnerDiameter_clicked();
     void on_cbComment_clicked();
     void on_comboCoordMode_activated(const QString &arg1);
 
+    void on_btnAddSurfaceBefore_clicked();
+    void on_btnAddSurfaceAfter_clicked();
+    void on_btnDeleteSurface_clicked();
+
+    void on_twSurfacesDatas_cellChanged(int row, int column);
+
 private:
-    void update_labels(OpticalDevice *pDevice);
+    void update_labels();
     void update_table();
 
     Ui::DockSurfacesData* m_ui;
-    OpticalDevice* pOD;
+    OpticalDevice* _pOD;
     bool _bBlockSignals;
 
     bool _bHaveAspheric;

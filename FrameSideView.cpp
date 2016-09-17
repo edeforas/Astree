@@ -76,7 +76,8 @@ void FrameSideView::changeEvent(QEvent *e)
 /////////////////////////////////////////////////////////////////////////////////////
 void FrameSideView::device_changed(OpticalDevice* pDevice, int iReason)
 {
-    (void)iReason; //TODO
+    if( (iReason!=LIGHT_OFF_AXIS_CHANGED) && (iReason!=OPTICAL_DEVICE_CHANGED) && (iReason!=NEW_OPTICAL_DEVICE) )
+        return;
 
     bool bSameDevice=(_pDevice==pDevice);
     _pDevice=pDevice;

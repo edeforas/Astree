@@ -34,11 +34,11 @@ void DockCommentary::changeEvent(QEvent *e)
 ////////////////////////////////////////////////////////////////////////
 void DockCommentary::device_changed(OpticalDevice* pDevice,int iReason)
 {
-    assert(pDevice!=0);
-    _pDevice=pDevice;
-
     if(iReason!=NEW_OPTICAL_DEVICE)
         return;
+
+    assert(pDevice!=0);
+    _pDevice=pDevice;
 
     _bBlockSignals=true;
     ui->textEdit->setText(_pDevice->note().c_str());
