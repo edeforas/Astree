@@ -10,7 +10,7 @@
 2.diameter=199.0233348
 2.diameter.auto=1
 2.radius_curvature=-1212.722485
-2.radius_curvature.alias=0
+2.radius_curvature.clone=0
 2.type=Air
 2.z=0
 3.diameter=21.03892533

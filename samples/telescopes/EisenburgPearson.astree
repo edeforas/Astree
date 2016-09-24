@@ -11,11 +11,11 @@
 1.thick=172.89
 1.type=reflect
 2.conic=-1.05
-2.conic.alias=0
+2.conic.clone=0
 2.diameter=59.01024322
 2.diameter.auto=1
 2.radius_curvature=-480
-2.radius_curvature.alias=0
+2.radius_curvature.clone=0
 2.thick=-181.9496211
 2.type=reflect
 3.diameter=13.97887317

@@ -115,7 +115,7 @@ private:
 
     bool _bAutoDiameter;
     bool _bAutoInnerDiameter;
-    bool _bAutoFocus;
+ //   bool _bAutoFocus;
 };
 
 #endif

@@ -305,7 +305,7 @@ void DockOptimizer::on_cbCriteria_currentTextChanged(const QString &arg1)
 
     //save merit function
     int iCriteria=ui->cbCriteria->currentIndex();
-    string sMeritFunction="invalid";
+  //  string sMeritFunction="invalid";
     if(iCriteria==0)
         _pDevice->set_parameter("optimizer.merit","CenterOnly");
 

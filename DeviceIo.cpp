@@ -14,7 +14,8 @@ using namespace std;
 bool DeviceIo::save(string sFile, OpticalDevice* pOD)
 {
     Properties prop;
-    int iSurfAlias;
+    int iSurfclone;
+    double dGainclone;
 
     for (int iS=0;iS<pOD->nb_surface();iS++)
     {
@@ -29,15 +30,27 @@ bool DeviceIo::save(string sFile, OpticalDevice* pOD)
         {
             double dThick=pOD->get(iS,THICK);
             prop.set(sSurfName+".thick",dThick);
+            if(pOD->get_clone(iS,THICK,iSurfclone,dGainclone))
+            {
+                prop.set(sSurfName+".thick.clone",iSurfclone);
+                prop.set(sSurfName+".thick.clone.gain",dGainclone);
+            }
         }
         else
         {
             double dZ=pOD->get(iS,Z);
             prop.set(sSurfName+".z",dZ);
+            if(pOD->get_clone(iS,Z,iSurfclone,dGainclone))
+            {
+                prop.set(sSurfName+".z.clone",iSurfclone);
+                prop.set(sSurfName+".z.clone.gain",dGainclone);
+            }
         }
 
         if(pOD->get_autofocus() && (iS==pOD->nb_surface()-1))
             prop.set(sSurfName+".z.autofocus",true);
+
+
 
         double dDiameter=pOD->get(iS,DIAMETER);
         prop.set(sSurfName+".diameter",dDiameter);
@@ -58,15 +71,19 @@ bool DeviceIo::save(string sFile, OpticalDevice* pOD)
             prop.set(sSurfName+".radius_curvature",string("inf"));
         else
             prop.set(sSurfName+".radius_curvature",dRC);
-        if(pOD->get_alias(iS,RADIUS_CURVATURE,iSurfAlias))
-            prop.set(sSurfName+".radius_curvature.alias",iSurfAlias);
+
+        if(pOD->get_clone(iS,RADIUS_CURVATURE,iSurfclone,dGainclone))
+        {
+            prop.set(sSurfName+".radius_curvature.clone",iSurfclone);
+            prop.set(sSurfName+".radius_curvature.clone.gain",dGainclone);
+        }
 
         //save conic
         double dConic=pOD->get(iS,CONIC);
         if(dConic!=0.)
             prop.set(sSurfName+".conic",dConic);
-        if(pOD->get_alias(iS,CONIC,iSurfAlias))
-            prop.set(sSurfName+".conic.alias",iSurfAlias);
+        if(pOD->get_clone(iS,CONIC,iSurfclone,dGainclone)) // todo dgainclone!=1
+            prop.set(sSurfName+".conic.clone",iSurfclone);
 
         double dR4=pOD->get(iS,R4);
         if(dR4!=0.)
@@ -172,15 +189,21 @@ OpticalDevice* DeviceIo::load(string sFile)
             else
                 pOD->set(iS,RADIUS_CURVATURE,prop.get_double(sSurfName+".radius_curvature"));
 
-            if(prop.exist(sSurfName+".radius_curvature.alias"))
-                pOD->set_alias(iS,RADIUS_CURVATURE,prop.get_int(sSurfName+".radius_curvature.alias"));
+            double dGainclone=1.;
+            if(prop.exist(sSurfName+".radius_curvature.clone.gain"))
+                dGainclone=prop.get_int(sSurfName+".radius_curvature.clone.gain");
+            if(prop.exist(sSurfName+".radius_curvature.clone"))
+                pOD->set_clone(iS,RADIUS_CURVATURE,prop.get_int(sSurfName+".radius_curvature.clone"),dGainclone);
         }
 
         if (prop.exist(sSurfName+".conic"))
         {
             pOD->set(iS,CONIC,prop.get_double(sSurfName+".conic"));
-            if(prop.exist(sSurfName+".conic.alias"))
-                pOD->set_alias(iS,CONIC,prop.get_int(sSurfName+".conic.alias"));
+            double dGainclone=1;
+            if(prop.exist(sSurfName+".conic.clone.gain"))
+                dGainclone=prop.get_int(sSurfName+".conic.clone.gain");
+            if(prop.exist(sSurfName+".conic.clone"))
+                pOD->set_clone(iS,CONIC,prop.get_int(sSurfName+".conic.clone"),dGainclone);
         }
 
         if (prop.exist(sSurfName+".r4"))
@@ -204,12 +227,22 @@ OpticalDevice* DeviceIo::load(string sFile)
         {
             double dZ=prop.get_double(sSurfName+".z");
             pOD->set(iS,Z,dZ);
+            double dGainclone=1;
+            if(prop.exist(sSurfName+".z.clone.gain"))
+                dGainclone=prop.get_int(sSurfName+".z.clone.gain");
+            if(prop.exist(sSurfName+".z.clone"))
+                pOD->set_clone(iS,Z,prop.get_int(sSurfName+".z.clone"),dGainclone);
         }
 
         if (prop.exist(sSurfName+".thick"))
         {
             double dThick=prop.get_double(sSurfName+".thick");
             pOD->set(iS,THICK,dThick);
+            double dGainclone=1;
+            if(prop.exist(sSurfName+".thick.clone.gain"))
+                dGainclone=prop.get_int(sSurfName+".thick.clone.gain");
+            if(prop.exist(sSurfName+".thick.clone"))
+                pOD->set_clone(iS,THICK,prop.get_int(sSurfName+".thick.clone"),dGainclone);
         }
 
         //old format

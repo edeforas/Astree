@@ -87,14 +87,14 @@ void OpticalDevice::insert_surface(int iPos)
         _vSurfaces[iPos].set_z(_vSurfaces[iPos-1].z()+_vdThicks[iPos-1]);
     }
 
-    // update alias
-    for(unsigned int i=0;i<_alias.size();i++)
+    // update clone
+    for(unsigned int i=0;i<_surfParamsClone.size();i++)
     {
-        // if alias gap increased, increment ref
-        if(_alias[i].iRefSurface>=iPos)
-            _alias[i].iRefSurface++;
-        if(_alias[i].iSurface>=iPos)
-            _alias[i].iSurface++;
+        // if clone gap increased, increment ref
+        if(_surfParamsClone[i].iRefSurface>=iPos)
+            _surfParamsClone[i].iRefSurface++;
+        if(_surfParamsClone[i].iSurface>=iPos)
+            _surfParamsClone[i].iSurface++;
     }
 }
 //////////////////////////////////////////////////////////////////////////////
@@ -109,21 +109,21 @@ void OpticalDevice::delete_surface(int iPos)
     update_thicks();
     _bMustRetrace=true;
 
-    // update alias
+    // update clone
     unsigned int i=0;
-    while(i<_alias.size())
+    while(i<_surfParamsClone.size())
     {
-        if((_alias[i].iSurface==iPos) || (_alias[i].iRefSurface==iPos) ) //link broken, remove
+        if((_surfParamsClone[i].iSurface==iPos) || (_surfParamsClone[i].iRefSurface==iPos) ) //link broken, remove
         {
-            _alias.erase(_alias.begin()+i);
+            _surfParamsClone.erase(_surfParamsClone.begin()+i);
         }
         else
         {
-            // if alias removed, decrement ref or orig
-            if(_alias[i].iRefSurface>iPos)
-                _alias[i].iRefSurface--;
-            if(_alias[i].iSurface>iPos)
-                _alias[i].iSurface--;
+            // if clone removed, decrement ref or orig
+            if(_surfParamsClone[i].iRefSurface>iPos)
+                _surfParamsClone[i].iRefSurface--;
+            if(_surfParamsClone[i].iSurface>iPos)
+                _surfParamsClone[i].iSurface--;
             i++;
         }
     }
@@ -282,11 +282,11 @@ void OpticalDevice::ray_trace()
         _vSurfaces[i].set_auto_inner_diameter(_vSurfaces[i].get_auto_inner_diameter());
     }
 
-    //update alias parameters
-    for(unsigned int i=0;i<_alias.size();i++)
+    //update clone parameters
+    for(unsigned int i=0;i<_surfParamsClone.size();i++)
     {
-        Alias& a=_alias[i];
-        set(a.iSurface,a.param,get(a.iRefSurface,a.param));
+        SurfaceParameterClone& a=_surfParamsClone[i];
+        set(a.iSurface,a.param,a.dGain*get(a.iRefSurface,a.param));
     }
 
     // main ray tracing loop
@@ -494,18 +494,12 @@ void OpticalDevice::set_nb_intermediate_angles(int iNbAngles)
     _bMustRetrace=true;
 }
 //////////////////////////////////////////////////////////////////////////////
-double OpticalDevice::get(int iSurface,eSurfaceparameter eParam)
+double OpticalDevice::get(int iSurface,eSurfaceParameter eParam)
 {
     Surface& r=_vSurfaces[iSurface];
 
     if(eParam==CONIC)
         return r.conic();
-
-    if(eParam==RADIUS_CURVATURE)
-        return r.radius_curvature();
-
-    if(eParam==CURVATURE)
-        return r.curvature();
 
     if(eParam==R4)
         return r.R4();
@@ -525,13 +519,23 @@ double OpticalDevice::get(int iSurface,eSurfaceparameter eParam)
     if(eParam==AUTO_INNER_DIAMETER)
         return r.get_auto_inner_diameter();
 
-    ray_trace(); //parameters below need full raytrace because of auto keyword
+    if((nb_surface()==iSurface+1) && (_bAutoFocus||_bAutoCurvature))
+        ray_trace(); //parameters below need full raytrace because of auto keyword
 
     if(eParam==Z)
         return r.z();
 
     if(eParam==THICK)
         return _vdThicks[iSurface];
+
+    if(eParam==RADIUS_CURVATURE)
+        return r.radius_curvature();
+
+    if(eParam==CURVATURE)
+        return r.curvature();
+
+    if(r.get_auto_diameter() || r.get_auto_inner_diameter())
+        ray_trace();  //parameters below need full raytrace because of auto keyword
 
     if(eParam==DIAMETER)
         return r.diameter();
@@ -542,7 +546,7 @@ double OpticalDevice::get(int iSurface,eSurfaceparameter eParam)
     return -1;
 }
 //////////////////////////////////////////////////////////////////////////////
-void OpticalDevice::set(int iSurface,eSurfaceparameter eParam,double dParam)
+void OpticalDevice::set(int iSurface,eSurfaceParameter eParam,double dParam)
 {
     Surface& r=_vSurfaces[iSurface];
 
@@ -632,8 +636,8 @@ const map<string,string>& OpticalDevice::all_parameters() const
     return _otherParameters;
 }
 //////////////////////////////////////////////////////////////////////////////
-// surface aliasing
-void OpticalDevice::set_alias(int iSurface,eSurfaceparameter eParam,int iRefSurface)
+// surface parameter cloning
+void OpticalDevice::set_clone(int iSurface,eSurfaceParameter eParam,int iRefSurface,double dGain)
 {
     if(iRefSurface>=nb_surface())
         return;
@@ -641,19 +645,20 @@ void OpticalDevice::set_alias(int iSurface,eSurfaceparameter eParam,int iRefSurf
     if(iRefSurface==iSurface)
         return;
 
-    for(unsigned int i=0;i<_alias.size();i++)
-        if( (_alias[i].iSurface==iSurface) && (_alias[i].param==eParam) )
+    for(unsigned int i=0;i<_surfParamsClone.size();i++)
+        if( (_surfParamsClone[i].iSurface==iSurface) && (_surfParamsClone[i].param==eParam) )
         {
             if(iRefSurface>=0)
             {
                 // already existing, updating
-                _alias[i].iRefSurface=iRefSurface;
-                set(iSurface,eParam,get(iRefSurface,eParam));
+                _surfParamsClone[i].iRefSurface=iRefSurface;
+                _surfParamsClone[i].dGain=dGain;
+                set(iSurface,eParam,dGain*get(iRefSurface,eParam));
             }
             else
             {
-                //remove alias
-                _alias.erase(_alias.begin()+i);
+                //remove clone
+                _surfParamsClone.erase(_surfParamsClone.begin()+i);
             }
             return;
         }
@@ -662,22 +667,24 @@ void OpticalDevice::set_alias(int iSurface,eSurfaceparameter eParam,int iRefSurf
         return;
 
     //create new entry
-    Alias alias;
-    alias.iSurface=iSurface;
-    alias.param=eParam;
-    alias.iRefSurface=iRefSurface;
+    SurfaceParameterClone cloneSurf;
+    cloneSurf.iSurface=iSurface;
+    cloneSurf.param=eParam;
+    cloneSurf.iRefSurface=iRefSurface;
+    cloneSurf.dGain=dGain;
 
-    _alias.push_back(alias);
+    _surfParamsClone.push_back(cloneSurf);
 
-    set(iSurface,eParam,get(iRefSurface,eParam));
+    set(iSurface,eParam,dGain*get(iRefSurface,eParam));
 }
 //////////////////////////////////////////////////////////////////////////////
-bool OpticalDevice::get_alias(int iSurface,eSurfaceparameter eParam,int& iRefSurface)
+bool OpticalDevice::get_clone(int iSurface,eSurfaceParameter eParam,int& iRefSurface,double& dGain)
 {
-    for(unsigned int i=0;i<_alias.size();i++)
-        if( (_alias[i].iSurface==iSurface) && (_alias[i].param==eParam) )
+    for(unsigned int i=0;i<_surfParamsClone.size();i++)
+        if( (_surfParamsClone[i].iSurface==iSurface) && (_surfParamsClone[i].param==eParam) )
         {
-            iRefSurface=_alias[i].iRefSurface;
+            iRefSurface=_surfParamsClone[i].iRefSurface;
+            dGain=_surfParamsClone[i].dGain;
             return true;
         }
 

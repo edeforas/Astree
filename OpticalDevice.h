@@ -18,7 +18,7 @@ class Light;
 #define FD_VALID_MAX 1e10
 #define SPOT_SIZE_INFINITY 9e99
 
-enum eSurfaceparameter //to be used with get/set functions below
+enum eSurfaceParameter //to be used with get/set functions below
 {
     DIAMETER,
     AUTO_DIAMETER, // set with 0 or 1
@@ -35,11 +35,12 @@ enum eSurfaceparameter //to be used with get/set functions below
     R10 //surface polynomial coef of r10
 };
 
-struct Alias
+struct SurfaceParameterClone
 {
-     eSurfaceparameter  param;
+     eSurfaceParameter  param;
      int iSurface;
      int iRefSurface;
+     double dGain;
 };
 
 class OpticalDevice
@@ -64,12 +65,12 @@ public:
     string note() const;
 
     // surface data accessor
-    void set(int iSurface,eSurfaceparameter eParam,double dParam);
-    double get(int iSurface,eSurfaceparameter eParam); //not const due to lazy computation
+    void set(int iSurface,eSurfaceParameter eParam,double dParam);
+    double get(int iSurface,eSurfaceParameter eParam); //not const due to lazy computation
 
-    // surface aliasing
-    void set_alias(int iSurface,eSurfaceparameter eParam,int iRefSurface); //set iRefSurface=-1 to remove
-    bool get_alias(int iSurface,eSurfaceparameter eParam,int& iRefSurface); //return false if no exist
+    // surface parameter cloning
+    void set_clone(int iSurface, eSurfaceParameter eParam, int iRefSurface, double dGain); //set iRefSurface=-1 to remove
+    bool get_clone(int iSurface, eSurfaceParameter eParam, int& iRefSurface, double &dGain); //return false if no exist
 
     // global properties getter
     bool has_aspheric() const;
@@ -137,8 +138,8 @@ private:
     // other parameters
     map<string,string> _otherParameters;
 
-    //alias parameters
-    vector<Alias> _alias;
+    //surface clone parameters
+    vector<SurfaceParameterClone> _surfParamsClone;
 };
 
 #endif
