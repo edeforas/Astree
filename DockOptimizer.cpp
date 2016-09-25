@@ -10,7 +10,7 @@
 #include "DeviceOptimizer.h"
 #include "MainWindow.h"
 
-#define NB_PARAM_MAX 6  // TODO use a dynamic ui list
+#define NB_PARAM_MAX 10  // TODO use a dynamic ui list
 
 /////////////////////////////////////////////////////////////
 

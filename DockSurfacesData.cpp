@@ -436,52 +436,36 @@ void DockSurfacesData::on_twSurfacesDatas_cellChanged(int iRow, int iCol)
     }
 
     if(_bDisplayAspheric)
-    {  // no auto or clone for now
-        if (iCol==iIndexCol)
-        {
-            QTableWidgetItem* pItem=m_ui->twSurfacesDatas->item(iRow,iCol);
-            _pOD->set(iRow,R4,pItem->text().toDouble());
-            update_labels();
-        }
+    {
+        // no auto or clone for now
 
-        if (iCol==iIndexCol+1)
-        {
-            QTableWidgetItem* pItem=m_ui->twSurfacesDatas->item(iRow,iCol);
-            _pOD->set(iRow,R6,pItem->text().toDouble());
-            update_labels();
-        }
+        eSurfaceParameter esp=R4;
+        if(iCol==iIndexCol+1)
+            esp=R6;
 
-        if (iCol==iIndexCol+2)
-        {
-            QTableWidgetItem* pItem=m_ui->twSurfacesDatas->item(iRow,iCol);
-            _pOD->set(iRow,R8,pItem->text().toDouble());
-            update_labels();
-        }
+        if(iCol==iIndexCol+2)
+            esp=R8;
 
-        if (iCol==iIndexCol+3)
-        {
-            QTableWidgetItem* pItem=m_ui->twSurfacesDatas->item(iRow,iCol);
-            _pOD->set(iRow,R10,pItem->text().toDouble());
-            update_labels();
-        }
+        if(iCol==iIndexCol+3)
+            esp=R10;
+
+        QTableWidgetItem* pItem=m_ui->twSurfacesDatas->item(iRow,iCol);
+        _pOD->set(iRow,esp,pItem->text().toDouble());
+        update_labels();
 
         iIndexCol+=4;
     }
 
     if((iCol==iIndexCol) && _bDisplayComment)
     {
-        QTableWidgetItem* pItem=m_ui->twSurfacesDatas->item(iRow,iCol);
-        QString qsText=pItem->text();
-
+        QString qsText=m_ui->twSurfacesDatas->item(iRow,iCol)->text();
         _pOD->set_comment(iRow,qsText.toStdString());
         update_labels();
 
         //    iCol++;
     }
 
- //   if(bMustRecompute)
     update_table(); // other cells need to be recomputed
-
     static_cast<MainWindow*>(parent())->device_changed(this,OPTICAL_DEVICE_CHANGED);
 }
 
