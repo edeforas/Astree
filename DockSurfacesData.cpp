@@ -240,7 +240,7 @@ void DockSurfacesData::update_table()
             esp=THICK;
         dZ=_pOD->get(i,esp);
 
-    //        dZ=_pOD->get(i,THICK);
+        //        dZ=_pOD->get(i,THICK);
         QString qsZ=QString::number(dZ,'g',10);
         if(_pOD->get_autofocus() && (i==_pOD->nb_surface()-1) )
             qsZ="auto "+qsZ;
@@ -312,15 +312,16 @@ void DockSurfacesData::onTypeChanged()
     if(_bBlockSignals)
         return;
 
-    //todo remove this function?
-    for(int i=0;i<_pOD->nb_surface();i++)
+    for(int iRow=0;iRow<_pOD->nb_surface();iRow++)
     {
-        QComboBox* pComboBox=dynamic_cast<QComboBox*>(m_ui->twSurfacesDatas->cellWidget(i,ITEM_TYPE));
+        QComboBox* pComboBox=dynamic_cast<QComboBox*>(m_ui->twSurfacesDatas->cellWidget(iRow,ITEM_TYPE));
         assert(pComboBox!=0);
-        string sType=_pOD->type(i);
+        string sType=_pOD->type(iRow);
         if(pComboBox->currentText()!=sType.c_str())
-            on_twSurfacesDatas_cellChanged(i,ITEM_TYPE);
+            _pOD->set_type(iRow,pComboBox->currentText().toStdString());
     }
+    update_table();
+    static_cast<MainWindow*>(parent())->device_changed(this,OPTICAL_DEVICE_CHANGED);
 }
 //////////////////////////////////////////////////////////////////////////////
 void DockSurfacesData::on_twSurfacesDatas_cellChanged(int iRow, int iCol)
@@ -328,93 +329,63 @@ void DockSurfacesData::on_twSurfacesDatas_cellChanged(int iRow, int iCol)
     if(_bBlockSignals)
         return;
 
-    bool bHasClone=false;
+    //parse cell
+    string sItem=m_ui->twSurfacesDatas->item(iRow,iCol)->text().toStdString();
+    //bool bMustRecompute=true;
+    bool isAuto=sItem.find("auto")!=string::npos;;
+    bool isInf=sItem.find("inf")!=string::npos;;
+    double dGain=0.;
+    int iSurfaceRef=-1;
+    bool isClone=sItem.find("#")!=string::npos;;
+    bool isNegClone=sItem.find("-#")!=string::npos;
+    bool isLastSurf=(iRow==_pOD->nb_surface()-1);
+    double dVal=-1.; //todo set to NaN
 
-    if (iCol==ITEM_TYPE) //"type"
+    //TODO check error and return last result if error
+
+    if(isAuto)
+        sItem=sItem.erase(sItem.find("auto"),4);
+
+    if(isInf)
     {
-        QComboBox* pComboBox=dynamic_cast<QComboBox*>(m_ui->twSurfacesDatas->cellWidget(iRow,iCol));
-        assert(pComboBox!=0);
-        QString qsText=pComboBox->currentText();
-        string sType=qsText.toStdString();
-        _pOD->set_type(iRow,sType);
+        sItem=sItem.erase(sItem.find("inf"),3);
+        dVal=RADIUS_CURVATURE_INFINITY;
+    }
+
+    if(isClone)
+    {
+        sItem=sItem.substr(sItem.find("#")+1);
+        stringstream ss(sItem);
+        ss >> iSurfaceRef;
+        iSurfaceRef--;
+        if(isNegClone)
+            dGain=-1.;
+        else
+            dGain=1.;
+    }
+
+    if(!isInf && !isAuto && !isClone)
+    {
+        stringstream ss(sItem);
+        ss >> dVal;
     }
 
     if (iCol==1) //"radius_curvature"
     {
-        string sItem=m_ui->twSurfacesDatas->item(iRow,iCol)->text().toStdString();
-        bool bAuto=sItem.find("auto")!=string::npos;
-        bool bInf=sItem.find("inf")!=string::npos;
-        bool bClone=sItem.find("#")!=string::npos;
-        bool bNegClone=sItem.find("-#")!=string::npos;
-        bool bLastSurf=iRow==_pOD->nb_surface()-1;
-
-        if(bClone || bNegClone)
+        _pOD->set_clone(iRow,RADIUS_CURVATURE,iSurfaceRef,dGain);
+        if(!isClone)
         {
-            double dGain=1.;
-            if(!bNegClone)
-            {
-                sItem[sItem.find("#")]=' '; //TODO something more robust
-                dGain=1;
-            }
-            else
-            {
-                int iPos=sItem.find("-#");
-                sItem[iPos]=' '; //TODO something more robust
-                sItem[iPos+1]=' '; //TODO something more robust
-                dGain=-1;
-            }
-            stringstream ss(sItem);
-            int iVal=0;
-            ss >> iVal;
-            _pOD->set_clone(iRow,RADIUS_CURVATURE,iVal-1,dGain);
-
-        }
-        else
-        {
-            _pOD->set_clone(iRow,RADIUS_CURVATURE,-1,1);
-            if(bAuto && bLastSurf)
-                _pOD->set_image_autocurvature(bAuto);
-            else
-            {
-                if(bLastSurf)
-                    _pOD->set_image_autocurvature(false);
-
-                if(bInf)
-                    _pOD->set(iRow,RADIUS_CURVATURE,RADIUS_CURVATURE_INFINITY);
-                else
-                {
-                    if(bAuto)
-                        sItem=sItem.substr(sItem.find("auto")+4,string::npos);
-
-                    stringstream ss(sItem);
-                    double dVal=0;
-                    ss >> dVal;
-                    _pOD->set(iRow,RADIUS_CURVATURE,dVal);
-                }
-            }
+            _pOD->set_image_autocurvature(isAuto && isLastSurf);
+            if(!(isAuto && isLastSurf))
+                _pOD->set(iRow,RADIUS_CURVATURE,dVal);
         }
     }
 
     if (iCol==2) //"conic"
     {
-        string sItem=m_ui->twSurfacesDatas->item(iRow,iCol)->text().toStdString();
-        bool bClone=sItem.find("#")!=string::npos;
-        if(bClone)
-        {
-            sItem[sItem.find("#")]=' '; //TODO something more robust
-            stringstream ss(sItem);
-            int iVal=0;
-            ss >> iVal;
-            _pOD->set_clone(iRow,CONIC,iVal-1,1.); // TODO gain!=1?
-        }
-        else
-        {
-            _pOD->set_clone(iRow,CONIC,-1,1);
-            stringstream ss(sItem);
-            double dVal=0;
-            ss >> dVal;
-            _pOD->set(iRow,CONIC,dVal);
-        }
+        _pOD->set_clone(iRow,CONIC,iSurfaceRef,dGain);
+        if(!isClone)
+            _pOD->set(iRow,RADIUS_CURVATURE,dVal);
     }
 
     if (iCol==3) //"z" or "thick"
@@ -425,81 +396,39 @@ void DockSurfacesData::on_twSurfacesDatas_cellChanged(int iRow, int iCol)
         else
             esp=THICK;
 
-        string sItem=m_ui->twSurfacesDatas->item(iRow,iCol)->text().toStdString();
-        bool bAuto=sItem.find("auto")!=string::npos;
-        if(bAuto)
-            sItem=sItem.substr(sItem.find("auto")+4,string::npos);
-
-        stringstream ss(sItem);
-        double dVal=0;
-        ss >> dVal;
-
-        _pOD->set(iRow,esp,dVal);
-
-        if(iRow==_pOD->nb_surface()-1)
-            _pOD->set_autofocus(bAuto);
-        bool bClone=sItem.find("#")!=string::npos;
-        bool bNegClone=sItem.find("-#")!=string::npos;
-        if(bClone || bNegClone)
+        _pOD->set_clone(iRow,esp,iSurfaceRef,dGain);
+        if(!isClone)
         {
-            int iVal;
-            double dGain;
-            if(!bNegClone)
-            {
-                sItem[sItem.find("#")]=' '; //TODO something more robust
-                stringstream ss(sItem);
-                ss >> iVal;
-                dGain=1.;
-            }
-            else
-            {
-                int iPos=sItem.find("-#");
-                sItem[iPos]=' '; //TODO something more robust
-                sItem[iPos+1]=' '; //TODO something more robust
-                stringstream ss(sItem);
-                ss >> iVal;
-                dGain=-1.;
-            }
-
-            _pOD->set_clone(iRow,esp,iVal-1,dGain);
-            bHasClone=true;
-       //     return;
+            _pOD->set_autofocus(isAuto && isLastSurf);
+            if(!(isAuto && isLastSurf))
+                _pOD->set(iRow,esp,dVal);
         }
-        else
-             _pOD->set_clone(iRow,esp,-1,1.);
     }
 
     if (iCol==4) //"Diameter"
     {
-        string sItem=m_ui->twSurfacesDatas->item(iRow,iCol)->text().toStdString();
-        bool bAuto=sItem.find("auto")!=string::npos;
-        if(bAuto)
-            sItem=sItem.substr(sItem.find("auto")+4,string::npos);
-
-        stringstream ss(sItem);
-        double dVal=0;
-        ss >> dVal;
-
-        _pOD->set(iRow,AUTO_DIAMETER,bAuto);
-        _pOD->set(iRow,DIAMETER,dVal);
+        _pOD->set_clone(iRow,DIAMETER,iSurfaceRef,dGain);
+        if(!isClone)
+        {
+            _pOD->set(iRow,AUTO_DIAMETER,isAuto);
+            if(!isAuto)
+                _pOD->set(iRow,DIAMETER,dVal);
+        }
     }
 
-    int iIndexCol=5;
+    int iIndexCol=5; // now: optional columns
     if(_bDisplayInnerDiameter)
     {
-        if (iCol==iIndexCol)
+        if (iCol==iIndexCol) //inner diameter
         {
-            string sItem=m_ui->twSurfacesDatas->item(iRow,iCol)->text().toStdString();
-            bool bAuto=sItem.find("auto")!=string::npos;
-            if(bAuto)
-                sItem=sItem.substr(sItem.find("auto")+4,string::npos);
+            _pOD->set_clone(iRow,INNER_DIAMETER,iSurfaceRef,dGain);
+            if(!isClone)
+            {
+                _pOD->set(iRow,AUTO_INNER_DIAMETER,isAuto);
+                if(!isAuto)
+                    _pOD->set(iRow,INNER_DIAMETER,dVal);
+            }
 
-            stringstream ss(sItem);
-            double dVal;
-            ss >> dVal;
-
-            _pOD->set(iRow,AUTO_INNER_DIAMETER,bAuto);
-            _pOD->set(iRow,INNER_DIAMETER,dVal);
             update_labels();
         }
 
@@ -507,7 +436,7 @@ void DockSurfacesData::on_twSurfacesDatas_cellChanged(int iRow, int iCol)
     }
 
     if(_bDisplayAspheric)
-    {
+    {  // no auto or clone for now
         if (iCol==iIndexCol)
         {
             QTableWidgetItem* pItem=m_ui->twSurfacesDatas->item(iRow,iCol);
@@ -550,8 +479,8 @@ void DockSurfacesData::on_twSurfacesDatas_cellChanged(int iRow, int iCol)
         //    iCol++;
     }
 
-    if(_pOD->has_auto()||bHasClone)
-        update_table(); // an auto parameter need to be recomputed
+ //   if(bMustRecompute)
+    update_table(); // other cells need to be recomputed
 
     static_cast<MainWindow*>(parent())->device_changed(this,OPTICAL_DEVICE_CHANGED);
 }
