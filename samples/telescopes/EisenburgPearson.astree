@@ -9,6 +9,8 @@
 1.inner_diameter=17
 1.radius_curvature=-144.72
 1.thick=172.89
+1.thick.clone=0
+1.thick.clone.gain=-1
 1.type=reflect
 2.conic=-1.05
 2.conic.clone=0
@@ -16,6 +18,7 @@
 2.diameter.auto=1
 2.radius_curvature=-480
 2.radius_curvature.clone=0
+2.radius_curvature.clone.gain=1
 2.thick=-181.9496211
 2.type=reflect
 3.diameter=13.97887317
