@@ -385,7 +385,7 @@ void DockSurfacesData::on_twSurfacesDatas_cellChanged(int iRow, int iCol)
     {
         _pOD->set_clone(iRow,CONIC,iSurfaceRef,dGain);
         if(!isClone)
-            _pOD->set(iRow,RADIUS_CURVATURE,dVal);
+            _pOD->set(iRow,CONIC,dVal);
     }
 
     if (iCol==3) //"z" or "thick"
