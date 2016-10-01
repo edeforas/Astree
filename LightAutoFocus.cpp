@@ -116,8 +116,8 @@ double LightAutofocus::compute_spot_size(const Light& l,double z)
         //compute t at z
         double t=(z-p.z)/p.dz;
 
-        if(t<=0.)
-            return SPOT_SIZE_INFINITY; //all photons must be used in autofocus, for now
+     //   if(t<=0.)
+      //      return SPOT_SIZE_INFINITY; //all photons must be used in autofocus, for now
 
         double x=p.x+t*p.dx;
         double y=p.y+t*p.dy;
