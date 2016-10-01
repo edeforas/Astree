@@ -126,6 +126,19 @@ double DeviceOptimizer::compute_demerit()
 
     if(_meritFunction==eMostlyCenter)
     {
+        //todo find the optimal formula
+        double dCentralWeight=10;
+        double dMeritMoy=0.;
+        for(int i=0;i<pQ->nb_angles();i++)
+        {
+            double dFactor=dCentralWeight+(1.-dCentralWeight)/(pQ->nb_angles()-1)*i;
+
+            if(dMeritMoy<pQ->vdSpotSize[i])
+                dMeritMoy=pQ->vdSpotSize[i]*dFactor;
+        }
+        return dMeritMoy;
+
+
         return SPOT_SIZE_INFINITY; //TODO
     }
 

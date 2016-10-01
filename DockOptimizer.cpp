@@ -51,7 +51,7 @@ DockOptimizer::DockOptimizer(QWidget *parent) :
         QComboBox*  qcbParam=new QComboBox;
         qcbParam->addItem("");
         qcbParam->addItem("RCurv");
-        qcbParam->addItem("Curvature");
+    //    qcbParam->addItem("Curvature");
         qcbParam->addItem("Conic");
         qcbParam->addItem("Thick");
         qcbParam->addItem("Z");
