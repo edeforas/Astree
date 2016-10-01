@@ -1,0 +1,51 @@
+0.conic=-1.0009535
+0.diameter=30000
+0.radius_curvature=-60000
+0.thick=-27093.75
+0.type=reflect
+1.conic=-1.31822813
+1.diameter=3024.5
+1.radius_curvature=-6227.6786
+1.thick=43593.75483
+1.type=reflect
+2.diameter=2576.772891
+2.diameter.auto=1
+2.radius_curvature=-3009.2
+2.thick=0
+2.type=image
+2.z.autofocus=1
+device.convention=relative
+device.note=TMT telescope:
+device.note=
+device.note=Diameter=30m
+device.note=Focal=450m
+device.note=
+device.note=from the document
+device.note=TMT-Construction-Proposal-Public.pdf
+device.note=(chapter 7.2)
+device.note=
+device.note=Ritchey-Chretien design
+device.note=
+device.note=Tertiary flat removed
+device.note=
+device.relative_convention=1
+half_field_of_view=0.165
+image.autocurvature=0
+image.autofocus=1
+light.colors=YellowBlack.
+light.half_field_of_view=0.165
+light.nbsteps=3
+note=TMT telescope:
+note=
+note=Diameter=30m
+note=Focal=450m
+note=
+note=from the document
+note=TMT-Construction-Proposal-Public.pdf
+note=(chapter 7.2)
+note=
+note=Ritchey-Chretien design
+note=
+note=Tertiary flat removed
+note=
+parameter.showLightOffAxis=0

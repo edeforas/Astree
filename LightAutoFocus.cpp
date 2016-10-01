@@ -17,15 +17,36 @@ LightAutofocus::LightAutofocus()
 ////////////////////////////////////////////////////////////////////////////////
 double LightAutofocus::autofocus(const Light& l)
 {
-    double dA=-10000.; //todo
-    double dC=10000.; //todo
+    double dA=-1000.; //todo
+    double dC=1000.; //todo
     double dB=(dA+dC)/2.;
     double dZStep=1.e-9;
-
-    //  double dQA=compute_spot_size(l,dA);
+    double dQA=compute_spot_size(l,dA);
     double dQB=compute_spot_size(l,dB);
-    //  double dQC=compute_spot_size(l,dC);
+    double dQC=compute_spot_size(l,dC);
 
+    //1st part: expand A and C, so B became a minimum
+    int iScaleLeft=0;
+    while((iScaleLeft<11) && (dQA<=dQB)) //2km max
+    {
+        dA=dB-2*(dB-dA);
+        dQA=compute_spot_size(l,dA);
+        iScaleLeft++;
+    }
+
+    int iScaleRight=0;
+    while((iScaleRight<11) && (dQC<=dQB)) //2km max
+    {
+        dC=dB-2*(dB-dC);
+        dQC=compute_spot_size(l,dC);
+        iScaleRight++;
+    }
+
+    //exit if no solution
+    if( (dQA<=dQB) || (dQC<=dQB) )
+        return 0.;
+
+    //now reduce interval around solution
     while (dC-dA>dZStep)
     {
         double dAB=(dA+dB)/2.;
@@ -96,7 +117,7 @@ double LightAutofocus::compute_spot_size(const Light& l,double z)
         double t=(z-p.z)/p.dz;
 
         if(t<=0.)
-            return SPOT_SIZE_INFINITY; //all photons must be used in autofocus  for now
+            return SPOT_SIZE_INFINITY; //all photons must be used in autofocus, for now
 
         double x=p.x+t*p.dx;
         double y=p.y+t*p.dy;
