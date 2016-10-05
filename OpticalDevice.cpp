@@ -219,8 +219,8 @@ bool OpticalDevice::has_auto() const
 //////////////////////////////////////////////////////////////////////////////
 void OpticalDevice::set_autofocus(bool bAutofocus)
 {
+    _bMustRetrace=(!_bAutoFocus) && bAutofocus;
     _bAutoFocus=bAutofocus;
-    _bMustRetrace=true;
 }
 //////////////////////////////////////////////////////////////////////////////
 bool OpticalDevice::get_autofocus() const
@@ -230,8 +230,8 @@ bool OpticalDevice::get_autofocus() const
 //////////////////////////////////////////////////////////////////////////////
 void OpticalDevice::set_image_autocurvature(bool bAutoCurvature)
 {
+    _bMustRetrace=(!_bAutoCurvature) && bAutoCurvature;
     _bAutoCurvature=bAutoCurvature;
-    _bMustRetrace=true;
 }
 //////////////////////////////////////////////////////////////////////////////
 bool OpticalDevice::get_image_autocurvature() const
@@ -519,7 +519,11 @@ double OpticalDevice::get(int iSurface,eSurfaceParameter eParam)
     if(eParam==AUTO_INNER_DIAMETER)
         return r.get_auto_inner_diameter();
 
-    if((nb_surface()==iSurface+1) && (_bAutoFocus||_bAutoCurvature))
+    int iSurfaceAutoFocus=nb_surface()-1;
+    if(relative_convention())
+        iSurfaceAutoFocus--;
+
+    if( (iSurface==iSurfaceAutoFocus) && (_bAutoFocus||_bAutoCurvature))
         ray_trace(); //parameters below need full raytrace because of auto keyword
 
     if(eParam==Z)

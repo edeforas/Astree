@@ -231,7 +231,7 @@ void DockSurfacesData::update_table()
             qsConic="#"+QString::number(iRefClone+1)+" "+qsConic;
         m_ui->twSurfacesDatas->setItem(i,2, new QTableWidgetItem(qsConic));
 
-        // z or thick
+        // update Z or thick
         double dZ;
         eSurfaceParameter esp;
         if(!_pOD->relative_convention())
@@ -240,7 +240,6 @@ void DockSurfacesData::update_table()
             esp=THICK;
         dZ=_pOD->get(i,esp);
 
-        //        dZ=_pOD->get(i,THICK);
         QString qsZ=QString::number(dZ,'g',10);
         if(_pOD->get_autofocus() && (i==_pOD->nb_surface()-1) )
             qsZ="auto "+qsZ;
@@ -251,17 +250,15 @@ void DockSurfacesData::update_table()
             if(dCloneGain<0.)
                 qsZ="-"+qsZ;
         }
-
         m_ui->twSurfacesDatas->setItem(i,3,new QTableWidgetItem(qsZ));
 
-        //diameter
+        // update diameter
         double dDiameter=_pOD->get(i,DIAMETER);
         QString qsDiameter="";
         if(_pOD->get(i,AUTO_DIAMETER)!=0.)
             qsDiameter="auto "+QString::number(dDiameter,'f',3);
         else
             qsDiameter=QString::number(dDiameter,'g',10);
-
         m_ui->twSurfacesDatas->setItem(i,4,new QTableWidgetItem(qsDiameter));
 
         iIndexCol=5;
@@ -331,7 +328,6 @@ void DockSurfacesData::on_twSurfacesDatas_cellChanged(int iRow, int iCol)
 
     //parse cell
     string sItem=m_ui->twSurfacesDatas->item(iRow,iCol)->text().toStdString();
-    //bool bMustRecompute=true;
     bool isAuto=sItem.find("auto")!=string::npos;;
     bool isInf=sItem.find("inf")!=string::npos;;
     double dGain=0.;
@@ -339,6 +335,7 @@ void DockSurfacesData::on_twSurfacesDatas_cellChanged(int iRow, int iCol)
     bool isClone=sItem.find("#")!=string::npos;;
     bool isNegClone=sItem.find("-#")!=string::npos;
     bool isLastSurf=(iRow==_pOD->nb_surface()-1);
+    bool isFirstSurf=(iRow==0);
     double dVal=-1.; //todo set to NaN
 
     //TODO check error and return last result if error
@@ -375,8 +372,9 @@ void DockSurfacesData::on_twSurfacesDatas_cellChanged(int iRow, int iCol)
         _pOD->set_clone(iRow,RADIUS_CURVATURE,iSurfaceRef,dGain);
         if(!isClone)
         {
-            _pOD->set_image_autocurvature(isAuto && isLastSurf);
-            if(!(isAuto && isLastSurf))
+            if(isLastSurf)
+                _pOD->set_image_autocurvature(isAuto);
+            else
                 _pOD->set(iRow,RADIUS_CURVATURE,dVal);
         }
     }
@@ -399,8 +397,9 @@ void DockSurfacesData::on_twSurfacesDatas_cellChanged(int iRow, int iCol)
         _pOD->set_clone(iRow,esp,iSurfaceRef,dGain);
         if(!isClone)
         {
-            _pOD->set_autofocus(isAuto && isLastSurf);
-            if(!(isAuto && isLastSurf))
+            if(isLastSurf)
+                _pOD->set_autofocus(isAuto);
+            else
                 _pOD->set(iRow,esp,dVal);
         }
     }
@@ -410,13 +409,15 @@ void DockSurfacesData::on_twSurfacesDatas_cellChanged(int iRow, int iCol)
         _pOD->set_clone(iRow,DIAMETER,iSurfaceRef,dGain);
         if(!isClone)
         {
-            _pOD->set(iRow,AUTO_DIAMETER,isAuto);
+            if(!isFirstSurf)
+                _pOD->set(iRow,AUTO_DIAMETER,isAuto);
+
             if(!isAuto)
                 _pOD->set(iRow,DIAMETER,dVal);
         }
     }
 
-    int iIndexCol=5; // now: optional columns
+    int iIndexCol=5; // optional columns
     if(_bDisplayInnerDiameter)
     {
         if (iCol==iIndexCol) //inner diameter
@@ -424,7 +425,9 @@ void DockSurfacesData::on_twSurfacesDatas_cellChanged(int iRow, int iCol)
             _pOD->set_clone(iRow,INNER_DIAMETER,iSurfaceRef,dGain);
             if(!isClone)
             {
-                _pOD->set(iRow,AUTO_INNER_DIAMETER,isAuto);
+                if(!isFirstSurf)
+                    _pOD->set(iRow,AUTO_INNER_DIAMETER,isAuto);
+
                 if(!isAuto)
                     _pOD->set(iRow,INNER_DIAMETER,dVal);
             }
