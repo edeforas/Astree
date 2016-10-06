@@ -372,10 +372,9 @@ void DockSurfacesData::on_twSurfacesDatas_cellChanged(int iRow, int iCol)
         _pOD->set_clone(iRow,RADIUS_CURVATURE,iSurfaceRef,dGain);
         if(!isClone)
         {
+            _pOD->set(iRow,RADIUS_CURVATURE,dVal);
             if(isLastSurf)
                 _pOD->set_image_autocurvature(isAuto);
-            else
-                _pOD->set(iRow,RADIUS_CURVATURE,dVal);
         }
     }
 
