@@ -219,7 +219,7 @@ bool OpticalDevice::has_auto() const
 //////////////////////////////////////////////////////////////////////////////
 void OpticalDevice::set_autofocus(bool bAutofocus)
 {
-    _bMustRetrace=(!_bAutoFocus) && bAutofocus;
+    _bMustRetrace|=(!_bAutoFocus) && bAutofocus;
     _bAutoFocus=bAutofocus;
 }
 //////////////////////////////////////////////////////////////////////////////
@@ -230,7 +230,7 @@ bool OpticalDevice::get_autofocus() const
 //////////////////////////////////////////////////////////////////////////////
 void OpticalDevice::set_image_autocurvature(bool bAutoCurvature)
 {
-    _bMustRetrace=(!_bAutoCurvature) && bAutoCurvature;
+    _bMustRetrace|= (!_bAutoCurvature) && bAutoCurvature;
     _bAutoCurvature=bAutoCurvature;
 }
 //////////////////////////////////////////////////////////////////////////////
