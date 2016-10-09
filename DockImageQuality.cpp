@@ -25,8 +25,8 @@ void DockImageQuality::device_changed(OpticalDevice* pDevice,int iReason)
     if( (iReason!=OPTICAL_DEVICE_CHANGED) && (iReason!=NEW_OPTICAL_DEVICE) )
         return;
 
-    const ImageQuality* pIQ=pDevice->get_image_quality();
-    int iNbAngles=pIQ->nb_angles();
+    ImageQuality pIQ=pDevice->get_image_quality();
+    int iNbAngles=pIQ.nb_angles();
 
     QStringList qsl;
     qsl+="Angle(deg)";
@@ -42,23 +42,23 @@ void DockImageQuality::device_changed(OpticalDevice* pDevice,int iReason)
 
     for(int i=0;i<iNbAngles;i++)
     {
-        double dAngle=pIQ->vdAngles[i];
+        double dAngle=pIQ.vdAngles[i];
         QString qsAngle=QString::number(dAngle,'g',3);
         ui->tableWidget->setItem(i,0,new QTableWidgetItem(qsAngle));
 
-        double dDist=pIQ->vdDist[i];
+        double dDist=pIQ.vdDist[i];
         QString qsDist=QString::number(dDist,'g',3);
         ui->tableWidget->setItem(i,1,new QTableWidgetItem(qsDist));
 
-        double dSpotSize=pIQ->vdSpotSize[i]*1000.; //convert in microns
+        double dSpotSize=pIQ.vdSpotSize[i]*1000.; //convert in microns
         QString qsSpotSize=QString::number(dSpotSize,'g',3);
         ui->tableWidget->setItem(i,2,new QTableWidgetItem(qsSpotSize));
 
-        double dSpotvsAiry=pIQ->vdSpotvsAiry[i];
+        double dSpotvsAiry=pIQ.vdSpotvsAiry[i];
         QString qsSpotvsAiry=QString::number(dSpotvsAiry,'g',3);
         ui->tableWidget->setItem(i,3,new QTableWidgetItem(qsSpotvsAiry));
 
-        double dVignetting=pIQ->vdVignetting[i];
+        double dVignetting=pIQ.vdVignetting[i];
         QString qsVignetting=QString::number(dVignetting,'f',1)+QString(" %");
         ui->tableWidget->setItem(i,4,new QTableWidgetItem(qsVignetting));
 
@@ -72,8 +72,8 @@ void DockImageQuality::device_changed(OpticalDevice* pDevice,int iReason)
 
     if(iNbAngles!=0)
     {
-        ui->lFNumber->setText(QString::number(pIQ->dFNumber,'g',3));
-        ui->lAirySize->setText(QString::number(pIQ->dAirySize*1000.,'g',3)+QString(" µm"));
+        ui->lFNumber->setText(QString::number(pIQ.dFNumber,'g',3));
+        ui->lAirySize->setText(QString::number(pIQ.dAirySize*1000.,'g',3)+QString(" µm"));
     }
     else
     {

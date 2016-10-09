@@ -15,8 +15,8 @@
 #include "AstreeDefines.h"
 
 #include <cassert>
+#include <cmath>
 #include <algorithm>
-#define isnan(a) (false) //TODO
 
 #ifndef NB_POINTS_SCATTER_PLOT
 #define NB_POINTS_SCATTER_PLOT 81

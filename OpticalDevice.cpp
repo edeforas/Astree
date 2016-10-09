@@ -286,7 +286,7 @@ void OpticalDevice::ray_trace()
     for(unsigned int i=0;i<_surfParamsClone.size();i++)
     {
         SurfaceParameterClone& a=_surfParamsClone[i];
-        set(a.iSurface,a.param,a.dGain*get(a.iRefSurface,a.param));
+        set(a.iSurface,a.param,a.dGain*get_not_raytrace(a.iRefSurface,a.param));
     }
 
     // main ray tracing loop
@@ -471,10 +471,10 @@ string OpticalDevice::type(int iSurf) const
     return _vSurfaces[iSurf].type();
 }
 //////////////////////////////////////////////////////////////////////////////
-const ImageQuality* OpticalDevice::get_image_quality()
+const ImageQuality OpticalDevice::get_image_quality()
 {
     ray_trace();
-    return &_imageQuality; // todo copy
+    return _imageQuality; // todo modify ref instead of copy
 }
 //////////////////////////////////////////////////////////////////////////////
 int OpticalDevice::nb_intermediate_angles() const
@@ -496,7 +496,13 @@ void OpticalDevice::set_nb_intermediate_angles(int iNbAngles)
 //////////////////////////////////////////////////////////////////////////////
 double OpticalDevice::get(int iSurface,eSurfaceParameter eParam)
 {
-    Surface& r=_vSurfaces[iSurface];
+    ray_trace();
+    return get_not_raytrace(iSurface,eParam);
+}
+//////////////////////////////////////////////////////////////////////////////
+double OpticalDevice::get_not_raytrace(int iSurface,eSurfaceParameter eParam) const
+{
+    const Surface& r=_vSurfaces[iSurface];
 
     if(eParam==CONIC)
         return r.conic();
@@ -519,13 +525,6 @@ double OpticalDevice::get(int iSurface,eSurfaceParameter eParam)
     if(eParam==AUTO_INNER_DIAMETER)
         return r.get_auto_inner_diameter();
 
-    int iSurfaceAutoFocus=nb_surface()-1;
-    if(relative_convention())
-        iSurfaceAutoFocus--;
-
-    if( (iSurface==iSurfaceAutoFocus) && (_bAutoFocus||_bAutoCurvature))
-        ray_trace(); //parameters below need full raytrace because of auto keyword
-
     if(eParam==Z)
         return r.z();
 
@@ -537,9 +536,6 @@ double OpticalDevice::get(int iSurface,eSurfaceParameter eParam)
 
     if(eParam==CURVATURE)
         return r.curvature();
-
-    if(r.get_auto_diameter() || r.get_auto_inner_diameter())
-        ray_trace();  //parameters below need full raytrace because of auto keyword
 
     if(eParam==DIAMETER)
         return r.diameter();
@@ -646,7 +642,7 @@ void OpticalDevice::set_clone(int iSurface,eSurfaceParameter eParam,int iRefSurf
     if(iRefSurface>=nb_surface())
         return;
 
-    if(iRefSurface==iSurface)
+    if(iRefSurface>=iSurface) //only backward cloning allowed (avoid loop)
         return;
 
     for(unsigned int i=0;i<_surfParamsClone.size();i++)
@@ -657,13 +653,14 @@ void OpticalDevice::set_clone(int iSurface,eSurfaceParameter eParam,int iRefSurf
                 // already existing, updating
                 _surfParamsClone[i].iRefSurface=iRefSurface;
                 _surfParamsClone[i].dGain=dGain;
-                set(iSurface,eParam,dGain*get(iRefSurface,eParam));
             }
             else
             {
                 //remove clone
                 _surfParamsClone.erase(_surfParamsClone.begin()+i);
             }
+
+            _bMustRetrace=true;
             return;
         }
 
@@ -678,11 +675,10 @@ void OpticalDevice::set_clone(int iSurface,eSurfaceParameter eParam,int iRefSurf
     cloneSurf.dGain=dGain;
 
     _surfParamsClone.push_back(cloneSurf);
-
-    set(iSurface,eParam,dGain*get(iRefSurface,eParam));
+    _bMustRetrace=true;
 }
 //////////////////////////////////////////////////////////////////////////////
-bool OpticalDevice::get_clone(int iSurface,eSurfaceParameter eParam,int& iRefSurface,double& dGain)
+bool OpticalDevice::get_clone(int iSurface,eSurfaceParameter eParam,int& iRefSurface,double& dGain) const
 {
     for(unsigned int i=0;i<_surfParamsClone.size();i++)
         if( (_surfParamsClone[i].iSurface==iSurface) && (_surfParamsClone[i].param==eParam) )

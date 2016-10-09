@@ -5,8 +5,7 @@
 #include "DeviceOptimizer.h"
 #include "OpticalDevice.h"
 
-#define ISNAN(a) (a!=a)
-
+#include <cmath> //for isnan
 #include <cassert>
 ////////////////////////////////////////////////////////////////////////////////
 DeviceOptimizer::DeviceOptimizer():
@@ -101,27 +100,27 @@ void DeviceOptimizer::apply_parameter(const vector<DeviceOptimizerParameter>& pa
 //////////////////////////////////////////////////////////////////////////////
 double DeviceOptimizer::compute_demerit()
 {
-    const ImageQuality* pQ=_pDevice->get_image_quality();
+    ImageQuality pQ=_pDevice->get_image_quality();
 
-    for(int i=0;i<pQ->nb_angles();i++)
+    for(int i=0;i<pQ.nb_angles();i++)
     {
-        if(ISNAN(pQ->vdSpotSize[i]))
+        if(isnan(pQ.vdSpotSize[i]))
             return SPOT_SIZE_INFINITY;
     }
 
-    if(ISNAN(pQ))
+    if(isnan(pQ.dAirySize))
         return SPOT_SIZE_INFINITY;
 
     if(_meritFunction==eCenterOnly)
-        return pQ->vdSpotSize[0];
+        return pQ.vdSpotSize[0];
 
     if(_meritFunction==eFullFrameMean)
     {
         double dMeritMoy=0.;
-        for(int i=0;i<pQ->nb_angles();i++)
-            dMeritMoy+=pQ->vdSpotSize[i];
+        for(int i=0;i<pQ.nb_angles();i++)
+            dMeritMoy+=pQ.vdSpotSize[i];
 
-        return dMeritMoy/pQ->nb_angles();
+        return dMeritMoy/pQ.nb_angles();
     }
 
     if(_meritFunction==eMostlyCenter)
@@ -129,12 +128,12 @@ double DeviceOptimizer::compute_demerit()
         //todo find the optimal formula
         double dCentralWeight=10;
         double dMeritMoy=0.;
-        for(int i=0;i<pQ->nb_angles();i++)
+        for(int i=0;i<pQ.nb_angles();i++)
         {
-            double dFactor=dCentralWeight+(1.-dCentralWeight)/(pQ->nb_angles()-1)*i;
+            double dFactor=dCentralWeight+(1.-dCentralWeight)/(pQ.nb_angles()-1)*i;
 
-            if(dMeritMoy<pQ->vdSpotSize[i])
-                dMeritMoy=pQ->vdSpotSize[i]*dFactor;
+            if(dMeritMoy<pQ.vdSpotSize[i])
+                dMeritMoy=pQ.vdSpotSize[i]*dFactor;
         }
         return dMeritMoy;
 
@@ -145,9 +144,9 @@ double DeviceOptimizer::compute_demerit()
     if(_meritFunction==eFullFrameMaxError)
     {
         double dMeritMoy=0.;
-        for(int i=0;i<pQ->nb_angles();i++)
-            if(dMeritMoy<pQ->vdSpotSize[i])
-                dMeritMoy=pQ->vdSpotSize[i];
+        for(int i=0;i<pQ.nb_angles();i++)
+            if(dMeritMoy<pQ.vdSpotSize[i])
+                dMeritMoy=pQ.vdSpotSize[i];
 
         return dMeritMoy;
     }

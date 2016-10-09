@@ -70,7 +70,7 @@ public:
 
     // surface parameter cloning
     void set_clone(int iSurface, eSurfaceParameter eParam, int iRefSurface, double dGain); //set iRefSurface=-1 to remove
-    bool get_clone(int iSurface, eSurfaceParameter eParam, int& iRefSurface, double &dGain); //return false if no exist
+    bool get_clone(int iSurface, eSurfaceParameter eParam, int& iRefSurface, double &dGain) const; //return false if no exist
 
     // global properties getter
     bool has_aspheric() const;
@@ -104,7 +104,7 @@ public:
 
     // light computation
     void compute_light(Light* pLight,int iSurface, double dTilt, int iGridX, int iGridY);
-    const ImageQuality *get_image_quality();
+    const ImageQuality get_image_quality();
 
     //other parameters, not used in computation, saved in files
     void set_parameter(const string& sKey,double dValue);
@@ -119,6 +119,7 @@ private:
     void ray_trace_step(Light &light, double dTilt, bool bAutofocus, bool bAutocurvature);
     void update_z();
     void update_thicks();
+    double get_not_raytrace(int iSurface,eSurfaceParameter eParam) const;
 
     vector<double> _vdThicks;
     vector<Surface> _vSurfaces;
