@@ -17,36 +17,66 @@ LightAutofocus::LightAutofocus()
 ////////////////////////////////////////////////////////////////////////////////
 double LightAutofocus::autofocus(const Light& l)
 {
-    double dA=-1000.; //todo
-    double dC=1000.; //todo
-    double dB=(dA+dC)/2.;
+    double dB=0.;
+    double dA=dB-1000.;
+    double dC=dB+1000.;
     double dZStep=1.e-9;
-    double dQA=compute_spot_size(l,dA);
-    double dQB=compute_spot_size(l,dB);
-    double dQC=compute_spot_size(l,dC);
+
+    // find a point that is valid for initial start
+    int iScale=0;
+    double dQA, dQC, dQB=compute_spot_size(l,dB);
+    while((iScale<11) && (dQB>=SPOT_SIZE_INFINITY/2)) //2km max
+    {
+        dA=dB-2*(dB-dA); //look at left
+        dQA=compute_spot_size(l,dA);
+
+        if(dQA<SPOT_SIZE_INFINITY/2)
+        {
+            dB=dA; dQB=dQA;
+            break;
+        }
+
+        dC=dB-2*(dB-dC); // look at right
+        dQC=compute_spot_size(l,dC);
+        if(dQC<SPOT_SIZE_INFINITY/2)
+        {
+            dB=dC; dQB=dQC;
+            break;
+        }
+        iScale++;
+    }
+
+    if(dQB>=SPOT_SIZE_INFINITY/2)
+        return 0.; //unable to find a valid start point
+
+    // find valid dA and dB and such as dA>=dB and dC>=dB
+    dA=dB-1000.;
+    dC=dB+1000.;
+    dQA=compute_spot_size(l,dA);
+    dQC=compute_spot_size(l,dC);
 
     //1st part: expand A and C, so B became a minimum
-    int iScaleLeft=0;
-    while((iScaleLeft<11) && (dQA<=dQB)) //2km max
+    iScale=0;
+    while((iScale<11) && (dQA<=dQB)) //2km max
     {
         dA=dB-2*(dB-dA);
         dQA=compute_spot_size(l,dA);
-        iScaleLeft++;
+        iScale++;
     }
 
-    int iScaleRight=0;
-    while((iScaleRight<11) && (dQC<=dQB)) //2km max
+    iScale=0;
+    while((iScale<11) && (dQC<=dQB)) //2km max
     {
         dC=dB-2*(dB-dC);
         dQC=compute_spot_size(l,dC);
-        iScaleRight++;
+        iScale++;
     }
 
     //exit if no solution
     if( (dQA<=dQB) || (dQC<=dQB) )
         return 0.;
 
-    //now reduce interval around solution
+    // reduce interval around solution using dichotomy 1.5
     while (dC-dA>dZStep)
     {
         double dAB=(dA+dB)/2.;
@@ -66,14 +96,14 @@ double LightAutofocus::autofocus(const Light& l)
 
             if (dQBC<dQB)
             {
-                // a new min
+                // a new minimum
                 dA=dB;
                 dB=dBC;
                 dQB=dQBC;
             }
             else
             {
-                // min is B
+                // minimum is B
                 dA=dAB;
                 dC=dBC;
             }
@@ -116,8 +146,8 @@ double LightAutofocus::compute_spot_size(const Light& l,double z)
         //compute t at z
         double t=(z-p.z)/p.dz;
 
-     //   if(t<=0.)
-      //      return SPOT_SIZE_INFINITY; //all photons must be used in autofocus, for now
+        if(t<=0.)
+           return SPOT_SIZE_INFINITY; //all photons must be used in autofocus, for now
 
         double x=p.x+t*p.dx;
         double y=p.y+t*p.dy;

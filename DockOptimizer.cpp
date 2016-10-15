@@ -124,17 +124,21 @@ void DockOptimizer::on_pushButton_clicked()
 
     int iCriteria=ui->cbCriteria->currentIndex();
     OptimizerMeritFunction omf=eCenterOnly;
+
     if(iCriteria==0)
         omf=eCenterOnly;
 
     if(iCriteria==1)
-        omf=eMostlyCenter;
-
-    if(iCriteria==2)
         omf=eFullFrameMean;
 
-    if(iCriteria==3)
+    if(iCriteria==2)
         omf=eFullFrameMaxError;
+
+    /*
+        if(iCriteria==1)
+            omf=eMostlyCenter;
+    */
+
 
     setCursor(Qt::WaitCursor);
     ui->lblResult->setText("Optimizing...");
@@ -236,14 +240,16 @@ void DockOptimizer::device_changed(OpticalDevice *pDevice,int iReason)
             if(sMeritFunction=="CenterOnly")
                 ui->cbCriteria->setCurrentIndex(0);
 
-            if(sMeritFunction=="MostlyCenter")
+            if(sMeritFunction=="FullFrameMean")
                 ui->cbCriteria->setCurrentIndex(1);
 
-            if(sMeritFunction=="FullFrameMean")
+            if(sMeritFunction=="FullFrameMaxError")
                 ui->cbCriteria->setCurrentIndex(2);
 
-            if(sMeritFunction=="FullFrameMaxError")
-                ui->cbCriteria->setCurrentIndex(3);
+            /*
+                        if(sMeritFunction=="MostlyCenter")
+                            ui->cbCriteria->setCurrentIndex(1);
+            */
         }
     }
 
@@ -278,13 +284,14 @@ void DockOptimizer::on_cbCriteria_currentTextChanged(const QString &arg1)
         _pDevice->set_parameter("optimizer.merit","CenterOnly");
 
     if(iCriteria==1)
-        _pDevice->set_parameter("optimizer.merit","MostlyCenter");
-
-    if(iCriteria==2)
         _pDevice->set_parameter("optimizer.merit","FullFrameMean");
 
-    if(iCriteria==3)
+    if(iCriteria==2)
         _pDevice->set_parameter("optimizer.merit","FullFrameMaxError");
+
+    /*   if(iCriteria==1)
+           _pDevice->set_parameter("optimizer.merit","MostlyCenter");
+   */
 
     static_cast<MainWindow*>(parent())->device_changed(this,OPTIMIZER_CHANGED);
 }

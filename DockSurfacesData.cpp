@@ -338,7 +338,12 @@ void DockSurfacesData::on_twSurfacesDatas_cellChanged(int iRow, int iCol)
     bool isFirstSurf=(iRow==0);
     double dVal=-1.; //todo set to NaN
 
-    //TODO check error and return last result if error
+    //check error and return last result if error
+    if(isAuto && isFirstSurf)
+    {
+        update_table();
+        return;
+    }
 
     if(isAuto)
         sItem=sItem.erase(sItem.find("auto"),4);
@@ -396,10 +401,16 @@ void DockSurfacesData::on_twSurfacesDatas_cellChanged(int iRow, int iCol)
         _pOD->set_clone(iRow,esp,iSurfaceRef,dGain);
         if(!isClone)
         {
-            if(isLastSurf)
-                _pOD->set_autofocus(isAuto);
+            if(isLastSurf && isAuto)
+                _pOD->set_autofocus(true);
             else
-                _pOD->set(iRow,esp,dVal);
+            {
+                _pOD->set_autofocus(false);
+                if((esp==THICK) && isLastSurf)
+                    _pOD->set(iRow,esp,0.);
+                else
+                    _pOD->set(iRow,esp,dVal);
+            }
         }
     }
 
@@ -408,8 +419,7 @@ void DockSurfacesData::on_twSurfacesDatas_cellChanged(int iRow, int iCol)
         _pOD->set_clone(iRow,DIAMETER,iSurfaceRef,dGain);
         if(!isClone)
         {
-            if(!isFirstSurf)
-                _pOD->set(iRow,AUTO_DIAMETER,isAuto);
+            _pOD->set(iRow,AUTO_DIAMETER,isAuto && (!isFirstSurf) );
 
             if(!isAuto)
                 _pOD->set(iRow,DIAMETER,dVal);

@@ -114,7 +114,7 @@ double DeviceOptimizer::compute_demerit()
     if(_meritFunction==eCenterOnly)
         return pQ.vdSpotSize[0];
 
-    if(_meritFunction==eFullFrameMean)
+    if( (_meritFunction==eFullFrameMean) || (_meritFunction==eMostlyCenter) ) //todo remove eMostlyCenter
     {
         double dMeritMoy=0.;
         for(int i=0;i<pQ.nb_angles();i++)
@@ -122,7 +122,7 @@ double DeviceOptimizer::compute_demerit()
 
         return dMeritMoy/pQ.nb_angles();
     }
-
+/*
     if(_meritFunction==eMostlyCenter)
     {
         //todo find the optimal formula
@@ -136,11 +136,8 @@ double DeviceOptimizer::compute_demerit()
                 dMeritMoy=pQ.vdSpotSize[i]*dFactor;
         }
         return dMeritMoy;
-
-
-        return SPOT_SIZE_INFINITY; //TODO
     }
-
+*/
     if(_meritFunction==eFullFrameMaxError)
     {
         double dMeritMoy=0.;
@@ -489,6 +486,8 @@ OptimizerResult DeviceOptimizer::optimise_amoeba()
 //////////////////////////////////////////////////////////////////////////////
 OptimizerResult DeviceOptimizer::optimise()
 {
+    //todo add optimise_random as an option
+
     return optimise_amoeba();
 }
 //////////////////////////////////////////////////////////////////////////////
