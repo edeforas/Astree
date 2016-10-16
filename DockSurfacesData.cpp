@@ -259,8 +259,16 @@ void DockSurfacesData::update_table()
             qsDiameter="auto "+QString::number(dDiameter,'f',3);
         else
             qsDiameter=QString::number(dDiameter,'g',10);
+
+        if(_pOD->get_clone(i,DIAMETER,iRefClone,dCloneGain))
+        {
+            qsDiameter="#"+QString::number(iRefClone+1)+" "+qsDiameter;
+            if(dCloneGain<0.)
+                qsDiameter="-"+qsDiameter;
+        }
         m_ui->twSurfacesDatas->setItem(i,4,new QTableWidgetItem(qsDiameter));
 
+        // update inner diameter
         iIndexCol=5;
         if(_bDisplayInnerDiameter)
         {
@@ -271,6 +279,12 @@ void DockSurfacesData::update_table()
             else
                 qsInnerDiameter=QString::number(dInnerDiameter,'g',10);
 
+            if(_pOD->get_clone(i,INNER_DIAMETER,iRefClone,dCloneGain))
+            {
+                qsInnerDiameter="#"+QString::number(iRefClone+1)+" "+qsInnerDiameter;
+                if(dCloneGain<0.)
+                    qsInnerDiameter="-"+qsInnerDiameter;
+            }
             m_ui->twSurfacesDatas->setItem(i,iIndexCol,new QTableWidgetItem(qsInnerDiameter));
 
             iIndexCol++;
@@ -417,13 +431,9 @@ void DockSurfacesData::on_twSurfacesDatas_cellChanged(int iRow, int iCol)
     if (iCol==4) //"Diameter"
     {
         _pOD->set_clone(iRow,DIAMETER,iSurfaceRef,dGain);
-        if(!isClone)
-        {
-            _pOD->set(iRow,AUTO_DIAMETER,isAuto && (!isFirstSurf) );
-
-            if(!isAuto)
-                _pOD->set(iRow,DIAMETER,dVal);
-        }
+        _pOD->set(iRow,AUTO_DIAMETER,isAuto && (!isFirstSurf) && (!isClone) );
+        if((!isClone) && (!isAuto) )
+            _pOD->set(iRow,DIAMETER,dVal); //todo debug ref to auto diameter
     }
 
     int iIndexCol=5; // optional columns
@@ -431,15 +441,10 @@ void DockSurfacesData::on_twSurfacesDatas_cellChanged(int iRow, int iCol)
     {
         if (iCol==iIndexCol) //inner diameter
         {
-            _pOD->set_clone(iRow,INNER_DIAMETER,iSurfaceRef,dGain);
-            if(!isClone)
-            {
-                if(!isFirstSurf)
-                    _pOD->set(iRow,AUTO_INNER_DIAMETER,isAuto);
-
-                if(!isAuto)
-                    _pOD->set(iRow,INNER_DIAMETER,dVal);
-            }
+            _pOD->set_clone(iRow,INNER_DIAMETER,iSurfaceRef,dGain); //todo debug ref to auto inner_diameter
+            _pOD->set(iRow,AUTO_INNER_DIAMETER,isAuto && (!isFirstSurf) && (!isClone) );
+            if((!isClone) && (!isAuto) )
+                _pOD->set(iRow,INNER_DIAMETER,dVal);
 
             update_labels();
         }

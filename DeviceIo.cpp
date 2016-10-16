@@ -50,19 +50,29 @@ bool DeviceIo::save(string sFile, OpticalDevice* pOD)
         if(pOD->get_autofocus() && (iS==pOD->nb_surface()-1))
             prop.set(sSurfName+".z.autofocus",true);
 
-
-
+        //save diameter
         double dDiameter=pOD->get(iS,DIAMETER);
         prop.set(sSurfName+".diameter",dDiameter);
         if(pOD->get(iS,AUTO_DIAMETER)!=0.)
             prop.set(sSurfName+".diameter.auto",true);
+        if(pOD->get_clone(iS,DIAMETER,iSurfclone,dGainclone))
+        {
+            prop.set(sSurfName+".diameter.clone",iSurfclone);
+            prop.set(sSurfName+".diameter.clone.gain",dGainclone);
+        }
 
+        //save inner diameter
         double dInnerDiameter=pOD->get(iS,INNER_DIAMETER);
         if(dInnerDiameter!=0.)
         {
             prop.set(sSurfName+".inner_diameter",dInnerDiameter);
             if(pOD->get(iS,AUTO_INNER_DIAMETER)!=0.)
                 prop.set(sSurfName+".inner_diameter.auto",true);
+        }
+        if(pOD->get_clone(iS,INNER_DIAMETER,iSurfclone,dGainclone))
+        {
+            prop.set(sSurfName+".inner_diameter.clone",iSurfclone);
+            prop.set(sSurfName+".inner_diameter.clone.gain",dGainclone);
         }
 
         // save radius curvature
@@ -169,6 +179,12 @@ OpticalDevice* DeviceIo::load(string sFile)
         {
             double dDiameter=prop.get_double(sSurfName+".diameter");
             pOD->set(iS,DIAMETER,dDiameter);
+
+            double dGainclone=1;
+            if(prop.exist(sSurfName+".diameter.clone.gain"))
+                dGainclone=prop.get_int(sSurfName+".diameter.clone.gain");
+            if(prop.exist(sSurfName+".diameter.clone"))
+                pOD->set_clone(iS,DIAMETER,prop.get_int(sSurfName+".diameter.clone"),dGainclone);
         }
         if (prop.exist(sSurfName+".diameter.auto"))
             pOD->set(iS,AUTO_DIAMETER,prop.get_bool(sSurfName+".diameter.auto"));
@@ -177,10 +193,15 @@ OpticalDevice* DeviceIo::load(string sFile)
         {
             double dInnerDiameter=prop.get_double(sSurfName+".inner_diameter");
             pOD->set(iS,INNER_DIAMETER,dInnerDiameter);
+
+            double dGainclone=1;
+            if(prop.exist(sSurfName+".inner_diameter.clone.gain"))
+                dGainclone=prop.get_int(sSurfName+".inner_diameter.clone.gain");
+            if(prop.exist(sSurfName+".inner_diameter.clone"))
+                pOD->set_clone(iS,INNER_DIAMETER,prop.get_int(sSurfName+".inner_diameter.clone"),dGainclone);
         }
         if (prop.exist(sSurfName+".inner_diameter.auto"))
             pOD->set(iS,AUTO_INNER_DIAMETER,prop.get_bool(sSurfName+".inner_diameter.auto"));
-
 
         if (prop.exist(sSurfName+".radius_curvature"))
         {
