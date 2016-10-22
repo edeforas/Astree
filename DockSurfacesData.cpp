@@ -454,26 +454,29 @@ void DockSurfacesData::on_twSurfacesDatas_cellChanged(int iRow, int iCol)
 
     if(_bDisplayAspheric)
     {
-        // no auto or clone for now
+        if( (iCol>=iIndexCol) &&(iCol<=iIndexCol+3))
+        {
+            // no auto or clone for now
 
-        eSurfaceParameter esp=R4;
-        if(iCol==iIndexCol+1)
-            esp=R6;
+            eSurfaceParameter esp=R4;
+            if(iCol==iIndexCol+1)
+                esp=R6;
 
-        if(iCol==iIndexCol+2)
-            esp=R8;
+            if(iCol==iIndexCol+2)
+                esp=R8;
 
-        if(iCol==iIndexCol+3)
-            esp=R10;
+            if(iCol==iIndexCol+3)
+                esp=R10;
 
-        QTableWidgetItem* pItem=m_ui->twSurfacesDatas->item(iRow,iCol);
-        _pOD->set(iRow,esp,pItem->text().toDouble());
-        update_labels();
+            QTableWidgetItem* pItem=m_ui->twSurfacesDatas->item(iRow,iCol);
+            _pOD->set(iRow,esp,pItem->text().toDouble());
+            update_labels();
+        }
 
         iIndexCol+=4;
     }
 
-    if((iCol==iIndexCol) && _bDisplayComment)
+    if(_bDisplayComment && (iCol==iIndexCol) )
     {
         QString qsText=m_ui->twSurfacesDatas->item(iRow,iCol)->text();
         _pOD->set_comment(iRow,qsText.toStdString());

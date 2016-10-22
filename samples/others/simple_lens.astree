@@ -13,7 +13,13 @@
 2.z=-59.83281913
 2.z.autofocus=1
 device.convention=absolute
+device.note=Simple lens, show chromatism and spherical abberations
+device.relative_convention=0
 half_field_of_view=10
+image.autocurvature=0
+image.autofocus=1
 light.colors=IR.Red.Yellow.Green.Blue.UV.
+light.half_field_of_view=10
 light.nbsteps=3
 note=Simple lens, show chromatism and spherical abberations
+parameter.showLightOffAxis=100
