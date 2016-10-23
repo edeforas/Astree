@@ -415,11 +415,10 @@ void DockSurfacesData::on_twSurfacesDatas_cellChanged(int iRow, int iCol)
         _pOD->set_clone(iRow,esp,iSurfaceRef,dGain);
         if(!isClone)
         {
-            if(isLastSurf && isAuto)
-                _pOD->set_autofocus(true);
+            if(isLastSurf)
+                _pOD->set_autofocus(isAuto);
             else
             {
-                _pOD->set_autofocus(false);
                 if((esp==THICK) && isLastSurf)
                     _pOD->set(iRow,esp,0.);
                 else
