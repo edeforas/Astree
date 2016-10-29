@@ -55,10 +55,10 @@ DockOptimizer::DockOptimizer(QWidget *parent) :
         qcbParam->addItem("Conic");
         qcbParam->addItem("Thick");
         qcbParam->addItem("Z");
-        qcbParam->addItem("r4");
-        qcbParam->addItem("r6");
-        qcbParam->addItem("r8");
-        qcbParam->addItem("r10");
+        qcbParam->addItem("R4");
+        qcbParam->addItem("R6");
+        qcbParam->addItem("R8");
+        qcbParam->addItem("R10");
         ui->twParams->setCellWidget(i,2,qcbParam);
         connect(qcbParam,&QComboBox::currentTextChanged,this,&DockOptimizer::tableChanged);
 

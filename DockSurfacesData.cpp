@@ -95,10 +95,10 @@ void DockSurfacesData::update_labels()
     // update aspheric checkbox
     if(_bDisplayAspheric )
     {
-        qsl+="r4";
-        qsl+="r6";
-        qsl+="r8";
-        qsl+="r10";
+        qsl+="R4";
+        qsl+="R6";
+        qsl+="R8";
+        qsl+="R10";
     }
     m_ui->cbPolyAspheric->setChecked( _bDisplayAspheric);
     m_ui->cbPolyAspheric->setEnabled(!_bHaveAspheric );

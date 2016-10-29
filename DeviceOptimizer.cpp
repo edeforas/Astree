@@ -142,16 +142,16 @@ void DeviceOptimizer::apply_parameter(const ParameterSet& parameters)
         if(sParam=="Thick")
             _pDevice->set(iSurface,THICK,dVal);
 
-        if(sParam=="r4")
+        if(sParam=="R4")
             _pDevice->set(iSurface,R4,dVal);
 
-        if(sParam=="r6")
+        if(sParam=="R6")
             _pDevice->set(iSurface,R6,dVal);
 
-        if(sParam=="r8")
+        if(sParam=="R8")
             _pDevice->set(iSurface,R8,dVal);
 
-        if(sParam=="r10")
+        if(sParam=="R10")
             _pDevice->set(iSurface,R10,dVal);
     }
 }
@@ -306,16 +306,16 @@ OptimizerResult DeviceOptimizer::optimise_amoeba()
         if(_parameters[i].sParameter=="Z")
             vdMinResolution[i]=MIN_RESOLUTION_THICK;
 
-        if(_parameters[i].sParameter=="r4")
+        if(_parameters[i].sParameter=="R4")
             vdMinResolution[i]=MIN_RESOLUTION_R4;
 
-        if(_parameters[i].sParameter=="r6")
+        if(_parameters[i].sParameter=="R6")
             vdMinResolution[i]=MIN_RESOLUTION_R6;
 
-        if(_parameters[i].sParameter=="r8")
+        if(_parameters[i].sParameter=="R8")
             vdMinResolution[i]=MIN_RESOLUTION_R8;
 
-        if(_parameters[i].sParameter=="r10")
+        if(_parameters[i].sParameter=="R10")
             vdMinResolution[i]=MIN_RESOLUTION_R10;
     }
 
