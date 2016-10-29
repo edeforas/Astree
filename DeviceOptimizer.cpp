@@ -25,6 +25,64 @@ void DeviceOptimizer::set_device(OpticalDevice* pDevice)
     _pDevice=pDevice;
 }
 //////////////////////////////////////////////////////////////////////////////
+void DeviceOptimizer::add_parameter(int iSurface,string sParameter)
+{
+    double dMin=0.;
+    double dMax=0.;
+
+    assert(_pDevice);
+
+    if(sParameter=="Conic")
+    {
+        dMin=_pDevice->get(iSurface,CONIC)-CONIC_HALF_RANGE;
+        dMax=_pDevice->get(iSurface,CONIC)+CONIC_HALF_RANGE;
+    }
+
+    if(sParameter=="RCurv")
+    {
+        dMin=_pDevice->get(iSurface,RADIUS_CURVATURE)/RCURV_HALF_RATIO;
+        dMax=_pDevice->get(iSurface,RADIUS_CURVATURE)*RCURV_HALF_RATIO;
+    }
+
+    if(sParameter=="R4")
+    {
+        dMin=_pDevice->get(iSurface,R4)/R4_HALF_RATIO; // todo manage R4=0
+        dMax=_pDevice->get(iSurface,R4)*R4_HALF_RATIO;
+    }
+
+    if(sParameter=="R6")
+    {
+        dMin=_pDevice->get(iSurface,R6)/R6_HALF_RATIO;  // todo manage R6=0
+        dMax=_pDevice->get(iSurface,R6)*R6_HALF_RATIO;
+    }
+
+    if(sParameter=="R8")
+    {
+        dMin=_pDevice->get(iSurface,R8)/R8_HALF_RATIO;  // todo manage R8=0
+        dMax=_pDevice->get(iSurface,R8)*R8_HALF_RATIO;
+    }
+
+    if(sParameter=="R10")
+    {
+        dMin=_pDevice->get(iSurface,R10)/R10_HALF_RATIO;  // todo manage R10=0
+        dMax=_pDevice->get(iSurface,R10)*R10_HALF_RATIO;
+    }
+
+    if(sParameter=="Z")
+    {
+        dMin=_pDevice->get(iSurface,Z)-Z_HALF_RANGE;
+        dMax=_pDevice->get(iSurface,Z)*Z_HALF_RANGE;
+    }
+
+    if(sParameter=="THICK")
+    {
+        dMin=_pDevice->get(iSurface,THICK)-THICK_HALF_RANGE;
+        dMax=_pDevice->get(iSurface,THICK)*THICK_HALF_RANGE;
+    }
+
+    add_parameter(iSurface,sParameter,dMin,dMax);
+}
+//////////////////////////////////////////////////////////////////////////////
 void DeviceOptimizer::add_parameter(int iSurface,string sParameter,double dMin,double dMax)
 {
     DeviceOptimizerParameter dop;
@@ -59,7 +117,7 @@ void DeviceOptimizer::set_merit_function(OptimizerMeritFunction eMeritFunction)
     _meritFunction=eMeritFunction;
 }
 //////////////////////////////////////////////////////////////////////////////
-void DeviceOptimizer::apply_parameter(const vector<DeviceOptimizerParameter>& parameters)
+void DeviceOptimizer::apply_parameter(const ParameterSet& parameters)
 {
     assert(_pDevice!=0);
 
@@ -122,7 +180,7 @@ double DeviceOptimizer::compute_demerit()
 
         return dMeritMoy/pQ.nb_angles();
     }
-/*
+    /*
     if(_meritFunction==eMostlyCenter)
     {
         //todo find the optimal formula
@@ -322,7 +380,7 @@ OptimizerResult DeviceOptimizer::optimise_amoeba()
         for(unsigned int i=1;i<simplex.size();i++)
             if( ((int)i!=iWorse) && (vdDemerit[i]>dSecondWorse) )
             {
-             //   iSecondWorse=i; //TODO not used?
+                //   iSecondWorse=i; //TODO not used?
                 dSecondWorse=vdDemerit[i];
             }
 

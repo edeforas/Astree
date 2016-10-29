@@ -51,7 +51,7 @@ DockOptimizer::DockOptimizer(QWidget *parent) :
         QComboBox*  qcbParam=new QComboBox;
         qcbParam->addItem("");
         qcbParam->addItem("RCurv");
-    //    qcbParam->addItem("Curvature");
+        //    qcbParam->addItem("Curvature");
         qcbParam->addItem("Conic");
         qcbParam->addItem("Thick");
         qcbParam->addItem("Z");
@@ -88,6 +88,7 @@ void DockOptimizer::on_pushButton_clicked()
     for(int i=0;i<NB_PARAM_MAX;i++)
     {
         bool bOk=true;
+        bool bDefaultParam=false;
 
         QCheckBox* qcbOptimize=(QCheckBox*)ui->twParams->cellWidget(i,0);
         if(!qcbOptimize->isChecked())
@@ -108,19 +109,24 @@ void DockOptimizer::on_pushButton_clicked()
             continue;
         double dMin=pItemMin->text().toDouble(&bOk);
         if(!bOk)
-            continue;
+            bDefaultParam=true;
 
         QTableWidgetItem* pItemMax=ui->twParams->item(i,4);
         if(pItemMax==0)
             continue;
         double dMax=pItemMax->text().toDouble(&bOk);
         if(!bOk)
-            continue;
+            bDefaultParam=true;
 
         //TODO use device properties instead of reading from the UI
 
-        _dopt.add_parameter(iSurface,sParam,dMin,dMax);
+        if(bDefaultParam)
+            _dopt.add_parameter(iSurface,sParam);
+        else
+            _dopt.add_parameter(iSurface,sParam,dMin,dMax);
     }
+
+
 
     int iCriteria=ui->cbCriteria->currentIndex();
     OptimizerMeritFunction omf=eCenterOnly;
@@ -192,7 +198,7 @@ void DockOptimizer::device_changed(OpticalDevice *pDevice,int iReason)
         for(int i=0;i<NB_PARAM_MAX;i++)
         {
             QComboBox* qcbSurf=(QComboBox*)ui->twParams->cellWidget(i,1);
-            qcbSurf->clear();
+            qcbSurf->clear(); //todo
             qcbSurf->addItem("");
             for(int i=0;i<iNbSurfaces;i++)
                 qcbSurf->addItem(QString::number(i+1));
@@ -208,9 +214,9 @@ void DockOptimizer::device_changed(OpticalDevice *pDevice,int iReason)
                 ss << iRow;
 
                 QCheckBox* qcbOptimize=(QCheckBox*)ui->twParams->cellWidget(iRow,0);
-                string sOptimize="0";
+                string sOptimize;
                 _pDevice->get_parameter("optimizer."+ss.str()+".checked",sOptimize);
-                qcbOptimize->setChecked(sOptimize!="0");
+                qcbOptimize->setChecked(sOptimize=="1");
 
                 QComboBox* qcbSurf=(QComboBox*)ui->twParams->cellWidget(iRow,1);
                 string sSurface;
@@ -224,13 +230,17 @@ void DockOptimizer::device_changed(OpticalDevice *pDevice,int iReason)
 
                 QTableWidgetItem* pItemMin=ui->twParams->item(iRow,3);
                 string sMin;
-                _pDevice->get_parameter("optimizer."+ss.str()+".min",sMin);
-                pItemMin->setText(sMin.c_str());
+                if(_pDevice->get_parameter("optimizer."+ss.str()+".min",sMin))
+                    pItemMin->setText(sMin.c_str());
+                else
+                    pItemMin->setText("");
 
                 QTableWidgetItem* pItemMax=ui->twParams->item(iRow,4);
                 string sMax;
-                _pDevice->get_parameter("optimizer."+ss.str()+".max",sMax);
-                pItemMax->setText(sMax.c_str());
+                if(_pDevice->get_parameter("optimizer."+ss.str()+".max",sMax))
+                    pItemMax->setText(sMax.c_str());
+                else
+                    pItemMax->setText("");
             }
 
             //load merit function
@@ -279,7 +289,7 @@ void DockOptimizer::on_cbCriteria_currentTextChanged(const QString &arg1)
 
     //save merit function
     int iCriteria=ui->cbCriteria->currentIndex();
-  //  string sMeritFunction="invalid";
+    //  string sMeritFunction="invalid";
     if(iCriteria==0)
         _pDevice->set_parameter("optimizer.merit","CenterOnly");
 

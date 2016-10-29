@@ -137,7 +137,8 @@ bool DeviceIo::save(string sFile, OpticalDevice* pOD)
     //save other parameters
     auto otherParams=pOD->all_parameters();
     for(auto it=otherParams.begin();it!=otherParams.end();++it)
-        prop.set("parameter."+it->first,it->second);
+        if(!(it->second.empty()))
+            prop.set("parameter."+it->first,it->second);
 
     return prop.save(sFile);
 }
