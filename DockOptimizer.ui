@@ -46,6 +46,11 @@
         </item>
         <item>
          <property name="text">
+          <string>Mostly Center</string>
+         </property>
+        </item>
+        <item>
+         <property name="text">
           <string>Full Frame Mean</string>
          </property>
         </item>

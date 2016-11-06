@@ -172,30 +172,27 @@ double DeviceOptimizer::compute_demerit()
     if(_meritFunction==eCenterOnly)
         return pQ.vdSpotSize[0];
 
-    if( (_meritFunction==eFullFrameMean) || (_meritFunction==eMostlyCenter) ) //todo remove eMostlyCenter
+    if( _meritFunction==eFullFrameMean )
     {
         double dMeritMoy=0.;
         for(int i=0;i<pQ.nb_angles();i++)
             dMeritMoy+=pQ.vdSpotSize[i];
 
-        return dMeritMoy/pQ.nb_angles();
+        return dMeritMoy;// /pQ.nb_angles();
     }
-    /*
+
     if(_meritFunction==eMostlyCenter)
     {
-        //todo find the optimal formula
-        double dCentralWeight=10;
+        double dCentralWeight=3.;
         double dMeritMoy=0.;
         for(int i=0;i<pQ.nb_angles();i++)
         {
-            double dFactor=dCentralWeight+(1.-dCentralWeight)/(pQ.nb_angles()-1)*i;
-
-            if(dMeritMoy<pQ.vdSpotSize[i])
-                dMeritMoy=pQ.vdSpotSize[i]*dFactor;
+            double dFactor=1.+(pQ.nb_angles()-1.-i)/(double)(pQ.nb_angles()-1.)*(dCentralWeight-1.);
+            dMeritMoy+=pQ.vdSpotSize[i]*dFactor;
         }
-        return dMeritMoy;
+        return dMeritMoy; //*K
     }
-*/
+
     if(_meritFunction==eFullFrameMaxError)
     {
         double dMeritMoy=0.;

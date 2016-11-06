@@ -135,16 +135,13 @@ void DockOptimizer::on_pushButton_clicked()
         omf=eCenterOnly;
 
     if(iCriteria==1)
-        omf=eFullFrameMean;
+        omf=eMostlyCenter;
 
     if(iCriteria==2)
+        omf=eFullFrameMean;
+
+    if(iCriteria==3)
         omf=eFullFrameMaxError;
-
-    /*
-        if(iCriteria==1)
-            omf=eMostlyCenter;
-    */
-
 
     setCursor(Qt::WaitCursor);
     ui->lblResult->setText("Optimizing...");
@@ -250,16 +247,14 @@ void DockOptimizer::device_changed(OpticalDevice *pDevice,int iReason)
             if(sMeritFunction=="CenterOnly")
                 ui->cbCriteria->setCurrentIndex(0);
 
-            if(sMeritFunction=="FullFrameMean")
+            if(sMeritFunction=="MostlyCenter")
                 ui->cbCriteria->setCurrentIndex(1);
 
-            if(sMeritFunction=="FullFrameMaxError")
+            if(sMeritFunction=="FullFrameMean")
                 ui->cbCriteria->setCurrentIndex(2);
 
-            /*
-                        if(sMeritFunction=="MostlyCenter")
-                            ui->cbCriteria->setCurrentIndex(1);
-            */
+            if(sMeritFunction=="FullFrameMaxError")
+                ui->cbCriteria->setCurrentIndex(3);
         }
     }
 
@@ -289,19 +284,18 @@ void DockOptimizer::on_cbCriteria_currentTextChanged(const QString &arg1)
 
     //save merit function
     int iCriteria=ui->cbCriteria->currentIndex();
-    //  string sMeritFunction="invalid";
+
     if(iCriteria==0)
         _pDevice->set_parameter("optimizer.merit","CenterOnly");
 
     if(iCriteria==1)
-        _pDevice->set_parameter("optimizer.merit","FullFrameMean");
+        _pDevice->set_parameter("optimizer.merit","MostlyCenter");
 
     if(iCriteria==2)
-        _pDevice->set_parameter("optimizer.merit","FullFrameMaxError");
+        _pDevice->set_parameter("optimizer.merit","FullFrameMean");
 
-    /*   if(iCriteria==1)
-           _pDevice->set_parameter("optimizer.merit","MostlyCenter");
-   */
+    if(iCriteria==3)
+        _pDevice->set_parameter("optimizer.merit","FullFrameMaxError");
 
     static_cast<MainWindow*>(parent())->device_changed(this,OPTIMIZER_CHANGED);
 }
@@ -343,4 +337,3 @@ void DockOptimizer::tableChanged()
     static_cast<MainWindow*>(parent())->device_changed(this,OPTIMIZER_CHANGED);
 }
 /////////////////////////////////////////////////////////////
-

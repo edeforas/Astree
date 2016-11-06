@@ -219,37 +219,41 @@
         <translation>Optimiseur</translation>
     </message>
     <message>
-        <location filename="DockOptimizer.ui" line="29"/>
+        <location filename="DockOptimizer.ui" line="36"/>
         <source>Criteria</source>
         <translation>Critère</translation>
     </message>
     <message>
-        <location filename="DockOptimizer.ui" line="37"/>
+        <location filename="DockOptimizer.ui" line="44"/>
         <source>Image Center Only</source>
         <translation>Centre de l&apos;image</translation>
     </message>
     <message>
-        <location filename="DockOptimizer.ui" line="42"/>
         <source>Mostly Center (linear)</source>
-        <translation>Plutôt le centre de l&apos;image (linéaire)</translation>
+        <translation type="vanished">Plutôt le centre de l&apos;image (linéaire)</translation>
     </message>
     <message>
-        <location filename="DockOptimizer.ui" line="47"/>
+        <location filename="DockOptimizer.ui" line="49"/>
+        <source>Mostly Center</source>
+        <translation>Surtout le centre de l&apos;image</translation>
+    </message>
+    <message>
+        <location filename="DockOptimizer.ui" line="54"/>
         <source>Full Frame Mean</source>
         <translation>En moyenne sur l&apos;image</translation>
     </message>
     <message>
-        <location filename="DockOptimizer.ui" line="52"/>
+        <location filename="DockOptimizer.ui" line="59"/>
         <source>Full Frame Max</source>
         <translation>Max de l&apos;image</translation>
     </message>
     <message>
-        <location filename="DockOptimizer.ui" line="77"/>
+        <location filename="DockOptimizer.ui" line="84"/>
         <source>Optimize</source>
         <translation>Optimiser</translation>
     </message>
     <message>
-        <location filename="DockOptimizer.ui" line="93"/>
+        <location filename="DockOptimizer.ui" line="100"/>
         <source>...</source>
         <translation>...</translation>
     </message>
@@ -445,24 +449,24 @@ dans ce cas ,la lumière se concentre dans la tache de diffraction et la qualit�
 <context>
     <name>MainWindow</name>
     <message>
-        <location filename="MainWindow.cpp" line="156"/>
-        <location filename="MainWindow.cpp" line="194"/>
+        <location filename="MainWindow.cpp" line="144"/>
+        <location filename="MainWindow.cpp" line="181"/>
         <source>Open Astree File</source>
         <translation>Ouvrir un fichier Astree</translation>
     </message>
     <message>
-        <location filename="MainWindow.cpp" line="156"/>
-        <location filename="MainWindow.cpp" line="194"/>
+        <location filename="MainWindow.cpp" line="144"/>
+        <location filename="MainWindow.cpp" line="181"/>
         <source>Astree Files (*.astree)</source>
         <translation>Fichier Astree (*.astree)</translation>
     </message>
     <message>
-        <location filename="MainWindow.cpp" line="315"/>
+        <location filename="MainWindow.cpp" line="301"/>
         <source>Import ZMX File</source>
         <translation>Importer un fichier ZMX</translation>
     </message>
     <message>
-        <location filename="MainWindow.cpp" line="315"/>
+        <location filename="MainWindow.cpp" line="301"/>
         <source>ZMX Files (*.zmx)</source>
         <translation>Fichier ZMX (*.zmx)</translation>
     </message>
