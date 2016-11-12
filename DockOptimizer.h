@@ -29,6 +29,8 @@ private slots:
     void on_cbCriteria_currentTextChanged(const QString &arg1);
     void tableChanged();
 
+    void on_cbMethod_currentIndexChanged(int index);
+
 private:
     Ui::DockOptimizer *ui;
     OpticalDevice* _pDevice;

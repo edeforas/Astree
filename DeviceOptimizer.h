@@ -55,6 +55,7 @@ enum OptimizerMeritFunction
 
 enum OptimizerResult
 {
+    eInvalidState,
     eBetterSolutionFound,
     eNoBetterSolution,
     eSolutionOnEdge,
@@ -74,11 +75,10 @@ public:
     void add_parameter(int iSurface,string sParameter,double dMin,double dMax);
     void set_merit_function(OptimizerMeritFunction eMeritFunction);
 
-    OptimizerResult optimise();
-
-private:
     OptimizerResult optimise_random(); //keep for later use
     OptimizerResult optimise_amoeba();
+
+private:
     void apply_parameter(const ParameterSet& parameters);
     double compute_demerit(); //return demerit value: lower is better
 

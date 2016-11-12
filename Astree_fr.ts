@@ -257,6 +257,21 @@
         <source>...</source>
         <translation>...</translation>
     </message>
+    <message>
+        <location filename="DockOptimizer.ui" line="111"/>
+        <source>Method</source>
+        <translation>Méthode</translation>
+    </message>
+    <message>
+        <location filename="DockOptimizer.ui" line="119"/>
+        <source>Nelder-Mead (default)</source>
+        <translation type="unfinished">Nelder-Mead (par défaut)</translation>
+    </message>
+    <message>
+        <location filename="DockOptimizer.ui" line="124"/>
+        <source>Monte-Carlo MultiScale</source>
+        <translation>MonteCarlo Multi-Echelle</translation>
+    </message>
 </context>
 <context>
     <name>DockScatterPlot</name>

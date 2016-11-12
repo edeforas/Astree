@@ -126,8 +126,6 @@ void DockOptimizer::on_pushButton_clicked()
             _dopt.add_parameter(iSurface,sParam,dMin,dMax);
     }
 
-
-
     int iCriteria=ui->cbCriteria->currentIndex();
     OptimizerMeritFunction omf=eCenterOnly;
 
@@ -149,7 +147,13 @@ void DockOptimizer::on_pushButton_clicked()
     ui->lblResult->repaint();
 
     _dopt.set_merit_function(omf);
-    OptimizerResult result=_dopt.optimise(); //todo, put in thread
+
+    OptimizerResult result=eInvalidState;
+    if(ui->cbMethod->currentIndex()==0)
+        result=_dopt.optimise_amoeba(); //todo, put in thread , todo save in file
+    else
+        result=_dopt.optimise_random(); //todo, put in thread
+
     if(result==eBetterSolutionFound)
     {
         ui->lblResult->setText("Better Solution found.");
@@ -255,6 +259,16 @@ void DockOptimizer::device_changed(OpticalDevice *pDevice,int iReason)
 
             if(sMeritFunction=="FullFrameMaxError")
                 ui->cbCriteria->setCurrentIndex(3);
+
+            //load optim method
+            string sOptimFunction="Unknow";
+            _pDevice->get_parameter("optimizer.method",sOptimFunction);
+
+            if(sOptimFunction=="NelderMead")
+                ui->cbCriteria->setCurrentIndex(0);
+
+            if(sOptimFunction=="MonteCarlo")
+                ui->cbCriteria->setCurrentIndex(1);
         }
     }
 
@@ -337,3 +351,22 @@ void DockOptimizer::tableChanged()
     static_cast<MainWindow*>(parent())->device_changed(this,OPTIMIZER_CHANGED);
 }
 /////////////////////////////////////////////////////////////
+void DockOptimizer::on_cbMethod_currentIndexChanged(int index)
+{
+    (void)index;
+
+    if(_bBlockSignals)
+        return;
+
+    //save merit function
+    int iCriteria=ui->cbMethod->currentIndex();
+
+    if(iCriteria==0)
+        _pDevice->set_parameter("optimizer.method","NelderMead");
+
+    if(iCriteria==1)
+        _pDevice->set_parameter("optimizer.method","MonteCarlo");
+
+    static_cast<MainWindow*>(parent())->device_changed(this,OPTIMIZER_CHANGED);
+}
+//////////////////////////////////////////////////////////

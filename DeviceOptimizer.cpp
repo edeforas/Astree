@@ -539,10 +539,3 @@ OptimizerResult DeviceOptimizer::optimise_amoeba()
     return eNoBetterSolution;
 }
 //////////////////////////////////////////////////////////////////////////////
-OptimizerResult DeviceOptimizer::optimise()
-{
-    //todo add optimise_random as an option
-
-    return optimise_amoeba();
-}
-//////////////////////////////////////////////////////////////////////////////
