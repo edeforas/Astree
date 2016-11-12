@@ -265,10 +265,10 @@ void DockOptimizer::device_changed(OpticalDevice *pDevice,int iReason)
             _pDevice->get_parameter("optimizer.method",sOptimFunction);
 
             if(sOptimFunction=="NelderMead")
-                ui->cbCriteria->setCurrentIndex(0);
+                ui->cbMethod->setCurrentIndex(0);
 
             if(sOptimFunction=="MonteCarlo")
-                ui->cbCriteria->setCurrentIndex(1);
+                ui->cbMethod->setCurrentIndex(1);
         }
     }
 
