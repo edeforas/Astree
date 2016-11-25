@@ -288,7 +288,7 @@ OptimizerResult DeviceOptimizer::optimise_amoeba()
     vector<double> vdMinResolution(_parameters.size());
     for(unsigned int i=0;i<_parameters.size();i++)
     {
-        if(_parameters[i].sParameter=="conic")
+        if(_parameters[i].sParameter=="Conic")
             vdMinResolution[i]=MIN_RESOLUTION_CONIC;
 
         if(_parameters[i].sParameter=="RCurv")

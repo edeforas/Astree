@@ -7,6 +7,9 @@ CONFIG(release, debug|release):TARGET = Astree
 CONFIG(release, debug|release):DEFINES+=NDEBUG
 CONFIG(release, debug|release):DEFINES += QT_NO_DEBUG
 
+#CONFIG(debug, debug|release):QMAKE_CXXFLAGS_DEBUG+= -pg
+#CONFIG(debug, debug|release):QMAKE_LFLAGS_DEBUG+= -pg
+
 win32:RC_FILE = Astree.rc
 RESOURCES += Astree.qrc
 TRANSLATIONS = Astree_fr.ts
