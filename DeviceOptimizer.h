@@ -81,7 +81,9 @@ public:
 private:
     void apply_parameter(const ParameterSet& parameters);
     double compute_demerit(); //return demerit value: lower is better
+    void compute_min_resolution();
 
+    vector<double> _vdMinResolution;
     OpticalDevice* _pDevice;
     ParameterSet _parameters;
     OptimizerMeritFunction _meritFunction;

@@ -223,7 +223,7 @@ OptimizerResult DeviceOptimizer::optimise_random()
     {
         for(int i=0;i<100;i++)
         {
-            vector<DeviceOptimizerParameter> newParamBest=paramBest;
+            ParameterSet newParamBest=paramBest;
             for(unsigned int iP=0;iP<newParamBest.size();iP++)
             {
                 DeviceOptimizerParameter& dop=newParamBest[iP];
@@ -272,6 +272,40 @@ OptimizerResult DeviceOptimizer::optimise_random()
     return eNoBetterSolution;
 }
 //////////////////////////////////////////////////////////////////////////////
+void DeviceOptimizer::compute_min_resolution()
+{
+    _vdMinResolution.resize(_parameters.size());
+    for(unsigned int i=0;i<_parameters.size();i++)
+    {
+        if(_parameters[i].sParameter=="Conic")
+            _vdMinResolution[i]=MIN_RESOLUTION_CONIC;
+
+        if(_parameters[i].sParameter=="RCurv")
+            _vdMinResolution[i]=MIN_RESOLUTION_RCURV;
+
+        if(_parameters[i].sParameter=="Curvature")
+            _vdMinResolution[i]=MIN_RESOLUTION_CURVATURE;
+
+        if(_parameters[i].sParameter=="thick")
+            _vdMinResolution[i]=MIN_RESOLUTION_THICK;
+
+        if(_parameters[i].sParameter=="Z")
+            _vdMinResolution[i]=MIN_RESOLUTION_THICK;
+
+        if(_parameters[i].sParameter=="R4")
+            _vdMinResolution[i]=MIN_RESOLUTION_R4;
+
+        if(_parameters[i].sParameter=="R6")
+            _vdMinResolution[i]=MIN_RESOLUTION_R6;
+
+        if(_parameters[i].sParameter=="R8")
+            _vdMinResolution[i]=MIN_RESOLUTION_R8;
+
+        if(_parameters[i].sParameter=="R10")
+            _vdMinResolution[i]=MIN_RESOLUTION_R10;
+    }
+}
+//////////////////////////////////////////////////////////////////////////////
 OptimizerResult DeviceOptimizer::optimise_amoeba()
 {
     // see algo at : https://en.wikipedia.org/wiki/Nelder%E2%80%93Mead_method
@@ -284,37 +318,8 @@ OptimizerResult DeviceOptimizer::optimise_amoeba()
     if(_parameters.empty())
         return eNothingToOptimize;
 
-    //initialise parameteres min resolution
-    vector<double> vdMinResolution(_parameters.size());
-    for(unsigned int i=0;i<_parameters.size();i++)
-    {
-        if(_parameters[i].sParameter=="Conic")
-            vdMinResolution[i]=MIN_RESOLUTION_CONIC;
-
-        if(_parameters[i].sParameter=="RCurv")
-            vdMinResolution[i]=MIN_RESOLUTION_RCURV;
-
-        if(_parameters[i].sParameter=="Curvature")
-            vdMinResolution[i]=MIN_RESOLUTION_CURVATURE;
-
-        if(_parameters[i].sParameter=="thick")
-            vdMinResolution[i]=MIN_RESOLUTION_THICK;
-
-        if(_parameters[i].sParameter=="Z")
-            vdMinResolution[i]=MIN_RESOLUTION_THICK;
-
-        if(_parameters[i].sParameter=="R4")
-            vdMinResolution[i]=MIN_RESOLUTION_R4;
-
-        if(_parameters[i].sParameter=="R6")
-            vdMinResolution[i]=MIN_RESOLUTION_R6;
-
-        if(_parameters[i].sParameter=="R8")
-            vdMinResolution[i]=MIN_RESOLUTION_R8;
-
-        if(_parameters[i].sParameter=="R10")
-            vdMinResolution[i]=MIN_RESOLUTION_R10;
-    }
+    //initialise parameters min resolution
+    compute_min_resolution();
 
     // init simplex with the center of the definition domain
     vector<ParameterSet> simplex(_parameters.size()+1);
@@ -520,7 +525,7 @@ OptimizerResult DeviceOptimizer::optimise_amoeba()
         bStopCriteria=true;
         for(unsigned int i=0;i<vdMinParam.size();i++)
         {
-            if(vdMaxParam[i]-vdMinParam[i]>vdMinResolution[i])
+            if(vdMaxParam[i]-vdMinParam[i]>_vdMinResolution[i])
                 bStopCriteria=false;
         }
 
