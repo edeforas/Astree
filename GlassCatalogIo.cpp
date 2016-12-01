@@ -7,7 +7,7 @@
 #include <cassert>
 using namespace std;
 
-#include "GlassCatalogIO.h"
+#include "GlassCatalogIo.h"
 #include "GlassSellmeier.h"
 #include "GlassManager.h"
 
