@@ -25,7 +25,7 @@ using namespace std;
 #define DARK_GREY RGB(32,32,32)
 #define YELLOW 0xede500
 #define BROWN 0x74572e
-#define VIOLET 0x772176
+#define PURPLE 0x772176
 
 #define LAMBDA_IR 1000.e-3
 #define LAMBDA_RED 656.2725e-3
@@ -35,9 +35,8 @@ using namespace std;
 #define LAMBDA_UV 300.e-3
 
 //////////////////////////////////////////////////////////////////////////////
-Light::Light(/*int iDimX,int iDimY*/)
+Light::Light()
 {
-   // set_nb_photons(0,0);
     _iNbPhotons=0;
     _dTiltX=0.;
     _dTiltY=0.;
@@ -110,11 +109,12 @@ void Light::init()
     if (_bMustInit==false)
         return;
 
-    //direction de la lumiere
+    //light direction
     double dTanX=-tan(_dTiltX);
     double dTanY=-tan(_dTiltY);
     double dIdentN=+1.;
-    //TODO normaliser dItentN?
+
+    //TODO normalize dItentN?
 
     vector<double> vdLambda;
     vector<int> viVisualColors;
@@ -148,12 +148,12 @@ void Light::init()
                 Photon& p=_vPhotons[iPhoton];
                 p.set_lambda(dLambda);
 
-                // a optimiser au besoin
+                // can be optimised if needed
                 double dPosX=(i-iNMx)*_dDiameter/(double)iNMx/2.;
 
                 p.x=dPosX-dTranslateX;
                 p.y=dPosY-dTranslateY;
-                p.z=_dZ-dRadius; //recul
+                p.z=_dZ-dRadius;
                 p.dx=dTanX;
                 p.dy=dTanY;
                 p.dz=dIdentN;
@@ -228,34 +228,34 @@ void Light::calc_colors(string sColors,vector<double>& vdLambda,vector<int>& vdV
     if (sColors.find("UV.")!=string::npos)
     {
         vdLambda.push_back(LAMBDA_UV);
-        vdVisualColors.push_back(VIOLET); //violet
+        vdVisualColors.push_back(PURPLE);
     }
 }
 //////////////////////////////////////////////////////////////////////////////
 int Light::get_visual_color(double dLambda) const
 {
-    if (dLambda==LAMBDA_IR) //IR
-        return BROWN; //brown
+    if (dLambda==LAMBDA_IR)
+        return BROWN;
 
-    if (dLambda==LAMBDA_RED) //Red
-        return RED; //red
+    if (dLambda==LAMBDA_RED)
+        return RED;
 
-    if (dLambda==LAMBDA_YELLOW) //Yellow
+    if (dLambda==LAMBDA_YELLOW)
     {
         if(_bYellowBlack)
-            return DARK_GREY; //dark grey
+            return DARK_GREY;
         else
-            return YELLOW; //Yellow
+            return YELLOW;
     }
 
-    if (dLambda==LAMBDA_GREEN) //Green
-        return GREEN; //Green
+    if (dLambda==LAMBDA_GREEN)
+        return GREEN;
 
-    if (dLambda==LAMBDA_BLUE) //Blue
-        return BLUE; //Blue
+    if (dLambda==LAMBDA_BLUE)
+        return BLUE;
 
-    if (dLambda==LAMBDA_UV) //UV
-        return VIOLET; //violet
+    if (dLambda==LAMBDA_UV)
+        return PURPLE;
 
     return 0;
 }
@@ -265,14 +265,9 @@ void Light::set_colors(const string & sAllColors)
     _sAllColors=sAllColors;
 
     if (_sAllColors.empty())
-    {
         _sAllColors="YellowBlack.";
-    }
-
-    // _bYellowBlack=(find(_sAllColors.begin(),_sAllColors.end(),"YellowBlack")!=_sAllColors.end()); TODO
 
     _bYellowBlack=(_sAllColors=="YellowBlack.");
-
     _bMustInit=true;
 }
 //////////////////////////////////////////////////////////////////////////////
@@ -298,7 +293,6 @@ void Light::set_material(Glass* pM)
 {
     assert(pM!=0);
     _pMaterial=pM;
-    //  _bPhotonsReady=false;
 }
 //////////////////////////////////////////////////////////////////////////////
 void Light::get_spot_center(double& dCenterX,double& dCenterY) const
@@ -377,7 +371,7 @@ void Light::compute_spot_size()
 
     Vector3D::normalize(dDxCentral,dDyCentral,dDzCentral);
 
-    //calcule le cos l'axe moyen
+    //compute cos on mean axis
     double dMinCos=3.;
     for (int i=0;i<_iNbPhotons;i++)
     {
@@ -386,13 +380,13 @@ void Light::compute_spot_size()
         if (p.is_valid()==false)
             continue;
 
-        //calcule le projette de p sur l'axe
+        // project p on axis
         double dCosP=p.dx*dDxCentral+p.dy*dDyCentral+p.dz*dDzCentral;
         if(dCosP<0)
         {
             _dCenterX=0.;
             _dCenterY=0.;
-            _dSpotSize=1.e99; //todo a cleaner error message
+            _dSpotSize=1.e99; //todo cleaner error message
             _dFD=0.;
             return;
         }
@@ -434,7 +428,7 @@ double Light::spot_vs_airy() const
 //////////////////////////////////////////////////////////////////////////////
 double Light::airy_radius() const
 {
-    return 1.22*get_FD()*(LAMBDA_YELLOW/*560.e-3*/)*1.e-3; //lumiere jaune en microns //TODO use defines
+    return 1.22*get_FD()*(LAMBDA_YELLOW)*1.e-3; // use yellow light
 }
 //////////////////////////////////////////////////////////////////////////////
 double Light::vignetting() const

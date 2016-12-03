@@ -40,9 +40,8 @@ GlassSellmeier::GlassSellmeier(const GlassSellmeier& m):
 //////////////////////////////////////////////////////////////////////////////
 double GlassSellmeier::calc_index(double dLambdaMicrons)
 {
-    //use of the Selmeier formulae
+    //use the Selmeier formulae
     double l2=dLambdaMicrons*dLambdaMicrons;
-
     return sqrt( 1.+_B1*l2/(l2-_C1)+_B2*l2/(l2-_C2)+_B3*l2/(l2-_C3) );
 }
 //////////////////////////////////////////////////////////////////////////////

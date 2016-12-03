@@ -60,7 +60,7 @@ bool GlassCatalogIO::load(string sFile,GlassManager& pManager)
 
         if(sKey=="CC")
         {
-            //			pCatalog->set_comment(sVal);
+            //	pCatalog->set_comment(sVal);
         }
 
         if(sKey=="NM")

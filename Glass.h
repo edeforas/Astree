@@ -2,8 +2,8 @@
 // please see GPL.html for more details and licensing issues
 // copyright Etienne de Foras ( the author )  mailto: etienne.deforas@gmail.com
 
-#ifndef _Material_
-#define _Material_
+#ifndef Glass_
+#define Glass_
 
 #include <string>
 using namespace std;

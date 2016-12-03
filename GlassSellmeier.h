@@ -2,8 +2,8 @@
 // please see GPL.html for more details and licensing issues
 // copyright Etienne de Foras ( the author )  mailto: etienne.deforas@gmail.com
 
-#ifndef _MaterialSellmeier_
-#define _MaterialSellmeier_
+#ifndef GlassSellmeier_
+#define GlassSellmeier_
 
 #include "Glass.h"
 

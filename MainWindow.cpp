@@ -262,7 +262,7 @@ void MainWindow::device_changed(void* pSender,int iReason,bool bMustSave)
         _pDockOptimizer->device_changed(_pDevice,iReason);
     }
 
-    //maj le titre
+    //update title
     string sTitle="Astree";
     if(!_sFileName.empty())
         sTitle+=" ["+_sFileName+"]";

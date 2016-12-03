@@ -23,13 +23,10 @@ Glass* MaterialAir::clone() const
 //////////////////////////////////////////////////////////////////////////////
 double MaterialAir::calc_index(double dLambdaMicrons)
 {
-    double sigma2=1./(dLambdaMicrons*dLambdaMicrons); //dLambda en microns
+    double sigma2=1./(dLambdaMicrons*dLambdaMicrons); //dLambda in microns
     return 1. + 6.4328e-5 + 2.94981e-2/(146.-sigma2) + 2.554e-4/(41.- sigma2);
 
     //source : http://olivier.fournet.free.fr/science_et_physique/refraction_air.htm
-
-    //condition standard de temperature et de pression:
-    //  avec 0.03% de CO2 (anhydride carbonique)
-    //  et 101325 Pa (760 millimetres de mercure) et d'une temperature de 288,15 degK (15 degC).
+    //  with 0.03% de CO2 , 101325 Pa , T= 288.15 K
 }
 //////////////////////////////////////////////////////////////////////////////
