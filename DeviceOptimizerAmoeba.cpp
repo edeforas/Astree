@@ -233,7 +233,7 @@ OptimizerResult DeviceOptimizerAmoeba::optimize()
         bStopCriteria=true;
         for(unsigned int i=0;i<vdMinParam.size();i++)
         {
-            if(vdMaxParam[i]-vdMinParam[i]>_vdMinResolution[i])
+            if(vdMaxParam[i]-vdMinParam[i]>_parameters[i].dResolution)
                 bStopCriteria=false;
         }
 

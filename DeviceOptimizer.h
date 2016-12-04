@@ -39,6 +39,7 @@ public:
     double dMin;
     double dMax;
     double dVal;
+    double dResolution;
 };
 
 enum OptimizerMeritFunction
@@ -74,12 +75,13 @@ public:
 
     virtual OptimizerResult optimize()=0;
 
+    bool domain_under_resolution(const ParameterSet& params);
+
 protected:
     void apply_parameter(const ParameterSet& parameters);
     double compute_demerit(); //return demerit value: lower is better
     void compute_min_resolution();
 
-    vector<double> _vdMinResolution;
     OpticalDevice* _pDevice;
     ParameterSet _parameters;
     OptimizerMeritFunction _meritFunction;

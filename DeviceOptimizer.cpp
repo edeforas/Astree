@@ -211,35 +211,50 @@ double DeviceOptimizer::compute_demerit()
 //////////////////////////////////////////////////////////////////////////////
 void DeviceOptimizer::compute_min_resolution()
 {
-    _vdMinResolution.resize(_parameters.size());
     for(unsigned int i=0;i<_parameters.size();i++)
     {
-        if(_parameters[i].sParameter=="Conic")
-            _vdMinResolution[i]=MIN_RESOLUTION_CONIC;
+        DeviceOptimizerParameter& param=_parameters[i];
 
-        if(_parameters[i].sParameter=="RCurv")
-            _vdMinResolution[i]=MIN_RESOLUTION_RCURV;
+        if(param.sParameter=="Conic")
+            param.dResolution=MIN_RESOLUTION_CONIC;
 
-        if(_parameters[i].sParameter=="Curvature")
-            _vdMinResolution[i]=MIN_RESOLUTION_CURVATURE;
+        if(param.sParameter=="RCurv")
+            param.dResolution=MIN_RESOLUTION_RCURV;
 
-        if(_parameters[i].sParameter=="thick")
-            _vdMinResolution[i]=MIN_RESOLUTION_THICK;
+        if(param.sParameter=="Curvature")
+            param.dResolution=MIN_RESOLUTION_CURVATURE;
 
-        if(_parameters[i].sParameter=="Z")
-            _vdMinResolution[i]=MIN_RESOLUTION_THICK;
+        if(param.sParameter=="thick")
+            param.dResolution=MIN_RESOLUTION_THICK;
 
-        if(_parameters[i].sParameter=="R4")
-            _vdMinResolution[i]=MIN_RESOLUTION_R4;
+        if(param.sParameter=="Z")
+            param.dResolution=MIN_RESOLUTION_THICK;
 
-        if(_parameters[i].sParameter=="R6")
-            _vdMinResolution[i]=MIN_RESOLUTION_R6;
+        if(param.sParameter=="R4")
+            param.dResolution=MIN_RESOLUTION_R4;
 
-        if(_parameters[i].sParameter=="R8")
-            _vdMinResolution[i]=MIN_RESOLUTION_R8;
+        if(param.sParameter=="R6")
+            param.dResolution=MIN_RESOLUTION_R6;
 
-        if(_parameters[i].sParameter=="R10")
-            _vdMinResolution[i]=MIN_RESOLUTION_R10;
+        if(param.sParameter=="R8")
+            param.dResolution=MIN_RESOLUTION_R8;
+
+        if(param.sParameter=="R10")
+            param.dResolution=MIN_RESOLUTION_R10;
     }
 }
 //////////////////////////////////////////////////////////////////////////////
+bool DeviceOptimizer::domain_under_resolution(const ParameterSet& params)
+{
+    for(unsigned int i=0;i<params.size();i++)
+    {
+        const DeviceOptimizerParameter& param=params[i];
+        if((param.dMax-param.dMin)>param.dResolution)
+            return false;
+    }
+    return true;
+}
+//////////////////////////////////////////////////////////////////////////////
+
+
+

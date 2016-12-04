@@ -25,11 +25,18 @@ OptimizerResult DeviceOptimizerRandom::optimize()
     OpticalDevice deviceOrig(*_pDevice);
 
     ParameterSet paramBest=_parameters;
+
+    // compute nb of iterations
+    int iNbIter=1;
+    for(unsigned int i=0;i<paramBest.size();i++)
+        iNbIter*=RANDOM_ITER_BY_AXIS; //todo check overflow
+
     double dBestMerit=SPOT_SIZE_INFINITY; // todo init with actual solution
 
-    for(int iScale=0;iScale<10;iScale++)
+    bool bExit=false;
+    while(!bExit)
     {
-        for(int i=0;i<100;i++)
+        for(int i=0;i<iNbIter;i++)
         {
             ParameterSet newParamBest=paramBest;
             for(unsigned int iP=0;iP<newParamBest.size();iP++)
@@ -51,18 +58,20 @@ OptimizerResult DeviceOptimizerRandom::optimize()
             }
         }
 
-        // scale around best solution , divide by 4 each dimension
+        // scale around best solution , divide by 2 each dimension
         for(unsigned int iP=0;iP<paramBest.size();iP++)
         {
             DeviceOptimizerParameter& dop=paramBest[iP];
             double dCenter=dop.dVal;
-            double dRadius=(dop.dMax-dop.dMin)/8.;
+            double dRadius=(dop.dMax-dop.dMin)/2.;
 
             dop.dMin=dCenter-dRadius;
             dop.dMax=dCenter+dRadius;
 
             // todo check domain exit
         }
+
+        bExit=domain_under_resolution(paramBest);
     }
 
     if(dBestMerit<SPOT_SIZE_INFINITY/2)

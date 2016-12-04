@@ -7,6 +7,8 @@
 
 #include "DeviceOptimizer.h"
 
+#define RANDOM_ITER_BY_AXIS 10
+
 class DeviceOptimizerRandom : public DeviceOptimizer
 {
 public:
