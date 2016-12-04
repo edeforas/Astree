@@ -38,7 +38,7 @@ public:
     string sParameter;
     double dMin;
     double dMax;
-    double dVal;
+    double dValue;
     double dResolution;
 };
 
@@ -80,7 +80,6 @@ public:
 protected:
     void apply_parameter(const ParameterSet& parameters);
     double compute_demerit(); //return demerit value: lower is better
-    void compute_min_resolution();
 
     OpticalDevice* _pDevice;
     ParameterSet _parameters;

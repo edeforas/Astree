@@ -111,10 +111,36 @@ void DeviceOptimizer::add_parameter(int iSurface,string sParameter,double dMin,d
         dop.dMax=dMin;
     }
 
-    dop.dVal=(dMin+dMax)/2.;
-    _parameters.push_back(dop);
+    dop.dValue=(dMin+dMax)/2.;
 
-    compute_min_resolution();
+    if(sParameter=="Conic")
+        dop.dResolution=MIN_RESOLUTION_CONIC;
+
+    if(sParameter=="RCurv")
+        dop.dResolution=MIN_RESOLUTION_RCURV;
+
+    if(sParameter=="Curvature")
+        dop.dResolution=MIN_RESOLUTION_CURVATURE;
+
+    if(sParameter=="thick")
+        dop.dResolution=MIN_RESOLUTION_THICK;
+
+    if(sParameter=="Z")
+        dop.dResolution=MIN_RESOLUTION_THICK;
+
+    if(sParameter=="R4")
+        dop.dResolution=MIN_RESOLUTION_R4;
+
+    if(sParameter=="R6")
+        dop.dResolution=MIN_RESOLUTION_R6;
+
+    if(sParameter=="R8")
+        dop.dResolution=MIN_RESOLUTION_R8;
+
+    if(sParameter=="R10")
+        dop.dResolution=MIN_RESOLUTION_R10;
+
+    _parameters.push_back(dop);
 }
 //////////////////////////////////////////////////////////////////////////////
 void DeviceOptimizer::set_merit_function(OptimizerMeritFunction eMeritFunction)
@@ -130,7 +156,7 @@ void DeviceOptimizer::apply_parameter(const ParameterSet& parameters)
     {
         string sParam=parameters[i].sParameter;
         int iSurface=parameters[i].iSurface;
-        double dVal=parameters[i].dVal;
+        double dVal=parameters[i].dValue;
 
         if(sParam=="Conic")
             _pDevice->set(iSurface,CONIC,dVal);
@@ -183,7 +209,7 @@ double DeviceOptimizer::compute_demerit()
         for(int i=0;i<pQ.nb_angles();i++)
             dMeritMoy+=pQ.vdSpotSize[i];
 
-        return dMeritMoy;// /pQ.nb_angles();
+        return dMeritMoy;// / pQ.nb_angles();
     }
 
     if(_meritFunction==eMostlyCenter)
@@ -209,41 +235,6 @@ double DeviceOptimizer::compute_demerit()
     }
 
     return SPOT_SIZE_INFINITY;
-}
-//////////////////////////////////////////////////////////////////////////////
-void DeviceOptimizer::compute_min_resolution()
-{
-    for(unsigned int i=0;i<_parameters.size();i++)
-    {
-        DeviceOptimizerParameter& param=_parameters[i];
-
-        if(param.sParameter=="Conic")
-            param.dResolution=MIN_RESOLUTION_CONIC;
-
-        if(param.sParameter=="RCurv")
-            param.dResolution=MIN_RESOLUTION_RCURV;
-
-        if(param.sParameter=="Curvature")
-            param.dResolution=MIN_RESOLUTION_CURVATURE;
-
-        if(param.sParameter=="thick")
-            param.dResolution=MIN_RESOLUTION_THICK;
-
-        if(param.sParameter=="Z")
-            param.dResolution=MIN_RESOLUTION_THICK;
-
-        if(param.sParameter=="R4")
-            param.dResolution=MIN_RESOLUTION_R4;
-
-        if(param.sParameter=="R6")
-            param.dResolution=MIN_RESOLUTION_R6;
-
-        if(param.sParameter=="R8")
-            param.dResolution=MIN_RESOLUTION_R8;
-
-        if(param.sParameter=="R10")
-            param.dResolution=MIN_RESOLUTION_R10;
-    }
 }
 //////////////////////////////////////////////////////////////////////////////
 bool DeviceOptimizer::domain_under_resolution(const ParameterSet& params)

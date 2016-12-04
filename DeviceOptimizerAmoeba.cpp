@@ -26,9 +26,6 @@ OptimizerResult DeviceOptimizerAmoeba::optimize()
     if(_parameters.empty())
         return eNothingToOptimize;
 
-    //initialise parameters min resolution
-    compute_min_resolution();
-
     // init simplex with the center of the definition domain
     vector<ParameterSet> simplex(_parameters.size()+1);
     {
@@ -36,7 +33,7 @@ OptimizerResult DeviceOptimizerAmoeba::optimize()
         param=_parameters;
         for(unsigned int i=0;i<_parameters.size();i++)
         {
-            param[i].dVal=(param[i].dMin+param[i].dMax)*0.5;
+            param[i].dValue=(param[i].dMin+param[i].dMax)*0.5;
         }
     }
 
@@ -48,7 +45,7 @@ OptimizerResult DeviceOptimizerAmoeba::optimize()
 
         // expand the i-1 axis
         DeviceOptimizerParameter& paramToExpand=param[i-1];
-        paramToExpand.dVal=paramToExpand.dVal+(paramToExpand.dMax-paramToExpand.dMin)/8.;
+        paramToExpand.dValue=paramToExpand.dValue+(paramToExpand.dMax-paramToExpand.dMin)/8.;
     }
 
     //compute solution at each param
@@ -103,7 +100,7 @@ OptimizerResult DeviceOptimizerAmoeba::optimize()
         //compute param mean
         ParameterSet paramMean=paramWorse;
         for(unsigned int i=0;i<paramMean.size();i++)
-            paramMean[i].dVal=0.;
+            paramMean[i].dValue=0.;
         for(unsigned int iS=0;iS<simplex.size();iS++)
         {
             if((int)iS==iWorse)
@@ -111,10 +108,10 @@ OptimizerResult DeviceOptimizerAmoeba::optimize()
 
             const ParameterSet& param=simplex[iS];
             for(unsigned int i=0;i<param.size();i++)
-                paramMean[i].dVal+=param[i].dVal;
+                paramMean[i].dValue+=param[i].dValue;
         }
         for(unsigned int i=0;i<paramMean.size();i++)
-            paramMean[i].dVal/=simplex.size()-1.;
+            paramMean[i].dValue/=simplex.size()-1.;
 
         bool bFound=false;
 
@@ -123,8 +120,8 @@ OptimizerResult DeviceOptimizerAmoeba::optimize()
         bool bOutOfDomain=false;
         for(unsigned int i=0;i<paramMirror.size();i++)
         {
-            paramMirror[i].dVal+=(paramMean[i].dVal-paramWorse[i].dVal);
-            if( (paramMirror[i].dVal<paramMirror[i].dMin ) || (paramMirror[i].dVal>paramMirror[i].dMax ) )
+            paramMirror[i].dValue+=(paramMean[i].dValue-paramWorse[i].dValue);
+            if( (paramMirror[i].dValue<paramMirror[i].dMin ) || (paramMirror[i].dValue>paramMirror[i].dMax ) )
                 bOutOfDomain=true;
         }
 
@@ -151,8 +148,8 @@ OptimizerResult DeviceOptimizerAmoeba::optimize()
             bool bOutOfDomain=false;
             for(unsigned int i=0;i<paramMirrorFar.size();i++)
             {
-                paramMirrorFar[i].dVal+=2*(paramMirror[i].dVal-paramMean[i].dVal);
-                if( (paramMirrorFar[i].dVal<paramMirrorFar[i].dMin ) || (paramMirrorFar[i].dVal>paramMirrorFar[i].dMax ) )
+                paramMirrorFar[i].dValue+=2*(paramMirror[i].dValue-paramMean[i].dValue);
+                if( (paramMirrorFar[i].dValue<paramMirrorFar[i].dMin ) || (paramMirrorFar[i].dValue>paramMirrorFar[i].dMax ) )
                     bOutOfDomain=true;
             }
             double dMirrorFar=SPOT_SIZE_INFINITY;
@@ -182,7 +179,7 @@ OptimizerResult DeviceOptimizerAmoeba::optimize()
             assert(dMirror>=dSecondWorse);
             ParameterSet paramMirrorContracted=paramMean;
             for(unsigned int i=0;i<paramMirrorContracted.size();i++)
-                paramMirrorContracted[i].dVal+=0.5*(paramWorse[i].dVal-paramMean[i].dVal);
+                paramMirrorContracted[i].dValue+=0.5*(paramWorse[i].dValue-paramMean[i].dValue);
             apply_parameter(paramMirrorContracted);
             double dContracted=compute_demerit();
             if(dContracted<dWorse)
@@ -203,7 +200,7 @@ OptimizerResult DeviceOptimizerAmoeba::optimize()
                 {
                     ParameterSet& paramReducted=simplex[i];
                     for(unsigned int j=0;j<paramReducted.size();j++)
-                        paramReducted[j].dVal=paramBest[j].dVal+0.5*(paramReducted[j].dVal-paramBest[j].dVal);
+                        paramReducted[j].dValue=paramBest[j].dValue+0.5*(paramReducted[j].dValue-paramBest[j].dValue);
 
                     apply_parameter(paramReducted);
                     vdDemerit[i]=compute_demerit();
@@ -223,10 +220,10 @@ OptimizerResult DeviceOptimizerAmoeba::optimize()
             const ParameterSet& param=simplex[i];
             for(unsigned int j=0;j<param.size();j++)
             {
-                if(param[j].dVal<vdMinParam[j])
-                    vdMinParam[j]=param[j].dVal;
-                if(param[j].dVal>vdMaxParam[j])
-                    vdMaxParam[j]=param[j].dVal;
+                if(param[j].dValue<vdMinParam[j])
+                    vdMinParam[j]=param[j].dValue;
+                if(param[j].dValue>vdMaxParam[j])
+                    vdMaxParam[j]=param[j].dValue;
             }
         }
 

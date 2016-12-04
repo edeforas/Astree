@@ -43,9 +43,9 @@ OptimizerResult DeviceOptimizerRandom::optimize()
             {
                 DeviceOptimizerParameter& dop=newParamBest[iP];
 
-                dop.dVal=dop.dMin+(dop.dMax-dop.dMin)*rand()/RAND_MAX;
-                assert(dop.dVal<=dop.dMax);
-                assert(dop.dVal>=dop.dMin);
+                dop.dValue=dop.dMin+(dop.dMax-dop.dMin)*rand()/RAND_MAX;
+                assert(dop.dValue<=dop.dMax);
+                assert(dop.dValue>=dop.dMin);
             }
 
             apply_parameter(newParamBest);
@@ -62,7 +62,7 @@ OptimizerResult DeviceOptimizerRandom::optimize()
         for(unsigned int iP=0;iP<paramBest.size();iP++)
         {
             DeviceOptimizerParameter& dop=paramBest[iP];
-            double dCenter=dop.dVal;
+            double dCenter=dop.dValue;
             double dRadius=(dop.dMax-dop.dMin)/4.;
 
             dop.dMin=dCenter-dRadius;
