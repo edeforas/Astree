@@ -36,27 +36,30 @@ OptimizerResult DeviceOptimizerRandom::optimize()
     bool bExit=false;
     while(!bExit)
     {
+        ParameterSet paramBestIter=paramBest;
         for(int i=0;i<iNbIter;i++)
         {
-            ParameterSet newParamBest=paramBest;
-            for(unsigned int iP=0;iP<newParamBest.size();iP++)
+            ParameterSet paramBestTest=paramBest;
+            for(unsigned int iP=0;iP<paramBestTest.size();iP++)
             {
-                DeviceOptimizerParameter& dop=newParamBest[iP];
+                DeviceOptimizerParameter& dop=paramBestTest[iP];
 
                 dop.dValue=dop.dMin+(dop.dMax-dop.dMin)*rand()/RAND_MAX;
                 assert(dop.dValue<=dop.dMax);
                 assert(dop.dValue>=dop.dMin);
             }
 
-            apply_parameter(newParamBest);
+            apply_parameter(paramBestTest);
             double dMerit=compute_demerit();
 
             if(dMerit<dBestMerit)
             {
-                paramBest=newParamBest;
+                paramBestIter=paramBestTest;
                 dBestMerit=dMerit;
             }
         }
+
+        paramBest=paramBestIter;
 
         // scale around best solution , divide by 2 each dimension
         for(unsigned int iP=0;iP<paramBest.size();iP++)
