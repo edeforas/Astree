@@ -34,7 +34,6 @@ private slots:
 private:
     Ui::DockOptimizer *ui;
     OpticalDevice* _pDevice;
-    DeviceOptimizer _dopt;
     int _iNbSurfaces;
     bool _bBlockSignals;
 

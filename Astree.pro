@@ -32,6 +32,8 @@ SOURCES += main.cpp \
     ImageQuality.cpp \
     DockOptimizer.cpp \
     DeviceOptimizer.cpp \
+    DeviceOptimizerAmoeba.cpp \
+    DeviceOptimizerRandom.cpp \
     Util/FileUtil.cpp \
     Glass.cpp \
     GlassManager.cpp \
@@ -56,6 +58,8 @@ HEADERS += MainWindow.h \
     ImageQuality.h \
     DockOptimizer.h \
     DeviceOptimizer.h \
+    DeviceOptimizerAmoeba.h \
+    DeviceOptimizerRandom.h \
     GlassManager.h \
     GlassCatalogIo.h \
     Glass.h \

@@ -31,10 +31,6 @@ using namespace std;
 #define MIN_RESOLUTION_R10 1.e-28
 #define R10_HALF_RATIO 2
 
-
-
-#define AMOEBA_MAX_ITER 500
-
 class DeviceOptimizerParameter
 {
 public:
@@ -68,6 +64,7 @@ class DeviceOptimizer
 {
 public:
     DeviceOptimizer();
+    virtual ~DeviceOptimizer();
 
     void clear();
     void set_device(OpticalDevice* pDevice);
@@ -75,10 +72,9 @@ public:
     void add_parameter(int iSurface,string sParameter,double dMin,double dMax);
     void set_merit_function(OptimizerMeritFunction eMeritFunction);
 
-    OptimizerResult optimise_random(); //keep for later use
-    OptimizerResult optimise_amoeba();
+    virtual OptimizerResult optimize()=0;
 
-private:
+protected:
     void apply_parameter(const ParameterSet& parameters);
     double compute_demerit(); //return demerit value: lower is better
     void compute_min_resolution();

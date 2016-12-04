@@ -7,12 +7,14 @@
 #include <QComboBox>
 #include <QCheckBox>
 
-#include "DeviceOptimizer.h"
+#include "DeviceOptimizerRandom.h"
+#include "DeviceOptimizerAmoeba.h"
+
 #include "MainWindow.h"
 
 #define NB_PARAM_MAX 10  // TODO use a dynamic ui list
 
-/////////////////////////////////////////////////////////////
+/////////////////////////////////////²////////////////////////
 
 DockOptimizer::DockOptimizer(QWidget *parent) :
     QDockWidget(parent),
@@ -82,8 +84,13 @@ void DockOptimizer::on_pushButton_clicked()
     if(_pDevice==0)
         return;
 
-    _dopt.clear();
-    _dopt.set_device(_pDevice);
+    DeviceOptimizer* optim;
+    if(ui->cbMethod->currentIndex()==0)
+        optim=new DeviceOptimizerAmoeba;
+    else
+        optim=new DeviceOptimizerRandom;
+
+    optim->set_device(_pDevice);
 
     for(int i=0;i<NB_PARAM_MAX;i++)
     {
@@ -121,9 +128,9 @@ void DockOptimizer::on_pushButton_clicked()
         //TODO use device properties instead of reading from the UI
 
         if(bDefaultParam)
-            _dopt.add_parameter(iSurface,sParam);
+            optim->add_parameter(iSurface,sParam);
         else
-            _dopt.add_parameter(iSurface,sParam,dMin,dMax);
+            optim->add_parameter(iSurface,sParam,dMin,dMax);
     }
 
     int iCriteria=ui->cbCriteria->currentIndex();
@@ -146,13 +153,9 @@ void DockOptimizer::on_pushButton_clicked()
     ui->lblResult->setStyleSheet("color: black;");
     ui->lblResult->repaint();
 
-    _dopt.set_merit_function(omf);
+    optim->set_merit_function(omf);
 
-    OptimizerResult result=eInvalidState;
-    if(ui->cbMethod->currentIndex()==0)
-        result=_dopt.optimise_amoeba(); //todo, put in thread , todo save in file
-    else
-        result=_dopt.optimise_random(); //todo, put in thread
+    OptimizerResult result=optim->optimize(); //todo, put in thread
 
     if(result==eBetterSolutionFound)
     {
@@ -183,6 +186,8 @@ void DockOptimizer::on_pushButton_clicked()
     // update results
     if( (result==eBetterSolutionFound)|| (result==eSolutionOnEdge) )
         static_cast<MainWindow*>(parent())->device_changed(this,OPTICAL_DEVICE_CHANGED);
+
+    delete optim;
 }
 /////////////////////////////////////////////////////////////
 void DockOptimizer::device_changed(OpticalDevice *pDevice,int iReason)
