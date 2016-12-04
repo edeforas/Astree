@@ -301,10 +301,10 @@ OpticalDevice* DeviceIo::load(string sFile)
     if (prop.exist("light.colors"))
         pOD->set_light_colors(prop.get("light.colors"));
     else
-        pOD->set_light_colors(""); //temporaire
+        pOD->set_light_colors(""); //temporary
 
     //old format
-    //lit le commentaire
+    //read comment
     if(prop.exist("note"))
     {
         string sNote=prop.get("note");

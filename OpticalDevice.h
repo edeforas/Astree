@@ -27,8 +27,8 @@ enum eSurfaceParameter //to be used with get/set functions below
     CONIC,
     RADIUS_CURVATURE, //in mm
     CURVATURE, //inverse of radius curvature, unit is 1/mm
-    Z, //absolute coord
-    THICK, //relative coord
+    Z, //absolute coordinate
+    THICK, //relative coordinate
     R4, //surface polynomial coef of r4
     R6, //surface polynomial coef of r6
     R8, //surface polynomial coef of r8

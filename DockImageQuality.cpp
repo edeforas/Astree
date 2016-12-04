@@ -50,7 +50,7 @@ void DockImageQuality::device_changed(OpticalDevice* pDevice,int iReason)
         QString qsDist=QString::number(dDist,'g',3);
         ui->tableWidget->setItem(i,1,new QTableWidgetItem(qsDist));
 
-        double dSpotSize=pIQ.vdSpotSize[i]*1000.; //convert in microns
+        double dSpotSize=pIQ.vdSpotSize[i]*1000.; //convert to microns
         QString qsSpotSize=QString::number(dSpotSize,'g',3);
         ui->tableWidget->setItem(i,2,new QTableWidgetItem(qsSpotSize));
 

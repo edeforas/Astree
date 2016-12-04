@@ -237,7 +237,7 @@ bool Surface::verify_in_surface(double dX,double dY)
 //////////////////////////////////////////////////////////////////////////////
 void Surface::local_ref(Photon& p) const
 {
-    // translation simple de ref, en attendant le besoins de gerer + de choses
+    // simple translation for now
     // todo add rotation
     p.x-=x();
     p.y-=y();
@@ -273,7 +273,7 @@ string Surface::type() const
 //////////////////////////////////////////////////////////////////////////////
 void Surface::global_ref(Photon& p) const
 {
-    // translation simple de ref, en attendant le besoins de gerer + de choses
+    // simple translation for now
     // todo add rotation
     p.x+=x();
     p.y+=y();
@@ -290,7 +290,7 @@ void Surface::receive(Light& l)
     else if (_sType=="image")
         stop(l);
     else if (_sType=="void")
-        ; // surface does nothing
+        ; // void surface do nothing
     else //all glasses or "prefect_lens"
         transmit(l);
 }
@@ -403,22 +403,19 @@ void Surface::transmit_photon(Photon& p)
         return;
     }
 
-    // if( (_pMaterialPrev==0) || (_pMaterialNext==0))
-    //     return; //rien a faire car on ne connait pas les Materials
-
     assert(_pMaterialNext!=0);
     assert(_pMaterialPrev!=0);
 
     double nx,ny,nz;
 
-    //calcule la normale en ce point ( de distance au centre: ro)
+    //compute the normal in p (center distance : ro)
     double dRadiusSq=sqr(p.x)+sqr(p.y);
     if (dRadiusSq!=0.)
     {
         compute_normal(p.x,p.y,p.z,nx,ny,nz);
         Vector3D::normalize(nx,ny,nz);
     }
-    else // au centre du miroir ou surface plate
+    else // at surface center or flat surface
     {
         nx=0.;
         ny=0.;
@@ -427,8 +424,8 @@ void Surface::transmit_photon(Photon& p)
 
     double u=nx*p.dx+ny*p.dy+nz*p.dz;
 
-    // a partir d'ici, on calcule avec la normale (dx,dy,dz)
-    // u est la projection de I sur la normale
+    // compute with the normal (dx,dy,dz)
+    // u is the projection of I on the normal
 
     //calcule de C1=u/I
     double dC12=u*u/(sqr(p.dx)+sqr(p.dy)+sqr(p.dz));
@@ -436,7 +433,7 @@ void Surface::transmit_photon(Photon& p)
     double denom=sqr(dRatioN)+dC12-1.;
 
     if (denom<=0.)
-    {  // reflexion totale
+    {  // total reflexion
         p.valid=false;
         return;
     }
@@ -518,7 +515,7 @@ void Surface::reflect_photon(Photon &p)
     double nx,ny,nz;
     compute_normal(p.x,p.y,p.z,nx,ny,nz);
 
-    // on calcule avec la normale (nx,ny,nz)
+    // compute with the normal (nx,ny,nz)
     double dRayonSq=sqr(nx)+sqr(ny)+sqr(nz);
     assert(dRayonSq>0.);
     double u=2.*(nx*p.dx+ny*p.dy+nz*p.dz)/dRayonSq;
@@ -590,8 +587,8 @@ void Surface::stop_photon(Photon& p)
     // first we go on flat case (intersect with z=0)
     if (p.dz==0.)
     {
-        //cas degenere TODO
-        p.valid=false; // pour l'instant, je ne sait que faire!
+        // TODO
+        p.valid=false;
         return;
     }
 
@@ -616,10 +613,10 @@ void Surface::stop_photon(Photon& p)
         return;
     }
 
-    //on calcule les coef de l'eq du 2eme degree en t:
+    //compute the coef of the 2nd degree eq in t:
     //the equation is t^2A+tB+C=0
 
-    // formules simplifiees avec p.z=0.
+    // more simple with p.z=0.
     double dA=_dCurvature*(sqr(p.dx)+sqr(p.dy)+(_dConic+1.)*sqr(p.dz));
     double dB=2.*(_dCurvature*(p.x*p.dx+p.y*p.dy)-p.dz);
     double dC=_dCurvature*(sqr(p.x)+sqr(p.y));
@@ -639,7 +636,7 @@ void Surface::stop_photon(Photon& p)
     }
     else //dA!=0
     {
-        //on resoud l'equation
+        //solve the equation
         double dB2=dB*dB;
         double delta=dB2-4.*dC*dA;
 
@@ -651,7 +648,7 @@ void Surface::stop_photon(Photon& p)
 
         double t1,t2;
 
-        if (delta!=dB2) // alors les denum existent (todo enhance test)
+        if (delta!=dB2) // todo enhance test
         {
             double sqrtDelta=sqrt(delta);
             t1=(2.*dC)/(+sqrtDelta-dB);
@@ -659,29 +656,29 @@ void Surface::stop_photon(Photon& p)
         }
         else
         {
-            // ici delta~=dB2
-            // on utilise une solution approchee:
+            // delta~=dB2
+            // use approximate solution:
             if (dB!=0.)
             {
                 t1=-dC/dB;
-                t2=10.*t1; // pour etre sur de choisir t1
+                t2=10.*t1; // to choose  t1
             }
             else
             {
-                p.valid=false;  // on ne devrait jamais passer ici !??!?
+				p.valid=false;  // bug if we are here
                 return;
             }
         }
 
-        // on prend le t qui donne le z le plus proche de zero
+        // select t that gives the lowest abs(z)
         //t1ok=abs(z+t1.*dz)<abs(z+t2.*dz); //oct ver
-        if (t1*t1<t2*t2) //a optimiser plus tard...
+        if (t1*t1<t2*t2) // toto optimize
             tfinal=t1;
         else
             tfinal=t2;
     }
 
-    //verifie que la surface est bien dans le futur du photon
+    // check intersection is in the futur of the photon
     if ( tmin+tfinal<0 )
     {
         p.valid=false;
@@ -808,7 +805,7 @@ bool Surface::compute_normal(double x,double y, double z,double& nx,double& ny,d
         }
 
         // tangent vector is parallel to circumference
-        // produit vectoriel pour calculer la normale
+        // dot product to compute the normal
         nx=-x*dTangRadius;
         ny=-y*dTangRadius;
         nz=h2;

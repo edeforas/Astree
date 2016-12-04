@@ -190,7 +190,7 @@ void DockSurfacesData::update_table()
         qcbType->addItem("perfect_lens");
         qcbType->addItem("perfect_mirror");
         qcbType->addItem("image");
-        for(unsigned int iM=0;iM<vsMaterial.size();iM++) //TODO optimiser
+        for(unsigned int iM=0;iM<vsMaterial.size();iM++) //TODO optimize
             qcbType->addItem(vsMaterial[iM].c_str());
 
         qcbType->insertSeparator(7);

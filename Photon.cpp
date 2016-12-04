@@ -51,8 +51,6 @@ bool Photon::is_valid() const
     assert(!isinf(dy));
     assert(!isinf(dz));
 
-   // assert(_lambda>0.);
-
     return valid;
 }
 ////////////////////////////////////////////////////////////////////////////////
