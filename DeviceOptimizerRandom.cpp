@@ -63,7 +63,7 @@ OptimizerResult DeviceOptimizerRandom::optimize()
         {
             DeviceOptimizerParameter& dop=paramBest[iP];
             double dCenter=dop.dVal;
-            double dRadius=(dop.dMax-dop.dMin)/2.;
+            double dRadius=(dop.dMax-dop.dMin)/4.;
 
             dop.dMin=dCenter-dRadius;
             dop.dMax=dCenter+dRadius;

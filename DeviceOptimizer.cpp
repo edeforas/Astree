@@ -113,6 +113,8 @@ void DeviceOptimizer::add_parameter(int iSurface,string sParameter,double dMin,d
 
     dop.dVal=(dMin+dMax)/2.;
     _parameters.push_back(dop);
+
+    compute_min_resolution();
 }
 //////////////////////////////////////////////////////////////////////////////
 void DeviceOptimizer::set_merit_function(OptimizerMeritFunction eMeritFunction)
