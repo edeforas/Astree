@@ -4,7 +4,6 @@
 
 #include <sstream>
 #include <fstream>
-#include <cassert>
 using namespace std;
 
 #include "GlassCatalogIo.h"
