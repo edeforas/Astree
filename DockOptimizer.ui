@@ -79,6 +79,13 @@
     <item row="5" column="0">
      <layout class="QHBoxLayout" name="horizontalLayout_2">
       <item>
+       <widget class="QPushButton" name="pushButton_2">
+        <property name="text">
+         <string>Affine</string>
+        </property>
+       </widget>
+      </item>
+      <item>
        <widget class="QPushButton" name="pushButton">
         <property name="text">
          <string>Optimize</string>

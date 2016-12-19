@@ -31,12 +31,15 @@ private slots:
 
     void on_cbMethod_currentIndexChanged(int index);
 
+    void on_pushButton_2_clicked();
+
 private:
+    void optimize(bool bModeRefine);
+
     Ui::DockOptimizer *ui;
     OpticalDevice* _pDevice;
     int _iNbSurfaces;
     bool _bBlockSignals;
-
 };
 
 #endif // DOCKOPTIMIZER_H

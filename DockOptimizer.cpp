@@ -81,6 +81,11 @@ DockOptimizer::~DockOptimizer()
 /////////////////////////////////////////////////////////////
 void DockOptimizer::on_pushButton_clicked()
 {
+    optimize(false);
+}
+/////////////////////////////////////////////////////////////
+void DockOptimizer::optimize(bool bModeRefine)
+{
     if(_pDevice==0)
         return;
 
@@ -128,7 +133,7 @@ void DockOptimizer::on_pushButton_clicked()
         //TODO use device properties instead of reading from the UI
 
         if(bDefaultParam)
-            optim->add_parameter(iSurface,sParam);
+            optim->add_parameter(iSurface,sParam,bModeRefine);
         else
             optim->add_parameter(iSurface,sParam,dMin,dMax);
     }
@@ -373,5 +378,10 @@ void DockOptimizer::on_cbMethod_currentIndexChanged(int index)
         _pDevice->set_parameter("optimizer.method","MonteCarlo");
 
     static_cast<MainWindow*>(parent())->device_changed(this,OPTIMIZER_CHANGED);
+}
+//////////////////////////////////////////////////////////
+void DockOptimizer::on_pushButton_2_clicked()
+{
+    optimize(true);
 }
 //////////////////////////////////////////////////////////

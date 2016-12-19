@@ -28,59 +28,112 @@ void DeviceOptimizer::set_device(OpticalDevice* pDevice)
     _pDevice=pDevice;
 }
 //////////////////////////////////////////////////////////////////////////////
-void DeviceOptimizer::add_parameter(int iSurface,string sParameter)
+void DeviceOptimizer::add_parameter(int iSurface,string sParameter,bool bRefine)
 {
     double dMin=0.;
     double dMax=0.;
 
     assert(_pDevice);
 
-    if(sParameter=="Conic")
+    if(bRefine)
     {
-        dMin=_pDevice->get(iSurface,CONIC)-CONIC_HALF_RANGE;
-        dMax=_pDevice->get(iSurface,CONIC)+CONIC_HALF_RANGE;
-    }
+        if(sParameter=="Conic")
+        {
+            dMin=_pDevice->get(iSurface,CONIC)-CONIC_HALF_RANGE_REFINE;
+            dMax=_pDevice->get(iSurface,CONIC)+CONIC_HALF_RANGE_REFINE;
+        }
 
-    if(sParameter=="RCurv")
-    {
-        dMin=_pDevice->get(iSurface,RADIUS_CURVATURE)/RCURV_HALF_RATIO;
-        dMax=_pDevice->get(iSurface,RADIUS_CURVATURE)*RCURV_HALF_RATIO;
-    }
+        if(sParameter=="RCurv")
+        {
+            dMin=_pDevice->get(iSurface,RADIUS_CURVATURE)/RCURV_HALF_RATIO_REFINE;
+            dMax=_pDevice->get(iSurface,RADIUS_CURVATURE)*RCURV_HALF_RATIO_REFINE;
+        }
 
-    if(sParameter=="R4")
-    {
-        dMin=_pDevice->get(iSurface,R4)/R4_HALF_RATIO; // todo manage R4=0
-        dMax=_pDevice->get(iSurface,R4)*R4_HALF_RATIO;
-    }
+        if(sParameter=="R4")
+        {
+            dMin=_pDevice->get(iSurface,R4)/R4_HALF_RATIO_REFINE; // todo manage R4=0
+            dMax=_pDevice->get(iSurface,R4)*R4_HALF_RATIO_REFINE;
+        }
 
-    if(sParameter=="R6")
-    {
-        dMin=_pDevice->get(iSurface,R6)/R6_HALF_RATIO;  // todo manage R6=0
-        dMax=_pDevice->get(iSurface,R6)*R6_HALF_RATIO;
-    }
+        if(sParameter=="R6")
+        {
+            dMin=_pDevice->get(iSurface,R6)/R6_HALF_RATIO_REFINE;  // todo manage R6=0
+            dMax=_pDevice->get(iSurface,R6)*R6_HALF_RATIO_REFINE;
+        }
 
-    if(sParameter=="R8")
-    {
-        dMin=_pDevice->get(iSurface,R8)/R8_HALF_RATIO;  // todo manage R8=0
-        dMax=_pDevice->get(iSurface,R8)*R8_HALF_RATIO;
-    }
+        if(sParameter=="R8")
+        {
+            dMin=_pDevice->get(iSurface,R8)/R8_HALF_RATIO_REFINE;  // todo manage R8=0
+            dMax=_pDevice->get(iSurface,R8)*R8_HALF_RATIO_REFINE;
+        }
 
-    if(sParameter=="R10")
-    {
-        dMin=_pDevice->get(iSurface,R10)/R10_HALF_RATIO;  // todo manage R10=0
-        dMax=_pDevice->get(iSurface,R10)*R10_HALF_RATIO;
-    }
+        if(sParameter=="R10")
+        {
+            dMin=_pDevice->get(iSurface,R10)/R10_HALF_RATIO_REFINE;  // todo manage R10=0
+            dMax=_pDevice->get(iSurface,R10)*R10_HALF_RATIO_REFINE;
+        }
 
-    if(sParameter=="Z")
-    {
-        dMin=_pDevice->get(iSurface,Z)-Z_HALF_RANGE;
-        dMax=_pDevice->get(iSurface,Z)*Z_HALF_RANGE;
-    }
+        if(sParameter=="Z")
+        {
+            dMin=_pDevice->get(iSurface,Z)-Z_HALF_RANGE_REFINE;
+            dMax=_pDevice->get(iSurface,Z)*Z_HALF_RANGE_REFINE;
+        }
 
-    if(sParameter=="THICK")
+        if(sParameter=="Thick")
+        {
+            dMin=_pDevice->get(iSurface,THICK)-THICK_HALF_RANGE_REFINE;
+            dMax=_pDevice->get(iSurface,THICK)+THICK_HALF_RANGE_REFINE;
+        }
+    }
+    else
     {
-        dMin=_pDevice->get(iSurface,THICK)-THICK_HALF_RANGE;
-        dMax=_pDevice->get(iSurface,THICK)*THICK_HALF_RANGE;
+        if(sParameter=="Conic")
+        {
+            dMin=_pDevice->get(iSurface,CONIC)-CONIC_HALF_RANGE;
+            dMax=_pDevice->get(iSurface,CONIC)+CONIC_HALF_RANGE;
+        }
+
+        if(sParameter=="RCurv")
+        {
+            dMin=_pDevice->get(iSurface,RADIUS_CURVATURE)/RCURV_HALF_RATIO;
+            dMax=_pDevice->get(iSurface,RADIUS_CURVATURE)*RCURV_HALF_RATIO;
+        }
+
+        if(sParameter=="R4")
+        {
+            dMin=_pDevice->get(iSurface,R4)/R4_HALF_RATIO; // todo manage R4=0
+            dMax=_pDevice->get(iSurface,R4)*R4_HALF_RATIO;
+        }
+
+        if(sParameter=="R6")
+        {
+            dMin=_pDevice->get(iSurface,R6)/R6_HALF_RATIO;  // todo manage R6=0
+            dMax=_pDevice->get(iSurface,R6)*R6_HALF_RATIO;
+        }
+
+        if(sParameter=="R8")
+        {
+            dMin=_pDevice->get(iSurface,R8)/R8_HALF_RATIO;  // todo manage R8=0
+            dMax=_pDevice->get(iSurface,R8)*R8_HALF_RATIO;
+        }
+
+        if(sParameter=="R10")
+        {
+            dMin=_pDevice->get(iSurface,R10)/R10_HALF_RATIO;  // todo manage R10=0
+            dMax=_pDevice->get(iSurface,R10)*R10_HALF_RATIO;
+        }
+
+        if(sParameter=="Z")
+        {
+            dMin=_pDevice->get(iSurface,Z)-Z_HALF_RANGE;
+            dMax=_pDevice->get(iSurface,Z)*Z_HALF_RANGE;
+        }
+
+        if(sParameter=="Thick")
+        {
+            dMin=_pDevice->get(iSurface,THICK)-THICK_HALF_RANGE;
+            dMax=_pDevice->get(iSurface,THICK)+THICK_HALF_RANGE;
+        }
     }
 
     add_parameter(iSurface,sParameter,dMin,dMax);

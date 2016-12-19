@@ -13,23 +13,34 @@ using namespace std;
 
 #define MIN_RESOLUTION_CONIC 1.e-7
 #define CONIC_HALF_RANGE 4
+#define CONIC_HALF_RANGE_REFINE 0.5
 
 #define MIN_RESOLUTION_RCURV 1.e-7
 #define RCURV_HALF_RATIO 2
+#define RCURV_HALF_RATIO_REFINE 1.05
 #define MIN_RESOLUTION_CURVATURE 1.e-13 //TODO? !!
 
 #define MIN_RESOLUTION_THICK 1.e-7
 #define Z_HALF_RANGE 100.
 #define THICK_HALF_RANGE 100.
+#define Z_HALF_RANGE_REFINE 5
+#define THICK_HALF_RANGE_REFINE 5
 
 #define MIN_RESOLUTION_R4 1.e-22
 #define R4_HALF_RATIO 2
+#define R4_HALF_RATIO_REFINE 1.05
+
 #define MIN_RESOLUTION_R6 1.e-24
 #define R6_HALF_RATIO 2
+#define R6_HALF_RATIO_REFINE 1.05
+
 #define MIN_RESOLUTION_R8 1.e-26
 #define R8_HALF_RATIO 2
+#define R8_HALF_RATIO_REFINE 1.05
+
 #define MIN_RESOLUTION_R10 1.e-28
 #define R10_HALF_RATIO 2
+#define R10_HALF_RATIO_REFINE 1.05
 
 class DeviceOptimizerParameter
 {
@@ -69,7 +80,7 @@ public:
 
     void clear();
     void set_device(OpticalDevice* pDevice);
-    void add_parameter(int iSurface,string sParameter); // auto min & max
+    void add_parameter(int iSurface, string sParameter, bool bRefine=false); // auto min & max
     void add_parameter(int iSurface,string sParameter,double dMin,double dMax);
     void set_merit_function(OptimizerMeritFunction eMeritFunction);
 
