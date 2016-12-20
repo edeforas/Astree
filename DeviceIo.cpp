@@ -118,7 +118,7 @@ bool DeviceIo::save(string sFile, OpticalDevice* pOD)
     prop.set("image.autofocus",pOD->get_autofocus());
     prop.set("image.autocurvature",pOD->get_image_autocurvature());
 
-    prop.set("half_field_of_view",pOD->half_field_of_view());
+    // prop.set("half_field_of_view",pOD->half_field_of_view());
     prop.set("light.half_field_of_view",pOD->half_field_of_view());
     prop.set("light.colors",pOD->light_colors());
     prop.set("light.nbsteps",pOD->nb_intermediate_angles());
@@ -131,7 +131,7 @@ bool DeviceIo::save(string sFile, OpticalDevice* pOD)
         prop.set("device.note",sNote);
     }
 
-    prop.set("device.convention",pOD->relative_convention()?string("relative"):string("absolute"));
+    //   prop.set("device.convention",pOD->relative_convention()?string("relative"):string("absolute"));
     prop.set("device.relative_convention",pOD->relative_convention());
 
     //save other parameters

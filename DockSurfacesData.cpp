@@ -342,11 +342,11 @@ void DockSurfacesData::on_twSurfacesDatas_cellChanged(int iRow, int iCol)
 
     //parse cell
     string sItem=m_ui->twSurfacesDatas->item(iRow,iCol)->text().toStdString();
-    bool isAuto=sItem.find("auto")!=string::npos;;
-    bool isInf=sItem.find("inf")!=string::npos;;
+    bool isAuto=sItem.find("auto")!=string::npos;
+    bool isInf=sItem.find("inf")!=string::npos;
     double dGain=0.;
     int iSurfaceRef=-1;
-    bool isClone=sItem.find("#")!=string::npos;;
+    bool isClone=sItem.find("#")!=string::npos;
     bool isNegClone=sItem.find("-#")!=string::npos;
     bool isLastSurf=(iRow==_pOD->nb_surface()-1);
     bool isFirstSurf=(iRow==0);
@@ -415,15 +415,13 @@ void DockSurfacesData::on_twSurfacesDatas_cellChanged(int iRow, int iCol)
         _pOD->set_clone(iRow,esp,iSurfaceRef,dGain);
         if(!isClone)
         {
+            if( (esp==THICK) && isLastSurf)
+                _pOD->set(iRow,esp,0.);
+            else
+                _pOD->set(iRow,esp,dVal);
+
             if(isLastSurf)
                 _pOD->set_autofocus(isAuto);
-            else
-            {
-                if((esp==THICK) && isLastSurf)
-                    _pOD->set(iRow,esp,0.);
-                else
-                    _pOD->set(iRow,esp,dVal);
-            }
         }
     }
 
@@ -487,7 +485,6 @@ void DockSurfacesData::on_twSurfacesDatas_cellChanged(int iRow, int iCol)
     update_table(); // other cells need to be recomputed
     static_cast<MainWindow*>(parent())->device_changed(this,OPTICAL_DEVICE_CHANGED);
 }
-
 //////////////////////////////////////////////////////////////////////////////
 void DockSurfacesData::on_cbPolyAspheric_clicked()
 {
@@ -537,6 +534,7 @@ void DockSurfacesData::on_comboCoordMode_activated(const QString &arg1)
     if(iSelected==1)
         _pOD->set_relative_convention(true);
 
+    update_labels();
     update_table();
     static_cast<MainWindow*>(parent())->device_changed(this,OPTICAL_DEVICE_CHANGED);
 }
@@ -557,7 +555,7 @@ void DockSurfacesData::on_btnAddSurfaceBefore_clicked()
     if(iLine>0)
         _pOD->set(iLine,AUTO_DIAMETER,true);
 
-    update_table(); // a auto parameter need to be recomputed
+    update_table(); // auto parameter need to be recomputed
 
     static_cast<MainWindow*>(parent())->device_changed(this,OPTICAL_DEVICE_CHANGED);
 
@@ -579,7 +577,7 @@ void DockSurfacesData::on_btnAddSurfaceAfter_clicked()
     if(iLine+1>0)
         _pOD->set(iLine+1,AUTO_DIAMETER,true);
 
-    update_table(); // a auto parameter need to be recomputed
+    update_table(); // auto parameter need to be recomputed
 
     static_cast<MainWindow*>(parent())->device_changed(this,OPTICAL_DEVICE_CHANGED);
 
@@ -601,7 +599,7 @@ void DockSurfacesData::on_btnDeleteSurface_clicked()
     if(iLine<0)
         iLine=0;
 
-    update_table(); // a auto parameter need to be recomputed
+    update_table(); // auto parameter need to be recomputed
 
     m_ui->twSurfacesDatas->selectRow(iLine);
 }
