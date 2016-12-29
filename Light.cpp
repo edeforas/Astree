@@ -364,8 +364,8 @@ void Light::compute_spot_size()
     {
         _dCenterX=0.;
         _dCenterY=0.;
-        _dSpotSize=0.;
-        _dFD=0.;
+        _dSpotSize=1.e99; //TODO set to 1 or big value
+        _dFD=1.e99; //TODO set to 1 or big value
         return;
     }
 
@@ -387,7 +387,7 @@ void Light::compute_spot_size()
             _dCenterX=0.;
             _dCenterY=0.;
             _dSpotSize=1.e99; //todo cleaner error message
-            _dFD=0.;
+            _dFD=1.e99; //TODO set to 1 or big value
             return;
         }
 
@@ -405,6 +405,15 @@ void Light::compute_spot_size()
         dMinCos=1.;
 
     _dFD=0.5/tan(acos(dMinCos)); //TODO
+
+    if(_dFD<0.01) //TODO
+    {
+        _dCenterX=0.;
+        _dCenterY=0.;
+        _dSpotSize=1.e99; //todo cleaner error message
+        _dFD=1.e99; //TODO set to 1 or big value
+        return;
+    }
 
     _dCenterX=dXS/iNbValidPhoton;
     _dCenterY=dYS/iNbValidPhoton;

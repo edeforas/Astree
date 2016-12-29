@@ -249,26 +249,31 @@
     </message>
     <message>
         <location filename="DockOptimizer.ui" line="84"/>
+        <source>Refine</source>
+        <translation>Affiner</translation>
+    </message>
+    <message>
+        <location filename="DockOptimizer.ui" line="91"/>
         <source>Optimize</source>
         <translation>Optimiser</translation>
     </message>
     <message>
-        <location filename="DockOptimizer.ui" line="100"/>
+        <location filename="DockOptimizer.ui" line="107"/>
         <source>...</source>
         <translation>...</translation>
     </message>
     <message>
-        <location filename="DockOptimizer.ui" line="111"/>
+        <location filename="DockOptimizer.ui" line="118"/>
         <source>Method</source>
         <translation>Méthode</translation>
     </message>
     <message>
-        <location filename="DockOptimizer.ui" line="119"/>
+        <location filename="DockOptimizer.ui" line="126"/>
         <source>Nelder-Mead (default)</source>
-        <translation type="unfinished">Nelder-Mead (par défaut)</translation>
+        <translation>Nelder-Mead (par défaut)</translation>
     </message>
     <message>
-        <location filename="DockOptimizer.ui" line="124"/>
+        <location filename="DockOptimizer.ui" line="131"/>
         <source>Monte-Carlo MultiScale</source>
         <translation>MonteCarlo Multi-Echelle</translation>
     </message>

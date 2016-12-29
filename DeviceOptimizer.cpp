@@ -248,6 +248,9 @@ double DeviceOptimizer::compute_demerit()
     {
         if(isnan(pQ.vdSpotSize[i]))
             return SPOT_SIZE_INFINITY;
+
+        if(isnan(pQ.vdSpotvsAiry[i]))
+            return SPOT_SIZE_INFINITY;
     }
 
     if(isnan(pQ.dAirySize))
