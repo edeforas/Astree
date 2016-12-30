@@ -33,7 +33,7 @@ OpticalDevice::OpticalDevice(const OpticalDevice &rDevice)
 //////////////////////////////////////////////////////////////////////////////
 OpticalDevice& OpticalDevice::operator=(const OpticalDevice& rDevice)
 {
-    _vdThicks=rDevice._vdThicks; //todo remove
+    _vdThicks=rDevice._vdThicks; //TODO remove
 
     _vSurfaces.clear();
     _vSurfaces=rDevice._vSurfaces;
@@ -370,7 +370,7 @@ void OpticalDevice::ray_trace_step(Light& light,double dTilt,bool bAutofocus,boo
         double dX1=dCenterX;
         double dZ1=_vSurfaces[nb_surface()-1].z()-dZ;
         double dR=-0.5*(dX1*dX1+dZ1*dZ1)/dZ1; // R =0.5*(x1*x1+z1*z1)/z1
-        //todo test dR
+        //TODO test dR
         _vSurfaces[nb_surface()-1].set_radius_curvature(dR);
     }
 
@@ -429,7 +429,7 @@ void OpticalDevice::initialize_light(Light* pLight,double dTilt,int iGridX,int i
     double dDecal;
     pSurf.compute_z(0,pSurf.diameter()/2.,dDecal);
     pLight->set_geometry(pSurf.z()+dDecal,pSurf.diameter());
-    pLight->get_photon(0); // to force light->init ) todo
+    pLight->get_photon(0); // to force light->init ) TODO
 }
 //////////////////////////////////////////////////////////////////////////////
 void OpticalDevice::set_light_colors(const string & sLightColors)
@@ -474,7 +474,7 @@ string OpticalDevice::type(int iSurf) const
 const ImageQuality OpticalDevice::get_image_quality()
 {
     ray_trace();
-    return _imageQuality; // todo modify ref instead of copy
+    return _imageQuality; // TODO modify ref instead of copy
 }
 //////////////////////////////////////////////////////////////////////////////
 int OpticalDevice::nb_intermediate_angles() const
@@ -618,7 +618,7 @@ bool OpticalDevice::get_parameter(const string& sKey,double & dValue) const
 
     stringstream ss(iter->second);
     ss >> dValue;
-    return true; //todo test ss result
+    return true; //TODO test ss result
 }
 //////////////////////////////////////////////////////////////////////////////
 bool OpticalDevice::get_parameter(const string& sKey,string & sValue) const

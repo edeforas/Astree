@@ -73,7 +73,7 @@ bool GlassCatalogIO::load(string sFile,GlassManager& pManager)
                     pGlass->set_maker(sMaker);
                     pGlass->set_name(sName);
                     pGlass->set_coefs(B1,B2,B3,C1,C2,C3);
-                    pGlass->set_solid_color(8844025); //todo
+                    pGlass->set_solid_color(8844025); //TODO
                     pManager.inject(pGlass);
                 }
                 else
@@ -95,7 +95,7 @@ bool GlassCatalogIO::load(string sFile,GlassManager& pManager)
             ss >> B1 >> C1 >> B2 >> C2 >> B3 >> C3 ;
         }
 
-        //	pCatalog->set_maker("unknown"); //todo
+        //	pCatalog->set_maker("unknown"); //TODO
     }
 
     return true;

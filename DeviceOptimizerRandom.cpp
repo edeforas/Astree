@@ -7,7 +7,7 @@
 #include <cassert>
 ////////////////////////////////////////////////////////////////////////////////
 DeviceOptimizerRandom::DeviceOptimizerRandom():
-	DeviceOptimizer()
+    DeviceOptimizer()
 { }
 
 //////////////////////////////////////////////////////////////////////////////
@@ -16,22 +16,23 @@ DeviceOptimizerRandom::~DeviceOptimizerRandom()
 //////////////////////////////////////////////////////////////////////////////
 OptimizerResult DeviceOptimizerRandom::optimize()
 {
+    // random choice in hypercube (nb test:RANDOM_ITER_BY_AXIS^^N) then reduce on best
     assert(_pDevice!=0);
-
-    if(_parameters.empty())
-        return eNothingToOptimize;
 
     double dMeritOrig=compute_demerit();
     OpticalDevice deviceOrig(*_pDevice);
+
+    if(_parameters.empty())
+        return eNothingToOptimize;
 
     ParameterSet paramBest=_parameters;
 
     // compute nb of iterations
     int iNbIter=1;
     for(unsigned int i=0;i<paramBest.size();i++)
-        iNbIter*=RANDOM_ITER_BY_AXIS; //todo check overflow
+        iNbIter*=RANDOM_ITER_BY_AXIS; //TODO check overflow
 
-    double dBestMerit=SPOT_SIZE_INFINITY; // todo init with actual solution
+    double dBestMerit=SPOT_SIZE_INFINITY; // TODO init with actual solution
 
     bool bExit=false;
     while(!bExit)
@@ -71,7 +72,7 @@ OptimizerResult DeviceOptimizerRandom::optimize()
             dop.dMin=dCenter-dRadius;
             dop.dMax=dCenter+dRadius;
 
-            // todo check domain exit
+            // TODO check domain exit
         }
 
         bExit=domain_under_resolution(paramBest);

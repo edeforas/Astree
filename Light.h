@@ -2,8 +2,8 @@
 // please see GPL.html for more details and licensing issues
 // copyright Etienne de Foras ( the author )  mailto: etienne.deforas@gmail.com
 
-#ifndef _Light_
-#define _Light_
+#ifndef Light_
+#define Light_
 
 #include <string>
 #include <vector>

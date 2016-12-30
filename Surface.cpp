@@ -238,7 +238,7 @@ bool Surface::verify_in_surface(double dX,double dY)
 void Surface::local_ref(Photon& p) const
 {
     // simple translation for now
-    // todo add rotation
+    // TODO add rotation
     p.x-=x();
     p.y-=y();
     p.z-=z();
@@ -274,7 +274,7 @@ string Surface::type() const
 void Surface::global_ref(Photon& p) const
 {
     // simple translation for now
-    // todo add rotation
+    // TODO add rotation
     p.x+=x();
     p.y+=y();
     p.z+=z();
@@ -368,7 +368,7 @@ void Surface::transmit_photon(Photon& p)
 
     if(_bIsPerfect)
     {
-        //todo optimise and merge tests
+        //TODO optimise and merge tests
         if(p.dz==0.) //no intersection
         {
             p.valid=false;
@@ -457,7 +457,7 @@ void Surface::reflect_photon(Photon &p)
 
     if(_bIsPerfect)
     {
-        //todo optimise and merge tests
+        //TODO optimise and merge tests
         if(p.dz==0.) //no intersection
         {
             p.valid=false;
@@ -477,7 +477,7 @@ void Surface::reflect_photon(Photon &p)
         double ay=p.dy*t;
         double az=p.dz*t;
 
-        //todo optimise tests with sign(t)
+        //TODO optimise tests with sign(t)
         if(_dCurvature>0.)
         {
             if(p.dz>0.)
@@ -648,7 +648,7 @@ void Surface::stop_photon(Photon& p)
 
         double t1,t2;
 
-        if (delta!=dB2) // todo enhance test
+        if (delta!=dB2) // TODO enhance test
         {
             double sqrtDelta=sqrt(delta);
             t1=(2.*dC)/(+sqrtDelta-dB);
@@ -717,7 +717,7 @@ void Surface::stop_photon(Photon& p)
         double d=-(x*nx+y*ny+zproj*nz);
 
         //compute the intersect of this plane and the line defined by p (one newton step)
-        double t=(-d-p.x*nx-p.y*ny-p.z*nz)/(p.dx*nx+p.dy*ny+p.dz*nz); //todo tester !=0
+        double t=(-d-p.x*nx-p.y*ny-p.z*nz)/(p.dx*nx+p.dy*ny+p.dz*nz); //TODO tester !=0
         double distSQ=sqr(t-dOldT)*(sqr(p.dx)+sqr(p.dy)+sqr(p.dz));
         x=p.x+t*p.dx;
         y=p.y+t*p.dy;
@@ -796,12 +796,12 @@ bool Surface::compute_normal(double x,double y, double z,double& nx,double& ny,d
             double dR=sqrt(1.-dB*h2);
 
             // real conic derivative versus radius (multiplied by radius h)
-            dTangRadius=h2*(2.*dA/(dR+1.)+dA*dB*h2/dR/sqr((dR+1.))); //todo optimise
+            dTangRadius=h2*(2.*dA/(dR+1.)+dA*dB*h2/dR/sqr((dR+1.))); //TODO optimise
 
             // add the polynomial derivate (multiplied by radius h)
             double h4=sqr(h2);
             double h8=sqr(h4);
-            dTangRadius+=4.*_dR4*h4+6.*_dR6*h4*h2+8.*_dR8*h8+10.*_dR10*h8*h2;  //todo use horner rule
+            dTangRadius+=4.*_dR4*h4+6.*_dR6*h4*h2+8.*_dR8*h8+10.*_dR10*h8*h2;  //TODO use horner rule
         }
 
         // tangent vector is parallel to circumference

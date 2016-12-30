@@ -103,5 +103,4 @@ HEADERS += \
     Util/Vector3D.h \
     AstreeDefines.h
 	
-OTHER_FILES += todo.txt \
-    Astree.iss
+OTHER_FILES += Astree.iss

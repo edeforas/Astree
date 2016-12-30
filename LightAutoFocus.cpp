@@ -112,8 +112,8 @@ double LightAutofocus::autofocus(const Light& l)
 
     // the minimum is at dB;
 
-    // todo check all photon are ok at dB, else return false; or use return value of compute_size
-    // todo use golden search
+    // TODO check all photon are ok at dB, else return false; or use return value of compute_size
+    // TODO use golden search
 
     return dB;
 }
@@ -122,9 +122,9 @@ double LightAutofocus::compute_spot_size(const Light& l,double z)
 {
     // compute the intersection of all valid photon with plane at (0,0,z) with normal (1,0,0)
 
-    // todo add 45deg (or more) calliper
+    // TODO add 45deg (or more) calliper
 
-    // todo add early abort tests on previous spot size
+    // TODO add early abort tests on previous spot size
     double xMax=-1.e99;
     double xMin=1.e99;
 

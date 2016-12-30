@@ -1,5 +1,5 @@
-#ifndef _Referential_
-#define _Referential_
+#ifndef Referential_
+#define Referential_
 
 class Referential
 {

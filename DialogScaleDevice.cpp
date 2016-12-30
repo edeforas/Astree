@@ -106,7 +106,6 @@ bool DialogScaleDevice::get_scale_diameter()
     return _bScaleDiameter;
 }
 
-
 bool DialogScaleDevice::get_scale_focal()
 {
     return _bScaleFocal;

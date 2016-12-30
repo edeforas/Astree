@@ -91,7 +91,7 @@ vector<Photon> Light::get_all_photons()
 //////////////////////////////////////////////////////////////////////////////
 const vector<Photon>& Light::photons() const
 {
-    return _vPhotons; //warning _vPhotons may uninitialized todo
+    return _vPhotons; //warning _vPhotons may uninitialized TODO
 }
 //////////////////////////////////////////////////////////////////////////////
 void Light::set_geometry(double dZ,double dDiameter)
@@ -104,7 +104,7 @@ void Light::set_geometry(double dZ,double dDiameter)
 //////////////////////////////////////////////////////////////////////////////
 void Light::init()
 {
-    //todo remove init or set public or use lazy + acccessor
+    //TODO remove init or set public or use lazy + acccessor
 
     if (_bMustInit==false)
         return;
@@ -352,7 +352,7 @@ void Light::compute_spot_size()
         dXS+=p.x;
         dYS+=p.y;
 
-        Vector3D::normalize(p.dx,p.dy,p.dz); //todo remove using mean axis(max,min)
+        Vector3D::normalize(p.dx,p.dy,p.dz); //TODO remove using mean axis(max,min)
         dDxCentral+=p.dx;
         dDyCentral+=p.dy;
         dDzCentral+=p.dz;
@@ -386,7 +386,7 @@ void Light::compute_spot_size()
         {
             _dCenterX=0.;
             _dCenterY=0.;
-            _dSpotSize=1.e99; //todo cleaner error message
+            _dSpotSize=1.e99; //TODO cleaner error message
             _dFD=1.e99; //TODO set to 1 or big value
             return;
         }
@@ -410,7 +410,7 @@ void Light::compute_spot_size()
     {
         _dCenterX=0.;
         _dCenterY=0.;
-        _dSpotSize=1.e99; //todo cleaner error message
+        _dSpotSize=1.e99; //TODO cleaner error message
         _dFD=1.e99; //TODO set to 1 or big value
         return;
     }

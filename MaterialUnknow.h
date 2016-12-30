@@ -2,8 +2,8 @@
 // please see GPL.html for more details and licensing issues
 // copyright Etienne de Foras ( the author )  mailto: etienne.deforas@gmail.com
 
-#ifndef _MaterialUnknow_
-#define _MaterialUnknow_
+#ifndef MaterialUnknow_
+#define MaterialUnknow_
 
 #include "Glass.h"
 

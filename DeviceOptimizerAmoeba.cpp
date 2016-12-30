@@ -8,7 +8,7 @@
 #include <cassert>
 ////////////////////////////////////////////////////////////////////////////////
 DeviceOptimizerAmoeba::DeviceOptimizerAmoeba():
-	DeviceOptimizer()
+    DeviceOptimizer()
 { }
 ////////////////////////////////////////////////////////////////////////////////
 DeviceOptimizerAmoeba::~DeviceOptimizerAmoeba()
@@ -17,7 +17,6 @@ DeviceOptimizerAmoeba::~DeviceOptimizerAmoeba()
 OptimizerResult DeviceOptimizerAmoeba::optimize()
 {
     // see algo at : https://en.wikipedia.org/wiki/Nelder%E2%80%93Mead_method
-
     assert(_pDevice!=0);
 
     double dMeritOrig=compute_demerit();
@@ -59,11 +58,11 @@ OptimizerResult DeviceOptimizerAmoeba::optimize()
     int iIter=0,iMaxIter=AMOEBA_MAX_ITER;
     bool bStopCriteria=false;
     unsigned int iBest=0;
-    double dBest=vdDemerit[0];
+    double dBestMerit=vdDemerit[0];
     while((iIter<iMaxIter) && (bStopCriteria==false))
     {
         //get the best, worse and secondworse solution index
-        dBest=vdDemerit[0];
+        dBestMerit=vdDemerit[0];
         iBest=0;
         int iWorse=0;
         double dWorse=vdDemerit[0];
@@ -71,10 +70,10 @@ OptimizerResult DeviceOptimizerAmoeba::optimize()
         double dSecondWorse=vdDemerit[0];
         for(unsigned int i=1;i<simplex.size();i++)
         {
-            if(vdDemerit[i]<dBest)
+            if(vdDemerit[i]<dBestMerit)
             {
                 iBest=i;
-                dBest=vdDemerit[i];
+                dBestMerit=vdDemerit[i];
             }
 
             if(vdDemerit[i]>dWorse)
@@ -91,7 +90,7 @@ OptimizerResult DeviceOptimizerAmoeba::optimize()
                 dSecondWorse=vdDemerit[i];
             }
 
-        assert(dBest<=dSecondWorse);
+        assert(dBestMerit<=dSecondWorse);
         assert(dSecondWorse<=dWorse);
 
         //search the best solution on the line (worse,mean)
@@ -132,7 +131,7 @@ OptimizerResult DeviceOptimizerAmoeba::optimize()
             dMirror=compute_demerit();
         }
 
-        if( (dBest<=dMirror) && (dMirror<dSecondWorse) )
+        if( (dBestMerit<=dMirror) && (dMirror<dSecondWorse) )
         {
             //replace Worst by mirror
             simplex[iWorse]=paramMirror;
@@ -141,7 +140,7 @@ OptimizerResult DeviceOptimizerAmoeba::optimize()
         }
 
         //expansion
-        if(!bFound && (dMirror<dBest))
+        if(!bFound && (dMirror<dBestMerit))
         {
             //compute paramMirrorFar
             ParameterSet paramMirrorFar=paramMean;
@@ -159,7 +158,7 @@ OptimizerResult DeviceOptimizerAmoeba::optimize()
                 dMirrorFar=compute_demerit();
             }
 
-            if(dMirrorFar<dBest)
+            if(dMirrorFar<dBestMerit)
             {
                 simplex[iWorse]=paramMirrorFar;
                 vdDemerit[iWorse]=dMirrorFar;
@@ -237,13 +236,15 @@ OptimizerResult DeviceOptimizerAmoeba::optimize()
         iIter++;
     }
 
-    if( (dBest<dMeritOrig) && (iIter>=0) )
+    if(dBestMerit<SPOT_SIZE_INFINITY/2)
     {
-        _parameters=simplex[iBest];
-        apply_parameter(_parameters);
-        return eBetterSolutionFound;
+        if( (dBestMerit<dMeritOrig) && (iIter>=0) )
+        {
+            _parameters=simplex[iBest];
+            apply_parameter(_parameters);
+            return eBetterSolutionFound;
+        }
     }
-
     //restore device original settings
     *_pDevice=deviceOrig;
     return eNoBetterSolution;

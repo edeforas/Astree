@@ -160,7 +160,7 @@ void DockOptimizer::optimize(bool bModeRefine)
 
     optim->set_merit_function(omf);
 
-    OptimizerResult result=optim->optimize(); //todo, put in thread
+    OptimizerResult result=optim->optimize(); //TODO, put in thread
 
     if(result==eBetterSolutionFound)
     {
@@ -209,7 +209,7 @@ void DockOptimizer::device_changed(OpticalDevice *pDevice,int iReason)
         for(int i=0;i<NB_PARAM_MAX;i++)
         {
             QComboBox* qcbSurf=(QComboBox*)ui->twParams->cellWidget(i,1);
-            qcbSurf->clear(); //todo
+            qcbSurf->clear(); //TODO
             qcbSurf->addItem("");
             for(int i=0;i<iNbSurfaces;i++)
                 qcbSurf->addItem(QString::number(i+1));

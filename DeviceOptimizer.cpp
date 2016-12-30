@@ -51,25 +51,25 @@ void DeviceOptimizer::add_parameter(int iSurface,string sParameter,bool bRefine)
 
         if(sParameter=="R4")
         {
-            dMin=_pDevice->get(iSurface,R4)/R4_HALF_RATIO_REFINE; // todo manage R4=0
+            dMin=_pDevice->get(iSurface,R4)/R4_HALF_RATIO_REFINE; // TODO manage R4=0
             dMax=_pDevice->get(iSurface,R4)*R4_HALF_RATIO_REFINE;
         }
 
         if(sParameter=="R6")
         {
-            dMin=_pDevice->get(iSurface,R6)/R6_HALF_RATIO_REFINE;  // todo manage R6=0
+            dMin=_pDevice->get(iSurface,R6)/R6_HALF_RATIO_REFINE;  // TODO manage R6=0
             dMax=_pDevice->get(iSurface,R6)*R6_HALF_RATIO_REFINE;
         }
 
         if(sParameter=="R8")
         {
-            dMin=_pDevice->get(iSurface,R8)/R8_HALF_RATIO_REFINE;  // todo manage R8=0
+            dMin=_pDevice->get(iSurface,R8)/R8_HALF_RATIO_REFINE;  // TODO manage R8=0
             dMax=_pDevice->get(iSurface,R8)*R8_HALF_RATIO_REFINE;
         }
 
         if(sParameter=="R10")
         {
-            dMin=_pDevice->get(iSurface,R10)/R10_HALF_RATIO_REFINE;  // todo manage R10=0
+            dMin=_pDevice->get(iSurface,R10)/R10_HALF_RATIO_REFINE;  // TODO manage R10=0
             dMax=_pDevice->get(iSurface,R10)*R10_HALF_RATIO_REFINE;
         }
 
@@ -101,25 +101,25 @@ void DeviceOptimizer::add_parameter(int iSurface,string sParameter,bool bRefine)
 
         if(sParameter=="R4")
         {
-            dMin=_pDevice->get(iSurface,R4)/R4_HALF_RATIO; // todo manage R4=0
+            dMin=_pDevice->get(iSurface,R4)/R4_HALF_RATIO; // TODO manage R4=0
             dMax=_pDevice->get(iSurface,R4)*R4_HALF_RATIO;
         }
 
         if(sParameter=="R6")
         {
-            dMin=_pDevice->get(iSurface,R6)/R6_HALF_RATIO;  // todo manage R6=0
+            dMin=_pDevice->get(iSurface,R6)/R6_HALF_RATIO;  // TODO manage R6=0
             dMax=_pDevice->get(iSurface,R6)*R6_HALF_RATIO;
         }
 
         if(sParameter=="R8")
         {
-            dMin=_pDevice->get(iSurface,R8)/R8_HALF_RATIO;  // todo manage R8=0
+            dMin=_pDevice->get(iSurface,R8)/R8_HALF_RATIO;  // TODO manage R8=0
             dMax=_pDevice->get(iSurface,R8)*R8_HALF_RATIO;
         }
 
         if(sParameter=="R10")
         {
-            dMin=_pDevice->get(iSurface,R10)/R10_HALF_RATIO;  // todo manage R10=0
+            dMin=_pDevice->get(iSurface,R10)/R10_HALF_RATIO;  // TODO manage R10=0
             dMax=_pDevice->get(iSurface,R10)*R10_HALF_RATIO;
         }
 
@@ -304,6 +304,3 @@ bool DeviceOptimizer::domain_under_resolution(const ParameterSet& params)
     return true;
 }
 //////////////////////////////////////////////////////////////////////////////
-
-
-

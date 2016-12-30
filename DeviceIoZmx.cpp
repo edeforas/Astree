@@ -13,7 +13,7 @@ using namespace std;
 ////////////////////////////////////////////////////////////////////////////////
 OpticalDevice* DeviceIoZmx::import(string sFile)
 {
-    //todo test and reject if format=utf16
+    //TODO test and reject if format=utf16
 
     OpticalDevice* pOD=new OpticalDevice();
     pOD->set_relative_convention(true);
@@ -140,7 +140,7 @@ OpticalDevice* DeviceIoZmx::import(string sFile)
 
         if(sKey=="GCAT")
         {
-            stringstream ss(sVal); ss >> sGlassCatalog; //todo use
+            stringstream ss(sVal); ss >> sGlassCatalog; //TODO use
         }
 
         if(sKey=="OBSC")
@@ -175,14 +175,14 @@ OpticalDevice* DeviceIoZmx::import(string sFile)
             if(sFirstWord=="MIRROR")
                 sType="reflect";
             else
-                sType=sFirstWord; //todo more robust test
+                sType=sFirstWord; //TODO more robust test
         }
     }
 
     if(!sNote.empty())
         pOD->set_note(sNote);
 
-    // set the last surface type as image, todo better check
+    // set the last surface type as image, TODO better check
     if(pOD->nb_surface()!=0)
     {    pOD->set_type(pOD->nb_surface()-1,"image");
 
@@ -190,7 +190,7 @@ OpticalDevice* DeviceIoZmx::import(string sFile)
             pOD->set(0,DIAMETER,dApertureDiameter*dDimensionFactor);
     }
 
-    // todo add field of view
+    // TODO add field of view
 
     return pOD;
 }

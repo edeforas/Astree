@@ -2,8 +2,8 @@
 // please see GPL.html for more details and licensing issues
 // copyright Etienne de Foras ( the author )  mailto: etienne.deforas@gmail.com
 
-#ifndef _MaterialWater_
-#define _MaterialWater_
+#ifndef MaterialWater_
+#define MaterialWater_
 
 #include "Glass.h"
 

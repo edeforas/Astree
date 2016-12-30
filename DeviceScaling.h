@@ -2,8 +2,8 @@
 // please see GPL.html for more details and licensing issues
 // copyright Etienne de Foras ( the author )  mailto: etienne.deforas@gmail.com
 
-#ifndef _DeviceScaling_
-#define _DeviceScaling_
+#ifndef DeviceScaling_
+#define DeviceScaling_
 
 class OpticalDevice;
 

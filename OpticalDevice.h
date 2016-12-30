@@ -2,8 +2,8 @@
 // please see GPL.html for more details and licensing issues
 // copyright Etienne de Foras ( the author )  mailto: etienne.deforas@gmail.com
 
-#ifndef _OpticalDevice_
-#define _OpticalDevice_
+#ifndef OpticalDevice_
+#define OpticalDevice_
 
 #include <string>
 #include <vector>
@@ -86,7 +86,7 @@ public:
     void set_image_autocurvature(bool bAutoCurvature);
     bool get_image_autocurvature() const;
 
-    bool compute_surface_profile(int iSurface,double dX,double dY,double& dZ); //todo add slope computation
+    bool compute_surface_profile(int iSurface,double dX,double dY,double& dZ); //TODO add slope computation
 
     // comment settings
     void set_comment(int iSurface,string sComment);

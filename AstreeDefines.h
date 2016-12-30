@@ -2,8 +2,8 @@
 // please see GPL.html for more details and licensing issues
 // copyright Etienne de Foras ( the author )  mailto: etienne.deforas@gmail.com
 
-#ifndef _AstreeDefines_
-#define _AstreeDefines_
+#ifndef AstreeDefines_
+#define AstreeDefines_
 
 #define ASTREE_VERSION "1.16"
 

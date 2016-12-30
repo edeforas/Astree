@@ -2,8 +2,8 @@
 // please see GPL.html for more details and licensing issues
 // copyright Etienne de Foras ( the author )  mailto: etienne.deforas@gmail.com
 
-#ifndef _MyViewFrame_
-#define _MyViewFrame_
+#ifndef MyViewFrame_
+#define MyViewFrame_
 
 #include <QGraphicsView>
 #include <QMainWindow>

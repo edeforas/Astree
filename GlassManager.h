@@ -31,7 +31,7 @@ private:
     ~GlassManager();
 
     static GlassManager* _pGlassManager;
-    vector<Glass*> _vGlass; // todo use map
+    vector<Glass*> _vGlass; // TODO use map
 };
 
 #endif

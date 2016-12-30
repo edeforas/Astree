@@ -24,7 +24,7 @@ GlassManager::GlassManager()
 GlassManager::~GlassManager()
 {
     for(unsigned int i=0;i<_vGlass.size();i++)
-        delete _vGlass[i]; //todo check destructor is called
+        delete _vGlass[i]; //TODO check destructor is called
 }
 //////////////////////////////////////////////////////////////////////////////
 Glass* GlassManager::create(string sMaterial) const

@@ -1,5 +1,5 @@
-#ifndef _ImageQuality_
-#define _ImageQuality_
+#ifndef ImageQuality_
+#define ImageQuality_
 
 #include <vector>
 using namespace std;

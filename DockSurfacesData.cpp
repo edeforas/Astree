@@ -350,7 +350,7 @@ void DockSurfacesData::on_twSurfacesDatas_cellChanged(int iRow, int iCol)
     bool isNegClone=sItem.find("-#")!=string::npos;
     bool isLastSurf=(iRow==_pOD->nb_surface()-1);
     bool isFirstSurf=(iRow==0);
-    double dVal=-1.; //todo set to NaN
+    double dVal=-1.; //TODO set to NaN
 
     //check error and return last result if error
     if(isAuto && isFirstSurf)
@@ -430,7 +430,7 @@ void DockSurfacesData::on_twSurfacesDatas_cellChanged(int iRow, int iCol)
         _pOD->set_clone(iRow,DIAMETER,iSurfaceRef,dGain);
         _pOD->set(iRow,AUTO_DIAMETER,isAuto && (!isFirstSurf) && (!isClone) );
         if((!isClone) && (!isAuto) )
-            _pOD->set(iRow,DIAMETER,dVal); //todo debug ref to auto diameter
+            _pOD->set(iRow,DIAMETER,dVal); //TODO debug ref to auto diameter
     }
 
     int iIndexCol=5; // optional columns
@@ -438,7 +438,7 @@ void DockSurfacesData::on_twSurfacesDatas_cellChanged(int iRow, int iCol)
     {
         if (iCol==iIndexCol) //inner diameter
         {
-            _pOD->set_clone(iRow,INNER_DIAMETER,iSurfaceRef,dGain); //todo debug ref to auto inner_diameter
+            _pOD->set_clone(iRow,INNER_DIAMETER,iSurfaceRef,dGain); //TODO debug ref to auto inner_diameter
             _pOD->set(iRow,AUTO_INNER_DIAMETER,isAuto && (!isFirstSurf) && (!isClone) );
             if((!isClone) && (!isAuto) )
                 _pOD->set(iRow,INNER_DIAMETER,dVal);

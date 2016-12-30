@@ -92,7 +92,7 @@ bool DeviceIo::save(string sFile, OpticalDevice* pOD)
         double dConic=pOD->get(iS,CONIC);
         if(dConic!=0.)
             prop.set(sSurfName+".conic",dConic);
-        if(pOD->get_clone(iS,CONIC,iSurfclone,dGainclone)) // todo dgainclone!=1
+        if(pOD->get_clone(iS,CONIC,iSurfclone,dGainclone)) // TODO dgainclone!=1
             prop.set(sSurfName+".conic.clone",iSurfclone);
 
         double dR4=pOD->get(iS,R4);

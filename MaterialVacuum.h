@@ -2,8 +2,8 @@
 // please see GPL.html for more details and licensing issues
 // copyright Etienne de Foras ( the author )  mailto: etienne.deforas@gmail.com
 
-#ifndef _MaterialVacuum_
-#define _MaterialVacuum_
+#ifndef MaterialVacuum_
+#define MaterialVacuum_
 
 #include "Glass.h"
 
