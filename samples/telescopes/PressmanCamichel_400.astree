@@ -15,14 +15,12 @@
 2.thick=0
 2.type=image
 2.z.autofocus=1
-device.convention=relative
 device.note=primary is spherical
 device.note=
 device.note=Off axis images are bad
 device.note=
 device.note=secondary is strongly aspheric
 device.relative_convention=1
-half_field_of_view=0.28
 image.autocurvature=0
 image.autofocus=1
 light.colors=YellowBlack.

@@ -171,7 +171,7 @@ void DockOptimizer::optimize(bool bModeRefine)
     if(result==eNoBetterSolution)
     {
         ui->lblResult->setText("No Better Solution found.");
-        ui->lblResult->setStyleSheet("color: red;");
+        ui->lblResult->setStyleSheet("color: black;");
     }
 
     if(result==eSolutionOnEdge)
