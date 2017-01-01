@@ -7,16 +7,19 @@
 #include <sstream>
 
 #include "Surface.h"
-#include "Vector3D.h"
 #include "Photon.h"
 #include "Light.h"
 #include "GlassManager.h"
 #include "Glass.h"
-
-inline double sqr(double a) { return a*a; }
+#include "Vector3D.h"
 
 #define NB_ITER_STOP_NEWTON 40
 #define RESOLUTION_STOP_NEWTON 1e-7 //0.1 nm=1e-7 mm  resolution
+
+inline double sqr(double a)
+{
+    return a*a;
+}
 
 //////////////////////////////////////////////////////////////////////////////
 Surface::Surface():
