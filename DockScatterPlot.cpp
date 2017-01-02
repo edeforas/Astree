@@ -242,7 +242,8 @@ void DockScatterPlot::device_changed(OpticalDevice* pDevice, int iReason)
     m_ui->graphicsView->fitInView(rtotal,Qt::KeepAspectRatio);
 
     m_ui->qlPsfDiameter->setText(QString::number(dPsfDiameter*1000.,'g',3)+" µm");
-    m_ui->qlFD->setText(QString::number(dFD,'f',1));
+    m_ui->qlFD->setText(QString::number(dFD,'g',3));
+    m_ui->qlFD->setToolTip(QString::number(dFD));
 
     m_ui->qlPerfectAiry->setText(QString::number(dPerfectAiryRadius*2.*1000.,'g',3)+" µm");
     m_ui->qlLFro->setText(QString::number(dLfro,'g',3));

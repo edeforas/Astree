@@ -63,8 +63,9 @@ HEADERS += MainWindow.h \
     GlassManager.h \
     GlassCatalogIo.h \
     Glass.h \
-    GlassSellmeier.h
-	
+    GlassSellmeier.h \
+    Vector3D.h
+
 FORMS += MainWindow.ui \
     DockLightProperties.ui \
     FrameSideView.ui \
@@ -100,7 +101,6 @@ HEADERS += \
     MaterialWater.h \
     MaterialUnknow.h \
     Util/Properties.h \
-    Util/Vector3D.h \
     AstreeDefines.h
 	
 OTHER_FILES += Astree.iss

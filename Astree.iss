@@ -3,7 +3,7 @@
 
 [Setup]
 AppName=Astree
-AppVerName=Astree 1.16
+AppVerName=Astree 1.17
 AppPublisher=Etienne de Foras
 AppPublisherURL=http://edeforas.free.fr
 AppSupportURL=http://edeforas.free.fr

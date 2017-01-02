@@ -73,6 +73,8 @@ void DockImageQuality::device_changed(OpticalDevice* pDevice,int iReason)
     if(iNbAngles!=0)
     {
         ui->lFNumber->setText(QString::number(pIQ.dFNumber,'g',3));
+        ui->lFNumber->setToolTip(QString::number(pIQ.dFNumber));
+
         ui->lAirySize->setText(QString::number(pIQ.dAirySize*1000.,'g',3)+QString(" µm"));
     }
     else
