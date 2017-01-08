@@ -19,8 +19,12 @@ public:
 
      void device_changed(OpticalDevice *pDevice, int iReason);
 
+private slots:
+     void on_tableWidget_currentCellChanged(int currentRow, int currentColumn, int previousRow, int previousColumn);
+
 private:
     Ui::DockImageQuality *ui;
+    OpticalDevice* _pDevice;
 };
 
 #endif // DOCKIMAGEQUALITY_H

@@ -3,6 +3,7 @@
 
 #include "OpticalDevice.h"
 #include "AstreeDefines.h"
+#include "MainWindow.h"
 
 #include <cassert>
 
@@ -11,6 +12,7 @@ DockImageQuality::DockImageQuality(QWidget *parent) :
     ui(new Ui::DockImageQuality)
 {
     ui->setupUi(this);
+    _pDevice=0;
 }
 //////////////////////////////////////////////////////////////////////////////////
 DockImageQuality::~DockImageQuality()
@@ -21,6 +23,8 @@ DockImageQuality::~DockImageQuality()
 void DockImageQuality::device_changed(OpticalDevice* pDevice,int iReason)
 {
     assert(pDevice!=0);
+
+    _pDevice=pDevice;
 
     if( (iReason!=OPTICAL_DEVICE_CHANGED) && (iReason!=NEW_OPTICAL_DEVICE) )
         return;
@@ -81,6 +85,22 @@ void DockImageQuality::device_changed(OpticalDevice* pDevice,int iReason)
     {
         ui->lFNumber->setText("n/a");
         ui->lAirySize->setText("n/a");
+    }
+}
+//////////////////////////////////////////////////////////////////////////////////
+void DockImageQuality::on_tableWidget_currentCellChanged(int currentRow, int currentColumn, int previousRow, int previousColumn)
+{
+    (void)currentColumn;
+    (void)previousRow;
+    (void)previousColumn;
+
+    assert(_pDevice);
+
+    if(ui->tableWidget->rowCount()>1.)
+    {
+        double iPercent=(100.*currentRow)/(ui->tableWidget->rowCount()-1);
+        _pDevice->set_parameter("showLightOffAxis",iPercent);
+        static_cast<MainWindow*>(parent())->device_changed(this,LIGHT_OFF_AXIS_CHANGED,false);
     }
 }
 //////////////////////////////////////////////////////////////////////////////////
