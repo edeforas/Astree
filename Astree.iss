@@ -26,7 +26,7 @@ Name: "quicklaunchicon"; Description: "{cm:CreateQuickLaunchIcon}"; GroupDescrip
 Source: ".\Astree.exe"; DestDir: "{app}"; Flags: ignoreversion
 Source: ".\*.h"; DestDir: "{app}\src\Astree"; Flags: ignoreversion
 Source: ".\*.cpp"; DestDir: "{app}\src\Astree"; Flags: ignoreversion
-Source: ".\Util\*.*"; DestDir: "{app}\src\Util"; Flags: ignoreversion
+Source: ".\Util\*.*"; DestDir: "{app}\src\Astree\Util"; Flags: ignoreversion
 Source: ".\*.pro"; DestDir: "{app}\src\Astree"; Flags: ignoreversion
 Source: ".\*.ui"; DestDir: "{app}\src\Astree"; Flags: ignoreversion
 Source: ".\*.qm"; DestDir: "{app}"; Flags: ignoreversion
@@ -39,7 +39,7 @@ Source: ".\samples\telescopes\*.astree"; DestDir: "{app}\samples\telescopes"; Fl
 Source: ".\samples\refractors\*.astree"; DestDir: "{app}\samples\refractors"; Flags: ignoreversion
 Source: ".\samples\others\*.astree"; DestDir: "{app}\samples\others"; Flags: ignoreversion
 Source: ".\samples\eyepieces\*.astree"; DestDir: "{app}\samples\eyepieces"; Flags: ignoreversion
-Source: ".\tests\*.*"; DestDir: "{app}\tests"; Flags: ignoreversion
+Source: ".\tests\*.*"; DestDir: "{app}\src\Astree\tests"; Flags: ignoreversion
 Source: ".\glass\*.*"; DestDir: "{app}\glass"; Flags: ignoreversion
 Source: "C:\Qt\Qt5.7.1\5.7\mingw53_32\bin\Qt5Core.dll"; DestDir: "{app}"
 Source: "C:\Qt\Qt5.7.1\5.7\mingw53_32\bin\Qt5Gui.dll"; DestDir: "{app}"
