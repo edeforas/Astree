@@ -76,11 +76,6 @@ void OpticalDevice::insert_surface(int iPos)
         return;
     }
 
-    if(iPos>0)
-    {
-        set(iPos,AUTO_DIAMETER,1);
-    }
-
     if(iPos<nb_surface()-1)
     {
         //intermediate position

@@ -32,6 +32,7 @@ void test_perfect_mirror()
     // surface1 = image
     od.insert_surface(1);
     od.set_type(1,"image");
+    od.set(1,AUTO_DIAMETER,1);
 
     ImageQuality iq=od.get_image_quality();
 
