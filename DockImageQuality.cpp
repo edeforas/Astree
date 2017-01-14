@@ -11,8 +11,12 @@ DockImageQuality::DockImageQuality(QWidget *parent) :
     QDockWidget(parent),
     ui(new Ui::DockImageQuality)
 {
+    _bBlockSignals=true;
+
     ui->setupUi(this);
     _pDevice=0;
+
+    _bBlockSignals=false;
 }
 //////////////////////////////////////////////////////////////////////////////////
 DockImageQuality::~DockImageQuality()
@@ -26,8 +30,10 @@ void DockImageQuality::device_changed(OpticalDevice* pDevice,int iReason)
 
     _pDevice=pDevice;
 
-    if( (iReason!=OPTICAL_DEVICE_CHANGED) && (iReason!=NEW_OPTICAL_DEVICE) )
+    if( (iReason!=OPTICAL_DEVICE_CHANGED) && (iReason!=NEW_OPTICAL_DEVICE) && ((iReason!=LIGHT_OFF_AXIS_CHANGED)))
         return;
+
+    _bBlockSignals=true;
 
     ImageQuality pIQ=pDevice->get_image_quality();
     int iNbAngles=pIQ.nb_angles();
@@ -86,6 +92,14 @@ void DockImageQuality::device_changed(OpticalDevice* pDevice,int iReason)
         ui->lFNumber->setText("n/a");
         ui->lAirySize->setText("n/a");
     }
+
+    //update angle selected row
+    double dPercentField;
+    if( pDevice->get_parameter("showLightOffAxis",dPercentField) && (ui->tableWidget->rowCount()>1))
+    {
+        ui->tableWidget->selectRow((int)(0.5+(ui->tableWidget->rowCount()-1)*dPercentField/100.));
+    }
+    _bBlockSignals=false;
 }
 //////////////////////////////////////////////////////////////////////////////////
 void DockImageQuality::on_tableWidget_currentCellChanged(int currentRow, int currentColumn, int previousRow, int previousColumn)
@@ -93,6 +107,9 @@ void DockImageQuality::on_tableWidget_currentCellChanged(int currentRow, int cur
     (void)currentColumn;
     (void)previousRow;
     (void)previousColumn;
+
+    if(_bBlockSignals)
+        return;
 
     assert(_pDevice);
 

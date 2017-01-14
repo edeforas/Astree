@@ -25,6 +25,8 @@ private slots:
 private:
     Ui::DockImageQuality *ui;
     OpticalDevice* _pDevice;
+
+    bool _bBlockSignals;
 };
 
 #endif // DOCKIMAGEQUALITY_H

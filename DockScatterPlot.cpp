@@ -182,6 +182,8 @@ void DockScatterPlot::device_changed(OpticalDevice* pDevice, int iReason)
         m_ui->qlFD->setText("n/a");
         m_ui->qlPerfectAiry->setText("n/a");
         m_ui->qlLFro->setText("n/a");
+
+        _bBlockSignals=false;
         return;
     }
 
@@ -221,6 +223,7 @@ void DockScatterPlot::device_changed(OpticalDevice* pDevice, int iReason)
         scene->setSceneRect(rsp);
         m_ui->graphicsView->fitInView(rsp,Qt::KeepAspectRatio);
 
+        _bBlockSignals=false;
         return;
     }
 
