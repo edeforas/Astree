@@ -160,6 +160,9 @@ void DockScatterPlot::device_changed(OpticalDevice* pDevice, int iReason)
     double dPercentField=-1;
     if(!pDevice->get_parameter("showLightOffAxis",dPercentField))
         dPercentField=0.;
+
+    assert(dPercentField>=0);
+    assert(dPercentField<=100);
     m_ui->hsImageFieldPos->setValue((int)dPercentField);
 
     if(iReason==NEW_OPTICAL_DEVICE)
@@ -273,6 +276,9 @@ void DockScatterPlot::on_hsImageFieldPos_valueChanged(int value)
 {
     if(_bBlockSignals)
         return;
+
+    assert(value>=0);
+    assert(value<=100);
 
     _pDevice->set_parameter("showLightOffAxis",value); // in percent
     device_changed(_pDevice,LIGHT_OFF_AXIS_CHANGED);

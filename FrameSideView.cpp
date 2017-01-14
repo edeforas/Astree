@@ -162,6 +162,8 @@ void FrameSideView::device_changed(OpticalDevice* pDevice, int iReason)
     if(!pDevice->get_parameter("showLightOffAxis",dPercentField))
         dPercentField=0.;
 
+    assert(dPercentField>=0);
+    assert(dPercentField<=100);
     double dTilt=dPercentField*pDevice->half_field_of_view()/100.;
 
     _pDevice->compute_light(&light,-1,dTilt,SIDEVIEW_NB_POINTS_LIGHT,1);

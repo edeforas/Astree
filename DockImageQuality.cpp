@@ -96,10 +96,17 @@ void DockImageQuality::on_tableWidget_currentCellChanged(int currentRow, int cur
 
     assert(_pDevice);
 
+    if(currentRow<0)
+        return;
+
     if(ui->tableWidget->rowCount()>1.)
     {
-        double iPercent=(100.*currentRow)/(ui->tableWidget->rowCount()-1);
-        _pDevice->set_parameter("showLightOffAxis",iPercent);
+        double dPercentField=(100.*currentRow)/(ui->tableWidget->rowCount()-1);
+
+        assert(dPercentField>=0);
+        assert(dPercentField<=100);
+
+        _pDevice->set_parameter("showLightOffAxis",dPercentField);
         static_cast<MainWindow*>(parent())->device_changed(this,LIGHT_OFF_AXIS_CHANGED,false);
     }
 }

@@ -36,8 +36,6 @@ MainWindow::MainWindow(QWidget *parent)
     ui->setupUi(this);
     _pDevice=new OpticalDevice;
 
-    dLightTilt=0.;
-
     //load all glass catalog
     string sExepath=FileUtil::get_path(FileUtil::get_executable_path());
     vector<string> vsCatalog=FileUtil::list(sExepath+"\\glass\\*.agf");
@@ -119,7 +117,6 @@ void MainWindow::clear_device()
     //_sFileName="";
     delete _pDevice;
     _pDevice=new OpticalDevice;
-    dLightTilt=0.;
 }
 //////////////////////////////////////////////////////////////////////////////
 void MainWindow::on_actionQuit_triggered()

@@ -39,8 +39,6 @@ public:
     bool ask_save_and_action();
     void clear_device();
 
-    double dLightTilt;
-
 public slots:
     void device_changed(void* pSender, int iReason, bool bMustSave=true);
 
