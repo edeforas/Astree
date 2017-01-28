@@ -41,13 +41,13 @@ Source: ".\samples\others\*.astree"; DestDir: "{app}\samples\others"; Flags: ign
 Source: ".\samples\eyepieces\*.astree"; DestDir: "{app}\samples\eyepieces"; Flags: ignoreversion
 Source: ".\tests\*.*"; DestDir: "{app}\src\Astree\tests"; Flags: ignoreversion
 Source: ".\glass\*.*"; DestDir: "{app}\glass"; Flags: ignoreversion
-Source: "C:\Qt\Qt5.7.1\5.7\mingw53_32\bin\Qt5Core.dll"; DestDir: "{app}"
-Source: "C:\Qt\Qt5.7.1\5.7\mingw53_32\bin\Qt5Gui.dll"; DestDir: "{app}"
-Source: "C:\Qt\Qt5.7.1\5.7\mingw53_32\bin\Qt5Widgets.dll"; DestDir: "{app}"
-Source: "C:\Qt\Qt5.7.1\5.7\mingw53_32\bin\libstdc++-6.dll"; DestDir: "{app}"
-Source: "C:\Qt\Qt5.7.1\5.7\mingw53_32\bin\libgcc_s_dw2-1.dll"; DestDir: "{app}"
-Source: "C:\Qt\Qt5.7.1\5.7\mingw53_32\bin\libwinpthread-1.dll"; DestDir: "{app}"
-Source: "C:\Qt\Qt5.7.1\5.7\mingw53_32\plugins\platforms\qwindows.dll"; DestDir: "{app}\platforms"
+Source: "C:\Qt\Qt5.8.0\5.8\mingw53_32\bin\Qt5Core.dll"; DestDir: "{app}"
+Source: "C:\Qt\Qt5.8.0\5.8\mingw53_32\bin\Qt5Gui.dll"; DestDir: "{app}"
+Source: "C:\Qt\Qt5.8.0\5.8\mingw53_32\bin\Qt5Widgets.dll"; DestDir: "{app}"
+Source: "C:\Qt\Qt5.8.0\5.8\mingw53_32\bin\libstdc++-6.dll"; DestDir: "{app}"
+Source: "C:\Qt\Qt5.8.0\5.8\mingw53_32\bin\libgcc_s_dw2-1.dll"; DestDir: "{app}"
+Source: "C:\Qt\Qt5.8.0\5.8\mingw53_32\bin\libwinpthread-1.dll"; DestDir: "{app}"
+Source: "C:\Qt\Qt5.8.0\5.8\mingw53_32\plugins\platforms\qwindows.dll"; DestDir: "{app}\platforms"
 
 [INI]
 Filename: "{app}\Astree.url"; Section: "InternetShortcut"; Key: "URL"; String: "http://edeforas.free.fr"
