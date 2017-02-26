@@ -18,6 +18,8 @@
 3.diameter.auto=1
 3.radius_curvature=-2195.666029
 3.thick=-9.884678748
+3.thick.clone=2
+3.thick.clone.gain=-1
 3.type=reflect
 4.diameter=190.4013338
 4.diameter.auto=1
@@ -36,7 +38,7 @@
 6.radius_curvature=-10602.70991
 6.thick=-133.3759258
 6.type=Air
-7.diameter=32.61271517
+7.diameter=32.61271413
 7.diameter.auto=1
 7.radius_curvature=inf
 7.thick=0
@@ -107,4 +109,4 @@ parameter.optimizer.7.checked=0
 parameter.optimizer.8.checked=0
 parameter.optimizer.9.checked=0
 parameter.optimizer.merit=FullFrameMaxError
-parameter.showLightOffAxis=100
+parameter.showLightOffAxis=50
