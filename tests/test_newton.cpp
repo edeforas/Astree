@@ -39,7 +39,7 @@ void test_parabolic_mirror()
 
     ImageQuality iq=od.get_image_quality();
 
-    //for fast parabolic miror ; FNumber formula is
+    //for fast parabolic mirror ; FNumber formula is :
     double fNumber=dFocal/dDiameter-dDiameter/dFocal/16.;
 
     test(is_near(fNumber,iq.dFNumber),"FNumber must be equal");

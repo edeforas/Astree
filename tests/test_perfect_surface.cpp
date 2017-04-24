@@ -46,7 +46,7 @@ void test_perfect_lens()
 {
     OpticalDevice od;
 
-    // surface0 = perfect mirror
+    // surface0 = perfect lens
     od.insert_surface(0);
     od.set_type(0,"perfect_lens");
     od.set(0,DIAMETER,200);
