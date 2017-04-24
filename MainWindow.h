@@ -63,6 +63,8 @@ private slots:
     void on_actionZoom_in_triggered();
     void on_actionZoom_out_triggered();
 
+    void on_actionReload_triggered();
+
 private:
     OpticalDevice* _pDevice;
     DockSurfacesData* _pDockSurfacesData;

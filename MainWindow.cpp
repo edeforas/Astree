@@ -114,7 +114,6 @@ bool MainWindow::ask_save_and_action()
 void MainWindow::clear_device()
 {
     _bMustSave=false;
-    //_sFileName="";
     delete _pDevice;
     _pDevice=new OpticalDevice;
 }
@@ -335,5 +334,16 @@ void MainWindow::on_actionZoom_in_triggered()
 void MainWindow::on_actionZoom_out_triggered()
 {
     _pFrameSideView->zoom_out();
+}
+//////////////////////////////////////////////////////////////////////////////
+void MainWindow::on_actionReload_triggered()
+{
+    if (ask_save_and_action()==false)
+        return;
+
+    clear_device();
+    device_changed(0,NEW_OPTICAL_DEVICE,false);
+    if (!_sFileName.empty())
+        load_file(_sFileName);
 }
 //////////////////////////////////////////////////////////////////////////////

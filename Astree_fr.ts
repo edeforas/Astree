@@ -469,24 +469,24 @@ dans ce cas ,la lumi√®re se concentre dans la tache de diffraction et la qualit√
 <context>
     <name>MainWindow</name>
     <message>
-        <location filename="MainWindow.cpp" line="144"/>
-        <location filename="MainWindow.cpp" line="181"/>
+        <location filename="MainWindow.cpp" line="140"/>
+        <location filename="MainWindow.cpp" line="177"/>
         <source>Open Astree File</source>
         <translation>Ouvrir un fichier Astree</translation>
     </message>
     <message>
-        <location filename="MainWindow.cpp" line="144"/>
-        <location filename="MainWindow.cpp" line="181"/>
+        <location filename="MainWindow.cpp" line="140"/>
+        <location filename="MainWindow.cpp" line="177"/>
         <source>Astree Files (*.astree)</source>
         <translation>Fichier Astree (*.astree)</translation>
     </message>
     <message>
-        <location filename="MainWindow.cpp" line="301"/>
+        <location filename="MainWindow.cpp" line="297"/>
         <source>Import ZMX File</source>
         <translation>Importer un fichier ZMX</translation>
     </message>
     <message>
-        <location filename="MainWindow.cpp" line="301"/>
+        <location filename="MainWindow.cpp" line="297"/>
         <source>ZMX Files (*.zmx)</source>
         <translation>Fichier ZMX (*.zmx)</translation>
     </message>
@@ -505,145 +505,150 @@ dans ce cas ,la lumi√®re se concentre dans la tache de diffraction et la qualit√
         <translation>Fichier</translation>
     </message>
     <message>
-        <location filename="MainWindow.ui" line="51"/>
+        <location filename="MainWindow.ui" line="52"/>
         <source>Help</source>
         <translation>Aide</translation>
     </message>
     <message>
-        <location filename="MainWindow.ui" line="57"/>
+        <location filename="MainWindow.ui" line="58"/>
         <source>Tools</source>
         <translation>Outils</translation>
     </message>
     <message>
-        <location filename="MainWindow.ui" line="64"/>
+        <location filename="MainWindow.ui" line="65"/>
         <source>View</source>
         <translation>Vue</translation>
     </message>
     <message>
-        <location filename="MainWindow.ui" line="78"/>
+        <location filename="MainWindow.ui" line="79"/>
         <source>Quit</source>
         <translation>Quitter</translation>
     </message>
     <message>
-        <location filename="MainWindow.ui" line="81"/>
+        <location filename="MainWindow.ui" line="82"/>
         <source>Ctrl+Q</source>
         <translation>Ctrl+Q</translation>
     </message>
     <message>
-        <location filename="MainWindow.ui" line="86"/>
+        <location filename="MainWindow.ui" line="87"/>
         <source>About...</source>
         <translation>A propos...</translation>
     </message>
     <message>
-        <location filename="MainWindow.ui" line="91"/>
+        <location filename="MainWindow.ui" line="92"/>
         <source>Open...</source>
         <translation>Ouvrir...</translation>
     </message>
     <message>
-        <location filename="MainWindow.ui" line="94"/>
+        <location filename="MainWindow.ui" line="95"/>
         <source>Ctrl+O</source>
         <translation>Ctrl+O</translation>
     </message>
     <message>
-        <location filename="MainWindow.ui" line="99"/>
+        <location filename="MainWindow.ui" line="100"/>
         <source>Save</source>
         <translation>Sauver</translation>
     </message>
     <message>
-        <location filename="MainWindow.ui" line="102"/>
+        <location filename="MainWindow.ui" line="103"/>
         <source>Ctrl+S</source>
         <translation>Ctrl+S</translation>
     </message>
     <message>
-        <location filename="MainWindow.ui" line="107"/>
+        <location filename="MainWindow.ui" line="108"/>
         <source>Save as...</source>
         <translation>Sauver comme...</translation>
     </message>
     <message>
-        <location filename="MainWindow.ui" line="112"/>
+        <location filename="MainWindow.ui" line="113"/>
         <source>Close</source>
         <translation>Fermer</translation>
     </message>
     <message>
-        <location filename="MainWindow.ui" line="117"/>
+        <location filename="MainWindow.ui" line="118"/>
         <source>New</source>
         <oldsource>New...</oldsource>
         <translation>Nouveau</translation>
     </message>
     <message>
-        <location filename="MainWindow.ui" line="120"/>
+        <location filename="MainWindow.ui" line="121"/>
         <source>Ctrl+N</source>
         <translation>Ctrl+N</translation>
     </message>
     <message>
-        <location filename="MainWindow.ui" line="128"/>
+        <location filename="MainWindow.ui" line="129"/>
         <source>Glass Manager...</source>
         <translation>Gestionnaire de verres...</translation>
     </message>
     <message>
-        <location filename="MainWindow.ui" line="136"/>
+        <location filename="MainWindow.ui" line="137"/>
         <source>Absolute</source>
         <translation>Absolue</translation>
     </message>
     <message>
-        <location filename="MainWindow.ui" line="144"/>
+        <location filename="MainWindow.ui" line="145"/>
         <source>Relative</source>
         <translation>Relative</translation>
     </message>
     <message>
-        <location filename="MainWindow.ui" line="149"/>
+        <location filename="MainWindow.ui" line="150"/>
         <source>Scale device...</source>
         <translation>Changer la taille...</translation>
     </message>
     <message>
-        <location filename="MainWindow.ui" line="163"/>
+        <location filename="MainWindow.ui" line="164"/>
         <source>Show PolyAspheric Property</source>
         <translation>Montrer les coefs polynomiaux</translation>
     </message>
     <message>
-        <location filename="MainWindow.ui" line="174"/>
+        <location filename="MainWindow.ui" line="175"/>
         <source>Show Min Diameter Property</source>
         <translation>Montrer les diametres min</translation>
     </message>
     <message>
-        <location filename="MainWindow.ui" line="179"/>
+        <location filename="MainWindow.ui" line="180"/>
         <source>Import Zmx file...</source>
         <translation>Importer un fichiers ZMX...</translation>
     </message>
     <message>
-        <location filename="MainWindow.ui" line="190"/>
+        <location filename="MainWindow.ui" line="191"/>
         <source>Show Comment Property</source>
         <translation>Montrer les commentaires</translation>
     </message>
     <message>
-        <location filename="MainWindow.ui" line="195"/>
+        <location filename="MainWindow.ui" line="196"/>
         <source>Fit All</source>
         <translation>Ajuster tout</translation>
     </message>
     <message>
-        <location filename="MainWindow.ui" line="198"/>
+        <location filename="MainWindow.ui" line="199"/>
         <source>Ctrl+F</source>
         <translation>Ctrl+F</translation>
     </message>
     <message>
-        <location filename="MainWindow.ui" line="203"/>
+        <location filename="MainWindow.ui" line="204"/>
         <source>Zoom in</source>
         <translation>Agrandir</translation>
     </message>
     <message>
-        <location filename="MainWindow.ui" line="206"/>
+        <location filename="MainWindow.ui" line="207"/>
         <source>Ctrl++</source>
         <translation>Ctrl++</translation>
     </message>
     <message>
-        <location filename="MainWindow.ui" line="211"/>
+        <location filename="MainWindow.ui" line="212"/>
         <source>Zoom out</source>
         <translation>Reduire</translation>
     </message>
     <message>
-        <location filename="MainWindow.ui" line="214"/>
+        <location filename="MainWindow.ui" line="215"/>
         <source>Ctrl+-</source>
         <translation></translation>
+    </message>
+    <message>
+        <location filename="MainWindow.ui" line="220"/>
+        <source>Reload</source>
+        <translation>Recharger</translation>
     </message>
 </context>
 </TS>
