@@ -15,6 +15,9 @@ bool DeviceScaling::scale(OpticalDevice *pDevice, double dRatio, bool bScaleDiam
     if(dRatio<=0.)
         return false;
 
+    bool bConvention=pDevice->relative_convention();
+    pDevice->set_relative_convention(true);
+
     for(int iS=0;iS<pDevice->nb_surface();iS++)
     {
         if(bScaleDiameter)
@@ -34,21 +37,10 @@ bool DeviceScaling::scale(OpticalDevice *pDevice, double dRatio, bool bScaleDiam
 
         if(bScaleFocal)
         {
-            if(pDevice->relative_convention())
+            if(pDevice->is_clone(iS,THICK)==false) //always in relative convention
             {
-                if(pDevice->is_clone(iS,THICK)==false)
-                {
-                    double dTHICK=pDevice->get(iS,THICK,false);
-                    pDevice->set(iS,THICK,dTHICK*dRatio);
-                }
-            }
-            else
-            {
-                if(pDevice->is_clone(iS,Z)==false)
-                {
-                    double dZ=pDevice->get(iS,Z,false);
-                    pDevice->set(iS,Z,dZ*dRatio);
-                }
+                double dTHICK=pDevice->get(iS,THICK,false);
+                pDevice->set(iS,THICK,dTHICK*dRatio);
             }
 
             if(pDevice->is_clone(iS,RADIUS_CURVATURE)==false)
@@ -89,6 +81,7 @@ bool DeviceScaling::scale(OpticalDevice *pDevice, double dRatio, bool bScaleDiam
         }
     }
 
+    pDevice->set_relative_convention(bConvention);
     return true;
 }
 //////////////////////////////////////////////////////////////////////////////

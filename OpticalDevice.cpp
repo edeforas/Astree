@@ -551,13 +551,13 @@ void OpticalDevice::set(int iSurface,eSurfaceParameter eParam,double dParam)
         r.set_diameter(dParam);
 
     if(eParam==AUTO_DIAMETER)
-        r.set_auto_diameter(dParam);
+        r.set_auto_diameter(dParam!=0.);
 
     if(eParam==INNER_DIAMETER)
         r.set_inner_diameter(dParam);
 
     if(eParam==AUTO_INNER_DIAMETER)
-        r.set_auto_inner_diameter(dParam);
+        r.set_auto_inner_diameter(dParam!=0.);
 
     if(eParam==RADIUS_CURVATURE)
         r.set_radius_curvature(dParam);
