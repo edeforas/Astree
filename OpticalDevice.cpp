@@ -286,7 +286,7 @@ void OpticalDevice::ray_trace()
     for(unsigned int i=0;i<_surfParamsClone.size();i++)
     {
         SurfaceParameterClone& a=_surfParamsClone[i];
-        set(a.iSurface,a.param,a.dGain*get_not_raytrace(a.iRefSurface,a.param));
+        set(a.iSurface,a.param,a.dGain*get(a.iRefSurface,a.param,false));
     }
 
     // main ray tracing loop
@@ -409,7 +409,7 @@ void OpticalDevice::compute_light(Light* pLight,int iSurface,double dTilt,int iG
 //////////////////////////////////////////////////////////////////////////////
 bool OpticalDevice::compute_surface_profile(int iSurface,double dX,double dY,double& dZ)
 {
-    ray_trace(); //for the auto diameter
+    ray_trace(); //for the auto parameters
     return _vSurfaces[iSurface].compute_z(dX,dY,dZ);
 }
 //////////////////////////////////////////////////////////////////////////////
@@ -494,14 +494,11 @@ void OpticalDevice::set_nb_intermediate_angles(int iNbAngles)
     _bMustRetrace=true;
 }
 //////////////////////////////////////////////////////////////////////////////
-double OpticalDevice::get(int iSurface,eSurfaceParameter eParam)
+double OpticalDevice::get(int iSurface,eSurfaceParameter eParam,bool bUpdate)
 {
-    ray_trace();
-    return get_not_raytrace(iSurface,eParam);
-}
-//////////////////////////////////////////////////////////////////////////////
-double OpticalDevice::get_not_raytrace(int iSurface,eSurfaceParameter eParam) const
-{
+    if(bUpdate)
+        ray_trace();
+
     const Surface& r=_vSurfaces[iSurface];
 
     if(eParam==CONIC)
@@ -639,6 +636,14 @@ const map<string,string>& OpticalDevice::all_parameters() const
 // surface parameter cloning
 void OpticalDevice::set_clone(int iSurface,eSurfaceParameter eParam,int iRefSurface,double dGain)
 {
+    eSurfaceParameter eParamAlias=eParam;
+
+    // Z and THICK are same
+    if(eParam==eSurfaceParameter::THICK)
+        eParamAlias=eSurfaceParameter::Z;
+    if(eParam==eSurfaceParameter::Z)
+        eParamAlias=eSurfaceParameter::THICK;
+
     if(iRefSurface>=nb_surface())
         return;
 
@@ -646,7 +651,7 @@ void OpticalDevice::set_clone(int iSurface,eSurfaceParameter eParam,int iRefSurf
         return;
 
     for(unsigned int i=0;i<_surfParamsClone.size();i++)
-        if( (_surfParamsClone[i].iSurface==iSurface) && (_surfParamsClone[i].param==eParam) )
+        if( (_surfParamsClone[i].iSurface==iSurface) && ((_surfParamsClone[i].param==eParam)||(_surfParamsClone[i].param==eParamAlias)) )
         {
             if(iRefSurface>=0)
             {
@@ -680,8 +685,16 @@ void OpticalDevice::set_clone(int iSurface,eSurfaceParameter eParam,int iRefSurf
 //////////////////////////////////////////////////////////////////////////////
 bool OpticalDevice::get_clone(int iSurface,eSurfaceParameter eParam,int& iRefSurface,double& dGain) const
 {
+    eSurfaceParameter eParamAlias=eParam;
+
+    // Z and THICK are same
+    if(eParam==eSurfaceParameter::THICK)
+        eParamAlias=eSurfaceParameter::Z;
+    if(eParam==eSurfaceParameter::Z)
+        eParamAlias=eSurfaceParameter::THICK;
+
     for(unsigned int i=0;i<_surfParamsClone.size();i++)
-        if( (_surfParamsClone[i].iSurface==iSurface) && (_surfParamsClone[i].param==eParam) )
+        if( (_surfParamsClone[i].iSurface==iSurface) && ((_surfParamsClone[i].param==eParam)|| (_surfParamsClone[i].param==eParamAlias)) )
         {
             iRefSurface=_surfParamsClone[i].iRefSurface;
             dGain=_surfParamsClone[i].dGain;
@@ -689,5 +702,12 @@ bool OpticalDevice::get_clone(int iSurface,eSurfaceParameter eParam,int& iRefSur
         }
 
     return false;
+}
+//////////////////////////////////////////////////////////////////////////////
+bool OpticalDevice::is_clone(int iSurface,eSurfaceParameter eParam) const
+{
+    int iRefSurface;
+    double dGain;
+    return get_clone(iSurface,eParam,iRefSurface,dGain);
 }
 //////////////////////////////////////////////////////////////////////////////

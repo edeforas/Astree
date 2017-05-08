@@ -66,10 +66,11 @@ public:
 
     // surface data accessor
     void set(int iSurface,eSurfaceParameter eParam,double dParam);
-    double get(int iSurface,eSurfaceParameter eParam); //not const due to lazy computation
+    double get(int iSurface,eSurfaceParameter eParam,bool bUpdate=true); //not const due to lazy computation
 
     // surface parameter cloning
     void set_clone(int iSurface, eSurfaceParameter eParam, int iRefSurface, double dGain); //set iRefSurface=-1 to remove
+    bool is_clone(int iSurface,eSurfaceParameter eParam) const; //return false if no clone for iSurface eParam
     bool get_clone(int iSurface, eSurfaceParameter eParam, int& iRefSurface, double &dGain) const; //return false if no exist
 
     // global properties getter
@@ -119,7 +120,6 @@ private:
     void ray_trace_step(Light &light, double dTilt, bool bAutofocus, bool bAutocurvature);
     void update_z();
     void update_thicks();
-    double get_not_raytrace(int iSurface,eSurfaceParameter eParam) const;
 
     vector<double> _vdThicks;
     vector<Surface> _vSurfaces;

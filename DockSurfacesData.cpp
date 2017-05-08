@@ -244,12 +244,14 @@ void DockSurfacesData::update_table()
         if(_pOD->get_autofocus() && (i==_pOD->nb_surface()-1) )
             qsZ="auto "+qsZ;
 
+        //Manage Z or THICK in clone
         if(_pOD->get_clone(i,esp,iRefClone,dCloneGain))
         {
             qsZ="#"+QString::number(iRefClone+1)+" "+qsZ;
             if(dCloneGain<0.)
                 qsZ="-"+qsZ;
         }
+
         m_ui->twSurfacesDatas->setItem(i,3,new QTableWidgetItem(qsZ));
 
         // update diameter

@@ -10,7 +10,7 @@ class OpticalDevice;
 class DeviceScaling
 {
 public:
-    bool scale(OpticalDevice* pDevice, double dRatio, bool bScaleDiameter, bool bScaleFocal);
+    bool scale(OpticalDevice* pDevice, double dRatio, bool bScaleDiameter=true, bool bScaleFocal=true);
 };
 
 #endif

@@ -19,20 +19,43 @@ bool DeviceScaling::scale(OpticalDevice *pDevice, double dRatio, bool bScaleDiam
     {
         if(bScaleDiameter)
         {
-            double dDiameter=pDevice->get(iS,DIAMETER);
-            double dInnerDiameter=pDevice->get(iS,INNER_DIAMETER);
+            if(pDevice->is_clone(iS,DIAMETER)==false)
+            {
+                double dDiameter=pDevice->get(iS,DIAMETER,false);
+                pDevice->set(iS,DIAMETER,dDiameter*dRatio);
+            }
 
-            pDevice->set(iS,DIAMETER,dDiameter*dRatio);
-            pDevice->set(iS,INNER_DIAMETER,dInnerDiameter*dRatio);
+            if(pDevice->is_clone(iS,INNER_DIAMETER)==false)
+            {
+                double dInnerDiameter=pDevice->get(iS,INNER_DIAMETER,false);
+                pDevice->set(iS,INNER_DIAMETER,dInnerDiameter*dRatio);
+            }
         }
 
         if(bScaleFocal)
         {
-            double dZ=pDevice->get(iS,Z);
-            double dRadiusCurvature=pDevice->get(iS,RADIUS_CURVATURE);
+            if(pDevice->relative_convention())
+            {
+                if(pDevice->is_clone(iS,THICK)==false)
+                {
+                    double dTHICK=pDevice->get(iS,THICK,false);
+                    pDevice->set(iS,THICK,dTHICK*dRatio);
+                }
+            }
+            else
+            {
+                if(pDevice->is_clone(iS,Z)==false)
+                {
+                    double dZ=pDevice->get(iS,Z,false);
+                    pDevice->set(iS,Z,dZ*dRatio);
+                }
+            }
 
-            pDevice->set(iS,Z,dZ*dRatio);
-            pDevice->set(iS,RADIUS_CURVATURE,dRadiusCurvature*dRatio);
+            if(pDevice->is_clone(iS,RADIUS_CURVATURE)==false)
+            {
+                double dRadiusCurvature=pDevice->get(iS,RADIUS_CURVATURE,false);
+                pDevice->set(iS,RADIUS_CURVATURE,dRadiusCurvature*dRatio);
+            }
 
             double dRatio2=dRatio*dRatio;
             double dRatio3=dRatio2*dRatio;
@@ -40,20 +63,29 @@ bool DeviceScaling::scale(OpticalDevice *pDevice, double dRatio, bool bScaleDiam
             double dRatio7=dRatio2*dRatio5;
             double dRatio9=dRatio2*dRatio7;
 
-            double dR4=pDevice->get(iS,R4);
-            double dR6=pDevice->get(iS,R6);
-            double dR8=pDevice->get(iS,R8);
-            double dR10=pDevice->get(iS,R10);
+            if(pDevice->is_clone(iS,R4)==false)
+            {
+                double dR4=pDevice->get(iS,R4,false);
+                pDevice->set(iS,R4,dR4/dRatio3);
+            }
 
-            dR4=dR4/dRatio3;
-            dR6=dR6/dRatio5;
-            dR8=dR8/dRatio7;
-            dR10=dR10/dRatio9;
+            if(pDevice->is_clone(iS,R6)==false)
+            {
+                double dR6=pDevice->get(iS,R6,false);
+                pDevice->set(iS,R6,dR6/dRatio5);
+            }
 
-            pDevice->set(iS,R4,dR4);
-            pDevice->set(iS,R6,dR6);
-            pDevice->set(iS,R8,dR8);
-            pDevice->set(iS,R10,dR10);
+            if(pDevice->is_clone(iS,R8)==false)
+            {
+                double dR8=pDevice->get(iS,R8,false);
+                pDevice->set(iS,R8,dR8/dRatio7);
+            }
+
+            if(pDevice->is_clone(iS,R10)==false)
+            {
+                double dR10=pDevice->get(iS,R10,false);
+                pDevice->set(iS,R10,dR10/dRatio9);
+            }
         }
     }
 
