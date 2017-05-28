@@ -21,7 +21,7 @@ class Properties
 public:
     Properties();
 
-    bool save(string sFileName);
+    bool save(string sFileName) const;
     bool load(string sFileName);
 
     void set(string sKey, string sValue);
@@ -31,15 +31,15 @@ public:
     void set(string sKey, double dValue);
     void set(string sKey, const vector<double>& vdValue);
 
-    bool exist(string sKey);
+    bool exist(string sKey) const;
     void remove(string sKey);
 
-    string get(string sKey);
-    int get_int(string sKey);
-    unsigned int get_unsigned_int(string sKey);
-    bool get_bool(string sKey);
-    double get_double(string sKey);
-    vector<double> get_vector_double(string sKey);
+    string get(string sKey) const;
+    int get_int(string sKey) const;
+    unsigned int get_unsigned_int(string sKey) const;
+    bool get_bool(string sKey) const;
+    double get_double(string sKey) const;
+    vector<double> get_vector_double(string sKey) const;
 
     const map<string,string>& all() const;
 private:

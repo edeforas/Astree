@@ -56,13 +56,13 @@ void Properties::set(string sKey, const vector<double>& vdValue)
     _pairs[sKey]=ss.str();
 }
 ///////////////////////////////////////////////////////////////////////////////
-bool Properties::exist(string sKey)
+bool Properties::exist(string sKey) const
 {
-    map<string,string>::iterator it=_pairs.find(sKey);
+    auto it=_pairs.find(sKey);
     return it!=_pairs.end();
 }
 ///////////////////////////////////////////////////////////////////////////////
-string Properties::get(string sKey)
+string Properties::get(string sKey) const
 {
     auto it=_pairs.find(sKey);
     if(it!=_pairs.end())
@@ -71,7 +71,7 @@ string Properties::get(string sKey)
         return "";
 }
 ///////////////////////////////////////////////////////////////////////////////
-int Properties::get_int(string sKey)
+int Properties::get_int(string sKey) const
 {
     auto it=_pairs.find(sKey);
     if(it!=_pairs.end())
@@ -84,7 +84,7 @@ int Properties::get_int(string sKey)
         return 0;
 }
 ///////////////////////////////////////////////////////////////////////////////
-unsigned int Properties::get_unsigned_int(string sKey)
+unsigned int Properties::get_unsigned_int(string sKey) const
 {
     auto it=_pairs.find(sKey);
     if(it!=_pairs.end())
@@ -97,7 +97,7 @@ unsigned int Properties::get_unsigned_int(string sKey)
         return 0;
 }
 ///////////////////////////////////////////////////////////////////////////////
-bool Properties::get_bool(string sKey)
+bool Properties::get_bool(string sKey) const
 {
     auto it=_pairs.find(sKey);
     if(it!=_pairs.end())
@@ -107,7 +107,7 @@ bool Properties::get_bool(string sKey)
 }
 
 ///////////////////////////////////////////////////////////////////////////////
-double Properties::get_double(string sKey)
+double Properties::get_double(string sKey) const
 {
     auto it=_pairs.find(sKey);
     if(it!=_pairs.end())
@@ -120,7 +120,7 @@ double Properties::get_double(string sKey)
         return 0.;
 }
 ///////////////////////////////////////////////////////////////////////////////
-vector<double> Properties::get_vector_double(string sKey)
+vector<double> Properties::get_vector_double(string sKey) const
 {
     vector<double> vd;
 
@@ -142,7 +142,7 @@ vector<double> Properties::get_vector_double(string sKey)
     return vd;
 }
 ///////////////////////////////////////////////////////////////////////////////
-bool Properties::save(string sFileName)
+bool Properties::save(string sFileName) const
 {
     ofstream f(sFileName.c_str());
     if(!f)
