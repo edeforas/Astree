@@ -30,6 +30,9 @@ public slots:
 protected:
     virtual void changeEvent(QEvent *e);
 
+private slots:
+    void on_spNbAngles_valueChanged(int arg1);
+
 private:
     Ui::DockLightProperties *m_ui;
     OpticalDevice* _pDevice;

@@ -206,9 +206,8 @@
         <translation>Nb d&apos;angles intermédaires</translation>
     </message>
     <message>
-        <location filename="DockLightProperties.ui" line="111"/>
         <source>3</source>
-        <translation>3</translation>
+        <translation type="vanished">3</translation>
     </message>
 </context>
 <context>
@@ -219,12 +218,12 @@
         <translation>Optimiseur</translation>
     </message>
     <message>
-        <location filename="DockOptimizer.ui" line="36"/>
+        <location filename="DockOptimizer.ui" line="108"/>
         <source>Criteria</source>
         <translation>Critère</translation>
     </message>
     <message>
-        <location filename="DockOptimizer.ui" line="44"/>
+        <location filename="DockOptimizer.ui" line="116"/>
         <source>Image Center Only</source>
         <translation>Centre de l&apos;image</translation>
     </message>
@@ -233,47 +232,62 @@
         <translation type="vanished">Plutôt le centre de l&apos;image (linéaire)</translation>
     </message>
     <message>
-        <location filename="DockOptimizer.ui" line="49"/>
+        <location filename="DockOptimizer.ui" line="121"/>
         <source>Mostly Center</source>
         <translation>Surtout le centre de l&apos;image</translation>
     </message>
     <message>
-        <location filename="DockOptimizer.ui" line="54"/>
+        <location filename="DockOptimizer.ui" line="126"/>
         <source>Full Frame Mean</source>
         <translation>En moyenne sur l&apos;image</translation>
     </message>
     <message>
-        <location filename="DockOptimizer.ui" line="59"/>
+        <location filename="DockOptimizer.ui" line="131"/>
         <source>Full Frame Max</source>
         <translation>Max de l&apos;image</translation>
     </message>
     <message>
-        <location filename="DockOptimizer.ui" line="84"/>
+        <location filename="DockOptimizer.ui" line="74"/>
         <source>Refine</source>
         <translation>Affiner</translation>
     </message>
     <message>
-        <location filename="DockOptimizer.ui" line="91"/>
+        <location filename="DockOptimizer.ui" line="26"/>
+        <source>Keep vignetting over</source>
+        <translation>Vignetting minimum</translation>
+    </message>
+    <message>
+        <location filename="DockOptimizer.ui" line="33"/>
+        <source>100</source>
+        <translation>100</translation>
+    </message>
+    <message>
+        <location filename="DockOptimizer.ui" line="40"/>
+        <source>%</source>
+        <translation>%</translation>
+    </message>
+    <message>
+        <location filename="DockOptimizer.ui" line="81"/>
         <source>Optimize</source>
         <translation>Optimiser</translation>
     </message>
     <message>
-        <location filename="DockOptimizer.ui" line="107"/>
+        <location filename="DockOptimizer.ui" line="97"/>
         <source>...</source>
         <translation>...</translation>
     </message>
     <message>
-        <location filename="DockOptimizer.ui" line="118"/>
+        <location filename="DockOptimizer.ui" line="156"/>
         <source>Method</source>
         <translation>Méthode</translation>
     </message>
     <message>
-        <location filename="DockOptimizer.ui" line="126"/>
+        <location filename="DockOptimizer.ui" line="164"/>
         <source>Nelder-Mead (default)</source>
         <translation>Nelder-Mead (par défaut)</translation>
     </message>
     <message>
-        <location filename="DockOptimizer.ui" line="131"/>
+        <location filename="DockOptimizer.ui" line="169"/>
         <source>Monte-Carlo MultiScale</source>
         <translation>MonteCarlo Multi-Echelle</translation>
     </message>

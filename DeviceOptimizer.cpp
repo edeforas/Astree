@@ -11,7 +11,9 @@
 DeviceOptimizer::DeviceOptimizer():
     _pDevice(0),
     _meritFunction(eFullFrameMaxError)
-{ }
+{
+    _dMinVignetting=100.;
+}
 ////////////////////////////////////////////////////////////////////////////////
 DeviceOptimizer::~DeviceOptimizer()
 { }
@@ -26,6 +28,11 @@ void DeviceOptimizer::clear()
 void DeviceOptimizer::set_device(OpticalDevice* pDevice)
 {
     _pDevice=pDevice;
+}
+//////////////////////////////////////////////////////////////////////////////
+void DeviceOptimizer::set_min_vignetting(double dMinVignetting)
+{
+    _dMinVignetting=dMinVignetting;
 }
 //////////////////////////////////////////////////////////////////////////////
 void DeviceOptimizer::add_parameter(int iSurface,string sParameter,bool bRefine)
@@ -251,6 +258,9 @@ double DeviceOptimizer::compute_demerit()
 
         if(isnan(pQ.vdSpotvsAiry[i]))
             return SPOT_SIZE_INFINITY;
+
+        if(pQ.vdVignetting[i]<_dMinVignetting)
+            return SPOT_SIZE_INFINITY;
     }
 
     if(isnan(pQ.dAirySize))
@@ -265,7 +275,7 @@ double DeviceOptimizer::compute_demerit()
         for(int i=0;i<pQ.nb_angles();i++)
             dMeritMoy+=pQ.vdSpotSize[i];
 
-        return dMeritMoy;// / pQ.nb_angles();
+        return dMeritMoy;
     }
 
     if(_meritFunction==eMostlyCenter)

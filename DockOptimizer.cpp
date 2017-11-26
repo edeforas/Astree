@@ -14,7 +14,7 @@
 
 #define NB_PARAM_MAX 10  // TODO use a dynamic ui list
 
-/////////////////////////////////////²////////////////////////
+/////////////////////////////////////////////////////////////
 
 DockOptimizer::DockOptimizer(QWidget *parent) :
     QDockWidget(parent),
@@ -87,6 +87,9 @@ void DockOptimizer::on_pushButton_clicked()
 void DockOptimizer::optimize(bool bModeRefine)
 {
     if(_pDevice==0)
+        return;
+
+    if(_pDevice->nb_surface()==0)
         return;
 
     DeviceOptimizer* optim;
@@ -279,6 +282,11 @@ void DockOptimizer::device_changed(OpticalDevice *pDevice,int iReason)
 
             if(sOptimFunction=="MonteCarlo")
                 ui->cbMethod->setCurrentIndex(1);
+
+            // vignetting setting
+            string sMinVignetting="100.";
+            _pDevice->get_parameter("optimizer.minVignetting",sMinVignetting);
+            ui->leMinVignetting->setText(sMinVignetting.c_str());
         }
     }
 
@@ -383,5 +391,21 @@ void DockOptimizer::on_cbMethod_currentIndexChanged(int index)
 void DockOptimizer::on_pushButton_2_clicked()
 {
     optimize(true);
+}
+//////////////////////////////////////////////////////////
+void DockOptimizer::on_leMinVignetting_editingFinished()
+{
+    if(_bBlockSignals)
+        return;
+
+    //save merit function
+    double dMinVignetting=100.;
+    dMinVignetting=ui->leMinVignetting->text().toDouble();
+    if( (dMinVignetting>100.)|| (dMinVignetting<=0.))
+        dMinVignetting=100.;
+
+    _pDevice->set_parameter("optimizer.minVignetting",dMinVignetting);
+
+    static_cast<MainWindow*>(parent())->device_changed(this,OPTIMIZER_CHANGED);
 }
 //////////////////////////////////////////////////////////

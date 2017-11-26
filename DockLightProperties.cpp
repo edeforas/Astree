@@ -18,7 +18,6 @@ DockLightProperties::DockLightProperties(QWidget *parent) :
     m_ui->setupUi(this);
 
     connect(m_ui->leHalfFOV,SIGNAL(editingFinished()),this,SLOT(OnLightChange()));
-    connect(m_ui->leNbSteps,SIGNAL(editingFinished()),this,SLOT(OnLightChange()));
 
     connect(m_ui->cbIR,SIGNAL(stateChanged(int)),this,SLOT(OnLightChange()));
     connect(m_ui->cbRed,SIGNAL(stateChanged(int)),this,SLOT(OnLightChange()));
@@ -61,7 +60,7 @@ void DockLightProperties::device_changed(OpticalDevice* pDevice,int iReason)
     m_ui->leHalfFOV->setText(QString("%1").arg(dHalfFOV));
 
     int iNbStep=_pDevice->nb_intermediate_angles();
-    m_ui->leNbSteps->setText(QString("%1").arg(iNbStep));
+    m_ui->spNbAngles->setValue(iNbStep);
 
     string sLightColors=_pDevice->light_colors();
 
@@ -109,13 +108,20 @@ void DockLightProperties::OnLightChange()
 
     _pDevice->set_light_colors(sLightColors);
 
-    int iNbStep=m_ui->leNbSteps->text().toInt();
+    int iNbStep=m_ui->spNbAngles->value();
     if(iNbStep<1)
     {
         iNbStep=1;
-        m_ui->leNbSteps->setText("1");
+       m_ui->spNbAngles->setValue(1);
     }
     _pDevice->set_nb_intermediate_angles(iNbStep);
 
     static_cast<MainWindow*>(parent())->device_changed(this,OPTICAL_DEVICE_CHANGED);
+}
+
+
+void DockLightProperties::on_spNbAngles_valueChanged(int arg1)
+{
+    (void)arg1;
+    OnLightChange();
 }
