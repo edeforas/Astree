@@ -156,13 +156,15 @@ void DockOptimizer::optimize(bool bModeRefine)
     if(iCriteria==3)
         omf=eFullFrameMaxError;
 
+    optim->set_merit_function(omf);
+
+    optim->set_min_vignetting(ui->leMinVignetting->text().toDouble());
+
+    //now optimize
     setCursor(Qt::WaitCursor);
     ui->lblResult->setText("Optimizing...");
     ui->lblResult->setStyleSheet("color: black;");
     ui->lblResult->repaint();
-
-    optim->set_merit_function(omf);
-
     OptimizerResult result=optim->optimize(); //TODO, put in thread
 
     if(result==eBetterSolutionFound)
