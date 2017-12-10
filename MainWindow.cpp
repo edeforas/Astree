@@ -347,3 +347,11 @@ void MainWindow::on_actionReload_triggered()
         load_file(_sFileName);
 }
 //////////////////////////////////////////////////////////////////////////////
+void MainWindow::resizeEvent( QResizeEvent *e )
+{
+    (void)e;
+  //  MainWindow::resizeEvent(e);
+
+    _pDockScatterPlot->device_changed(_pDevice,OPTICAL_DEVICE_CHANGED);
+    _pFrameSideView->fit_in_view();
+}
