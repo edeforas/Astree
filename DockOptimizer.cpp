@@ -401,8 +401,7 @@ void DockOptimizer::on_leMinVignetting_editingFinished()
         return;
 
     //save merit function
-    double dMinVignetting=100.;
-    dMinVignetting=ui->leMinVignetting->text().toDouble();
+    double dMinVignetting=ui->leMinVignetting->text().toDouble();
     if( (dMinVignetting>100.)|| (dMinVignetting<=0.))
         dMinVignetting=100.;
 
