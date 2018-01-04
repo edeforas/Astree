@@ -3,7 +3,7 @@
 
 [Setup]
 AppName=Astree
-AppVerName=Astree 1.19
+AppVerName=Astree 1.20
 AppPublisher=Etienne de Foras
 AppPublisherURL=http://edeforas.free.fr
 AppSupportURL=http://edeforas.free.fr
@@ -24,30 +24,19 @@ Name: "quicklaunchicon"; Description: "{cm:CreateQuickLaunchIcon}"; GroupDescrip
 
 [Files]
 Source: ".\Astree.exe"; DestDir: "{app}"; Flags: ignoreversion
-Source: ".\*.h"; DestDir: "{app}\src\Astree"; Flags: ignoreversion
-Source: ".\*.cpp"; DestDir: "{app}\src\Astree"; Flags: ignoreversion
-Source: ".\Util\*.*"; DestDir: "{app}\src\Astree\Util"; Flags: ignoreversion
-Source: ".\*.pro"; DestDir: "{app}\src\Astree"; Flags: ignoreversion
-Source: ".\*.ui"; DestDir: "{app}\src\Astree"; Flags: ignoreversion
 Source: ".\*.qm"; DestDir: "{app}"; Flags: ignoreversion
-Source: ".\*.ts"; DestDir: "{app}\src\Astree"; Flags: ignoreversion
-Source: ".\*.ico"; DestDir: "{app}\src\Astree"; Flags: ignoreversion
-Source: ".\*.iss"; DestDir: "{app}\src\Astree"; Flags: ignoreversion
-Source: ".\*.qrc"; DestDir: "{app}\src\Astree"; Flags: ignoreversion
-Source: ".\*.rc"; DestDir: "{app}\src\Astree"; Flags: ignoreversion
 Source: ".\samples\telescopes\*.astree"; DestDir: "{app}\samples\telescopes"; Flags: ignoreversion
 Source: ".\samples\refractors\*.astree"; DestDir: "{app}\samples\refractors"; Flags: ignoreversion
 Source: ".\samples\others\*.astree"; DestDir: "{app}\samples\others"; Flags: ignoreversion
 Source: ".\samples\eyepieces\*.astree"; DestDir: "{app}\samples\eyepieces"; Flags: ignoreversion
-Source: ".\tests\*.*"; DestDir: "{app}\src\Astree\tests"; Flags: ignoreversion
 Source: ".\glass\*.*"; DestDir: "{app}\glass"; Flags: ignoreversion
-Source: "C:\Qt\Qt5.9.3\5.9.3\mingw53_32\bin\Qt5Core.dll"; DestDir: "{app}"
-Source: "C:\Qt\Qt5.9.3\5.9.3\mingw53_32\bin\Qt5Gui.dll"; DestDir: "{app}"
-Source: "C:\Qt\Qt5.9.3\5.9.3\mingw53_32\bin\Qt5Widgets.dll"; DestDir: "{app}"
-Source: "C:\Qt\Qt5.9.3\5.9.3\mingw53_32\bin\libstdc++-6.dll"; DestDir: "{app}"
-Source: "C:\Qt\Qt5.9.3\5.9.3\mingw53_32\bin\libgcc_s_dw2-1.dll"; DestDir: "{app}"
-Source: "C:\Qt\Qt5.9.3\5.9.3\mingw53_32\bin\libwinpthread-1.dll"; DestDir: "{app}"
-Source: "C:\Qt\Qt5.9.3\5.9.3\mingw53_32\plugins\platforms\qwindows.dll"; DestDir: "{app}\platforms"
+Source: "C:\Qt\Qt5.6.3\5.6.3\mingw49_32\bin\Qt5Core.dll"; DestDir: "{app}"
+Source: "C:\Qt\Qt5.6.3\5.6.3\mingw49_32\bin\Qt5Gui.dll"; DestDir: "{app}"
+Source: "C:\Qt\Qt5.6.3\5.6.3\mingw49_32\bin\Qt5Widgets.dll"; DestDir: "{app}"
+Source: "C:\Qt\Qt5.6.3\5.6.3\mingw49_32\bin\libstdc++-6.dll"; DestDir: "{app}"
+Source: "C:\Qt\Qt5.6.3\5.6.3\mingw49_32\bin\libgcc_s_dw2-1.dll"; DestDir: "{app}"
+Source: "C:\Qt\Qt5.6.3\5.6.3\mingw49_32\bin\libwinpthread-1.dll"; DestDir: "{app}"
+Source: "C:\Qt\Qt5.6.3\5.6.3\mingw49_32\plugins\platforms\qwindows.dll"; DestDir: "{app}\platforms"
 
 [INI]
 Filename: "{app}\Astree.url"; Section: "InternetShortcut"; Key: "URL"; String: "http://edeforas.free.fr"

@@ -5,7 +5,7 @@
 #ifndef AstreeDefines_
 #define AstreeDefines_
 
-#define ASTREE_VERSION "1.19"
+#define ASTREE_VERSION "1.20"
 
 #define SIDEVIEW_NB_POINTS_SURFACE 41
 #define SIDEVIEW_NB_POINTS_LIGHT 17
