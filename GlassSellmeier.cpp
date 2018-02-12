@@ -12,12 +12,12 @@ GlassSellmeier::GlassSellmeier()
     _sName="Sellmeier";
     _sFormula="Sellmeier";
 
-    _B1=0.;
-    _B2=0.;
-    _B3=0.;
-    _C1=0.;
-    _C2=0.;
-    _C3=0.;
+    _dB1=0.;
+    _dB2=0.;
+    _dB3=0.;
+    _dC1=0.;
+    _dC2=0.;
+    _dC3=0.;
 }
 //////////////////////////////////////////////////////////////////////////////
 Glass* GlassSellmeier::clone() const
@@ -30,28 +30,28 @@ GlassSellmeier::GlassSellmeier(const GlassSellmeier& m):
 {
     assert(m._sFormula=="Sellmeier");
 
-    _B1=m._B1;
-    _B2=m._B2;
-    _B3=m._B3;
-    _C1=m._C1;
-    _C2=m._C2;
-    _C3=m._C3;
+    _dB1=m._dB1;
+    _dB2=m._dB2;
+    _dB3=m._dB3;
+    _dC1=m._dC1;
+    _dC2=m._dC2;
+    _dC3=m._dC3;
 }
 //////////////////////////////////////////////////////////////////////////////
 double GlassSellmeier::calc_index(double dLambdaMicrons)
 {
     //use the Selmeier formulae
     double l2=dLambdaMicrons*dLambdaMicrons;
-    return sqrt( 1.+_B1*l2/(l2-_C1)+_B2*l2/(l2-_C2)+_B3*l2/(l2-_C3) );
+    return sqrt( 1.+_dB1*l2/(l2-_dC1)+_dB2*l2/(l2-_dC2)+_dB3*l2/(l2-_dC3) );
 }
 //////////////////////////////////////////////////////////////////////////////
-void GlassSellmeier::set_coefs(double B1,double B2,double B3,double C1,double C2,double C3)
+void GlassSellmeier::set_coefs(double dB1,double dB2,double dB3,double dC1,double dC2,double dC3)
 {
-    _B1=B1;
-    _B2=B2;
-    _B3=B3;
-    _C1=C1;
-    _C2=C2;
-    _C3=C3;
+    _dB1=dB1;
+    _dB2=dB2;
+    _dB3=dB3;
+    _dC1=dC1;
+    _dC2=dC2;
+    _dC3=dC3;
 }
 //////////////////////////////////////////////////////////////////////////////

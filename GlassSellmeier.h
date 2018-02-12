@@ -14,18 +14,18 @@ public:
     GlassSellmeier(const GlassSellmeier& m);
     virtual Glass* clone() const;
 
-    void set_coefs(double B1,double B2,double B3,double C1,double C2,double C3);
+    void set_coefs(double dB1,double dB2,double dB3,double dC1,double dC2,double dC3);
 
 protected:
     virtual double calc_index(double dLambdaMicrons);
 
 private:
-    double _B1;
-    double _B2;
-    double _B3;
-    double _C1;
-    double _C2;
-    double _C3;
+    double _dB1;
+    double _dB2;
+    double _dB3;
+    double _dC1;
+    double _dC2;
+    double _dC3;
 };
 
 #endif

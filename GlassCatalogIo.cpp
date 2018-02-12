@@ -42,7 +42,7 @@ bool GlassCatalogIO::load(string sFile,GlassManager& pManager)
         ::getline(f,sLine);
 
         //trim first space if any
-        unsigned int iPos=sLine.find_first_not_of(" ");
+        size_t iPos=sLine.find_first_not_of(" ");
         if(iPos!=string::npos)
             sLine=sLine.substr(iPos);
 
@@ -53,7 +53,7 @@ bool GlassCatalogIO::load(string sFile,GlassManager& pManager)
         string sVal=sLine.substr(2); // can be empty
 
         //trim first space if any
-        unsigned int iPos2=sVal.find_first_not_of(" ");
+        size_t iPos2=sVal.find_first_not_of(" ");
         if(iPos2!=string::npos)
             sVal=sVal.substr(iPos2);
 

@@ -40,7 +40,7 @@ OpticalDevice* DeviceIoZmx::import(string sFile)
         ::getline(f,sLine);
 
         //trim first space if any
-        unsigned int iPos=sLine.find_first_not_of(" ");
+        size_t iPos=sLine.find_first_not_of(" ");
         if(iPos!=string::npos)
             sLine=sLine.substr(iPos);
 
@@ -52,7 +52,7 @@ OpticalDevice* DeviceIoZmx::import(string sFile)
         string sVal=sLine.substr(4); // can be empty
 
         //trim first space if any
-        unsigned int iPos2=sVal.find_first_not_of(" ");
+        size_t iPos2=sVal.find_first_not_of(" ");
         if(iPos2!=string::npos)
             sVal=sVal.substr(iPos2);
 
@@ -126,7 +126,7 @@ OpticalDevice* DeviceIoZmx::import(string sFile)
         if(sKey=="NOTE")
         {
             string sNoteVal;
-            unsigned int iPos=sVal.find_first_of(" ");
+            auto iPos=sVal.find_first_of(" ");
             if(iPos!=string::npos)
                 sNoteVal=sVal.substr(iPos,string::npos);
 
@@ -168,7 +168,7 @@ OpticalDevice* DeviceIoZmx::import(string sFile)
         if(sKey=="GLAS")
         {
             string sFirstWord;
-            unsigned int iPos=sVal.find_first_of(" ");
+            auto iPos=sVal.find_first_of(" ");
             if(iPos!=string::npos)
                 sFirstWord=sVal.substr(0,iPos);
 

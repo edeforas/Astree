@@ -120,7 +120,7 @@ void Light::init()
     vector<int> viVisualColors;
     calc_colors(_sAllColors, vdLambda, viVisualColors);
 
-    _iNbPhotons=_iDimX*_iDimY*vdLambda.size();
+    _iNbPhotons=(int)(_iDimX*_iDimY*vdLambda.size());
     _vPhotons.resize(_iNbPhotons);
 
     int iPhoton=0;
