@@ -133,7 +133,7 @@ void FrameSideView::device_changed(OpticalDevice* pDevice, int iReason)
                 polygon1 << QPointF(viYNew1[i],viXNew1[i]);
                 polygon2 << QPointF(viYNew2[i],viXNew2[i]);
             }
-            for (int i=viX1.size()-1;i>=0;i--)
+            for (int i=(int)(viX1.size())-1;i>=0;i--)
             {
                 polygon1 << QPointF(viY1[i],viX1[i]);
                 polygon2 << QPointF(viY2[i],viX2[i]);

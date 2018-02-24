@@ -187,8 +187,8 @@ bool Properties::load(string sFileName)
         if(sLine.size()==0)
             continue;
 
-        int iPosEgal=sLine.find_first_of("=");
-        if(iPosEgal==-1)
+        size_t iPosEgal=sLine.find_first_of("=");
+        if(iPosEgal==string::npos)
             continue; //no key!
 
         //delete eventually the 13 character at the end

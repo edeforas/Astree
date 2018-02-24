@@ -13,7 +13,7 @@ DialogMediumManager::DialogMediumManager(QWidget *parent) :
     vector<string> lsM;
     GlassManager::singleton().list_available(lsM);
 
-    ui->twMedium->setRowCount(lsM.size());
+    ui->twMedium->setRowCount((int)lsM.size());
 
     QStringList qsl;
     qsl+="Maker";
