@@ -2,8 +2,8 @@
 ; SEE THE DOCUMENTATION FOR DETAILS ON CREATING INNO SETUP SCRIPT FILES!
 
 [Setup]
-AppName=Astree_vs2017
-AppVerName=Astree 1.20
+AppName=Astree
+AppVerName=Astree 1.21
 AppPublisher=Etienne de Foras
 AppPublisherURL=http://edeforas.free.fr
 AppSupportURL=http://edeforas.free.fr
@@ -31,9 +31,9 @@ Source: ".\samples\refractors\*.astree"; DestDir: "{app}\samples\refractors"; Fl
 Source: ".\samples\others\*.astree"; DestDir: "{app}\samples\others"; Flags: ignoreversion
 Source: ".\samples\eyepieces\*.astree"; DestDir: "{app}\samples\eyepieces"; Flags: ignoreversion
 Source: ".\glass\*.*"; DestDir: "{app}\glass"; Flags: ignoreversion
-Source: "C:\Qt\5.10.1\msvc2017_64\bin\Qt5Core.dll"; DestDir: "{app}"
-Source: "C:\Qt\5.10.1\msvc2017_64\bin\Qt5Gui.dll"; DestDir: "{app}"
-Source: "C:\Qt\5.10.1\msvc2017_64\bin\Qt5Widgets.dll"; DestDir: "{app}"
+Source: "C:\Qt\Qt5.11.0\5.11.0\msvc2017_64\bin\Qt5Core.dll"; DestDir: "{app}"
+Source: "C:\Qt\Qt5.11.0\5.11.0\msvc2017_64\bin\Qt5Gui.dll"; DestDir: "{app}"
+Source: "C:\Qt\Qt5.11.0\5.11.0\msvc2017_64\bin\Qt5Widgets.dll"; DestDir: "{app}"
 
 
 [INI]
