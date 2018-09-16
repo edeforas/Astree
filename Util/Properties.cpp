@@ -25,6 +25,13 @@ void Properties::set(string sKey, unsigned int uiValue)
     _pairs[sKey]=ss.str();
 }
 ///////////////////////////////////////////////////////////////////////////////
+void Properties::set(string sKey, long lValue)
+{
+    stringstream ss;
+    ss << lValue;
+
+    _pairs[sKey]=ss.str();
+}///////////////////////////////////////////////////////////////////////////////
 void Properties::set(string sKey, bool bValue)
 {
     _pairs[sKey]=bValue?"1":"0";
@@ -97,6 +104,18 @@ unsigned int Properties::get_unsigned_int(string sKey) const
         return 0;
 }
 ///////////////////////////////////////////////////////////////////////////////
+long Properties::get_long(string sKey) const
+{
+    auto it=_pairs.find(sKey);
+    if(it!=_pairs.end())
+    {
+        stringstream ss(it->second);
+        long lTmp;
+        ss >> lTmp;
+        return lTmp;
+    } else
+        return 0;
+}///////////////////////////////////////////////////////////////////////////////
 bool Properties::get_bool(string sKey) const
 {
     auto it=_pairs.find(sKey);
