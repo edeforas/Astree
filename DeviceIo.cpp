@@ -171,7 +171,7 @@ OpticalDevice* DeviceIo::load(string sFile)
             break;
 
         if(sType=="observe")
-            sType="image";
+            sType="image"; //conversion from old format
 
         pOD->insert_surface(iS);
         pOD->set_type(iS,sType);

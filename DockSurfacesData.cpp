@@ -187,6 +187,7 @@ void DockSurfacesData::update_table()
         qcbType->addItem("reflect");
         qcbType->addItem("void");
         qcbType->addItem("image");
+        qcbType->addItem("image_infinite");
         qcbType->addItem("perfect_lens");
         qcbType->addItem("perfect_mirror");
         qcbType->addItem("image");

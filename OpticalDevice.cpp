@@ -376,9 +376,13 @@ void OpticalDevice::ray_trace_step(Light& light,double dTilt,bool bAutofocus,boo
     }
 
     //finish receiving
-    _vSurfaces[nb_surface()-1].receive(light);
+    Surface& s=_vSurfaces[nb_surface()-1];
+    s.receive(light);
 
-    light.compute_spot_size();
+    if(s.type()=="image")
+        light.compute_spot_size();
+    else if(s.type()=="image_infinite")
+        light.compute_spot_size(true);
 }
 //////////////////////////////////////////////////////////////////////////////
 void OpticalDevice::set_light_grid(int iGridX,int iGridY)

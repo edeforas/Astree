@@ -207,7 +207,7 @@ double Surface::z() const
     return _z;
 }
 //////////////////////////////////////////////////////////////////////////////
-bool Surface::verify_in_surface(double dX,double dY)
+bool Surface::update_auto_diameter(double dX,double dY)
 {
     double dDiameterSq=4.*(sqr(dX)+sqr(dY));
     bool bInDiameter=(dDiameterSq<=_dDiameter2+LARGER_RADIUS_CHECK_TOLERANCIS); //TODO
@@ -250,7 +250,7 @@ void Surface::local_ref(Photon& p) const
 bool Surface::set_type(string sType)
 {
     assert(sType!="");
-    if ( (sType!="reflect") && (sType!="stop") && (sType!="image") && (sType!="transmit") && (sType!="void") && (sType!="perfect_lens") && (sType!="perfect_mirror") )
+    if ( (sType!="reflect") && (sType!="stop") && (sType!="image") && (sType!="image_infinite") && (sType!="transmit") && (sType!="void") && (sType!="perfect_lens") && (sType!="perfect_mirror") )
     {
         //test if glass exist
         bool bExist=GlassManager::singleton().exist(sType);
@@ -290,11 +290,11 @@ void Surface::receive(Light& l)
         reflect(l);
     else if (_sType=="stop")
         stop(l);
-    else if (_sType=="image")
+    else if ( ( _sType=="image" ) || ( _sType=="image_infinite") )
         stop(l);
     else if (_sType=="void")
-        ; // void surface do nothing
-    else //all glasses or "prefect_lens"
+        ; // void surface: do nothing
+    else //all glasses or "perfect_lens"
         transmit(l);
 }
 //////////////////////////////////////////////////////////////////////////////
@@ -309,15 +309,11 @@ void Surface::stop(Light& l)
             continue;
 
         local_ref(p);
-
         stop_photon(p);
         global_ref(p);
-
-        if (!p.is_valid())
-            continue;
     }
 }
-///////////////////////////////////////////////////////////////////////////////
+//////////////////////////////////////////////////////////////////////////////
 // reflect photons
 void Surface::reflect(Light& l)
 {
@@ -329,7 +325,6 @@ void Surface::reflect(Light& l)
             continue;
 
         local_ref(p);
-
         reflect_photon(p);
         global_ref(p);
     }
@@ -351,7 +346,6 @@ void Surface::transmit(Light& l)
             continue;
 
         local_ref(p);
-
         transmit_photon(p);
         global_ref(p);
     }
@@ -587,7 +581,7 @@ void Surface::stop_photon(Photon& p)
         return;
     }
 
-    // first we go on flat case (intersect with z=0)
+    // flat case (intersect with z=0)
     if (p.dz==0.)
     {
         // TODO
@@ -612,14 +606,13 @@ void Surface::stop_photon(Photon& p)
 
     if(_bIsFlat || _bIsPerfect)
     {
-        p.valid=verify_in_surface(p.x,p.y);
+        p.valid=update_auto_diameter(p.x,p.y);
         return;
     }
 
     //compute the coef of the 2nd degree eq in t:
     //the equation is t^2A+tB+C=0
-
-    // more simple with p.z=0.
+    // use p.z=0.
     double dA=_dCurvature*(sqr(p.dx)+sqr(p.dy)+(_dConic+1.)*sqr(p.dz));
     double dB=2.*(_dCurvature*(p.x*p.dx+p.y*p.dy)-p.dz);
     double dC=_dCurvature*(sqr(p.x)+sqr(p.y));
@@ -675,13 +668,13 @@ void Surface::stop_photon(Photon& p)
 
         // select t that gives the lowest abs(z)
         //t1ok=abs(z+t1.*dz)<abs(z+t2.*dz); //oct ver
-        if (t1*t1<t2*t2) // toto optimize
+        if (t1*t1<t2*t2) // todo optimize
             tfinal=t1;
         else
             tfinal=t2;
     }
 
-    // check intersection is in the futur of the photon
+    // check if intersection is in the futur of the photon
     if ( tmin+tfinal<0 )
     {
         p.valid=false;
@@ -694,7 +687,7 @@ void Surface::stop_photon(Photon& p)
 
     assert(p.is_valid());
 
-    p.valid=verify_in_surface(p.x,p.y);
+    p.valid=update_auto_diameter(p.x,p.y);
 
     if(!_bIsAspheric)
         return;
@@ -732,7 +725,7 @@ void Surface::stop_photon(Photon& p)
             p.y=y;
             p.z=z;
 
-            p.valid=verify_in_surface(p.x,p.y);
+            p.valid=update_auto_diameter(p.x,p.y);
             return;
         }
 

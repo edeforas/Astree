@@ -17,12 +17,12 @@ class Light
 public:
     Light();
     virtual ~Light();
-    vector<Photon> get_all_photons();
-    void set_nb_photons(int iNbX,int iNbY);
 
+    void set_nb_photons(int iNbX,int iNbY);
+    int nb_photon();
     Photon& get_photon(int iPos);
     const vector<Photon>& photons() const;
-    int nb_photon();
+    vector<Photon> get_all_photons();
 
     void set_tilt(double dTiltX,double dTiltY);
     void get_tilt(double& dTiltX,double& dTiltY) const;
@@ -35,7 +35,7 @@ public:
 
     void set_geometry(double dZ,double dDiameter);
 
-    void compute_spot_size();
+    void compute_spot_size(bool bInfinite=false);
 
     void get_spot_center(double& dCenterX,double& dCenterY) const;
     double spot_size() const;

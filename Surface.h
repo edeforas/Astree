@@ -77,11 +77,12 @@ public:
     string comment() const;
 
 private:
-    bool verify_in_surface(double dX,double dY);
+    bool update_auto_diameter(double dX,double dY); //and return true if point is inside diameters
     void local_ref(Photon& p) const;
     void global_ref(Photon& p) const;
 
     void stop(Light& l);
+    void stop_infinite(Light& l);
     void reflect(Light& l);
     void transmit(Light& l);
 
