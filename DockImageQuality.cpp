@@ -36,12 +36,22 @@ void DockImageQuality::device_changed(OpticalDevice* pDevice,int iReason)
     _bBlockSignals=true;
 
     ImageQuality pIQ=pDevice->get_image_quality();
+    bool bInfinite=pIQ.isImageInfinite;
     int iNbAngles=pIQ.nb_angles();
 
     QStringList qsl;
     qsl+="Angle(deg)";
-    qsl+="Dist(mm)";
-    qsl+="SpotSize(µm)";
+
+    if(bInfinite)
+       qsl+="OutAngle(deg)";
+    else
+        qsl+="Dist(mm)";
+
+    if(bInfinite)
+        qsl+="SpotSize(deg)";
+    else
+        qsl+="SpotSize(µm)";
+
     qsl+="Spot/Airy";
     qsl+="Vignetting";
 
@@ -60,7 +70,10 @@ void DockImageQuality::device_changed(OpticalDevice* pDevice,int iReason)
         QString qsDist=QString::number(dDist,'g',3);
         ui->tableWidget->setItem(i,1,new QTableWidgetItem(qsDist));
 
-        double dSpotSize=pIQ.vdSpotSize[i]*1000.; //convert to microns
+        double dSpotSize=pIQ.vdSpotSize[i];
+        if(!bInfinite)
+            dSpotSize*=1000.; //convert to microns
+
         QString qsSpotSize=QString::number(dSpotSize,'g',3);
         ui->tableWidget->setItem(i,2,new QTableWidgetItem(qsSpotSize));
 
@@ -80,12 +93,15 @@ void DockImageQuality::device_changed(OpticalDevice* pDevice,int iReason)
     //  ui->tableWidget->setAlternatingRowColors(true);
     ui->tableWidget->resizeColumnsToContents();
 
-    if(iNbAngles!=0)
+    if((iNbAngles!=0) && (!bInfinite) )
     {
         ui->lFNumber->setText(QString::number(pIQ.dFNumber,'g',3));
         ui->lFNumber->setToolTip(QString::number(pIQ.dFNumber));
 
-        ui->lAirySize->setText(QString::number(pIQ.dAirySize*1000.,'g',3)+QString(" µm"));
+        if(bInfinite)
+            ui->lAirySize->setText(QString::number(pIQ.dAirySize,'g',3)+QString(" deg"));
+        else
+            ui->lAirySize->setText(QString::number(pIQ.dAirySize*1000.,'g',3)+QString(" µm"));
     }
     else
     {

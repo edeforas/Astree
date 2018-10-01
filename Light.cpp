@@ -57,6 +57,7 @@ Light::Light()
 
     _dVignetting=-1.;
     _iNbPhotonsInitVignetting=0;
+    _bIsInfinite=false;
 
     _iDimX=0;
     _iDimY=0;
@@ -306,6 +307,11 @@ double Light::spot_size() const
     return _dSpotSize;
 }
 //////////////////////////////////////////////////////////////////////////////
+bool Light::is_image_infinite() const
+{
+    return _bIsInfinite;
+}
+//////////////////////////////////////////////////////////////////////////////
 void Light::compute_spot_size(bool bInfinite)
 {
     double dXS=0., dYS=0.;
@@ -318,6 +324,9 @@ void Light::compute_spot_size(bool bInfinite)
     double dDyCentral=0.;
     double dDzCentral=0.;
 
+    _bIsInfinite=bInfinite;
+
+    //compute bounding octogon (8 edges)
     int iNbValidPhoton=0;
     for (int i=0;i<_iNbPhotons;i++)
     {
@@ -334,10 +343,11 @@ void Light::compute_spot_size(bool bInfinite)
         }
         else
         {
+            //use intersection at focal plane
             px=p.x; py=p.y;
         }
 
-        if (iNbValidPhoton==0)
+        if (iNbValidPhoton==0) //first time tinit
         {
             dMinX=px;
             dMaxX=px;
@@ -351,11 +361,13 @@ void Light::compute_spot_size(bool bInfinite)
         }
         else
         {
+            // bounding rectangle
             dMinX=std::min(dMinX,px);
             dMaxX=std::max(dMaxX,px);
             dMinY=std::min(dMinY,py);
             dMaxY=std::max(dMaxY,py);
 
+            // bounding rotated(45deg) rectangle
             dMinXR=std::min(dMinXR,px-py);
             dMaxXR=std::max(dMaxXR,px-py);
             dMinYR=std::min(dMinYR,px+py);
@@ -378,25 +390,55 @@ void Light::compute_spot_size(bool bInfinite)
     {
         _dCenterX=0.;
         _dCenterY=0.;
-        _dSpotSize=1.e99; //TODO set to 1 or big value
-        _dFD=1.e99; //TODO set to 1 or big value
+        _dSpotSize=1.e99; //TODO set to big value
+        _dFD=1.e99; //TODO set to big value
         return;
     }
 
-    Vector3D::normalize(dDxCentral,dDyCentral,dDzCentral);
-
-    //compute cos on mean axis
-    double dMinCos=3.;
-    for (int i=0;i<_iNbPhotons;i++)
+    if(bInfinite)
+        _dFD=1.e99; //TODO set to 1 or big value
+    else
     {
-        const Photon& p=_vPhotons[i];
+        // compute F/D
 
-        if (p.is_valid()==false)
-            continue;
+        Vector3D::normalize(dDxCentral,dDyCentral,dDzCentral);
 
-        // project p on axis
-        double dCosP=p.dx*dDxCentral+p.dy*dDyCentral+p.dz*dDzCentral;
-        if(dCosP<0)
+        //compute cos on mean axis
+        double dMinCos=3.;
+        for (int i=0;i<_iNbPhotons;i++)
+        {
+            const Photon& p=_vPhotons[i];
+
+            if (p.is_valid()==false)
+                continue;
+
+            // project p on axis
+            double dCosP=p.dx*dDxCentral+p.dy*dDyCentral+p.dz*dDzCentral;
+            if(dCosP<0)
+            {
+                _dCenterX=0.;
+                _dCenterY=0.;
+                _dSpotSize=1.e99; //TODO cleaner error message
+                _dFD=1.e99; //TODO set to 1 or big value
+                return;
+            }
+
+            assert(dCosP<1.0001);
+            assert(dCosP>-0.0001);
+
+            if(dMinCos>dCosP)
+                dMinCos=dCosP;
+        }
+
+        assert(dMinCos>-0.0001);
+        assert(dMinCos<1.0001);
+
+        if(dMinCos>1.)
+            dMinCos=1.;
+
+        _dFD=0.5/tan(acos(dMinCos)); //TODO
+
+        if(_dFD<0.01) //TODO
         {
             _dCenterX=0.;
             _dCenterY=0.;
@@ -404,29 +446,6 @@ void Light::compute_spot_size(bool bInfinite)
             _dFD=1.e99; //TODO set to 1 or big value
             return;
         }
-
-        assert(dCosP<1.0001);
-        assert(dCosP>-0.0001);
-
-        if(dMinCos>dCosP)
-            dMinCos=dCosP;
-    }
-
-    assert(dMinCos>-0.0001);
-    assert(dMinCos<1.0001);
-
-    if(dMinCos>1.)
-        dMinCos=1.;
-
-    _dFD=0.5/tan(acos(dMinCos)); //TODO
-
-    if(_dFD<0.01) //TODO
-    {
-        _dCenterX=0.;
-        _dCenterY=0.;
-        _dSpotSize=1.e99; //TODO cleaner error message
-        _dFD=1.e99; //TODO set to 1 or big value
-        return;
     }
 
     _dCenterX=dXS/iNbValidPhoton;
@@ -435,6 +454,14 @@ void Light::compute_spot_size(bool bInfinite)
     _dSpotSize=std::max(dMaxX-dMinX,dMaxY-dMinY);
     double dSpotSizeRotated=std::max(dMaxXR-dMinXR,dMaxYR-dMinYR)*0.7071067811865475; //sqrt(2)/2
     _dSpotSize=std::max(_dSpotSize,dSpotSizeRotated);
+
+    if(bInfinite)
+    {
+        //convert to deg
+        _dCenterX*=180./PI;
+        _dCenterY*=180./PI;
+        _dSpotSize*=180./PI;
+    }
 
     _dVignetting=100.*(double)iNbValidPhoton/_iNbPhotonsInitVignetting;
 }

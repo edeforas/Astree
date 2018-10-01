@@ -20,6 +20,7 @@ public:
 
     double dFNumber;
     double dAirySize;
+    bool isImageInfinite;
 
 private:
     int _iNbAngles;

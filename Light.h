@@ -35,11 +35,12 @@ public:
 
     void set_geometry(double dZ,double dDiameter);
 
-    void compute_spot_size(bool bInfinite=false);
+    void compute_spot_size(bool bInfinite=false); // if bInfinite==false, compute a focal plane else compute as parallel light (like eyes)
 
     void get_spot_center(double& dCenterX,double& dCenterY) const;
     double spot_size() const;
     double get_FD() const;
+    bool is_image_infinite() const; //return true if last image is infinite (eye observer)
 
     double airy_radius() const;
     double spot_vs_airy() const;
@@ -61,10 +62,10 @@ private:
     double _dCenterX,_dCenterY,_dSpotSize;
     double _dFD;
     double _dVignetting;
+    bool _bIsInfinite;
 
     string _sAllColors;
     bool _bYellowBlack;
 };
 
 #endif
-

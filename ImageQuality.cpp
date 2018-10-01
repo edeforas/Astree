@@ -17,6 +17,7 @@ void ImageQuality::init(int iNbangles)
 
     dFNumber=-1.;
     dAirySize=-1.;
+    isImageInfinite=false;
 }
 ////////////////////////////////////////////////////////////////////////////////
 int ImageQuality::nb_angles() const

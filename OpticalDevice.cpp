@@ -292,6 +292,7 @@ void OpticalDevice::ray_trace()
     // main ray tracing loop
     Light light;
     ray_trace_step(light,0,_bAutoFocus,false);
+    _imageQuality.isImageInfinite=light.is_image_infinite();
 
     //get quality result
     double dCenterX,dCenterY;
