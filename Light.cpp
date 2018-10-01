@@ -338,8 +338,8 @@ void Light::compute_spot_size(bool bInfinite)
         if(bInfinite)
         {
             //compute the x and y angle in rad, store in px, py
-            px=atan2(p.x,p.z);
-            py=atan2(p.y,p.z);
+            px=atan2(p.dx,p.dz);
+            py=atan2(p.dy,p.dz);
         }
         else
         {
