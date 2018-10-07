@@ -478,7 +478,10 @@ double Light::spot_vs_airy() const
 //////////////////////////////////////////////////////////////////////////////
 double Light::airy_radius() const
 {
-    return 1.22*get_FD()*(LAMBDA_YELLOW)*1.e-3; // use yellow light
+    if(is_image_infinite())
+        return 0.02; // in deg ; for now ;  https://en.wikipedia.org/wiki/Naked_eye
+    else
+        return 1.22*get_FD()*(LAMBDA_YELLOW)*1.e-3; // use yellow light
 }
 //////////////////////////////////////////////////////////////////////////////
 double Light::vignetting() const

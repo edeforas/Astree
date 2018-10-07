@@ -27,6 +27,7 @@ Source: ".\samples\telescopes\*.astree"; DestDir: "{app}\samples\telescopes"; Fl
 Source: ".\samples\refractors\*.astree"; DestDir: "{app}\samples\refractors"; Flags: ignoreversion
 Source: ".\samples\others\*.astree"; DestDir: "{app}\samples\others"; Flags: ignoreversion
 Source: ".\samples\eyepieces\*.astree"; DestDir: "{app}\samples\eyepieces"; Flags: ignoreversion
+Source: ".\samples\afocal\*.astree"; DestDir: "{app}\samples\eyepieces"; Flags: ignoreversion
 Source: ".\glass\*.*"; DestDir: "{app}\glass"; Flags: ignoreversion
 Source: "C:\Qt\Qt5.11.0\5.11.0\msvc2017_64\bin\Qt5Core.dll"; DestDir: "{app}"
 Source: "C:\Qt\Qt5.11.0\5.11.0\msvc2017_64\bin\Qt5Gui.dll"; DestDir: "{app}"

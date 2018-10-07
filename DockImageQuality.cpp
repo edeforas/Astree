@@ -52,7 +52,12 @@ void DockImageQuality::device_changed(OpticalDevice* pDevice,int iReason)
     else
         qsl+="SpotSize(µm)";
 
-    qsl+="Spot/Airy";
+
+    if(bInfinite)
+        qsl+="Spot/EyeLimit";
+    else
+        qsl+="Spot/Airy";
+
     qsl+="Vignetting";
 
     ui->tableWidget->clearContents();
