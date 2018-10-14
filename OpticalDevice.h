@@ -77,6 +77,7 @@ public:
     bool has_aspheric() const;
     bool has_inner_diameter() const;
     bool has_auto() const;
+    bool is_image_infinite() const;
 
     // z settings
     void set_relative_convention(bool bRelativeConvention);
@@ -134,6 +135,7 @@ private:
     int _iNbAngles;
     string _sLightColors;
     bool _bMustRetrace;
+
     ImageQuality _imageQuality;
 
     // other parameters

@@ -40,7 +40,10 @@ public:
     void get_spot_center(double& dCenterX,double& dCenterY) const;
     double spot_size() const;
     double get_FD() const;
+    void set_image_infinite(bool bInfinite);
     bool is_image_infinite() const; //return true if last image is infinite (eye observer)
+
+    bool is_valid() const;
 
     double airy_radius() const;
     double spot_vs_airy() const;
@@ -63,6 +66,7 @@ private:
     double _dFD;
     double _dVignetting;
     bool _bIsInfinite;
+    bool _bIsValid;
 
     string _sAllColors;
     bool _bYellowBlack;

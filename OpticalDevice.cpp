@@ -318,6 +318,7 @@ void OpticalDevice::ray_trace()
         _imageQuality.vdVignetting[_iNbAngles-1]=light.vignetting();
         _imageQuality.vdSpotSize[_iNbAngles-1]=light.spot_size();
         _imageQuality.vdSpotvsAiry[_iNbAngles-1]=light.spot_vs_airy();
+        _imageQuality.isImageInfinite=is_image_infinite();
     }
 
     for(int iStep=1;iStep<_iNbAngles-1;iStep++)
@@ -380,10 +381,7 @@ void OpticalDevice::ray_trace_step(Light& light,double dTilt,bool bAutofocus,boo
     Surface& s=_vSurfaces[nb_surface()-1];
     s.receive(light);
 
-    if(s.type()=="image")
-        light.compute_spot_size();
-    else if(s.type()=="image_infinite")
-        light.compute_spot_size(true);
+    light.compute_spot_size(is_image_infinite());
 }
 //////////////////////////////////////////////////////////////////////////////
 void OpticalDevice::set_light_grid(int iGridX,int iGridY)
@@ -410,7 +408,7 @@ void OpticalDevice::compute_light(Light* pLight,int iSurface,double dTilt,int iG
     }
 
     //finish computing quality
-    pLight->compute_spot_size();
+    pLight->compute_spot_size(is_image_infinite());
 }
 //////////////////////////////////////////////////////////////////////////////
 bool OpticalDevice::compute_surface_profile(int iSurface,double dX,double dY,double& dZ)
@@ -715,5 +713,16 @@ bool OpticalDevice::is_clone(int iSurface,eSurfaceParameter eParam) const
     int iRefSurface;
     double dGain;
     return get_clone(iSurface,eParam,iRefSurface,dGain);
+}
+//////////////////////////////////////////////////////////////////////////////
+bool OpticalDevice::is_image_infinite() const
+{
+    for(int i=0;i<nb_surface();i++)
+    {
+        if(_vSurfaces[i].type()=="image_infinite")
+            return true;
+    }
+
+    return false;
 }
 //////////////////////////////////////////////////////////////////////////////

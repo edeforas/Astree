@@ -175,7 +175,18 @@ void DockScatterPlot::device_changed(OpticalDevice* pDevice, int iReason)
     QGraphicsScene* scene=m_ui->graphicsView->scene();
     scene->clear();
 
-    if (pDevice->nb_surface()==0)
+    Light light;
+    double dTiltDegree=dPercentField*pDevice->half_field_of_view()/100.;
+    pDevice->compute_light(&light,pDevice->nb_surface()-1, dTiltDegree,NB_POINTS_SCATTER_PLOT,NB_POINTS_SCATTER_PLOT);    
+    bool bIsInfinite=light.is_image_infinite();
+    bool bIsValid=light.is_valid();
+    double dPsfDiameter=light.spot_size();
+    double dCenterX,dCenterY;
+    double dPerfectAiryRadius=light.airy_radius();
+    double dLfro=light.spot_vs_airy();
+    double dFD=light.get_FD();
+
+    if( (pDevice->nb_surface()==0) || (!bIsValid) )
     {
         m_ui->hsImageFieldPos->setValue(0);
         m_ui->qlPsfDiameter->setText("n/a");
@@ -187,10 +198,7 @@ void DockScatterPlot::device_changed(OpticalDevice* pDevice, int iReason)
         return;
     }
 
-    Light light;
-    double dTiltDegree=dPercentField*pDevice->half_field_of_view()/100.;
-    pDevice->compute_light(&light,pDevice->nb_surface()-1, dTiltDegree,NB_POINTS_SCATTER_PLOT,NB_POINTS_SCATTER_PLOT);
-
+    //draw photons scatter plot
     ScatterPlot* sp=new ScatterPlot;
     sp->setZValue(10);
     int iNbPhoton=light.nb_photon();
@@ -209,14 +217,13 @@ void DockScatterPlot::device_changed(OpticalDevice* pDevice, int iReason)
         }
     }
 
-    double dFD=light.get_FD();
-    if(dFD>=FD_VALID_MAX)
-    {
-        m_ui->qlPsfDiameter->setText("n/a");
-        m_ui->qlFD->setText("inf");
-        m_ui->qlPerfectAiry->setText("inf");
-        m_ui->qlLFro->setText("inf");
-
+  //  if(dFD==1.e99)
+  //  {
+  //      m_ui->qlPsfDiameter->setText("n/a");
+   //     m_ui->qlFD->setText("inf");
+  //      m_ui->qlPerfectAiry->setText("inf");
+  //      m_ui->qlLFro->setText("inf");
+/*
         QRectF rsp=sp->boundingRect();
         enlarge(rsp,1.1);
         scene->addItem(sp);
@@ -226,11 +233,29 @@ void DockScatterPlot::device_changed(OpticalDevice* pDevice, int iReason)
         _bBlockSignals=false;
         return;
     }
+*/
 
-    double dCenterX,dCenterY;
-    double dPsfDiameter=light.spot_size();
-    double dPerfectAiryRadius=light.airy_radius();
-    double dLfro=light.spot_vs_airy();
+    if(bIsInfinite)
+    {
+        m_ui->qlPsfDiameter->setText(QString::number(dPsfDiameter,'g',3)+" deg");
+        m_ui->qlFD->setText("n/a");
+        m_ui->qlFD->setToolTip("Non applicable in infinite_image mode");
+        m_ui->qlPerfectAiry->setText(QString::number(dPerfectAiryRadius*2,'g',3)+" deg");
+        m_ui->qlLFro->setText(QString::number(dLfro,'g',3));
+        m_ui->qlVignetting->setText(QString::number(light.vignetting(),'f',1)+" %");
+    }
+    else
+    {
+        m_ui->qlPsfDiameter->setText(QString::number(dPsfDiameter*1000.,'g',3)+" µm");
+        m_ui->qlFD->setText(QString::number(dFD,'g',3));
+        m_ui->qlFD->setToolTip(QString::number(dFD));
+        m_ui->qlPerfectAiry->setText(QString::number(dPerfectAiryRadius*2.*1000.,'g',3)+" µm");
+        m_ui->qlLFro->setText(QString::number(dLfro,'g',3));
+        m_ui->qlVignetting->setText(QString::number(light.vignetting(),'f',1)+" %");
+    }
+
+
+    //draw bounding circle
     light.get_spot_center(dCenterY,dCenterX);
     dCenterX=-dCenterX;
 
@@ -247,15 +272,6 @@ void DockScatterPlot::device_changed(OpticalDevice* pDevice, int iReason)
 
     scene->setSceneRect(rtotal);
     m_ui->graphicsView->fitInView(rtotal,Qt::KeepAspectRatio);
-
-    m_ui->qlPsfDiameter->setText(QString::number(dPsfDiameter*1000.,'g',3)+" µm");
-    m_ui->qlFD->setText(QString::number(dFD,'g',3));
-    m_ui->qlFD->setToolTip(QString::number(dFD));
-
-    m_ui->qlPerfectAiry->setText(QString::number(dPerfectAiryRadius*2.*1000.,'g',3)+" µm");
-    m_ui->qlLFro->setText(QString::number(dLfro,'g',3));
-
-    m_ui->qlVignetting->setText(QString::number(light.vignetting(),'f',1)+" %");
 
     _bBlockSignals=false;
 }

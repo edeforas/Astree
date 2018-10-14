@@ -47,7 +47,7 @@ Light::Light()
 
     _dDiameter=0.;
     _dZ=0.;
-    _dFD=0.;
+    _dFD=1.e99;
 
     _bMustInit=true;
     _bYellowBlack=false;
@@ -58,6 +58,7 @@ Light::Light()
     _dVignetting=-1.;
     _iNbPhotonsInitVignetting=0;
     _bIsInfinite=false;
+    _bIsValid=false;
 
     _iDimX=0;
     _iDimY=0;
@@ -169,6 +170,9 @@ void Light::init()
     GlassManager::singleton().destroy(_pFirstMaterial);
     _pFirstMaterial=GlassManager::singleton().create("Air");
     _pMaterial=_pFirstMaterial;
+    _bIsInfinite=false;
+    _bIsValid=true;
+
     _bMustInit=false;
 }
 //////////////////////////////////////////////////////////////////////////////
@@ -307,12 +311,18 @@ double Light::spot_size() const
     return _dSpotSize;
 }
 //////////////////////////////////////////////////////////////////////////////
+void Light::set_image_infinite(bool bInfinite)
+{
+    (void)bInfinite;
+     //_bIsInfinite=bInfinite;
+}
+//////////////////////////////////////////////////////////////////////////////
 bool Light::is_image_infinite() const
 {
     return _bIsInfinite;
 }
 //////////////////////////////////////////////////////////////////////////////
-void Light::compute_spot_size(bool bInfinite)
+void Light::compute_spot_size(bool bInfinite) //todo remove bInfinite flag here
 {
     double dXS=0., dYS=0.;
     double dMinX=0.,dMaxX=0.,dMinY=0.,dMaxY=0.;
@@ -388,15 +398,16 @@ void Light::compute_spot_size(bool bInfinite)
 
     if(iNbValidPhoton==0)
     {
+        _bIsValid=false;
         _dCenterX=0.;
         _dCenterY=0.;
-        _dSpotSize=1.e99; //TODO set to big value
-        _dFD=1.e99; //TODO set to big value
+        _dSpotSize=1.e99;
+        _dFD=1.e99;
         return;
     }
 
     if(bInfinite)
-        _dFD=1.e99; //TODO set to 1 or big value
+        _dFD=1.e99;
     else
     {
         // compute F/D
@@ -416,10 +427,11 @@ void Light::compute_spot_size(bool bInfinite)
             double dCosP=p.dx*dDxCentral+p.dy*dDyCentral+p.dz*dDzCentral;
             if(dCosP<0)
             {
+                _bIsValid=false;
                 _dCenterX=0.;
                 _dCenterY=0.;
-                _dSpotSize=1.e99; //TODO cleaner error message
-                _dFD=1.e99; //TODO set to 1 or big value
+                _dSpotSize=1.e99;
+                _dFD=1.e99;
                 return;
             }
 
@@ -440,10 +452,11 @@ void Light::compute_spot_size(bool bInfinite)
 
         if(_dFD<0.01) //TODO
         {
+            _bIsValid=false;
             _dCenterX=0.;
             _dCenterY=0.;
-            _dSpotSize=1.e99; //TODO cleaner error message
-            _dFD=1.e99; //TODO set to 1 or big value
+            _dSpotSize=1.e99;
+            _dFD=1.e99;
             return;
         }
     }
@@ -464,6 +477,7 @@ void Light::compute_spot_size(bool bInfinite)
     }
 
     _dVignetting=100.*(double)iNbValidPhoton/_iNbPhotonsInitVignetting;
+    _bIsValid=true;
 }
 //////////////////////////////////////////////////////////////////////////////
 double Light::get_FD() const
@@ -498,3 +512,9 @@ void Light::init_vignetting()
             _iNbPhotonsInitVignetting++;
 }
 //////////////////////////////////////////////////////////////////////////////
+bool Light::is_valid() const
+{
+    return _bIsValid;
+}
+//////////////////////////////////////////////////////////////////////////////
+

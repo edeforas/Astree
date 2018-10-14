@@ -98,7 +98,7 @@ void DockImageQuality::device_changed(OpticalDevice* pDevice,int iReason)
     //  ui->tableWidget->setAlternatingRowColors(true);
     ui->tableWidget->resizeColumnsToContents();
 
-    if((iNbAngles!=0) && (!bInfinite) )
+    if( iNbAngles!=0 )
     {
         ui->lFNumber->setText(QString::number(pIQ.dFNumber,'g',3));
         ui->lFNumber->setToolTip(QString::number(pIQ.dFNumber));
