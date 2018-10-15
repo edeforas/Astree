@@ -25,11 +25,11 @@
 5.radius_curvature=inf
 5.thick=8
 5.type=Air
-6.diameter=10.69829401
+6.diameter=10.60445316
 6.diameter.auto=1
-6.radius_curvature=100
+6.radius_curvature=inf
 6.thick=0
-6.type=image
+6.type=image_infinite
 device.note=Ramsden eyepiece
 device.note=
 device.note=frome the website:
