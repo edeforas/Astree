@@ -322,7 +322,7 @@ void Light::compute_spot_size(bool bInfinite) //todo remove bInfinite flag here
     double dMinX=0.,dMaxX=0.,dMinY=0.,dMaxY=0.;
     double dMinXR=0.,dMaxXR=0.,dMinYR=0.,dMaxYR=0.; //rotated 45deg
 
-    double px,py;//,pz;
+    double px,py;
 
     double dDxCentral=0.;
     double dDyCentral=0.;
@@ -434,8 +434,11 @@ void Light::compute_spot_size(bool bInfinite) //todo remove bInfinite flag here
                 return;
             }
 
-            assert(dCosP<1.0001);
-            assert(dCosP>-0.0001);
+            if(dCosP>=1.0001)
+                dCosP=1.; //doubt ?
+
+            if(dCosP<0.)
+                dCosP=0.; //doubt?
 
             if(dMinCos>dCosP)
                 dMinCos=dCosP;
@@ -443,9 +446,6 @@ void Light::compute_spot_size(bool bInfinite) //todo remove bInfinite flag here
 
         assert(dMinCos>-0.0001);
         assert(dMinCos<1.0001);
-
-        if(dMinCos>1.)
-            dMinCos=1.;
 
         _dFD=0.5/tan(acos(dMinCos)); //TODO
 
@@ -497,6 +497,7 @@ double Light::vignetting() const
 void Light::init_vignetting()
 {
     _iNbPhotonsInitVignetting=0;
+
 
     for (int i=0;i<_iNbPhotons;i++)
         if (_vPhotons[i].is_valid())
