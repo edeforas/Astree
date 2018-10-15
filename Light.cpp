@@ -311,12 +311,6 @@ double Light::spot_size() const
     return _dSpotSize;
 }
 //////////////////////////////////////////////////////////////////////////////
-void Light::set_image_infinite(bool bInfinite)
-{
-    (void)bInfinite;
-     //_bIsInfinite=bInfinite;
-}
-//////////////////////////////////////////////////////////////////////////////
 bool Light::is_image_infinite() const
 {
     return _bIsInfinite;
@@ -340,16 +334,19 @@ void Light::compute_spot_size(bool bInfinite) //todo remove bInfinite flag here
     int iNbValidPhoton=0;
     for (int i=0;i<_iNbPhotons;i++)
     {
-        const Photon& p=_vPhotons[i];
+        Photon& p=_vPhotons[i];
 
         if (p.is_valid()==false)
             continue;
 
         if(bInfinite)
         {
-            //compute the x and y angle in rad, store in px, py
-            px=atan2(p.dx,p.dz);
-            py=atan2(p.dy,p.dz);
+            //compute the x and y angle in deg, store in px, py
+            px=atan2(p.dx,p.dz)*180./PI;
+            py=atan2(p.dy,p.dz)*180./PI;
+
+            p.anglex=px;
+            p.angley=py;
         }
         else
         {
@@ -387,11 +384,14 @@ void Light::compute_spot_size(bool bInfinite) //todo remove bInfinite flag here
         dXS+=px;
         dYS+=py;
 
-        double pdx=p.dx,pdy=p.dy, pdz=p.dz;
-        Vector3D::normalize(pdx,pdy,pdz); //TODO remove using mean axis(max,min)
-        dDxCentral+=pdx;
-        dDyCentral+=pdy;
-        dDzCentral+=pdz;
+        if(!bInfinite)
+        {
+            double pdx=p.dx,pdy=p.dy, pdz=p.dz;
+            Vector3D::normalize(pdx,pdy,pdz); //TODO remove using mean axis(max,min)
+            dDxCentral+=pdx;
+            dDyCentral+=pdy;
+            dDzCentral+=pdz;
+        }
 
         iNbValidPhoton++;
     }
@@ -411,7 +411,6 @@ void Light::compute_spot_size(bool bInfinite) //todo remove bInfinite flag here
     else
     {
         // compute F/D
-
         Vector3D::normalize(dDxCentral,dDyCentral,dDzCentral);
 
         //compute cos on mean axis
@@ -467,14 +466,6 @@ void Light::compute_spot_size(bool bInfinite) //todo remove bInfinite flag here
     _dSpotSize=std::max(dMaxX-dMinX,dMaxY-dMinY);
     double dSpotSizeRotated=std::max(dMaxXR-dMinXR,dMaxYR-dMinYR)*0.7071067811865475; //sqrt(2)/2
     _dSpotSize=std::max(_dSpotSize,dSpotSizeRotated);
-
-    if(bInfinite)
-    {
-        //convert to deg
-        _dCenterX*=180./PI;
-        _dCenterY*=180./PI;
-        _dSpotSize*=180./PI;
-    }
 
     _dVignetting=100.*(double)iNbValidPhoton/_iNbPhotonsInitVignetting;
     _bIsValid=true;

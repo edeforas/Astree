@@ -40,7 +40,7 @@ public:
     void get_spot_center(double& dCenterX,double& dCenterY) const;
     double spot_size() const;
     double get_FD() const;
-    void set_image_infinite(bool bInfinite);
+
     bool is_image_infinite() const; //return true if last image is infinite (eye observer)
 
     bool is_valid() const;

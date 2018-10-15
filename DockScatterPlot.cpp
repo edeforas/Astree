@@ -177,7 +177,7 @@ void DockScatterPlot::device_changed(OpticalDevice* pDevice, int iReason)
 
     Light light;
     double dTiltDegree=dPercentField*pDevice->half_field_of_view()/100.;
-    pDevice->compute_light(&light,pDevice->nb_surface()-1, dTiltDegree,NB_POINTS_SCATTER_PLOT,NB_POINTS_SCATTER_PLOT);    
+    pDevice->compute_light(&light,pDevice->nb_surface()-1, dTiltDegree,NB_POINTS_SCATTER_PLOT,NB_POINTS_SCATTER_PLOT);
     bool bIsInfinite=light.is_image_infinite();
     bool bIsValid=light.is_valid();
     double dPsfDiameter=light.spot_size();
@@ -207,33 +207,25 @@ void DockScatterPlot::device_changed(OpticalDevice* pDevice, int iReason)
         Photon& rP=light.get_photon(i);
         if (rP.is_valid())
         {
-            double dX=rP.x;
-            double dY=rP.y;
+            double dX,dY;
+
+            if(bIsInfinite)
+            {
+                dX=rP.anglex;
+                dY=rP.angley;
+                sp->addPoint(-dY,dX,light.get_visual_color(rP.lambda()));
+            }
+            else
+            {
+                dX=rP.x;
+                dY=rP.y;
+                sp->addPoint(-dY,dX,light.get_visual_color(rP.lambda()));
+            }
 
             assert(!isnan(dX));
             assert(!isnan(dY));
-
-            sp->addPoint(-dY,dX,light.get_visual_color(rP.lambda()));
         }
     }
-
-  //  if(dFD==1.e99)
-  //  {
-  //      m_ui->qlPsfDiameter->setText("n/a");
-   //     m_ui->qlFD->setText("inf");
-  //      m_ui->qlPerfectAiry->setText("inf");
-  //      m_ui->qlLFro->setText("inf");
-/*
-        QRectF rsp=sp->boundingRect();
-        enlarge(rsp,1.1);
-        scene->addItem(sp);
-        scene->setSceneRect(rsp);
-        m_ui->graphicsView->fitInView(rsp,Qt::KeepAspectRatio);
-
-        _bBlockSignals=false;
-        return;
-    }
-*/
 
     if(bIsInfinite)
     {
@@ -275,7 +267,7 @@ void DockScatterPlot::device_changed(OpticalDevice* pDevice, int iReason)
 
     _bBlockSignals=false;
 }
-
+///////////////////////////////////////////////////////////////////////////////
 void DockScatterPlot::on_pushButton_clicked()
 {
     m_ui->hsImageFieldPos->setValue(0);

@@ -14,6 +14,7 @@ public:
     double lambda() const;
     double x,y,z;
     double dx,dy,dz;
+    double anglex,angley;
 
     bool valid;
 

@@ -18,6 +18,9 @@ Photon::Photon()
     dy=0.;
     dz=0.;
 
+    anglex=0.;
+    angley=0.;
+
     _lambda=0.;
 
     valid=false;

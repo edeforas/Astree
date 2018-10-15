@@ -288,18 +288,8 @@ void Surface::receive(Light& l)
     assert(_sType!="");
     if( (_sType=="reflect") || (_sType=="perfect_mirror") )
         reflect(l);
-    else if (_sType=="stop")
+    else if( (_sType=="stop") || ( _sType=="image" )|| ( _sType=="image_infinite" ) )
         stop(l);
-    else if ( _sType=="image" )
-    {
-        stop(l);
-        l.set_image_infinite(false);
-    }
-    else if ( _sType=="image_infinite" )
-    {
-        stop(l);
-        l.set_image_infinite(true);
-    }
     else if (_sType=="void")
         ; // void surface: do nothing
     else //all glasses or "perfect_lens"
