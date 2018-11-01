@@ -37,7 +37,8 @@ SOURCES += main.cpp \
     Util/FileUtil.cpp \
     Glass.cpp \
     GlassManager.cpp \
-    GlassSellmeier.cpp
+    GlassSellmeier.cpp \
+    GlassExtended2.cpp
 	
 HEADERS += MainWindow.h \
     DockLightProperties.h \
@@ -64,6 +65,7 @@ HEADERS += MainWindow.h \
     GlassCatalogIo.h \
     Glass.h \
     GlassSellmeier.h \
+    GlassExtended2.h \
     Vector3D.h
 
 FORMS += MainWindow.ui \
