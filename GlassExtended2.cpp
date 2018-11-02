@@ -6,6 +6,8 @@
 #include <cmath>
 #include <cassert>
 
+// glass definition as in the https://github.com/nzhagen/zemaxglass
+
 //////////////////////////////////////////////////////////////////////////////
 GlassExtended2::GlassExtended2()
 {

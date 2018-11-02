@@ -7,7 +7,7 @@
 
 #include "Glass.h"
 
-// glass definition as in the pdf ZemaxGlass_user_manual.pdf
+// glass definition as in the https://github.com/nzhagen/zemaxglass
 
 class GlassExtended2 : public Glass
 {

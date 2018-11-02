@@ -14,7 +14,7 @@ using namespace std;
 
 namespace Ui
 {
-    class MainWindowClass;
+class MainWindowClass;
 }
 
 class OpticalDevice;
@@ -47,6 +47,7 @@ protected:
     virtual void resizeEvent( QResizeEvent *e );
 
 private:
+    void glass_dialog(bool bSelect);
     Ui::MainWindowClass *ui;
 
 private slots:

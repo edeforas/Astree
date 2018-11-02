@@ -7,6 +7,9 @@
 
 #include <QDockWidget>
 
+#include <string>
+using namespace std;
+
 namespace Ui
 {
 class DockSurfacesData;
@@ -25,6 +28,7 @@ public:
     virtual ~DockSurfacesData();
 
     void device_changed(OpticalDevice* pDevice, int iReason);
+    int selected_surface() const;
 
 protected:
     virtual void changeEvent(QEvent *e);

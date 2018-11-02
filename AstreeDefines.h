@@ -19,5 +19,5 @@
 #define USER_INTERFACE_CHANGED 5
 #define LIGHT_OFF_AXIS_CHANGED 6
 #define OPTIMIZER_CHANGED 6
-
+#define CHANGE_GLASS 7 //launch glass manager
 #endif

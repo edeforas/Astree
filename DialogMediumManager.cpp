@@ -4,7 +4,8 @@
 #include "GlassManager.h"
 #include "Glass.h"
 
-DialogMediumManager::DialogMediumManager(QWidget *parent) :
+//////////////////////////////////////////////////////////////////////
+DialogMediumManager::DialogMediumManager(QWidget *parent, string sGlass) :
     QDialog(parent),
     ui(new Ui::DialogMediumManager)
 {
@@ -27,6 +28,8 @@ DialogMediumManager::DialogMediumManager(QWidget *parent) :
     ui->twMedium->setColumnCount(qsl.size());
     ui->twMedium->setHorizontalHeaderLabels (qsl);
 
+    int iPosGlass=-1;
+
     for(int i=0;i<(int)lsM.size();i++)
     {
         Glass* m=GlassManager::singleton().create(lsM[i]);
@@ -36,6 +39,9 @@ DialogMediumManager::DialogMediumManager(QWidget *parent) :
 
         QTableWidgetItem* qwname=new QTableWidgetItem(m->name().c_str());
         ui->twMedium->setItem(i,1,qwname);
+
+        if(sGlass==m->name())
+            iPosGlass=i;
 
         QTableWidgetItem* qwformula=new QTableWidgetItem(m->formula().c_str());
         ui->twMedium->setItem(i,2,qwformula);
@@ -58,14 +64,45 @@ DialogMediumManager::DialogMediumManager(QWidget *parent) :
 
         delete m;
     }
-}
 
+    if(iPosGlass!=-1)
+    {
+        ui->twMedium->setCurrentCell(iPosGlass,1);
+        ui->btnOk->hide();
+    }
+    else
+    {
+        ui->btnSelect->hide();
+        ui->btnCancel->hide();
+    }
+}
+//////////////////////////////////////////////////////////////////////
 DialogMediumManager::~DialogMediumManager()
 {
     delete ui;
 }
-
-void DialogMediumManager::on_pushButton_3_clicked()
+//////////////////////////////////////////////////////////////////////
+string DialogMediumManager::selected_glass() const
 {
+    return _sSelectedGlass;
+}
+//////////////////////////////////////////////////////////////////////
+void DialogMediumManager::on_btnSelect_clicked()
+{
+    int iRow=ui->twMedium->currentRow();
+    _sSelectedGlass=ui->twMedium->item(iRow,1)->text().toStdString();
+
     accept();
 }
+//////////////////////////////////////////////////////////////////////
+void DialogMediumManager::on_btnCancel_clicked()
+{
+    reject();
+}
+//////////////////////////////////////////////////////////////////////
+void DialogMediumManager::on_btnOk_clicked()
+{
+    _sSelectedGlass="";
+    accept();
+}
+//////////////////////////////////////////////////////////////////////

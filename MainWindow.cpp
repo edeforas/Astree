@@ -258,6 +258,9 @@ void MainWindow::device_changed(void* pSender,int iReason,bool bMustSave)
         _pDockOptimizer->device_changed(_pDevice,iReason);
     }
 
+    if(iReason==CHANGE_GLASS)
+        glass_dialog(true);
+
     //update title
     string sTitle="Astree";
     if(!_sFileName.empty())
@@ -269,10 +272,30 @@ void MainWindow::device_changed(void* pSender,int iReason,bool bMustSave)
     setWindowTitle(QString(sTitle.c_str()));
 }
 //////////////////////////////////////////////////////////////////////////////
+void MainWindow::glass_dialog(bool bSelect)
+{
+    int iSurf=_pDockSurfacesData->selected_surface();
+    string sGlass;
+
+    if(bSelect)
+        sGlass=_pDevice->type(iSurf);
+
+    DialogMediumManager mm(this,sGlass);
+    if(mm.exec()!=QDialog::Accepted)
+        return;
+
+    string sSelectedGlass=mm.selected_glass();
+
+    if( (!sSelectedGlass.empty()) && bSelect)
+    {
+        _pDevice->set_type(iSurf,sSelectedGlass);
+        device_changed(0,OPTICAL_DEVICE_CHANGED);
+    }
+}
+//////////////////////////////////////////////////////////////////////////////
 void MainWindow::on_actionMedium_Manager_triggered()
 {
-    DialogMediumManager mm(this);
-    mm.exec();
+    glass_dialog(false);
 }
 //////////////////////////////////////////////////////////////////////////////
 void MainWindow::on_actionScal_device_triggered()
@@ -350,7 +373,7 @@ void MainWindow::on_actionReload_triggered()
 void MainWindow::resizeEvent( QResizeEvent *e )
 {
     (void)e;
-  //  MainWindow::resizeEvent(e);
+    //  MainWindow::resizeEvent(e);
 
     _pDockScatterPlot->device_changed(_pDevice,OPTICAL_DEVICE_CHANGED);
     _pFrameSideView->fit_in_view();
