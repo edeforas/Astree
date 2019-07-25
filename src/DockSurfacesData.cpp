@@ -191,10 +191,11 @@ void DockSurfacesData::update_table()
         qcbType->addItem("perfect_lens");
         qcbType->addItem("perfect_mirror");
         qcbType->addItem("image");
+        qcbType->addItem("glass...");
         for(unsigned int iM=0;iM<vsMaterial.size();iM++) //TODO optimize
             qcbType->addItem(vsMaterial[iM].c_str());
 
-        qcbType->insertSeparator(7);
+        qcbType->insertSeparator(9);
 
         string sType=_pOD->type(i);
         int iPosType=qcbType->findText(sType.c_str());
@@ -313,7 +314,7 @@ void DockSurfacesData::update_table()
             string sComment=_pOD->comment(i);
             m_ui->twSurfacesDatas->setItem(i,iIndexCol,new QTableWidgetItem(sComment.c_str()));
 
-            //      iIndexCol+=1; //
+            //      iIndexCol+=1;
         }
     }
 
@@ -330,9 +331,20 @@ void DockSurfacesData::onTypeChanged()
     {
         QComboBox* pComboBox=dynamic_cast<QComboBox*>(m_ui->twSurfacesDatas->cellWidget(iRow,ITEM_TYPE));
         assert(pComboBox!=0);
-        string sType=_pOD->type(iRow);
-        if(pComboBox->currentText()!=sType.c_str())
-            _pOD->set_type(iRow,pComboBox->currentText().toStdString());
+
+        string sOldType=_pOD->type(iRow);
+        string sNewType=pComboBox->currentText().toStdString();
+
+        if(sNewType=="glass...")
+        {
+            _pOD->set_type(iRow,sOldType);
+            update_table();
+            static_cast<MainWindow*>(parent())->device_changed(this,CHANGE_GLASS);
+            return;
+        }
+
+        if(sNewType!=sOldType)
+            _pOD->set_type(iRow,sNewType);
     }
     update_table();
     static_cast<MainWindow*>(parent())->device_changed(this,OPTICAL_DEVICE_CHANGED);
@@ -605,5 +617,10 @@ void DockSurfacesData::on_btnDeleteSurface_clicked()
     update_table(); // auto parameter need to be recomputed
 
     m_ui->twSurfacesDatas->selectRow(iLine);
+}
+//////////////////////////////////////////////////////////////////////////////
+int DockSurfacesData::selected_surface() const
+{
+    return m_ui->twSurfacesDatas->currentRow();
 }
 //////////////////////////////////////////////////////////////////////////////

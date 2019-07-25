@@ -5,7 +5,7 @@
 #ifndef AstreeDefines_
 #define AstreeDefines_
 
-#define ASTREE_VERSION "1.21"
+#define ASTREE_VERSION "1.23"
 
 #define SIDEVIEW_NB_POINTS_SURFACE 41
 #define SIDEVIEW_NB_POINTS_LIGHT 17
@@ -19,5 +19,5 @@
 #define USER_INTERFACE_CHANGED 5
 #define LIGHT_OFF_AXIS_CHANGED 6
 #define OPTIMIZER_CHANGED 6
-
+#define CHANGE_GLASS 7 //launch glass manager
 #endif
