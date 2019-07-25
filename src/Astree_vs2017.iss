@@ -3,7 +3,7 @@
 
 [Setup]
 AppName=Astree
-AppVerName=Astree 1.22
+AppVerName=Astree 1.23
 AppPublisher=Etienne de Foras
 AppPublisherURL=http://edeforas.free.fr
 AppSupportURL=http://edeforas.free.fr
@@ -24,14 +24,14 @@ Name: "desktopicon"; Description: "{cm:CreateDesktopIcon}"; GroupDescription: "{
 Name: "quicklaunchicon"; Description: "{cm:CreateQuickLaunchIcon}"; GroupDescription: "{cm:AdditionalIcons}"; Flags: unchecked
 
 [Files]
-Source: ".\Astree.exe"; DestDir: "{app}"; Flags: ignoreversion
+Source: "..\Astree.exe"; DestDir: "{app}"; Flags: ignoreversion
 Source: ".\*.qm"; DestDir: "{app}"; Flags: ignoreversion
-Source: ".\samples\telescopes\*.astree"; DestDir: "{app}\samples\telescopes"; Flags: ignoreversion
-Source: ".\samples\refractors\*.astree"; DestDir: "{app}\samples\refractors"; Flags: ignoreversion
-Source: ".\samples\others\*.astree"; DestDir: "{app}\samples\others"; Flags: ignoreversion
-Source: ".\samples\eyepieces\*.astree"; DestDir: "{app}\samples\eyepieces"; Flags: ignoreversion
-Source: ".\samples\afocal\*.astree"; DestDir: "{app}\samples\afocal"; Flags: ignoreversion
-Source: ".\glass\*.*"; DestDir: "{app}\glass"; Flags: ignoreversion
+Source: "..\samples\telescopes\*.astree"; DestDir: "{app}\samples\telescopes"; Flags: ignoreversion
+Source: "..\samples\refractors\*.astree"; DestDir: "{app}\samples\refractors"; Flags: ignoreversion
+Source: "..\samples\others\*.astree"; DestDir: "{app}\samples\others"; Flags: ignoreversion
+Source: "..\samples\eyepieces\*.astree"; DestDir: "{app}\samples\eyepieces"; Flags: ignoreversion
+Source: "..\samples\afocal\*.astree"; DestDir: "{app}\samples\afocal"; Flags: ignoreversion
+Source: "..\glass\*.*"; DestDir: "{app}\glass"; Flags: ignoreversion
 Source: "C:\Qt\Qt5.11.0\5.11.0\msvc2017_64\bin\Qt5Core.dll"; DestDir: "{app}"
 Source: "C:\Qt\Qt5.11.0\5.11.0\msvc2017_64\bin\Qt5Gui.dll"; DestDir: "{app}"
 Source: "C:\Qt\Qt5.11.0\5.11.0\msvc2017_64\bin\Qt5Widgets.dll"; DestDir: "{app}"
