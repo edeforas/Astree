@@ -211,7 +211,7 @@
     <ClCompile Include="DockOptimizer.cpp" />
     <ClCompile Include="DockScatterPlot.cpp" />
     <ClCompile Include="DockSurfacesData.cpp" />
-    <ClCompile Include="Util\FileUtil.cpp" />
+    <ClCompile Include="FileUtil.cpp" />
     <ClCompile Include="FrameSideView.cpp" />
     <ClCompile Include="Glass.cpp" />
     <ClCompile Include="GlassCatalogIo.cpp" />
@@ -228,7 +228,7 @@
     <ClCompile Include="MaterialWater.cpp" />
     <ClCompile Include="OpticalDevice.cpp" />
     <ClCompile Include="Photon.cpp" />
-    <ClCompile Include="Util\Properties.cpp" />
+    <ClCompile Include="Properties.cpp" />
     <ClCompile Include="Referential.cpp" />
     <ClCompile Include="Surface.cpp" />
     <ClCompile Include="main.cpp" />
@@ -257,9 +257,9 @@
     </QtMoc>
     <QtMoc Include="DockSurfacesData.h">
     </QtMoc>
-    <ClInclude Include="Util\FileUtil.h" />
     <QtMoc Include="FrameSideView.h">
     </QtMoc>
+    <ClInclude Include="FileUtil.h" />
     <ClInclude Include="Glass.h" />
     <ClInclude Include="GlassCatalogIo.h" />
     <ClInclude Include="GlassExtended2.h" />
@@ -277,7 +277,7 @@
     <ClInclude Include="MyViewFrame.h" />
     <ClInclude Include="OpticalDevice.h" />
     <ClInclude Include="Photon.h" />
-    <ClInclude Include="Util\Properties.h" />
+    <ClInclude Include="Properties.h" />
     <ClInclude Include="Referential.h" />
     <ClInclude Include="Surface.h" />
     <ClInclude Include="Vector3D.h" />

@@ -31,7 +31,7 @@ SOURCES += main.cpp \
     DeviceOptimizer.cpp \
     DeviceOptimizerAmoeba.cpp \
     DeviceOptimizerRandom.cpp \
-    Util/FileUtil.cpp \
+    FileUtil.cpp \
     Glass.cpp \
     GlassManager.cpp \
     GlassSellmeier.cpp \
@@ -44,7 +44,7 @@ HEADERS += MainWindow.h \
     DockSurfacesData.h \
     DockCommentary.h \
     MyViewFrame.h \
-    Util/FileUtil.h \
+    FileUtil.h \
     MaterialVacuum.h \
     DialogMediumManager.h \
     OpticalDevice.h \
@@ -88,7 +88,7 @@ SOURCES += \
     MaterialUnknow.cpp \
     MaterialAir.cpp \
     MaterialWater.cpp \
-    Util/Properties.cpp
+    Properties.cpp
 
 HEADERS += \
     DeviceIo.h \
@@ -99,7 +99,7 @@ HEADERS += \
     MaterialAir.h \
     MaterialWater.h \
     MaterialUnknow.h \
-    Util/Properties.h \
+    Properties.h \
     AstreeDefines.h
 	
 OTHER_FILES += Astree.iss
