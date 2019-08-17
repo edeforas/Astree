@@ -11,7 +11,7 @@
     </ProjectConfiguration>
   </ItemGroup>
   <PropertyGroup Label="Globals">
-    <ProjectGuid>{8CEE3939-7E98-3B3E-9BA8-DB91B29818E3}</ProjectGuid>
+    <ProjectGuid>{623A4981-D3C6-31C8-98AF-C11890EBC428}</ProjectGuid>
     <RootNamespace>Astree</RootNamespace>
     <Keyword>Qt4VSv1.0</Keyword>
     <WindowsTargetPlatformVersion>10.0.17763.0</WindowsTargetPlatformVersion>
@@ -67,7 +67,7 @@
   </PropertyGroup>
   <ItemDefinitionGroup Condition="'$(Configuration)|$(Platform)'=='Release|x64'">
     <ClCompile>
-      <AdditionalIncludeDirectories>.\GeneratedFiles\$(ConfigurationName);.\GeneratedFiles;.;Util;$(QTDIR)\include;$(QTDIR)\include\QtWidgets;$(QTDIR)\include\QtGui;$(QTDIR)\include\QtANGLE;$(QTDIR)\include\QtCore;release;\include;$(QTDIR)\mkspecs\win32-msvc;%(AdditionalIncludeDirectories)</AdditionalIncludeDirectories>
+      <AdditionalIncludeDirectories>.\GeneratedFiles\$(ConfigurationName);.\GeneratedFiles;.;..;$(QTDIR)\include;$(QTDIR)\include\QtWidgets;$(QTDIR)\include\QtGui;$(QTDIR)\include\QtANGLE;$(QTDIR)\include\QtCore;release;\include;$(QTDIR)\mkspecs\win32-msvc;%(AdditionalIncludeDirectories)</AdditionalIncludeDirectories>
       <AdditionalOptions>-Zc:rvalueCast -Zc:inline -Zc:strictStrings -Zc:throwingNew -Zc:referenceBinding -w34100 -w34189 -w44996 -w44456 -w44457 -w44458 %(AdditionalOptions)</AdditionalOptions>
       <AssemblerListingLocation>release\</AssemblerListingLocation>
       <BrowseInformation>false</BrowseInformation>
@@ -115,7 +115,7 @@
       <ExecutionDescription>Moc'ing %(Identity)...</ExecutionDescription>
       <InputFile>%(FullPath)</InputFile>
       <DynamicSource>output</DynamicSource>
-      <IncludePath>.\GeneratedFiles\$(ConfigurationName);.\GeneratedFiles;$(QTDIR)\mkspecs/win32-msvc;.;./Util;$(QTDIR)\include;$(QTDIR)\include/QtWidgets;$(QTDIR)\include/QtGui;$(QTDIR)\include/QtANGLE;$(QTDIR)\include/QtCore;C:\Program Files (x86)\Microsoft Visual Studio\2017\Community\VC\Tools\MSVC\14.16.27023\include;C:\Program Files (x86)\Windows Kits\10\include\10.0.17763.0\ucrt;C:\Program Files (x86)\Windows Kits\10\include\10.0.17763.0\shared;C:\Program Files (x86)\Windows Kits\10\include\10.0.17763.0\um;C:\Program Files (x86)\Windows Kits\10\include\10.0.17763.0\winrt;C:\Program Files (x86)\Windows Kits\10\include\10.0.17763.0\cppwinrt</IncludePath>
+      <IncludePath>.\GeneratedFiles\$(ConfigurationName);.\GeneratedFiles;$(QTDIR)\mkspecs/win32-msvc;.;C:/Etienne/src/github/Astree/src;$(QTDIR)\include;$(QTDIR)\include/QtWidgets;$(QTDIR)\include/QtGui;$(QTDIR)\include/QtANGLE;$(QTDIR)\include/QtCore;C:\Program Files (x86)\Microsoft Visual Studio\2017\Community\VC\Tools\MSVC\14.16.27023\include;C:\Program Files (x86)\Windows Kits\10\include\10.0.17763.0\ucrt;C:\Program Files (x86)\Windows Kits\10\include\10.0.17763.0\shared;C:\Program Files (x86)\Windows Kits\10\include\10.0.17763.0\um;C:\Program Files (x86)\Windows Kits\10\include\10.0.17763.0\winrt;C:\Program Files (x86)\Windows Kits\10\include\10.0.17763.0\cppwinrt</IncludePath>
     </QtMoc>
     <QtRcc>
       <InitFuncName>Astree</InitFuncName>
@@ -133,7 +133,7 @@
   </ItemDefinitionGroup>
   <ItemDefinitionGroup Condition="'$(Configuration)|$(Platform)'=='Debug|x64'">
     <ClCompile>
-      <AdditionalIncludeDirectories>.\GeneratedFiles\$(ConfigurationName);.\GeneratedFiles;.;Util;$(QTDIR)\include;$(QTDIR)\include\QtWidgets;$(QTDIR)\include\QtGui;$(QTDIR)\include\QtANGLE;$(QTDIR)\include\QtCore;debug;\include;$(QTDIR)\mkspecs\win32-msvc;%(AdditionalIncludeDirectories)</AdditionalIncludeDirectories>
+      <AdditionalIncludeDirectories>.\GeneratedFiles\$(ConfigurationName);.\GeneratedFiles;.;..;$(QTDIR)\include;$(QTDIR)\include\QtWidgets;$(QTDIR)\include\QtGui;$(QTDIR)\include\QtANGLE;$(QTDIR)\include\QtCore;debug;\include;$(QTDIR)\mkspecs\win32-msvc;%(AdditionalIncludeDirectories)</AdditionalIncludeDirectories>
       <AdditionalOptions>-Zc:rvalueCast -Zc:inline -Zc:strictStrings -Zc:throwingNew -Zc:referenceBinding -w34100 -w34189 -w44996 -w44456 -w44457 -w44458 %(AdditionalOptions)</AdditionalOptions>
       <AssemblerListingLocation>debug\</AssemblerListingLocation>
       <BrowseInformation>false</BrowseInformation>
@@ -180,7 +180,7 @@
       <ExecutionDescription>Moc'ing %(Identity)...</ExecutionDescription>
       <InputFile>%(FullPath)</InputFile>
       <DynamicSource>output</DynamicSource>
-      <IncludePath>.\GeneratedFiles\$(ConfigurationName);.\GeneratedFiles;$(QTDIR)\mkspecs/win32-msvc;.;./Util;$(QTDIR)\include;$(QTDIR)\include/QtWidgets;$(QTDIR)\include/QtGui;$(QTDIR)\include/QtANGLE;$(QTDIR)\include/QtCore;C:\Program Files (x86)\Microsoft Visual Studio\2017\Community\VC\Tools\MSVC\14.16.27023\include;C:\Program Files (x86)\Windows Kits\10\include\10.0.17763.0\ucrt;C:\Program Files (x86)\Windows Kits\10\include\10.0.17763.0\shared;C:\Program Files (x86)\Windows Kits\10\include\10.0.17763.0\um;C:\Program Files (x86)\Windows Kits\10\include\10.0.17763.0\winrt;C:\Program Files (x86)\Windows Kits\10\include\10.0.17763.0\cppwinrt</IncludePath>
+      <IncludePath>.\GeneratedFiles\$(ConfigurationName);.\GeneratedFiles;$(QTDIR)\mkspecs/win32-msvc;.;C:/Etienne/src/github/Astree/src;$(QTDIR)\include;$(QTDIR)\include/QtWidgets;$(QTDIR)\include/QtGui;$(QTDIR)\include/QtANGLE;$(QTDIR)\include/QtCore;C:\Program Files (x86)\Microsoft Visual Studio\2017\Community\VC\Tools\MSVC\14.16.27023\include;C:\Program Files (x86)\Windows Kits\10\include\10.0.17763.0\ucrt;C:\Program Files (x86)\Windows Kits\10\include\10.0.17763.0\shared;C:\Program Files (x86)\Windows Kits\10\include\10.0.17763.0\um;C:\Program Files (x86)\Windows Kits\10\include\10.0.17763.0\winrt;C:\Program Files (x86)\Windows Kits\10\include\10.0.17763.0\cppwinrt</IncludePath>
     </QtMoc>
     <QtRcc>
       <QTDIR>$(QTDIR)</QTDIR>
@@ -197,12 +197,12 @@
     </QtUic>
   </ItemDefinitionGroup>
   <ItemGroup>
-    <ClCompile Include="DeviceIo.cpp" />
-    <ClCompile Include="DeviceIoZmx.cpp" />
-    <ClCompile Include="DeviceOptimizer.cpp" />
-    <ClCompile Include="DeviceOptimizerAmoeba.cpp" />
-    <ClCompile Include="DeviceOptimizerRandom.cpp" />
-    <ClCompile Include="DeviceScaling.cpp" />
+    <ClCompile Include="..\DeviceIo.cpp" />
+    <ClCompile Include="..\DeviceIoZmx.cpp" />
+    <ClCompile Include="..\DeviceOptimizer.cpp" />
+    <ClCompile Include="..\DeviceOptimizerAmoeba.cpp" />
+    <ClCompile Include="..\DeviceOptimizerRandom.cpp" />
+    <ClCompile Include="..\DeviceScaling.cpp" />
     <ClCompile Include="DialogMediumManager.cpp" />
     <ClCompile Include="DialogScaleDevice.cpp" />
     <ClCompile Include="DockCommentary.cpp" />
@@ -211,36 +211,36 @@
     <ClCompile Include="DockOptimizer.cpp" />
     <ClCompile Include="DockScatterPlot.cpp" />
     <ClCompile Include="DockSurfacesData.cpp" />
-    <ClCompile Include="FileUtil.cpp" />
+    <ClCompile Include="..\FileUtil.cpp" />
     <ClCompile Include="FrameSideView.cpp" />
-    <ClCompile Include="Glass.cpp" />
-    <ClCompile Include="GlassCatalogIo.cpp" />
-    <ClCompile Include="GlassExtended2.cpp" />
-    <ClCompile Include="GlassManager.cpp" />
-    <ClCompile Include="GlassSellmeier.cpp" />
-    <ClCompile Include="ImageQuality.cpp" />
-    <ClCompile Include="Light.cpp" />
-    <ClCompile Include="LightAutoFocus.cpp" />
+    <ClCompile Include="..\Glass.cpp" />
+    <ClCompile Include="..\GlassCatalogIo.cpp" />
+    <ClCompile Include="..\GlassExtended2.cpp" />
+    <ClCompile Include="..\GlassManager.cpp" />
+    <ClCompile Include="..\GlassSellmeier.cpp" />
+    <ClCompile Include="..\ImageQuality.cpp" />
+    <ClCompile Include="..\Light.cpp" />
+    <ClCompile Include="..\LightAutoFocus.cpp" />
     <ClCompile Include="MainWindow.cpp" />
-    <ClCompile Include="MaterialAir.cpp" />
-    <ClCompile Include="MaterialUnknow.cpp" />
-    <ClCompile Include="MaterialVacuum.cpp" />
-    <ClCompile Include="MaterialWater.cpp" />
-    <ClCompile Include="OpticalDevice.cpp" />
-    <ClCompile Include="Photon.cpp" />
-    <ClCompile Include="Properties.cpp" />
-    <ClCompile Include="Referential.cpp" />
-    <ClCompile Include="Surface.cpp" />
+    <ClCompile Include="..\MaterialAir.cpp" />
+    <ClCompile Include="..\MaterialUnknow.cpp" />
+    <ClCompile Include="..\MaterialVacuum.cpp" />
+    <ClCompile Include="..\MaterialWater.cpp" />
+    <ClCompile Include="..\OpticalDevice.cpp" />
+    <ClCompile Include="..\Photon.cpp" />
+    <ClCompile Include="..\Properties.cpp" />
+    <ClCompile Include="..\Referential.cpp" />
+    <ClCompile Include="..\Surface.cpp" />
     <ClCompile Include="main.cpp" />
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="AstreeDefines.h" />
-    <ClInclude Include="DeviceIo.h" />
-    <ClInclude Include="DeviceIoZmx.h" />
-    <ClInclude Include="DeviceOptimizer.h" />
-    <ClInclude Include="DeviceOptimizerAmoeba.h" />
-    <ClInclude Include="DeviceOptimizerRandom.h" />
-    <ClInclude Include="DeviceScaling.h" />
+    <ClInclude Include="..\DeviceIo.h" />
+    <ClInclude Include="..\DeviceIoZmx.h" />
+    <ClInclude Include="..\DeviceOptimizer.h" />
+    <ClInclude Include="..\DeviceOptimizerAmoeba.h" />
+    <ClInclude Include="..\DeviceOptimizerRandom.h" />
+    <ClInclude Include="..\DeviceScaling.h" />
     <QtMoc Include="DialogMediumManager.h">
     </QtMoc>
     <QtMoc Include="DialogScaleDevice.h">
@@ -257,30 +257,30 @@
     </QtMoc>
     <QtMoc Include="DockSurfacesData.h">
     </QtMoc>
+    <ClInclude Include="..\FileUtil.h" />
     <QtMoc Include="FrameSideView.h">
     </QtMoc>
-    <ClInclude Include="FileUtil.h" />
-    <ClInclude Include="Glass.h" />
-    <ClInclude Include="GlassCatalogIo.h" />
-    <ClInclude Include="GlassExtended2.h" />
-    <ClInclude Include="GlassManager.h" />
-    <ClInclude Include="GlassSellmeier.h" />
-    <ClInclude Include="ImageQuality.h" />
-    <ClInclude Include="Light.h" />
-    <ClInclude Include="LightAutoFocus.h" />
+    <ClInclude Include="..\Glass.h" />
+    <ClInclude Include="..\GlassCatalogIo.h" />
+    <ClInclude Include="..\GlassExtended2.h" />
+    <ClInclude Include="..\GlassManager.h" />
+    <ClInclude Include="..\GlassSellmeier.h" />
+    <ClInclude Include="..\ImageQuality.h" />
+    <ClInclude Include="..\Light.h" />
+    <ClInclude Include="..\LightAutoFocus.h" />
     <QtMoc Include="MainWindow.h">
     </QtMoc>
-    <ClInclude Include="MaterialAir.h" />
-    <ClInclude Include="MaterialUnknow.h" />
-    <ClInclude Include="MaterialVacuum.h" />
-    <ClInclude Include="MaterialWater.h" />
+    <ClInclude Include="..\MaterialAir.h" />
+    <ClInclude Include="..\MaterialUnknow.h" />
+    <ClInclude Include="..\MaterialVacuum.h" />
+    <ClInclude Include="..\MaterialWater.h" />
     <ClInclude Include="MyViewFrame.h" />
-    <ClInclude Include="OpticalDevice.h" />
-    <ClInclude Include="Photon.h" />
-    <ClInclude Include="Properties.h" />
-    <ClInclude Include="Referential.h" />
-    <ClInclude Include="Surface.h" />
-    <ClInclude Include="Vector3D.h" />
+    <ClInclude Include="..\OpticalDevice.h" />
+    <ClInclude Include="..\Photon.h" />
+    <ClInclude Include="..\Properties.h" />
+    <ClInclude Include="..\Referential.h" />
+    <ClInclude Include="..\Surface.h" />
+    <ClInclude Include="..\Vector3D.h" />
   </ItemGroup>
   <ItemGroup>
     <CustomBuild Include="debug\moc_predefs.h.cbt">
