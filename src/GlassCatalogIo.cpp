@@ -40,7 +40,7 @@ bool GlassCatalogIO::load(string sFile,GlassManager& pManager)
     while(!f.eof())
     {
         string sLine;
-        ::getline(f,sLine);
+        std::getline(f,sLine);
 
         //trim first space if any
         size_t iPos=sLine.find_first_not_of(" ");

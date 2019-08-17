@@ -177,7 +177,7 @@ bool Properties::save(string sFileName) const
 
             istringstream sText(sValue);
             string sLine;
-            while ( getline( sText, sLine))
+            while (std::getline( sText, sLine))
             {
                 f << sKey << "=" << sLine << "\n";
             }
@@ -201,7 +201,7 @@ bool Properties::load(string sFileName)
 
     while(!f.eof())
     {
-        getline(f,sLine);
+        std::getline(f,sLine);
 
         if(sLine.size()==0)
             continue;

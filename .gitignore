@@ -49,3 +49,7 @@ Temporary Items
 *.user
 *.autosave
 *.pdb
+v15
+debug
+release
+ui_
