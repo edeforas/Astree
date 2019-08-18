@@ -41,31 +41,11 @@ string FileUtil::get_executable_path()
 //////////////////////////////////////////////////////////////////////////////
 #endif
 
-#ifdef __unix__ //linux
-#include <string>
+#ifdef __unix__ //linux , using c++17
+
 #include <limits.h>
 #include <unistd.h>
-//////////////////////////////////////////////////////////////////////////////
-vector<string> FileUtil::list(string sPathAndMask)
-{
-	vector<string> vsResult;
 
-	//TODO
-
-	return vsResult;
-}
-//////////////////////////////////////////////////////////////////////////////
-string FileUtil::get_executable_path()
-{
-	char result[PATH_MAX];
-	ssize_t count = readlink("/proc/self/exe", result, PATH_MAX);
-	return std::string(result, (count > 0) ? count : 0);
-}
-//////////////////////////////////////////////////////////////////////////////
-
-#endif
-
-#if 0 //c++17
 #include <filesystem>
 //////////////////////////////////////////////////////////////////////////////
 vector<string> FileUtil::list(string sPathAndMask)
@@ -79,7 +59,10 @@ vector<string> FileUtil::list(string sPathAndMask)
 //////////////////////////////////////////////////////////////////////////////
 string FileUtil::get_executable_path()
 {
-	//TODO
+	char result[PATH_MAX];
+	ssize_t count = readlink("/proc/self/exe", result, PATH_MAX);
+	return std::string(result, (count > 0) ? count : 0);
 }
 //////////////////////////////////////////////////////////////////////////////
+
 #endif
