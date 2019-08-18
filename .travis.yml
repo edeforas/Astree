@@ -1,15 +1,30 @@
-sudo: false
 language: cpp
-compiler:
-  - gcc
-addons:
-  apt:
-    sources:
-    - ubuntu-toolchain-r-test
-    packages:
-    - g++-8
+compiler: gcc
+sudo: require
+dist: trusty
+
+before_install:
+  - sudo add-apt-repository ppa:beineri/opt-qt593-trusty -y
+  - sudo apt-get update -qq
+
 install:
-- "[ $CXX = g++ ] && export CXX=g++-8 || true"
+  - sudo apt-get -y install qt59base libgl1-mesa-dev
+  - source /opt/qt*/bin/qt*-env.sh
+
 script:
-  - make
-  - make test
+  - cd src/gui
+  - qmake CONFIG+=release PREFIX=/usr
+  - make -j$(nproc)
+  - make INSTALL_ROOT=appdir -j$(nproc) install ; find appdir/
+  - wget -c -nv "https://github.com/probonopd/linuxdeployqt/releases/download/continuous/linuxdeployqt-continuous-x86_64.AppImage"
+  - chmod a+x linuxdeployqt-continuous-x86_64.AppImage
+  - ./linuxdeployqt-continuous-x86_64.AppImage appdir/usr/share/applications/*.desktop -appimage
+
+after_success:
+  - wget -c https://github.com/probonopd/uploadtool/raw/master/upload.sh
+  - bash upload.sh Astree*.AppImage*
+  
+branches:
+  except:
+    - # Do not build tags that we create when we upload to GitHub Releases
+    - /^(?i:continuous)/
