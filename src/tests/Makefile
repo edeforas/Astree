@@ -1,6 +1,6 @@
 CXXFLAGS = -g -Wall -Wfatal-errors -std=c++17
 
-ALL = test_newton test_perfect_surface test_scaling
+ALL = test_newton 
 
 all: $(ALL)
 
