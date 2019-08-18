@@ -17,4 +17,4 @@ clean:
 	$(RM) $(ALL) *.o
 
 test: all
-	./test_newton && ./test_perfect_surface && ./test_scaling
+	./test_newton
