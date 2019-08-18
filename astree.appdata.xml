@@ -1,0 +1,21 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<component type="desktop-application">
+	<id>astree</id>
+	<metadata_license>CC0-1.0</metadata_license>
+	<project_license>LGPL-3.0</project_license>
+	<name>Astree</name>
+	<summary>Free open-source optical ray tracing and design software</summary>
+	<description>
+		<p>Astree software computes and shows the ray-tracing analysis of optical devices, having conical or polynomial surfaces,having reflections, transmissions, stops, analysis of the image quality.</p>
+	</description>
+	<launchable type="desktop-id">astree.desktop</launchable>
+	<url type="homepage">http://edeforas.free.fr/</url>
+	<screenshots>
+		<screenshot type="default">
+			<image>http://edeforas.free.fr/Astree/astree.png</image>
+		</screenshot>
+	</screenshots>
+	<provides>
+		<id>astree.desktop</id>
+	</provides>
+</component>

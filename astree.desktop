@@ -1,0 +1,9 @@
+[Desktop Entry]
+Type=Application
+Name=Astree
+Exec=astree %f
+Icon=astree
+Terminal=false
+Categories=Graphics;Engineering;Education;
+MimeType=application/x-astree;
+StartupNotify=true
