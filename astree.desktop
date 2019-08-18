@@ -4,6 +4,6 @@ Name=Astree
 Exec=astree %f
 Icon=astree
 Terminal=false
-Categories=Graphics;Engineering;Education;
+Categories=Graphics;
 MimeType=application/x-astree;
 StartupNotify=true
