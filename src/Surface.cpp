@@ -573,7 +573,7 @@ void Surface::stop_photon(Photon& p)
     if (p.is_valid()==false)
         return;
 
-    if(isinf(_dCurvature))
+    if(std::isinf(_dCurvature))
     {
         p.valid=false;
         return;
