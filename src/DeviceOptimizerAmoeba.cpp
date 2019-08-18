@@ -4,7 +4,7 @@
 
 #include "DeviceOptimizerAmoeba.h"
 
-#include <cmath> //for isnan
+#include <cmath>
 #include <cassert>
 ////////////////////////////////////////////////////////////////////////////////
 DeviceOptimizerAmoeba::DeviceOptimizerAmoeba():

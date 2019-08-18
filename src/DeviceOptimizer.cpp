@@ -253,17 +253,17 @@ double DeviceOptimizer::compute_demerit()
 
     for(int i=0;i<pQ.nb_angles();i++)
     {
-        if(isnan(pQ.vdSpotSize[i]))
+        if(std::isnan(pQ.vdSpotSize[i]))
             return SPOT_SIZE_INFINITY;
 
-        if(isnan(pQ.vdSpotvsAiry[i]))
+        if(std::isnan(pQ.vdSpotvsAiry[i]))
             return SPOT_SIZE_INFINITY;
 
         if(pQ.vdVignetting[i]<_dMinVignetting)
             return SPOT_SIZE_INFINITY;
     }
 
-    if(isnan(pQ.dAirySize))
+    if(std::isnan(pQ.dAirySize))
         return SPOT_SIZE_INFINITY;
 
     if(_meritFunction==eCenterOnly)
