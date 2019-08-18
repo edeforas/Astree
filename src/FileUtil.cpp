@@ -1,66 +1,85 @@
 #include "FileUtil.h"
 
-// dep a verifier
-#include <stdio.h>
-//#include <types.h>
-#include <sys/stat.h>
+//////////////////////////////////////////////////////////////////////////////
+string FileUtil::get_path(string sFile) 
+{
+	size_t iPos = sFile.find_last_of("\\");
+	return sFile.substr(0, iPos);
+}
+
+#ifdef _WIN32
+
 #include <windows.h>
-
 //////////////////////////////////////////////////////////////////////////////
-int FileUtil::file_size(char* sFileName)
+vector<string> FileUtil::list(string sPathAndMask)
 {
-    struct stat stat_p;
+	vector<string> vsResult;
+	  HANDLE hfind;
+	  WIN32_FIND_DATAA wfd;
 
-    if (stat(sFileName, &stat_p) == -1)
-    {
-        return -1;
-    }
-    return stat_p.st_size;
+	  // Liste le contenu du repertoire
+	  hfind = FindFirstFileA(sPathAndMask.c_str(), &wfd );
+	  if (hfind != INVALID_HANDLE_VALUE)
+	  {
+		  do
+		  {
+				  vsResult.push_back( wfd.cFileName);
+		  }
+		  while(FindNextFileA( hfind, &wfd));
+		  FindClose(hfind);
+	  }
+	  
+	return vsResult;
 }
 //////////////////////////////////////////////////////////////////////////////
-bool FileUtil::file_delete(char* sFileName)
+string FileUtil::get_executable_path()
 {
-    remove(sFileName);
-    return true;
+	 char szEXEPath[ MAX_PATH  ];
+     DWORD nChars = GetModuleFileNameA( NULL, szEXEPath, MAX_PATH  );
+	return string(szEXEPath,nChars);    
 }
 //////////////////////////////////////////////////////////////////////////////
-vector<string> FileUtil::list(string sPathAndMask) //TODO faire qq chose portable
+#endif
+
+#ifdef __unix__ //linux
+#include <string>
+#include <limits.h>
+#include <unistd.h>
+//////////////////////////////////////////////////////////////////////////////
+vector<string> FileUtil::list(string sPathAndMask)
+{
+	vector<string> vsResult;
+
+	//TODO
+
+	return vsResult;
+}
+//////////////////////////////////////////////////////////////////////////////
+string FileUtil::get_executable_path()
+{
+	char result[PATH_MAX];
+	ssize_t count = readlink("/proc/self/exe", result, PATH_MAX);
+	return std::string(result, (count > 0) ? count : 0);
+}
+//////////////////////////////////////////////////////////////////////////////
+
+#endif
+
+#if 0 //c++17
+#include <filesystem>
+//////////////////////////////////////////////////////////////////////////////
+vector<string> FileUtil::list(string sPathAndMask)
 {
     vector<string> vsResult;
-    HANDLE hfind;
-    WIN32_FIND_DATAA wfd;
-
-    // Liste le contenu du repertoire
-    hfind = FindFirstFileA(sPathAndMask.c_str(), &wfd );
-    if (hfind != INVALID_HANDLE_VALUE)
-    {
-        do
-        {
-            //     if( wfd.cFileName[0] != '.')
-            {
-                vsResult.push_back( wfd.cFileName);
-            }
-
-        }
-        while(FindNextFileA( hfind, &wfd));
-        FindClose(hfind);
-    }
+	for (const auto & entry : std::filesystem::directory_iterator(sPathAndMask))
+		vsResult.push_back(entry.path().string());
 
     return vsResult;
 }
 //////////////////////////////////////////////////////////////////////////////
 string FileUtil::get_executable_path()
 {
-    char szEXEPath[ 2048 ];
-    DWORD nChars = GetModuleFileNameA( NULL, szEXEPath, 2048 );
-
-    return string(szEXEPath,nChars);    
+	//TODO
 }
 //////////////////////////////////////////////////////////////////////////////
-string FileUtil::get_path(string sFile)
-{
-    size_t iPos=sFile.find_last_of("\\");
-    return sFile.substr(0,iPos);
-}
-//////////////////////////////////////////////////////////////////////////////
-
+#endif

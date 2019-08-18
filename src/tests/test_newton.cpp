@@ -5,7 +5,7 @@ using namespace std;
 #include "OpticalDevice.h"
 
 /////////////////////////////////////////////////////////////////////
-inline bool is_near(double a,double b, double tolerancis=1e-10)
+inline bool is_near(double a,double b, double tolerancis=1.e-10)
 {
     return fabs(a-b)<tolerancis;
 }
@@ -21,8 +21,8 @@ void test(bool bTest,string sMessage)
 void test_parabolic_mirror()
 {
     OpticalDevice od;
-    double dDiameter=200;
-    double dFocal=1000;
+    double dDiameter=200.;
+    double dFocal=1000.;
 
     // surface0 = parabolic mirror
     od.insert_surface(0);
