@@ -1,11 +1,6 @@
 TEMPLATE = app
 QT += widgets
 DESTDIR= ..
-CONFIG += c++17
-QMAKE_CXXFLAGS += -std=c++17
-QMAKE_CC = gcc-8
-QMAKE_CXX = g++-8
-
 
 CONFIG(debug, debug|release):TARGET = Astree_debug
 CONFIG(release, debug|release):TARGET = Astree

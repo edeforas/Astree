@@ -1,5 +1,11 @@
 language: cpp
 compiler: gcc
+addons:
+  apt:
+    sources:
+    - ubuntu-toolchain-r-test
+    packages:
+    - g++-8
 sudo: require
 dist: trusty
 
