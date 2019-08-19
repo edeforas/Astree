@@ -46,15 +46,16 @@ string FileUtil::get_executable_path()
 #include <limits.h>
 #include <unistd.h>
 
-#include <filesystem>
+//#include <filesystem>
 //////////////////////////////////////////////////////////////////////////////
 vector<string> FileUtil::list(string sPathAndMask)
 {
-    vector<string> vsResult;
+ /*   vector<string> vsResult;
 	for (const auto & entry : std::filesystem::directory_iterator(sPathAndMask))
 		vsResult.push_back(entry.path().string());
 
     return vsResult;
+*/
 }
 //////////////////////////////////////////////////////////////////////////////
 string FileUtil::get_executable_path()
