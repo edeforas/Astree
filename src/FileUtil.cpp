@@ -50,12 +50,13 @@ string FileUtil::get_executable_path()
 //////////////////////////////////////////////////////////////////////////////
 vector<string> FileUtil::list(string sPathAndMask)
 {
- /*   vector<string> vsResult;
+	(void)sPathAndMask; //WIPWIP
+	vector<string> vsResult;
+/*
 	for (const auto & entry : std::filesystem::directory_iterator(sPathAndMask))
 		vsResult.push_back(entry.path().string());
-
-    return vsResult;
 */
+    return vsResult;
 }
 //////////////////////////////////////////////////////////////////////////////
 string FileUtil::get_executable_path()
