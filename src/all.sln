@@ -5,11 +5,11 @@ VisualStudioVersion = 15.0.28307.757
 MinimumVisualStudioVersion = 10.0.40219.1
 Project("{8BC9CEB8-8B4A-11D0-8D11-00A0C91BC942}") = "Astree", "gui\Astree.vcxproj", "{623A4981-D3C6-31C8-98AF-C11890EBC428}"
 EndProject
-Project("{8BC9CEB8-8B4A-11D0-8D11-00A0C91BC942}") = "test_newton", "tests\test_newton.vcxproj", "{7E8ACD30-B781-38DA-A62F-10D45DA6B8BB}"
+Project("{8BC9CEB8-8B4A-11D0-8D11-00A0C91BC942}") = "test_newton", "tests\test_newton.vcxproj", "{7FEC75DB-E714-404C-A36D-98F603B75940}"
 EndProject
-Project("{8BC9CEB8-8B4A-11D0-8D11-00A0C91BC942}") = "test_scaling", "tests\test_scaling.vcxproj", "{90127D06-EDDA-3ECB-BF2E-E308C1C6DF1E}"
+Project("{8BC9CEB8-8B4A-11D0-8D11-00A0C91BC942}") = "test_scaling", "tests\test_scaling.vcxproj", "{5C15F498-1160-4219-88F1-FE06F49D2E4D}"
 EndProject
-Project("{8BC9CEB8-8B4A-11D0-8D11-00A0C91BC942}") = "test_perfect_surface", "tests\test_perfect_surface.vcxproj", "{66B8AE2A-F762-3D5F-9829-9574CD64C2CF}"
+Project("{8BC9CEB8-8B4A-11D0-8D11-00A0C91BC942}") = "test_perfect_surface", "tests\test_perfect_surface.vcxproj", "{1E7E90DC-DC98-44F1-9224-046426893842}"
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
@@ -21,18 +21,18 @@ Global
 		{623A4981-D3C6-31C8-98AF-C11890EBC428}.Debug|x64.Build.0 = Debug|x64
 		{623A4981-D3C6-31C8-98AF-C11890EBC428}.Release|x64.ActiveCfg = Release|x64
 		{623A4981-D3C6-31C8-98AF-C11890EBC428}.Release|x64.Build.0 = Release|x64
-		{7E8ACD30-B781-38DA-A62F-10D45DA6B8BB}.Debug|x64.ActiveCfg = Debug|x64
-		{7E8ACD30-B781-38DA-A62F-10D45DA6B8BB}.Debug|x64.Build.0 = Debug|x64
-		{7E8ACD30-B781-38DA-A62F-10D45DA6B8BB}.Release|x64.ActiveCfg = Release|x64
-		{7E8ACD30-B781-38DA-A62F-10D45DA6B8BB}.Release|x64.Build.0 = Release|x64
-		{90127D06-EDDA-3ECB-BF2E-E308C1C6DF1E}.Debug|x64.ActiveCfg = Debug|x64
-		{90127D06-EDDA-3ECB-BF2E-E308C1C6DF1E}.Debug|x64.Build.0 = Debug|x64
-		{90127D06-EDDA-3ECB-BF2E-E308C1C6DF1E}.Release|x64.ActiveCfg = Release|x64
-		{90127D06-EDDA-3ECB-BF2E-E308C1C6DF1E}.Release|x64.Build.0 = Release|x64
-		{66B8AE2A-F762-3D5F-9829-9574CD64C2CF}.Debug|x64.ActiveCfg = Debug|x64
-		{66B8AE2A-F762-3D5F-9829-9574CD64C2CF}.Debug|x64.Build.0 = Debug|x64
-		{66B8AE2A-F762-3D5F-9829-9574CD64C2CF}.Release|x64.ActiveCfg = Release|x64
-		{66B8AE2A-F762-3D5F-9829-9574CD64C2CF}.Release|x64.Build.0 = Release|x64
+		{7FEC75DB-E714-404C-A36D-98F603B75940}.Debug|x64.ActiveCfg = Debug|x64
+		{7FEC75DB-E714-404C-A36D-98F603B75940}.Debug|x64.Build.0 = Debug|x64
+		{7FEC75DB-E714-404C-A36D-98F603B75940}.Release|x64.ActiveCfg = Release|x64
+		{7FEC75DB-E714-404C-A36D-98F603B75940}.Release|x64.Build.0 = Release|x64
+		{5C15F498-1160-4219-88F1-FE06F49D2E4D}.Debug|x64.ActiveCfg = Debug|x64
+		{5C15F498-1160-4219-88F1-FE06F49D2E4D}.Debug|x64.Build.0 = Debug|x64
+		{5C15F498-1160-4219-88F1-FE06F49D2E4D}.Release|x64.ActiveCfg = Release|x64
+		{5C15F498-1160-4219-88F1-FE06F49D2E4D}.Release|x64.Build.0 = Release|x64
+		{1E7E90DC-DC98-44F1-9224-046426893842}.Debug|x64.ActiveCfg = Debug|x64
+		{1E7E90DC-DC98-44F1-9224-046426893842}.Debug|x64.Build.0 = Debug|x64
+		{1E7E90DC-DC98-44F1-9224-046426893842}.Release|x64.ActiveCfg = Release|x64
+		{1E7E90DC-DC98-44F1-9224-046426893842}.Release|x64.Build.0 = Release|x64
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE

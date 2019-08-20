@@ -1,6 +1,6 @@
 #include "FileUtil.h"
 
-// there is no portable way to know the executable path, one version by OS:
+// one version by OS:
 #ifdef _WIN32
 #include <Windows.h>
 //////////////////////////////////////////////////////////////////////////////
@@ -11,10 +11,30 @@ std::string FileUtil::get_executable_path()
     return std::string(szEXEPath,nChars);
 }
 //////////////////////////////////////////////////////////////////////////////
+std::vector<std::string> FileUtil::list(std::string sPathAndMask)
+{
+    std::vector<std::string> vsResult;
+	  HANDLE hfind;
+	  WIN32_FIND_DATAA wfd;
+
+	  // List the folder content
+	  hfind = FindFirstFileA(sPathAndMask.c_str(), &wfd );
+	  if (hfind != INVALID_HANDLE_VALUE)
+	  {
+		  do
+		  {
+				  vsResult.push_back( wfd.cFileName);
+		  }
+		  while(FindNextFileA( hfind, &wfd));
+		  FindClose(hfind);
+	  }
+	  
+	return vsResult;
+}
+//////////////////////////////////////////////////////////////////////////////
 #endif
 
-
-#ifdef __unix__ //linux , using c++17
+#ifdef __unix__ //linux
 #include <limits.h>
 #include <unistd.h>
 //////////////////////////////////////////////////////////////////////////////
@@ -24,13 +44,6 @@ std::string FileUtil::get_executable_path()
 	ssize_t count = readlink("/proc/self/exe", result, PATH_MAX);
 	return std::string(result, (count > 0) ? count : 0);
 }
-//////////////////////////////////////////////////////////////////////////////
-#endif
-
-
-//#include <filesystem>
-using namespace std;
-
 //////////////////////////////////////////////////////////////////////////////
 vector<string> FileUtil::list(string sPathAndMask)
 {
@@ -42,7 +55,10 @@ vector<string> FileUtil::list(string sPathAndMask)
     return vsResult;
 }
 //////////////////////////////////////////////////////////////////////////////
-string FileUtil::get_path(string sFile)
+#endif
+
+//////////////////////////////////////////////////////////////////////////////
+std::string FileUtil::get_path(std::string sFile)
 {
     size_t iPos = sFile.find_last_of("\\");
     return sFile.substr(0, iPos);

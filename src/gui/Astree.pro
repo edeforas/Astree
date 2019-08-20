@@ -1,6 +1,6 @@
 TEMPLATE = app
 QT += widgets
-DESTDIR= ..
+DESTDIR= ../..
 
 CONFIG+=c++17
 
