@@ -3,7 +3,7 @@ QT += widgets
 DESTDIR= ..
 
 #QMAKE_CXXFLAGS *= /std:c++17 #vs2017
-QMAKE_CXXFLAGS *= -std=c++1z #gcc8 and c++17 !
+QMAKE_CXXFLAGS *= -std=c++17 #gcc8 and c++17 !
 
 CONFIG(debug, debug|release):TARGET = Astree_debug
 CONFIG(release, debug|release):TARGET = Astree
