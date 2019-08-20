@@ -2,6 +2,8 @@
 // please see GPL.html for more details and licensing issues
 // copyright Etienne de Foras ( the author )  mailto: etienne.deforas@gmail.com
 
+#include "FileUtil.h"
+
 #include "MainWindow.h"
 #include "ui_MainWindow.h"
 #include <QMessageBox>
@@ -21,7 +23,6 @@
 #include "DockOptimizer.h"
 #include "FrameSideView.h"
 #include "AstreeDefines.h"
-#include "FileUtil.h"
 #include "GlassManager.h"
 #include "DialogMediumManager.h"
 #include "DialogScaleDevice.h"

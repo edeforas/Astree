@@ -29,7 +29,7 @@ int main(int argc, char *argv[])
 
     if (argc==2)
     {
-        w.load_file(string(argv[1]));
+        w.load_file(std::string(argv[1]));
     }
 
     return app.exec();

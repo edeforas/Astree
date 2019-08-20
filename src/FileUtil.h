@@ -1,16 +1,15 @@
-#ifndef _FileUtil_
-#define _FileUtil_
+#ifndef FileUtil_
+#define FileUtil_
 
 #include <string>
 #include <vector>
-using namespace std;
 
 class FileUtil
 {
 public:
-    static vector<string> list(string sPath);
-    static string get_executable_path();
-    static string get_path(string sFile);
+    static std::vector<std::string> list(std::string sPath);
+    static std::string get_executable_path();
+    static std::string get_path(std::string sFile);
 };
 
 

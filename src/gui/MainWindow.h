@@ -10,7 +10,6 @@
 
 #include <string>
 #include <vector>
-using namespace std;
 
 namespace Ui
 {
@@ -35,7 +34,7 @@ public:
     MainWindow(QWidget *parent = 0);
     ~MainWindow();
 
-    bool load_file(string sFile);
+    bool load_file(std::string sFile);
     bool ask_save_and_action();
     void clear_device();
 
@@ -78,7 +77,7 @@ private:
     FrameSideView* _pFrameSideView;
     DockImageQuality* _pDockImageQuality;
     bool _bMustSave;
-    string _sFileName;
+    std::string _sFileName;
 };
 
 #endif // MAINWINDOW_H

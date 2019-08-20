@@ -1,5 +1,5 @@
-#ifndef _Properties_
-#define _Properties_
+#ifndef Properties_
+#define Properties_
 
 #include <map>
 #include <string>
