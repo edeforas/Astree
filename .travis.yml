@@ -5,7 +5,7 @@ addons:
     sources:
     - ubuntu-toolchain-r-test
     packages:
-    - g++-9.1
+    - g++-9
 sudo: require
 dist: trusty
 
