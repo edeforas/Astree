@@ -7,12 +7,14 @@
 #include <QLocale>
 #include <QTranslator>
 #include <QLibraryInfo>
+#include <QStyleFactory>
 
 #include "MainWindow.h"
 
 int main(int argc, char *argv[])
 {
     QApplication app(argc, argv);
+	app.setStyle(QStyleFactory::create("fusion"));
 
     QString sPath=QCoreApplication::applicationDirPath();
 

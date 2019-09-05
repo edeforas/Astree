@@ -208,6 +208,8 @@ void DockSurfacesData::update_table()
         else
             qcbType->setCurrentIndex(iPosType);
 
+		qcbType->setMaxVisibleItems(1000);
+
         m_ui->twSurfacesDatas->setCellWidget(i,ITEM_TYPE,qcbType);
         connect(qcbType,SIGNAL(activated(int)),this,SLOT(onTypeChanged()));
 
