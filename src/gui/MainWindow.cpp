@@ -61,17 +61,16 @@ MainWindow::MainWindow(QWidget *parent)
     _pDockScatterPlot=new DockScatterPlot(this);
     addDockWidget(Qt::LeftDockWidgetArea, _pDockScatterPlot);
 
-    _pDockCommentary=new DockCommentary(this);
-    addDockWidget(Qt::LeftDockWidgetArea, _pDockCommentary);
+	_pDockCommentary = new DockCommentary(this);
+	addDockWidget(Qt::LeftDockWidgetArea, _pDockCommentary);
+
+	_pDockOptimizer = new DockOptimizer(this);
+	addDockWidget(Qt::LeftDockWidgetArea, _pDockOptimizer);
 
     _pDockImageQuality=new DockImageQuality(this);
     addDockWidget(Qt::BottomDockWidgetArea, _pDockImageQuality);
 
-    _pDockOptimizer=new DockOptimizer(this);
-    addDockWidget(Qt::LeftDockWidgetArea, _pDockOptimizer);
-
-
-    tabifyDockWidget(_pDockCommentary,_pDockOptimizer);
+   // tabifyDockWidget(_pDockCommentary,_pDockOptimizer);
     tabifyDockWidget(_pDockOptimizer,_pDockLightProperties);
     tabifyDockWidget(_pDockLightProperties,_pDockScatterPlot);
     //  tabifyDockWidget(_pDockScatterPlot,_pDockImageQuality);
