@@ -25,6 +25,7 @@ script:
   - qmake CONFIG+=release PREFIX=/usr
   - make -j$(nproc)
   - mkdir astree
+  - mkdir astree/usr/share/applications
   - cp astree.desktop astree/usr/share/applications/astree.desktop
   - make INSTALL_ROOT=astree -j$(nproc) install ; find astree/
   - wget -c -nv "https://github.com/probonopd/linuxdeployqt/releases/download/continuous/linuxdeployqt-continuous-x86_64.AppImage"
