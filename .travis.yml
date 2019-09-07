@@ -25,6 +25,8 @@ script:
   - qmake CONFIG+=release PREFIX=/usr
   - make -j$(nproc)
   - mkdir astree
+  - mkdir astree/usr
+  - mkdir astree/usr/share
   - mkdir astree/usr/share/applications
   - cp astree.desktop astree/usr/share/applications/astree.desktop
   - make INSTALL_ROOT=astree -j$(nproc) install ; find astree/
