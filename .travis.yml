@@ -24,6 +24,7 @@ script:
   - cd src/gui
   - qmake CONFIG+=release PREFIX=/usr
   - make -j$(nproc)
+  - cd ../..
   - mkdir astree
   - mkdir astree/usr
   - mkdir astree/usr/share
