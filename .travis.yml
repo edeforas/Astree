@@ -1,20 +1,11 @@
 language: cpp
 compiler: gcc
-addons:
-  apt:
-    sources:
-    - ubuntu-toolchain-r-test
-    packages:
-    - g++-9
 sudo: require
 dist: trusty
 
 before_install:
-  - sudo add-apt-repository ppa:ubuntu-toolchain-r/test -y
-  - sudo apt-get update
   - sudo add-apt-repository ppa:beineri/opt-qt593-trusty -y
   - sudo apt-get update -qq
-  
 
 install:
   - sudo apt-get -y install qt59base libgl1-mesa-dev
