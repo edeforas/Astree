@@ -25,12 +25,11 @@ script:
   - qmake CONFIG+=release PREFIX=/usr
   - make -j$(nproc)
   - cd ../..
-  - mkdir astree
-  - mkdir astree/usr
-  - mkdir astree/usr/share
-  - mkdir astree/usr/share/applications
+  - mkdir -p astree/usr/share/applications
   - cp astree.desktop astree/usr/share/applications/astree.desktop
-  - make INSTALL_ROOT=astree -j$(nproc) install ; find astree/
+  - mkdir -p astree/usr/bin ; cp src/gui/astree astree/usr/bin/
+  - mkdir -p astree/usr/share/icons/hicolor/scalable/apps ; touch astree/usr/share/icons/hicolor/scalable/apps/astree.svg # FIXME
+  - find astree/
   - wget -c -nv "https://github.com/probonopd/linuxdeployqt/releases/download/continuous/linuxdeployqt-continuous-x86_64.AppImage"
   - chmod a+x linuxdeployqt-continuous-x86_64.AppImage
   - ./linuxdeployqt-continuous-x86_64.AppImage astree/usr/share/applications/astree.desktop -appimage
