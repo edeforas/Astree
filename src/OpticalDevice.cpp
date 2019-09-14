@@ -317,8 +317,8 @@ void OpticalDevice::ray_trace()
     if(_iNbAngles>1)
     {
         ray_trace_step(light,half_field_of_view(),false,_bAutoCurvature); //for autocurvature
+
         //get quality result
-        dCenterX,dCenterY;
         light.get_spot_center(dCenterX,dCenterY);
         _imageQuality.vdAngles[_iNbAngles-1]=half_field_of_view();
         _imageQuality.vdDist[_iNbAngles-1]=-dCenterX;
@@ -336,7 +336,6 @@ void OpticalDevice::ray_trace()
         ray_trace_step(light,dTilt,false,false);
 
         //get quality result
-        dCenterX,dCenterY;
         light.get_spot_center(dCenterX,dCenterY);
         _imageQuality.vdDist[iStep]=-dCenterX;
         _imageQuality.vdVignetting[iStep]=light.vignetting();
