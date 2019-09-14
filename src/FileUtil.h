@@ -7,7 +7,7 @@
 class FileUtil
 {
 public:
-    static std::vector<std::string> list(std::string sPath);
+    static std::vector<std::string> list(const std::string& sPath);
     static std::string get_executable_path();
     static std::string get_path(std::string sFile);
 };

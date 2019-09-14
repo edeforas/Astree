@@ -12,7 +12,7 @@ string FileUtil::get_executable_path()
     return string(szEXEPath,nChars);
 }
 //////////////////////////////////////////////////////////////////////////////
-vector<string> FileUtil::list(string sPathAndMask)
+vector<string> FileUtil::list(const string& sPathAndMask)
 {
     vector<string> vsResult;
 	  HANDLE hfind;
@@ -47,7 +47,7 @@ std::string FileUtil::get_executable_path()
 	return string(result, (count > 0) ? count : 0);
 }
 //////////////////////////////////////////////////////////////////////////////
-vector<string> FileUtil::list(string sPathAndMask)
+vector<string> FileUtil::list(const string& sPathAndMask)
 {
     vector<string> vsResult;
 

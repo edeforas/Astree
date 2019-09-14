@@ -21,7 +21,7 @@ Glass* MaterialWater::clone() const
     return new MaterialWater(*this);
 }
 //////////////////////////////////////////////////////////////////////////////
-double MaterialWater::calc_index(double dLambdaMicrons)
+double MaterialWater::compute_index(double dLambdaMicrons)
 {
     (void)dLambdaMicrons;
     return 1.333;

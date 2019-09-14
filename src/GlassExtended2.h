@@ -14,12 +14,12 @@ class GlassExtended2 : public Glass
 public:
     GlassExtended2();
     GlassExtended2(const GlassExtended2& m);
-    virtual Glass* clone() const;
+    virtual Glass* clone() const override;
 
     void set_coefs(double dC0,double dC1,double dC2,double dC3,double dC4,double dC5,double dC6,double dC7);
 
 protected:
-    virtual double calc_index(double dLambdaMicrons);
+    virtual double compute_index(double dLambdaMicrons) override;
 
 private:
     double _dC0;

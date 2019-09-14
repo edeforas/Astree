@@ -24,9 +24,6 @@ public:
     Surface& operator=(const Surface& rSurf);
     virtual ~Surface();
 
-    string name();
-    void name(string sName);
-
     string type() const;
     bool set_type(string sType);
 
@@ -73,7 +70,7 @@ public:
 
     bool compute_z(double x,double y,double& z);
 
-    void set_comment(string sComment);
+    void set_comment(const string& sComment);
     string comment() const;
 
 private:
@@ -82,7 +79,6 @@ private:
     void global_ref(Photon& p) const;
 
     void stop(Light& l);
-    void stop_infinite(Light& l);
     void reflect(Light& l);
     void transmit(Light& l);
 

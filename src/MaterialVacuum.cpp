@@ -21,7 +21,7 @@ Glass* MaterialVacuum::clone() const
     return new MaterialVacuum(*this);
 }
 //////////////////////////////////////////////////////////////////////////////
-double MaterialVacuum::calc_index(double dLambdaMicrons)
+double MaterialVacuum::compute_index(double dLambdaMicrons)
 {
     (void)dLambdaMicrons;
     return 1.;

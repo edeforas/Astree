@@ -12,12 +12,12 @@ class GlassSellmeier : public Glass
 public:
     GlassSellmeier();
     GlassSellmeier(const GlassSellmeier& m);
-    virtual Glass* clone() const;
+    virtual Glass* clone() const override;
 
     void set_coefs(double dB1,double dB2,double dB3,double dC1,double dC2,double dC3);
 
 protected:
-    virtual double calc_index(double dLambdaMicrons);
+    virtual double compute_index(double dLambdaMicrons) override;
 
 private:
     double _dB1;

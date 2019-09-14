@@ -35,7 +35,7 @@ void DeviceOptimizer::set_min_vignetting(double dMinVignetting)
     _dMinVignetting=dMinVignetting;
 }
 //////////////////////////////////////////////////////////////////////////////
-void DeviceOptimizer::add_parameter(int iSurface,string sParameter,bool bRefine)
+void DeviceOptimizer::add_parameter(int iSurface,const string& sParameter,bool bRefine)
 {
     double dMin=0.;
     double dMax=0.;
@@ -146,19 +146,20 @@ void DeviceOptimizer::add_parameter(int iSurface,string sParameter,bool bRefine)
     add_parameter(iSurface,sParameter,dMin,dMax);
 }
 //////////////////////////////////////////////////////////////////////////////
-void DeviceOptimizer::add_parameter(int iSurface,string sParameter,double dMin,double dMax)
+void DeviceOptimizer::add_parameter(int iSurface,const string& sParameter,double dMin,double dMax)
 {
     DeviceOptimizerParameter dop;
 
     if(sParameter=="RCurv") //always optimise with Curvature instead of RCurv
     {
-        sParameter="Curvature";
+		dop.sParameter ="Curvature";
         dMin=1./dMin;
         dMax=1./dMax;
     }
+	else
+		dop.sParameter = sParameter;
 
     dop.iSurface=iSurface;
-    dop.sParameter=sParameter;
 
     if(dMin<dMax)
     {

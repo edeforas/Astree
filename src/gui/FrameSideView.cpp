@@ -23,7 +23,7 @@
 class MySceneFrame : public QGraphicsScene
 {
 public:
-    MySceneFrame(FrameSideView* pF)
+    explicit MySceneFrame(FrameSideView* pF)
     {
         _pF=pF;
     }

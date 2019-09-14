@@ -81,8 +81,8 @@ public:
     void clear();
     void set_device(OpticalDevice* pDevice);
     void set_min_vignetting(double dMinVignetting);
-    void add_parameter(int iSurface,string sParameter, bool bRefine=false); // auto min & max
-    void add_parameter(int iSurface,string sParameter,double dMin,double dMax);
+    void add_parameter(int iSurface,const string& sParameter, bool bRefine=false); // auto min & max
+    void add_parameter(int iSurface,const string& sParameter,double dMin,double dMax);
     void set_merit_function(OptimizerMeritFunction eMeritFunction);
 
     virtual OptimizerResult optimize()=0;

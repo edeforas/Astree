@@ -19,7 +19,7 @@ public:
     DeviceOptimizerAmoeba();
 	virtual ~DeviceOptimizerAmoeba();
 
-    virtual OptimizerResult optimize();
+    virtual OptimizerResult optimize() override;
 };
 
 #endif

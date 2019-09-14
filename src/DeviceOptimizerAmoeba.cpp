@@ -144,15 +144,15 @@ OptimizerResult DeviceOptimizerAmoeba::optimize()
         {
             //compute paramMirrorFar
             ParameterSet paramMirrorFar=paramMean;
-            bool bOutOfDomain=false;
+            bool bOutOfDomain2=false;
             for(unsigned int i=0;i<paramMirrorFar.size();i++)
             {
                 paramMirrorFar[i].dValue+=2*(paramMirror[i].dValue-paramMean[i].dValue);
                 if( (paramMirrorFar[i].dValue<paramMirrorFar[i].dMin ) || (paramMirrorFar[i].dValue>paramMirrorFar[i].dMax ) )
-                    bOutOfDomain=true;
+                    bOutOfDomain2=true;
             }
             double dMirrorFar=SPOT_SIZE_INFINITY;
-            if(!bOutOfDomain)
+            if(!bOutOfDomain2)
             {
                 apply_parameter(paramMirrorFar);
                 dMirrorFar=compute_demerit();

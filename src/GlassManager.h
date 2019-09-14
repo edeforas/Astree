@@ -20,9 +20,9 @@ public:
 
     void list_available(vector<string>& vsAvailable);
 
-    bool exist(string sGlass) const;
+    bool exist(const string& sGlass) const;
 
-    unsigned int solid_color(string sMaterial);
+    unsigned int solid_color(const string& sMaterial);
 
     void inject(Glass* pGlass); //take ownership of pGlass
 

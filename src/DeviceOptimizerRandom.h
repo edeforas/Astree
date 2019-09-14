@@ -15,7 +15,7 @@ public:
     DeviceOptimizerRandom();
     virtual ~DeviceOptimizerRandom();
 
-    OptimizerResult optimize();
+    OptimizerResult optimize() override;
 };
 
 #endif

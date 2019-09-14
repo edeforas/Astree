@@ -21,27 +21,27 @@ class Properties
 public:
     Properties();
 
-    bool save(string sFileName) const;
-    bool load(string sFileName);
+    bool save(const string& sFileName) const;
+    bool load(const string& sFileName);
 
-    void set(string sKey, string sValue);
-    void set(string sKey, int iValue);
-    void set(string sKey, unsigned int uiValue);
-    void set(string sKey, long lValue);
-    void set(string sKey, bool bValue);
-    void set(string sKey, double dValue);
-    void set(string sKey, const vector<double>& vdValue);
+    void set(const string& sKey,const string& sValue);
+    void set(const string& sKey, int iValue);
+    void set(const string& sKey, unsigned int uiValue);
+    void set(const string& sKey, long lValue);
+    void set(const string& sKey, bool bValue);
+    void set(const string& sKey, double dValue);
+    void set(const string& sKey, const vector<double>& vdValue);
 
-    bool exist(string sKey) const;
-    void remove(string sKey);
+    bool exist(const string& sKey) const;
+    void remove(const string& sKey);
 
-    string get(string sKey) const;
-    int get_int(string sKey) const;
-    unsigned int get_unsigned_int(string sKey) const;
-    long get_long(string sKey) const;
-    bool get_bool(string sKey) const;
-    double get_double(string sKey) const;
-    vector<double> get_vector_double(string sKey) const;
+    string get(const string& sKey) const;
+    int get_int(const string& sKey) const;
+    unsigned int get_unsigned_int(const string& sKey) const;
+    long get_long(const string& sKey) const;
+    bool get_bool(const string& sKey) const;
+    double get_double(const string& sKey) const;
+    vector<double> get_vector_double(const string& sKey) const;
 
     const map<string,string>& all() const;
 private:

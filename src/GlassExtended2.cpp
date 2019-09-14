@@ -44,7 +44,7 @@ GlassExtended2::GlassExtended2(const GlassExtended2& m):
     _dC7=m._dC7;
 }
 //////////////////////////////////////////////////////////////////////////////
-double GlassExtended2::calc_index(double dLambdaMicrons)
+double GlassExtended2::compute_index(double dLambdaMicrons)
 {
     //use the Extended2 formulae
     //	n^2 = c0 + c1 λ^2 + c2 λ^−2 + c3 λ^−4 + c4 λ^−6 + c5 λ^−8 + c6 λ^4 + c7 λ^6

@@ -15,7 +15,7 @@ class DialogMediumManager : public QDialog
     Q_OBJECT
 
 public:
-    explicit DialogMediumManager(QWidget *parent = 0,string sGlass="");
+    explicit DialogMediumManager(QWidget *parent = 0, const string& sGlass="");
     ~DialogMediumManager();
 
     string selected_glass() const;

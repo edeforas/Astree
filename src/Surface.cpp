@@ -519,7 +519,7 @@ void Surface::reflect_photon(Photon &p)
     p.dz-=nz*u;
 }
 ///////////////////////////////////////////////////////////////////////////////
-void Surface::set_comment(string sComment)
+void Surface::set_comment(const string& sComment)
 {
     _sComment=sComment;
 }

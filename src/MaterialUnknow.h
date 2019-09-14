@@ -13,10 +13,10 @@ public:
     MaterialUnknow();
     MaterialUnknow(const MaterialUnknow& m);
 
-    virtual Glass* clone() const;
+    virtual Glass* clone() const override;
 
 protected:
-    virtual double calc_index(double dLambda);
+    virtual double compute_index(double dLambda) override;
 };
 
 #endif

@@ -216,8 +216,8 @@ void DockOptimizer::device_changed(OpticalDevice *pDevice,int iReason)
             QComboBox* qcbSurf=(QComboBox*)ui->twParams->cellWidget(i,1);
             qcbSurf->clear(); //TODO
             qcbSurf->addItem("");
-            for(int i=0;i<iNbSurfaces;i++)
-                qcbSurf->addItem(QString::number(i+1));
+            for(int j=0;j<iNbSurfaces;j++)
+                qcbSurf->addItem(QString::number(j+1));
         }
         _iNbSurfaces=iNbSurfaces;
 

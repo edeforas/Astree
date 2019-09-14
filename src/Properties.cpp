@@ -9,7 +9,7 @@ using namespace std;
 Properties::Properties()
 { }
 ///////////////////////////////////////////////////////////////////////////////
-void Properties::set(string sKey, int iValue)
+void Properties::set(const string& sKey, int iValue)
 {
     stringstream ss;
     ss << iValue;
@@ -17,7 +17,7 @@ void Properties::set(string sKey, int iValue)
     _pairs[sKey]=ss.str();
 }
 ///////////////////////////////////////////////////////////////////////////////
-void Properties::set(string sKey, unsigned int uiValue)
+void Properties::set(const string& sKey, unsigned int uiValue)
 {
     stringstream ss;
     ss << uiValue;
@@ -25,19 +25,19 @@ void Properties::set(string sKey, unsigned int uiValue)
     _pairs[sKey]=ss.str();
 }
 ///////////////////////////////////////////////////////////////////////////////
-void Properties::set(string sKey, long lValue)
+void Properties::set(const string& sKey, long lValue)
 {
     stringstream ss;
     ss << lValue;
 
     _pairs[sKey]=ss.str();
 }///////////////////////////////////////////////////////////////////////////////
-void Properties::set(string sKey, bool bValue)
+void Properties::set(const string& sKey, bool bValue)
 {
     _pairs[sKey]=bValue?"1":"0";
 }
 ///////////////////////////////////////////////////////////////////////////////
-void Properties::set(string sKey, double dValue)
+void Properties::set(const string& sKey, double dValue)
 {
     stringstream ss;
     ss << setprecision(10) << dValue;
@@ -45,12 +45,12 @@ void Properties::set(string sKey, double dValue)
     _pairs[sKey]=ss.str();
 }
 ///////////////////////////////////////////////////////////////////////////////
-void Properties::set(string sKey, string sValue)
+void Properties::set(const string& sKey, const string& sValue)
 {
     _pairs[sKey]=sValue;
 }
 ///////////////////////////////////////////////////////////////////////////////
-void Properties::set(string sKey, const vector<double>& vdValue)
+void Properties::set(const string& sKey, const vector<double>& vdValue)
 {
     stringstream ss;
     for(unsigned int i=0;i<vdValue.size();i++)
@@ -63,13 +63,13 @@ void Properties::set(string sKey, const vector<double>& vdValue)
     _pairs[sKey]=ss.str();
 }
 ///////////////////////////////////////////////////////////////////////////////
-bool Properties::exist(string sKey) const
+bool Properties::exist(const string& sKey) const
 {
     auto it=_pairs.find(sKey);
     return it!=_pairs.end();
 }
 ///////////////////////////////////////////////////////////////////////////////
-string Properties::get(string sKey) const
+string Properties::get(const string& sKey) const
 {
     auto it=_pairs.find(sKey);
     if(it!=_pairs.end())
@@ -78,7 +78,7 @@ string Properties::get(string sKey) const
         return "";
 }
 ///////////////////////////////////////////////////////////////////////////////
-int Properties::get_int(string sKey) const
+int Properties::get_int(const string& sKey) const
 {
     auto it=_pairs.find(sKey);
     if(it!=_pairs.end())
@@ -91,7 +91,7 @@ int Properties::get_int(string sKey) const
         return 0;
 }
 ///////////////////////////////////////////////////////////////////////////////
-unsigned int Properties::get_unsigned_int(string sKey) const
+unsigned int Properties::get_unsigned_int(const string& sKey) const
 {
     auto it=_pairs.find(sKey);
     if(it!=_pairs.end())
@@ -104,7 +104,7 @@ unsigned int Properties::get_unsigned_int(string sKey) const
         return 0;
 }
 ///////////////////////////////////////////////////////////////////////////////
-long Properties::get_long(string sKey) const
+long Properties::get_long(const string& sKey) const
 {
     auto it=_pairs.find(sKey);
     if(it!=_pairs.end())
@@ -116,7 +116,7 @@ long Properties::get_long(string sKey) const
     } else
         return 0;
 }///////////////////////////////////////////////////////////////////////////////
-bool Properties::get_bool(string sKey) const
+bool Properties::get_bool(const string& sKey) const
 {
     auto it=_pairs.find(sKey);
     if(it!=_pairs.end())
@@ -126,7 +126,7 @@ bool Properties::get_bool(string sKey) const
 }
 
 ///////////////////////////////////////////////////////////////////////////////
-double Properties::get_double(string sKey) const
+double Properties::get_double(const string& sKey) const
 {
     auto it=_pairs.find(sKey);
     if(it!=_pairs.end())
@@ -139,7 +139,7 @@ double Properties::get_double(string sKey) const
         return 0.;
 }
 ///////////////////////////////////////////////////////////////////////////////
-vector<double> Properties::get_vector_double(string sKey) const
+vector<double> Properties::get_vector_double(const string& sKey) const
 {
     vector<double> vd;
 
@@ -161,7 +161,7 @@ vector<double> Properties::get_vector_double(string sKey) const
     return vd;
 }
 ///////////////////////////////////////////////////////////////////////////////
-bool Properties::save(string sFileName) const
+bool Properties::save(const string& sFileName) const
 {
     ofstream f(sFileName.c_str());
     if(!f)
@@ -190,7 +190,7 @@ bool Properties::save(string sFileName) const
     return true;
 }
 //////////////////////////////////////////////////////////////////////////////
-bool Properties::load(string sFileName)
+bool Properties::load(const string& sFileName)
 {
     _pairs.clear();
     string sLine;
@@ -228,7 +228,7 @@ bool Properties::load(string sFileName)
     return true;
 }
 //////////////////////////////////////////////////////////////////////////////
-void Properties::remove(string sKey)
+void Properties::remove(const string& sKey)
 {
     _pairs.erase(sKey);
 }

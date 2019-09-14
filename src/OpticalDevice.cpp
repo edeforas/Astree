@@ -52,6 +52,8 @@ OpticalDevice& OpticalDevice::operator=(const OpticalDevice& rDevice)
     _bAutoCurvature=rDevice._bAutoCurvature;
     _bAutoFocus=rDevice._bAutoFocus;
 
+	_sGlassFolder = rDevice._sGlassFolder;
+
     _bMustRetrace=true;
 
     return *this;
@@ -59,6 +61,11 @@ OpticalDevice& OpticalDevice::operator=(const OpticalDevice& rDevice)
 //////////////////////////////////////////////////////////////////////////////
 OpticalDevice::~OpticalDevice()
 { }
+//////////////////////////////////////////////////////////////////////////////
+void OpticalDevice::set_glass_folder(const string& sGlassFolder)
+{
+	_sGlassFolder = sGlassFolder;
+}
 //////////////////////////////////////////////////////////////////////////////
 void OpticalDevice::insert_surface(int iPos)
 {
@@ -166,7 +173,7 @@ void OpticalDevice::update_z()
     }
 }
 //////////////////////////////////////////////////////////////////////////////
-void OpticalDevice::set_note(string sNote)
+void OpticalDevice::set_note(const string& sNote)
 {
     _sNote=sNote;
 }
@@ -311,7 +318,7 @@ void OpticalDevice::ray_trace()
     {
         ray_trace_step(light,half_field_of_view(),false,_bAutoCurvature); //for autocurvature
         //get quality result
-        double dCenterX,dCenterY;
+        dCenterX,dCenterY;
         light.get_spot_center(dCenterX,dCenterY);
         _imageQuality.vdAngles[_iNbAngles-1]=half_field_of_view();
         _imageQuality.vdDist[_iNbAngles-1]=-dCenterX;
@@ -329,7 +336,7 @@ void OpticalDevice::ray_trace()
         ray_trace_step(light,dTilt,false,false);
 
         //get quality result
-        double dCenterX,dCenterY;
+        dCenterX,dCenterY;
         light.get_spot_center(dCenterX,dCenterY);
         _imageQuality.vdDist[iStep]=-dCenterX;
         _imageQuality.vdVignetting[iStep]=light.vignetting();

@@ -20,7 +20,7 @@ Glass* MaterialUnknow::clone() const
     return new MaterialUnknow(*this);
 }
 //////////////////////////////////////////////////////////////////////////////
-double MaterialUnknow::calc_index(double dLambdaMicrons)
+double MaterialUnknow::compute_index(double dLambdaMicrons)
 {
     (void)dLambdaMicrons;
     return 1.;

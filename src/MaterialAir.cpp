@@ -21,7 +21,7 @@ Glass* MaterialAir::clone() const
     return new MaterialAir(*this);
 }
 //////////////////////////////////////////////////////////////////////////////
-double MaterialAir::calc_index(double dLambdaMicrons)
+double MaterialAir::compute_index(double dLambdaMicrons)
 {
     double sigma2=1./(dLambdaMicrons*dLambdaMicrons); //dLambda in microns
     return 1. + 6.4328e-5 + 2.94981e-2/(146.-sigma2) + 2.554e-4/(41.- sigma2);

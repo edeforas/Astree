@@ -126,9 +126,9 @@ OpticalDevice* DeviceIoZmx::import(string sFile)
         if(sKey=="NOTE")
         {
             string sNoteVal;
-            auto iPos=sVal.find_first_of(" ");
-            if(iPos!=string::npos)
-                sNoteVal=sVal.substr(iPos,string::npos);
+            auto iPosSpace=sVal.find_first_of(" ");
+            if(iPosSpace!=string::npos)
+                sNoteVal=sVal.substr(iPosSpace,string::npos);
 
             sNote+=sNoteVal+"\n";
         }
@@ -168,9 +168,9 @@ OpticalDevice* DeviceIoZmx::import(string sFile)
         if(sKey=="GLAS")
         {
             string sFirstWord;
-            auto iPos=sVal.find_first_of(" ");
-            if(iPos!=string::npos)
-                sFirstWord=sVal.substr(0,iPos);
+            auto iPosSpace=sVal.find_first_of(" ");
+            if(iPosSpace!=string::npos)
+                sFirstWord=sVal.substr(0,iPosSpace);
 
             if(sFirstWord=="MIRROR")
                 sType="reflect";

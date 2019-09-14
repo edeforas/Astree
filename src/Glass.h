@@ -22,19 +22,19 @@ public:
     void set_solid_color(int iSolidColor);
 
     string maker() const;
-    void set_maker(string sMaker);
+    void set_maker(const string& sMaker);
 
     string name() const;
-    void set_name(string sName);
+    void set_name(const string& sName);
 
     string formula() const;
-    void set_formula(string sFormula);
+    void set_formula(const string& sFormula);
 
     void compute_NdVd(double &Nd,double& Vd);
     void compute_NeVe(double &Ne,double& Ve);
 
 protected:
-    virtual double calc_index(double dLambdaMicrons)=0;
+    virtual double compute_index(double dLambdaMicrons)=0;
 
     string _sMaker;
     string _sName;

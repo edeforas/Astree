@@ -32,7 +32,7 @@ double Glass::index(double dLambdaMicrons)
     if(dLambdaMicrons!=_dLastLambda)
     {
         _dLastLambda=dLambdaMicrons;
-        _dLastIndex=calc_index(dLambdaMicrons);
+        _dLastIndex= compute_index(dLambdaMicrons);
     }
 
     return _dLastIndex;
@@ -43,7 +43,7 @@ string Glass::maker() const
     return _sMaker;
 }
 //////////////////////////////////////////////////////////////////////////////
-void Glass::set_maker(string sMaker)
+void Glass::set_maker(const string& sMaker)
 {
     _sMaker=sMaker;
 }
@@ -53,12 +53,12 @@ string Glass::name() const
     return _sName;
 }
 //////////////////////////////////////////////////////////////////////////////
-void Glass::set_name(string sName)
+void Glass::set_name(const string& sName)
 {
     _sName=sName;
 }
 //////////////////////////////////////////////////////////////////////////////
-void Glass::set_formula(string sFormula)
+void Glass::set_formula(const string& sFormula)
 {
     _sFormula=sFormula;
 }

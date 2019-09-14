@@ -38,7 +38,7 @@ GlassSellmeier::GlassSellmeier(const GlassSellmeier& m):
     _dC3=m._dC3;
 }
 //////////////////////////////////////////////////////////////////////////////
-double GlassSellmeier::calc_index(double dLambdaMicrons)
+double GlassSellmeier::compute_index(double dLambdaMicrons)
 {
     //use the Selmeier formulae
     double l2=dLambdaMicrons*dLambdaMicrons;

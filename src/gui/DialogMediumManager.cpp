@@ -5,7 +5,7 @@
 #include "Glass.h"
 
 //////////////////////////////////////////////////////////////////////
-DialogMediumManager::DialogMediumManager(QWidget *parent, string sGlass) :
+DialogMediumManager::DialogMediumManager(QWidget *parent, const string& sGlass) :
     QDialog(parent),
     ui(new Ui::DialogMediumManager)
 {
