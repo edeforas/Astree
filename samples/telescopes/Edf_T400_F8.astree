@@ -26,30 +26,26 @@
 4.thick=0
 4.type=image
 4.z.autofocus=1
-device.note=Custom formula from Etienne de Foras, for a planetary telescope:
+device.note=Custom formula from Etienne de Foras:
 device.note=
-device.note=-Two conical mirrror + thin BK7 corrector
-device.note=
-device.note=Image is very good in all the image field
-device.note=
-device.note=Surfaces has been roughly optimised
-device.note=
-device.note=Work in progress
+device.note=-Diameter=400mm
+device.note=-FNumber=7.4
+device.note=-Two reflective conical mirrror + thin BK7 corrector
+device.note=-Image is very good in all the flat image field
+device.note=-Adapted for full frame photography
 device.relative_convention=1
 image.autocurvature=0
 image.autofocus=1
 light.colors=Red.Yellow.Green.Blue.
 light.half_field_of_view=0.28
 light.nbsteps=3
-note=Custom formula from Etienne de Foras, for a planetary telescope:
+note=Custom formula from Etienne de Foras:
 note=
-note=-Two conical mirrror + thin BK7 corrector
-note=
-note=Image is very good in all the image field
-note=
-note=Surfaces has been roughly optimised
-note=
-note=Work in progress
+note=-Diameter=400mm
+note=-FNumber=7.4
+note=-Two reflective conical mirrror + thin BK7 corrector
+note=-Image is very good in all the flat image field
+note=-Adapted for full frame photography
 parameter.optimizer.0.checked=0
 parameter.optimizer.0.parameter=Conic
 parameter.optimizer.0.surface=1
