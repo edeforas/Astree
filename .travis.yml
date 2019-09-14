@@ -19,6 +19,11 @@ script:
   - mkdir -p astree/usr/share/applications # "make install" should do this
   - cp astree.desktop astree/usr/share/applications/astree.desktop # "make install" should do this
   - mkdir -p astre/usr/share/samples
+  - mkdir -p astre/usr/share/samples/afocal
+  - mkdir -p astre/usr/share/samples/eyepieces
+  - mkdir -p astre/usr/share/samples/others
+  - mkdir -p astre/usr/share/samples/refractors
+  - mkdir -p astre/usr/share/samples/telescopes
   - cp -r samples/afocal/* astre/usr/share/samples/afocal
   - cp -r samples/eyepieces/* astre/usr/share/samples/eyepieces
   - cp -r samples/others/* astre/usr/share/samples/others
