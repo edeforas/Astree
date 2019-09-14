@@ -1,20 +1,11 @@
 language: cpp
 compiler: gcc
-addons:
-  apt:
-    sources:
-    - ubuntu-toolchain-r-test
-    packages:
-    - g++-9
 sudo: require
 dist: trusty
 
 before_install:
-  - sudo add-apt-repository ppa:ubuntu-toolchain-r/test -y
-  - sudo apt-get update
   - sudo add-apt-repository ppa:beineri/opt-qt593-trusty -y
   - sudo apt-get update -qq
-  
 
 install:
   - sudo apt-get -y install qt59base libgl1-mesa-dev
@@ -25,12 +16,12 @@ script:
   - qmake CONFIG+=release PREFIX=/usr
   - make -j$(nproc)
   - cd ../..
-  - mkdir astree
-  - mkdir astree/usr
-  - mkdir astree/usr/share
-  - mkdir astree/usr/share/applications
-  - cp astree.desktop astree/usr/share/applications/astree.desktop
-  - make INSTALL_ROOT=astree -j$(nproc) install ; find astree/
+  - mkdir -p astree/usr/share/applications # "make install" should do this
+  - cp astree.desktop astree/usr/share/applications/astree.desktop # "make install" should do this
+  - mkdir -p astree/usr/share/metainfo ; cp astree.appdata.xml astree/usr/share/metainfo/ # "make install" should do this
+  - mkdir -p astree/usr/bin ; cp Astree astree/usr/bin/astree # "make install" should do this
+  - mkdir -p astree/usr/share/icons/hicolor/scalable/apps ; touch astree/usr/share/icons/hicolor/scalable/apps/astree.svg  # "make install" should do this
+  - find astree/
   - wget -c -nv "https://github.com/probonopd/linuxdeployqt/releases/download/continuous/linuxdeployqt-continuous-x86_64.AppImage"
   - chmod a+x linuxdeployqt-continuous-x86_64.AppImage
   - ./linuxdeployqt-continuous-x86_64.AppImage astree/usr/share/applications/astree.desktop -appimage
