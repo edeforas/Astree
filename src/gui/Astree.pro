@@ -103,5 +103,3 @@ HEADERS += \
     ../GlassExtended2.h \
     ../Vector3D.h \
     ../Properties.h
-	
-OTHER_FILES += Astree.iss

@@ -155,8 +155,7 @@ void DockSurfacesData::device_changed(OpticalDevice *pDevice,int iReason)
     if(iReason==NEW_OPTICAL_DEVICE)
     {
         m_ui->twSurfacesDatas->clearContents();
-        m_ui->twSurfacesDatas->setRowCount(pDevice->nb_surface());
-
+        
         _bDisplayComment=false;
         _bDisplayAspheric=false;
         _bDisplayInnerDiameter=false;
@@ -175,7 +174,7 @@ void DockSurfacesData::update_table()
     vector<string> vsMaterial;
     GlassManager::singleton().list_available(vsMaterial);
 
-    m_ui->twSurfacesDatas->setRowCount(_pOD->nb_surface());
+    m_ui->twSurfacesDatas->setRowCount(_pOD->nb_surface()+1);
 
     for (int i=0;i<_pOD->nb_surface();i++)
     {
@@ -356,6 +355,13 @@ void DockSurfacesData::on_twSurfacesDatas_cellChanged(int iRow, int iCol)
 {
     if(_bBlockSignals)
         return;
+
+	//handle the last void surface case
+	if (iRow == _pOD->nb_surface())
+	{
+		m_ui->twSurfacesDatas->item(iRow, iCol)->setText("");
+		return;
+	}
 
     //parse cell
     string sItem=m_ui->twSurfacesDatas->item(iRow,iCol)->text().toStdString();
@@ -579,35 +585,18 @@ void DockSurfacesData::on_btnAddSurfaceBefore_clicked()
     m_ui->twSurfacesDatas->selectRow(iLine);
 }
 //////////////////////////////////////////////////////////////////////////////
-void DockSurfacesData::on_btnAddSurfaceAfter_clicked()
-{
-    int iLine=m_ui->twSurfacesDatas->currentRow();
-    if(iLine==-1)
-    {
-        if(_pOD->nb_surface()!=0)
-            return;
-    }
-
-    _pOD->insert_surface(iLine+1);
-    _pOD->set_type(iLine+1,"void");
-
-    if(iLine+1>0)
-        _pOD->set(iLine+1,AUTO_DIAMETER,true);
-
-    update_table(); // auto parameter need to be recomputed
-
-    static_cast<MainWindow*>(parent())->device_changed(this,OPTICAL_DEVICE_CHANGED);
-
-    m_ui->twSurfacesDatas->selectRow(iLine+1);
-}
-//////////////////////////////////////////////////////////////////////////////
 void DockSurfacesData::on_btnDeleteSurface_clicked()
 {
     int iLine=m_ui->twSurfacesDatas->currentRow();
-    if(iLine==-1)
+	
+	if(iLine==-1)
         return;
 
-    _pOD->delete_surface(iLine);
+	//do not remove if last void surface
+	if(iLine== _pOD->nb_surface())
+		return;
+
+	_pOD->delete_surface(iLine);
     static_cast<MainWindow*>(parent())->device_changed(this,OPTICAL_DEVICE_CHANGED);
 
     if(iLine>=m_ui->twSurfacesDatas->rowCount())

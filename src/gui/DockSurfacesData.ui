@@ -42,21 +42,14 @@
       <item>
        <widget class="QPushButton" name="btnAddSurfaceBefore">
         <property name="text">
-         <string>Insert Surface before</string>
-        </property>
-       </widget>
-      </item>
-      <item>
-       <widget class="QPushButton" name="btnAddSurfaceAfter">
-        <property name="text">
-         <string>Insert Surface after</string>
+         <string>Insert</string>
         </property>
        </widget>
       </item>
       <item>
        <widget class="QPushButton" name="btnDeleteSurface">
         <property name="text">
-         <string>Delete Surface</string>
+         <string>Remove</string>
         </property>
        </widget>
       </item>

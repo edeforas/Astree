@@ -41,7 +41,6 @@ private slots:
     void on_comboCoordMode_activated(const QString &arg1);
 
     void on_btnAddSurfaceBefore_clicked();
-    void on_btnAddSurfaceAfter_clicked();
     void on_btnDeleteSurface_clicked();
 
     void on_twSurfacesDatas_cellChanged(int row, int column);
