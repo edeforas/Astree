@@ -51,8 +51,6 @@ public:
     OpticalDevice& operator=(const OpticalDevice& rDevice);
     virtual ~OpticalDevice();
 
-	void set_glass_folder(const string& sGlassFolder);
-
     // surface management
     void insert_surface(int iPos);
     void delete_surface(int iPos);
@@ -130,8 +128,6 @@ private:
     bool _bAutoCurvature;
     bool _bAutoFocus;
 	
-	string _sGlassFolder;
-
     string _sNote;
 
     double _dHalfFov;

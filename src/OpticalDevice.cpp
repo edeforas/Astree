@@ -52,8 +52,6 @@ OpticalDevice& OpticalDevice::operator=(const OpticalDevice& rDevice)
     _bAutoCurvature=rDevice._bAutoCurvature;
     _bAutoFocus=rDevice._bAutoFocus;
 
-	_sGlassFolder = rDevice._sGlassFolder;
-
     _bMustRetrace=true;
 
     return *this;
@@ -61,11 +59,6 @@ OpticalDevice& OpticalDevice::operator=(const OpticalDevice& rDevice)
 //////////////////////////////////////////////////////////////////////////////
 OpticalDevice::~OpticalDevice()
 { }
-//////////////////////////////////////////////////////////////////////////////
-void OpticalDevice::set_glass_folder(const string& sGlassFolder)
-{
-	_sGlassFolder = sGlassFolder;
-}
 //////////////////////////////////////////////////////////////////////////////
 void OpticalDevice::insert_surface(int iPos)
 {

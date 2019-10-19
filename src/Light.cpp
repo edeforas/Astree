@@ -433,7 +433,12 @@ void Light::compute_spot_size(bool bInfinite) //todo remove bInfinite flag here
                 return;
             }
 
-			dCosP = std::clamp(dCosP, 0., 1.);
+			//dCosP = std::clamp(dCosP, 0., 1.); //c++17 function
+			if(dCosP>1.)
+				dCosP=1.;
+			else if(dCosP<0.)
+				dCosP=0.;
+
 			dMinCos = std::min(dMinCos, dCosP);
 		}
 
