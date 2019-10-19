@@ -174,6 +174,7 @@ void DockSurfacesData::update_table()
     vector<string> vsMaterial;
     GlassManager::singleton().list_available(vsMaterial);
 
+	m_ui->twSurfacesDatas->clearContents();
     m_ui->twSurfacesDatas->setRowCount(_pOD->nb_surface()+1);
 
     for (int i=0;i<_pOD->nb_surface();i++)
