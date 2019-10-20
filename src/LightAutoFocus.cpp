@@ -6,6 +6,8 @@
 #include "Light.h"
 #include "Photon.h"
 
+#include <algorithm>
+
 #define SPOT_SIZE_INFINITY 1.e99
 
 ////////////////////////////////////////////////////////////////////////////////
@@ -79,19 +81,19 @@ double LightAutofocus::autofocus(const Light& l)
     // reduce interval around solution using dichotomy 1.5
     while (dC-dA>dZStep)
     {
-        double dAB=(dA+dB)/2.;
+        double dAB=(dA+dB)*0.5;
         double dQAB=compute_spot_size(l,dAB);
 
         if (dQAB<dQB)
         {
-            // a new min
+            // a new minimum
             dC=dB;
             dB=dAB;
             dQB=dQAB;
         }
         else
         {
-            double dBC=(dB+dC)/2.;
+            double dBC=(dB+dC)*0.5;
             double dQBC=compute_spot_size(l,dBC);
 
             if (dQBC<dQB)
@@ -132,12 +134,10 @@ double LightAutofocus::compute_spot_size(const Light& l,double z)
     double yMin=1.e99;
     bool bOneFound=false;
 
-    const vector<Photon>& photons=l.photons();
-
-    for(unsigned int i=0;i<photons.size();i++)
+	for(auto it= l.photons().begin();it<l.photons().end();++it)
     {
-        const Photon& p=photons[i];
-        if(!p.is_valid())
+	    const Photon& p=*it;
+		if(!p.is_valid())
             continue;
 
         if(p.dz==0.)
@@ -161,24 +161,18 @@ double LightAutofocus::compute_spot_size(const Light& l,double z)
             continue;
         }
 
-        if(x>xMax)
-            xMax=x;
-
-        if(x<xMin)
-            xMin=x;
-
-        if(y>yMax)
-            yMax=y;
-
-        if(y<yMin)
-            yMin=y;
+		xMax = std::max(xMax, x);
+		xMin = std::min(xMin, x);
+		
+		yMax = std::max(yMax, y);
+		yMin = std::min(yMin, y);
     }
 
     if(!bOneFound)
         return SPOT_SIZE_INFINITY;
 
-    _xCenter=(xMax+xMin)/2.;
-    _yCenter=(yMax+yMin)/2.;
+    _xCenter=(xMax+xMin)*0.5;
+    _yCenter=(yMax+yMin)*0.5;
 
     if(xMax-xMin>yMax-yMin)
         return xMax-xMin;
