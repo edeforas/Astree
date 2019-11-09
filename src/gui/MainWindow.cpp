@@ -36,13 +36,13 @@ MainWindow::MainWindow(QWidget *parent)
 {
     ui->setupUi(this);
     _pDevice=new OpticalDevice;
-
+	
     //load all glass catalog
-    string sExepath=FileUtil::get_path(FileUtil::get_executable_path());
-    vector<string> vsCatalog=FileUtil::list(sExepath+"\\glass\\*.agf");
+	string sGlassPath = get_glass_path();
+    vector<string> vsCatalog=FileUtil::list(sGlassPath+"\\glass\\*.agf");
     for(unsigned int i=0;i<vsCatalog.size();i++)
     {
-        bool bOk=GlassCatalogIO::load(sExepath+"\\glass\\"+vsCatalog[i],GlassManager::singleton());
+        bool bOk=GlassCatalogIO::load(sGlassPath +"\\glass\\"+vsCatalog[i],GlassManager::singleton());
         if(bOk==false)
             QMessageBox::warning(this,"Warning:","Unable to load glass catalog: "+QString(vsCatalog[i].c_str()));
     }
@@ -113,9 +113,9 @@ bool MainWindow::ask_save_and_action()
 //////////////////////////////////////////////////////////////////////////////
 void MainWindow::clear_device()
 {
-    _bMustSave=false;
-    delete _pDevice;
-    _pDevice=new OpticalDevice;
+	_bMustSave = false;
+	delete _pDevice;
+	_pDevice = new OpticalDevice;
 }
 //////////////////////////////////////////////////////////////////////////////
 void MainWindow::on_actionQuit_triggered()
@@ -378,3 +378,17 @@ void MainWindow::resizeEvent( QResizeEvent *e )
     _pDockScatterPlot->device_changed(_pDevice,OPTICAL_DEVICE_CHANGED);
     _pFrameSideView->fit_in_view();
 }
+//////////////////////////////////////////////////////////////////////////////
+std::string MainWindow::get_glass_path() const
+{
+#ifdef _WIN32
+	return FileUtil::get_path(FileUtil::get_executable_path());
+#endif
+
+#ifdef __unix__ //linux
+	//todo 
+#endif
+
+	return "";
+}
+//////////////////////////////////////////////////////////////////////////////
