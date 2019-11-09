@@ -386,11 +386,10 @@ void Light::compute_spot_size(bool bInfinite) //todo remove bInfinite flag here
 
         if(!bInfinite)
         {
-            double pdx=p.dx,pdy=p.dy, pdz=p.dz;
-            Vector3D::normalize(pdx,pdy,pdz); //TODO remove using mean axis(max,min)
-            dDxCentral+=pdx;
-            dDyCentral+=pdy;
-            dDzCentral+=pdz;
+            Vector3D::normalize(p.dx, p.dy, p.dz); //TODO remove using mean axis(max,min)
+            dDxCentral+= p.dx;
+            dDyCentral+= p.dy;
+            dDzCentral+= p.dz;
         }
 
         iNbValidPhoton++;
@@ -414,7 +413,7 @@ void Light::compute_spot_size(bool bInfinite) //todo remove bInfinite flag here
         Vector3D::normalize(dDxCentral,dDyCentral,dDzCentral);
 
         //compute cos on mean axis
-        double dMinCos=3.;
+        double dMinCos=3.; //cos -> decreasing function -> search for min
         for (int i=0;i<_iNbPhotons;i++)
         {
             const Photon& p=_vPhotons[i];
@@ -424,7 +423,7 @@ void Light::compute_spot_size(bool bInfinite) //todo remove bInfinite flag here
 
             // project p on axis
             double dCosP=p.dx*dDxCentral+p.dy*dDyCentral+p.dz*dDzCentral;
-            if(dCosP<0)
+            if(dCosP<0.)
             {
                 _bIsValid=false;
                 _dCenterX=0.;
@@ -434,20 +433,30 @@ void Light::compute_spot_size(bool bInfinite) //todo remove bInfinite flag here
                 return;
             }
 
-            if(dCosP>=1.0001)
-                dCosP=1.; //doubt ?
+			//dCosP = std::clamp(dCosP, 0., 1.); //c++17 function
+			if(dCosP>1.)
+				dCosP=1.;
+			else if(dCosP<0.)
+				dCosP=0.;
 
-            if(dCosP<0.)
-                dCosP=0.; //doubt?
+			dMinCos = std::min(dMinCos, dCosP);
+		}
 
-            if(dMinCos>dCosP)
-                dMinCos=dCosP;
-        }
+        assert(dMinCos>=0.);
 
-        assert(dMinCos>-0.0001);
-        assert(dMinCos<1.0001);
+		if(dMinCos>1)
+		{
+			_bIsValid = false;
+			_dCenterX = 0.;
+			_dCenterY = 0.;
+			_dSpotSize = 1.e99;
+			_dFD = 1.e99;
+			return;
+		}
 
-        _dFD=0.5/tan(acos(dMinCos)); //TODO
+        assert(dMinCos<=1.);
+
+        _dFD=0.5/tan(acos(dMinCos));
 
         if(_dFD<0.01) //TODO
         {
