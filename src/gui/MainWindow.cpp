@@ -127,7 +127,7 @@ void MainWindow::on_actionQuit_triggered()
 void MainWindow::on_actionAbout_triggered()
 {
     QMessageBox mb;
-    mb.setText("Astree " ASTREE_VERSION " by etienne.deforas@gmail.com\nThanks to probonopd, app4soft and Symbian9 for the Linux build");
+    mb.setText("Astree " ASTREE_VERSION " by etienne.deforas@gmail.com\nThanks to @probonopd and @app4soft for the Linux build");
     mb.setIconPixmap(QPixmap(":/Astree/Astree.ico"));
     mb.exec();
 }
