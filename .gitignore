@@ -56,3 +56,4 @@ ui_
 Debug
 Debug
 Release_*
+ui_*.h

@@ -47,6 +47,7 @@ protected:
 
 private:
     void glass_dialog(bool bSelect);
+	std::string get_glass_path() const;
     Ui::MainWindowClass *ui;
 
 private slots:
