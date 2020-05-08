@@ -43,7 +43,7 @@ private slots:
     void on_btnAddSurfaceBefore_clicked();
     void on_btnDeleteSurface_clicked();
 
-    void on_twSurfacesDatas_cellChanged(int row, int column);
+    void on_twSurfacesDatas_cellChanged(int iRow, int iCol);
 
 private:
     void update_labels();

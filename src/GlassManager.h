@@ -16,7 +16,7 @@ class GlassManager
 public:
     static GlassManager& singleton();
     Glass* create(string sMaterial) const;
-    void destroy(Glass* pMaterial);
+    static void destroy(Glass* pMaterial);
 
     void list_available(vector<string>& vsAvailable);
 

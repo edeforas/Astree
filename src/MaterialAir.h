@@ -16,7 +16,7 @@ public:
     virtual Glass* clone() const override;
 
 protected:
-    virtual double compute_index(double dLambda) override;
+    virtual double compute_index(double dLambdaMicrons) override;
 };
 
 #endif
