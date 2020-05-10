@@ -13,8 +13,8 @@
 //////////////////////////////////////////////////////////////////////////////
 OpticalDevice::OpticalDevice()
 {
-    _iGridX=35;
-    _iGridY=35;
+    _iGridX= NB_PHOTON_X;
+    _iGridY= NB_PHOTON_Y;
     _iNbAngles=3;
 
     _dHalfFov=0.;
@@ -289,7 +289,7 @@ void OpticalDevice::ray_trace()
         set(a.iSurface,a.param,a.dGain*get(a.iRefSurface,a.param,false));
     }
 
-    // main ray tracing loop
+    // main ray tracing loop on axis for autofocus
     Light light;
     ray_trace_step(light,0,_bAutoFocus,false);
     _imageQuality.isImageInfinite=light.is_image_infinite();
@@ -307,7 +307,7 @@ void OpticalDevice::ray_trace()
     _imageQuality.dFNumber=light.get_FD();
     _imageQuality.dAirySize=light.airy_radius()*2.;
 
-    if(_iNbAngles>1)
+    if(_iNbAngles>1) // for autocurvature
     {
         ray_trace_step(light,half_field_of_view(),false,_bAutoCurvature); //for autocurvature
 

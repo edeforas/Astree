@@ -315,17 +315,27 @@ void Surface::stop(Light& l)
 // reflect photons
 void Surface::reflect(Light& l)
 {
-    for (int i=0;i<l.nb_photon();i++)
-    {
-        Photon& p=l.get_photon(i);
+	int iBlockSize = 100000;
 
-        if (!p.is_valid())
-            continue;
+//#pragma omp parallel for
+		for (int iBlock = 0; iBlock < l.nb_photon(); iBlock += iBlockSize)
+		{
+			for (int i = 0; i < iBlockSize; i++)
+			{
+				if (i + iBlock >= l.nb_photon())
+					continue;
 
-        local_ref(p);
-        reflect_photon(p);
-        global_ref(p);
-    }
+				Photon& p = l.get_photon(i+iBlock);
+
+				if (!p.is_valid())
+					continue;
+
+				local_ref(p);
+				reflect_photon(p);
+				global_ref(p);
+			}
+		}
+	
 }
 ///////////////////////////////////////////////////////////////////////////////
 // transmit photons

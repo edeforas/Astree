@@ -18,6 +18,10 @@ class Light;
 #define FD_VALID_MAX 1e10
 #define SPOT_SIZE_INFINITY 9e99
 
+#define NB_PHOTON_X (10000)
+#define NB_PHOTON_Y (1000)
+#define NB_PHOTON_BATCH (1000)
+
 enum eSurfaceParameter //to be used with get/set functions below
 {
     DIAMETER,

@@ -16,7 +16,7 @@ DeviceOptimizerAmoeba::~DeviceOptimizerAmoeba()
 //////////////////////////////////////////////////////////////////////////////
 OptimizerResult DeviceOptimizerAmoeba::optimize()
 {
-    // see algo at : https://en.wikipedia.org/wiki/Nelder%E2%80%93Mead_method
+    // see algorithm at : https://en.wikipedia.org/wiki/Nelder%E2%80%93Mead_method
     assert(_pDevice!=0);
 
     double dMeritOrig=compute_demerit();
