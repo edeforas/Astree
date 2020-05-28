@@ -57,3 +57,5 @@ Debug
 Debug
 Release_*
 ui_*.h
+*.iobj
+*.ipdb
