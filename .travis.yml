@@ -8,7 +8,7 @@ before_install:
   - sudo apt-get update -qq
 
 install:
-  - sudo apt-get -y install qt59base libgl1-mesa-dev curl
+  - sudo apt-get -y install qt59base libgl1-mesa-dev curl zip
   - source /opt/qt*/bin/qt*-env.sh
 
 script:
@@ -45,7 +45,8 @@ after_success:
   - # $GITHUB_TOKEN missing, please set it in the Travis CI settings of this project
   - # You can get one from https://github.com/settings/tokens
   - # As for now just upload artifacts on Transfer.sh and post link to Travis CI log
-  - curl --upload-file Astree*.AppImage https://transfer.sh/Astree-nightly-x86_64.AppImage
+  - zip -v Astree-nightly.zip Astree*.AppImage*
+  - curl --upload-file Astree-nightly.zip https://transfer.sh/Astree-nightly.zip
   - echo ""
 
 branches:
