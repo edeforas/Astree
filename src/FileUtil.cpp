@@ -38,6 +38,7 @@ vector<string> FileUtil::list(const string& sPathAndMask)
 #ifdef __unix__ //linux
 #include <limits.h>
 #include <unistd.h>
+#include <glob.h>
 using namespace std;
 //////////////////////////////////////////////////////////////////////////////
 std::string FileUtil::get_executable_path()
@@ -49,10 +50,15 @@ std::string FileUtil::get_executable_path()
 //////////////////////////////////////////////////////////////////////////////
 vector<string> FileUtil::list(const string& sPathAndMask)
 {
-    vector<string> vsResult;
+	vector<string> vsResult;
 
-//    for (const auto & entry : std::filesystem::directory_iterator(sPathAndMask))
-//        vsResult.push_back(entry.path().string());
+	//glob from https://stackoverflow.com/questions/612097/how-can-i-get-the-list-of-files-in-a-directory-using-c-or-c
+	glob_t glob_result;
+	glob(sPathAndMask.c_str(), GLOB_TILDE, NULL, &glob_result);
+	for (unsigned int i = 0; i < glob_result.gl_pathc; ++i) {
+		vsResult.push_back(string(glob_result.gl_pathv[i]));
+	}
+	globfree(&glob_result);
 
     return vsResult;
 }
