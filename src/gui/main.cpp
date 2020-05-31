@@ -15,7 +15,7 @@ int main(int argc, char *argv[])
 {
     QApplication app(argc, argv);
 	app.setStyle(QStyleFactory::create("fusion"));
-
+	/*
     QString sPath=QCoreApplication::applicationDirPath();
 
     QTranslator qtTranslator;
@@ -25,7 +25,7 @@ int main(int argc, char *argv[])
     QTranslator myappTranslator;
     myappTranslator.load("Astree_" + QLocale::system().name(),sPath);
     app.installTranslator(&myappTranslator);
-	
+	*/
     MainWindow w;
     w.showMaximized();
 

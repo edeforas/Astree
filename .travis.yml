@@ -10,6 +10,13 @@ before_install:
 install:
   - sudo apt-get -y install qt59base libgl1-mesa-dev curl zip
   - source /opt/qt*/bin/qt*-env.sh
+  - mkdir -p astree/usr/share/metainfo
+  - mkdir -p astree/usr/bin
+  - cp astree.appdata.xml astree/usr/share/metainfo/
+  - cp Astree astree/usr/bin/astree
+  - mkdir -p astree/usr/share/icons/hicolor/scalable/apps
+  - touch astree/usr/share/icons/hicolor/scalable/apps/astree.svg
+
 
 script:
   - cd src/gui
@@ -24,16 +31,15 @@ script:
   - mkdir -p astre/usr/share/samples/others
   - mkdir -p astre/usr/share/samples/refractors
   - mkdir -p astre/usr/share/samples/telescopes
+  - mkdir -p astre/usr/share/samples/zmx
   - cp -r samples/afocal/* astre/usr/share/samples/afocal
   - cp -r samples/eyepieces/* astre/usr/share/samples/eyepieces
   - cp -r samples/others/* astre/usr/share/samples/others
   - cp -r samples/refractors/* astre/usr/share/samples/refractors
   - cp -r samples/telescopes/* astre/usr/share/samples/telescopes
+  - cp -r samples/zmx/* astre/usr/share/samples/zmx
   - mkdir -p astree/usr/glass
   - cp -r glass/* astree/usr/glass
-  - mkdir -p astree/usr/share/metainfo ; cp astree.appdata.xml astree/usr/share/metainfo/ # "make install" should do this
-  - mkdir -p astree/usr/bin ; cp Astree astree/usr/bin/astree # "make install" should do this
-  - mkdir -p astree/usr/share/icons/hicolor/scalable/apps ; touch astree/usr/share/icons/hicolor/scalable/apps/astree.svg  # "make install" should do this
   - find astree/
   - wget -c -nv "https://github.com/probonopd/linuxdeployqt/releases/download/continuous/linuxdeployqt-continuous-x86_64.AppImage"
   - chmod a+x linuxdeployqt-continuous-x86_64.AppImage
@@ -42,9 +48,6 @@ script:
 after_success:
   - wget -c https://github.com/probonopd/uploadtool/raw/master/upload.sh
   - bash upload.sh Astree*.AppImage*
-  - # $GITHUB_TOKEN missing, please set it in the Travis CI settings of this project
-  - # You can get one from https://github.com/settings/tokens
-  - # As for now just upload artifacts on Transfer.sh and post link to Travis CI log
   - zip -v Astree-nightly.zip Astree*.AppImage*
   - curl --upload-file Astree-nightly.zip https://transfer.sh/Astree-nightly.zip
   - echo ""
