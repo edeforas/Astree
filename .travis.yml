@@ -11,9 +11,7 @@ install:
   - sudo apt-get -y install qt59base libgl1-mesa-dev curl zip
   - source /opt/qt*/bin/qt*-env.sh
   - mkdir -p astree/usr/share/metainfo
-  - mkdir -p astree/usr/bin
   - cp astree.appdata.xml astree/usr/share/metainfo/
-  - cp Astree astree/usr/bin/astree
   - mkdir -p astree/usr/share/icons/hicolor/scalable/apps
   - touch astree/usr/share/icons/hicolor/scalable/apps/astree.svg
   - mkdir -p astree/usr/share/applications
@@ -33,14 +31,14 @@ install:
   - cp -r samples/zmx/* astre/usr/share/samples/zmx
   - mkdir -p astree/usr/glass
   - cp -r glass/* astree/usr/glass
-
-build:
+  
+script:
   - cd src/gui
   - qmake CONFIG+=release PREFIX=/usr
   - make -j$(nproc)
   - cd ../..
-  
-script:
+  - mkdir -p astree/usr/bin
+  - cp Astree astree/usr/bin/astree
   - find astree/
   - wget -c -nv "https://github.com/probonopd/linuxdeployqt/releases/download/continuous/linuxdeployqt-continuous-x86_64.AppImage"
   - chmod a+x linuxdeployqt-continuous-x86_64.AppImage
