@@ -328,7 +328,7 @@ void MainWindow::on_actionImport_ZMX_file_triggered()
 
         _bMustSave=false;
         clear_device();
-        OpticalDevice* pDevice=DeviceIoZmx::import(sFile);
+		OpticalDevice* pDevice=DeviceIoZmx::import(sFile);
         if (pDevice==0)
         {
             QMessageBox m;

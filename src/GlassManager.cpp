@@ -36,17 +36,20 @@ Glass* GlassManager::create(string sMaterial) const
     }
 
     //if glass does not exist , try to add N- behind(Schott lead free glasses)
-    sMaterial="N-"+sMaterial;
-    for(unsigned int i=0;i<_vGlass.size();i++)
-    {
-        if(_vGlass[i]->name()==sMaterial)
-            return _vGlass[i]->clone();
-    }
-
+	string sMaterialOrig = sMaterial;
+	if (sMaterial.find("N-") == string::npos)
+	{
+		sMaterial = "N-" + sMaterial;
+		for (unsigned int i = 0; i < _vGlass.size(); i++)
+		{
+			if (_vGlass[i]->name() == sMaterial)
+				return _vGlass[i]->clone();
+		}
+	}
     //error case
     Glass* pM=new MaterialUnknow;
     pM->set_formula("unknown");
-    pM->set_name(sMaterial);
+    pM->set_name(sMaterialOrig);
     pM->set_maker("unknown_glass");
     return pM;
 }

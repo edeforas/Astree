@@ -259,12 +259,15 @@ bool Surface::set_type(string sType)
 
         GlassManager::singleton().destroy(_pMaterial);
         _pMaterial=GlassManager::singleton().create(sType);
+		_sType = _pMaterial->name(); //overwrite type with glass name in case of glass replacement
     }
-    else
-        _pMaterial=0;
+	else
+	{
+		_pMaterial = 0;
+		_sType = sType;
+	}
 
-    _sType=sType;
-    _bIsPerfect = ((sType=="perfect_lens") || (sType=="perfect_mirror"));
+	_bIsPerfect = ((_sType == "perfect_lens") || (_sType == "perfect_mirror"));
 
     return true;
 }
