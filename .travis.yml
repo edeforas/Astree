@@ -1,7 +1,7 @@
 language: cpp
 compiler: gcc
 sudo: require
-dist: trusty
+dist: bionic
 
 before_install:
   - sudo add-apt-repository ppa:beineri/opt-qt593-trusty -y
@@ -33,6 +33,7 @@ install:
   - cp -r glass/* astree/usr/glass
   
 script:
+  - gcc -v
   - cd src/gui
   - qmake CONFIG+=release PREFIX=/usr
   - make -j$(nproc)
