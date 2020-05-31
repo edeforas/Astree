@@ -12,12 +12,12 @@
 2.type=image
 2.z=-55.16888393
 2.z.autofocus=1
-device.note=Simple unoptimized lens, show chromatism, spherical abberations and field curvature
+device.note=Simple unoptimized lens, show chromatism, astigmatism spherical abberations and field curvature
 device.relative_convention=0
 image.autocurvature=0
 image.autofocus=1
 light.colors=Red.Yellow.Green.Blue.
 light.half_field_of_view=10
 light.nbsteps=3
-note=Simple unoptimized lens, show chromatism, spherical abberations and field curvature
+note=Simple unoptimized lens, show chromatism, astigmatism spherical abberations and field curvature
 parameter.showLightOffAxis=100

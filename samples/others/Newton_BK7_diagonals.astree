@@ -16,13 +16,11 @@
 3.thick=0
 3.type=image
 3.z.autofocus=1
-device.convention=relative
-device.note=This sample show how a perfect telescope can be altered using prismatic secondaries, or right angles prismatic devices
+device.note=This sample show how a perfect parabolic telescope can be altered using prismatic secondaries, or right angles prismatic devices
 device.relative_convention=1
-half_field_of_view=0.5
 image.autocurvature=0
 image.autofocus=1
 light.colors=Red.Yellow.Green.Blue.
 light.half_field_of_view=0.5
 light.nbsteps=3
-note=This sample show how a perfect telescope can be altered using prismatic secondaries, or right angles prismatic devices
+note=This sample show how a perfect parabolic telescope can be altered using prismatic secondaries, or right angles prismatic devices
