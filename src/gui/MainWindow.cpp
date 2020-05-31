@@ -340,7 +340,7 @@ void MainWindow::on_actionImport_ZMX_file_triggered()
         delete _pDevice;
         _pDevice=pDevice;
         _sFileName=sFile;
-        device_changed(0,NEW_OPTICAL_DEVICE);
+        device_changed(0,NEW_OPTICAL_DEVICE,false);
         _pFrameSideView->fit_in_view();
     }
 }
