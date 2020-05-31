@@ -16,15 +16,8 @@ install:
   - cp Astree astree/usr/bin/astree
   - mkdir -p astree/usr/share/icons/hicolor/scalable/apps
   - touch astree/usr/share/icons/hicolor/scalable/apps/astree.svg
-
-
-script:
-  - cd src/gui
-  - qmake CONFIG+=release PREFIX=/usr
-  - make -j$(nproc)
-  - cd ../..
-  - mkdir -p astree/usr/share/applications # "make install" should do this
-  - cp astree.desktop astree/usr/share/applications/astree.desktop # "make install" should do this
+  - mkdir -p astree/usr/share/applications
+  - cp astree.desktop astree/usr/share/applications/astree.desktop
   - mkdir -p astre/usr/share/samples
   - mkdir -p astre/usr/share/samples/afocal
   - mkdir -p astre/usr/share/samples/eyepieces
@@ -40,6 +33,14 @@ script:
   - cp -r samples/zmx/* astre/usr/share/samples/zmx
   - mkdir -p astree/usr/glass
   - cp -r glass/* astree/usr/glass
+
+build:
+  - cd src/gui
+  - qmake CONFIG+=release PREFIX=/usr
+  - make -j$(nproc)
+  - cd ../..
+  
+script:
   - find astree/
   - wget -c -nv "https://github.com/probonopd/linuxdeployqt/releases/download/continuous/linuxdeployqt-continuous-x86_64.AppImage"
   - chmod a+x linuxdeployqt-continuous-x86_64.AppImage
