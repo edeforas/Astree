@@ -1,3 +1,3 @@
-C:\Qt\Qt5.8.0\5.8\mingw53_32\bin\lupdate.exe Astree.pro
+C:\Qt\5.13.0\msvc2017_64\bin\lupdate.exe Astree.pro
 pause
-C:\Qt\Qt5.8.0\5.8\mingw53_32\bin\linguist.exe Astree_fr.ts
+C:\Qt\5.13.0\msvc2017_64\bin\linguist.exe Astree_fr.ts

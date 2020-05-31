@@ -10,6 +10,16 @@
     </message>
     <message>
         <location filename="DialogMediumManager.ui" line="47"/>
+        <source>Cancel</source>
+        <translation>Annuler</translation>
+    </message>
+    <message>
+        <location filename="DialogMediumManager.ui" line="54"/>
+        <source>Select</source>
+        <translation>Selectionner</translation>
+    </message>
+    <message>
+        <location filename="DialogMediumManager.ui" line="61"/>
         <source>Ok</source>
         <translation>Ok</translation>
     </message>
@@ -431,45 +441,52 @@ dans ce cas ,la lumière se concentre dans la tache de diffraction et la qualit�
         <translation>Paramètres des surfaces</translation>
     </message>
     <message>
-        <location filename="DockSurfacesData.ui" line="52"/>
         <source>Insert Surface after</source>
-        <translation>Insérer surface après</translation>
+        <translation type="vanished">Insérer surface après</translation>
     </message>
     <message>
-        <location filename="DockSurfacesData.ui" line="83"/>
-        <location filename="DockSurfacesData.ui" line="87"/>
+        <location filename="DockSurfacesData.ui" line="45"/>
+        <source>Insert</source>
+        <translation>Inserer</translation>
+    </message>
+    <message>
+        <location filename="DockSurfacesData.ui" line="52"/>
+        <source>Remove</source>
+        <translation>Enlever</translation>
+    </message>
+    <message>
+        <location filename="DockSurfacesData.ui" line="76"/>
+        <location filename="DockSurfacesData.ui" line="80"/>
         <source>Absolute</source>
         <translation>Absolue</translation>
     </message>
     <message>
-        <location filename="DockSurfacesData.ui" line="92"/>
+        <location filename="DockSurfacesData.ui" line="85"/>
         <source>Relative</source>
         <translation>Relative</translation>
     </message>
     <message>
-        <location filename="DockSurfacesData.ui" line="100"/>
+        <location filename="DockSurfacesData.ui" line="93"/>
         <source>PolyAspheric</source>
         <translation>AsphériquePolynomial</translation>
     </message>
     <message>
-        <location filename="DockSurfacesData.ui" line="107"/>
+        <location filename="DockSurfacesData.ui" line="100"/>
         <source>InnerDiameter</source>
         <translation>DiamètreInterne</translation>
     </message>
     <message>
-        <location filename="DockSurfacesData.ui" line="114"/>
+        <location filename="DockSurfacesData.ui" line="107"/>
         <source>Comment</source>
         <translation>Commentaire</translation>
     </message>
     <message>
-        <location filename="DockSurfacesData.ui" line="45"/>
         <source>Insert Surface before</source>
-        <translation>Insérer surface avant</translation>
+        <translation type="vanished">Insérer surface avant</translation>
     </message>
     <message>
-        <location filename="DockSurfacesData.ui" line="59"/>
         <source>Delete Surface</source>
-        <translation>Supprimer surface</translation>
+        <translation type="vanished">Supprimer surface</translation>
     </message>
 </context>
 <context>
@@ -483,24 +500,24 @@ dans ce cas ,la lumière se concentre dans la tache de diffraction et la qualit�
 <context>
     <name>MainWindow</name>
     <message>
-        <location filename="MainWindow.cpp" line="140"/>
-        <location filename="MainWindow.cpp" line="177"/>
+        <location filename="MainWindow.cpp" line="141"/>
+        <location filename="MainWindow.cpp" line="178"/>
         <source>Open Astree File</source>
         <translation>Ouvrir un fichier Astree</translation>
     </message>
     <message>
-        <location filename="MainWindow.cpp" line="140"/>
-        <location filename="MainWindow.cpp" line="177"/>
+        <location filename="MainWindow.cpp" line="141"/>
+        <location filename="MainWindow.cpp" line="178"/>
         <source>Astree Files (*.astree)</source>
         <translation>Fichier Astree (*.astree)</translation>
     </message>
     <message>
-        <location filename="MainWindow.cpp" line="297"/>
+        <location filename="MainWindow.cpp" line="321"/>
         <source>Import ZMX File</source>
         <translation>Importer un fichier ZMX</translation>
     </message>
     <message>
-        <location filename="MainWindow.cpp" line="297"/>
+        <location filename="MainWindow.cpp" line="321"/>
         <source>ZMX Files (*.zmx)</source>
         <translation>Fichier ZMX (*.zmx)</translation>
     </message>
@@ -510,8 +527,7 @@ dans ce cas ,la lumière se concentre dans la tache de diffraction et la qualit�
     <message>
         <location filename="MainWindow.ui" line="20"/>
         <source>Astree</source>
-        <translation>Astree
-</translation>
+        <translation>Astree</translation>
     </message>
     <message>
         <location filename="MainWindow.ui" line="38"/>
@@ -622,7 +638,7 @@ dans ce cas ,la lumière se concentre dans la tache de diffraction et la qualit�
     <message>
         <location filename="MainWindow.ui" line="180"/>
         <source>Import Zmx file...</source>
-        <translation>Importer un fichiers ZMX...</translation>
+        <translation>Importer un fichier ZMX...</translation>
     </message>
     <message>
         <location filename="MainWindow.ui" line="191"/>
