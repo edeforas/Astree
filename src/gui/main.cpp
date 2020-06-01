@@ -27,6 +27,7 @@ int main(int argc, char *argv[])
     app.installTranslator(&myappTranslator);
 	*/
     MainWindow w;
+	w.resize(5000, 5000); // showMaximized ugly fix as in: https://stackoverflow.com/questions/27157312/qt-showmaximized-not-working-in-windows
     w.showMaximized();
 
     if (argc==2)
