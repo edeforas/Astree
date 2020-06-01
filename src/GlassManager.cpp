@@ -17,9 +17,9 @@ GlassManager* GlassManager::_pGlassManager=0;
 //////////////////////////////////////////////////////////////////////////////
 GlassManager::GlassManager()
 {
-    _vGlass.push_back(new MaterialAir);
-    _vGlass.push_back(new MaterialVacuum);
-    _vGlass.push_back(new MaterialWater);
+	inject(new MaterialAir);
+	inject(new MaterialVacuum);
+	inject(new MaterialWater);
 }
 //////////////////////////////////////////////////////////////////////////////
 GlassManager::~GlassManager()
