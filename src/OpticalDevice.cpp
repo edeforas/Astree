@@ -422,7 +422,7 @@ void OpticalDevice::initialize_light(Light* pLight,double dTilt,int iGridX,int i
 	Surface* pSurf = 0;
 
 	// do not init on void surfaces
-	for (int i = 0; i < _vSurfaces.size(); i++)
+	for (int i = 0; i <(int)_vSurfaces.size(); i++)
 	{
 		if (_vSurfaces[i].type() != "void")
 		{
