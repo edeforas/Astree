@@ -390,7 +390,7 @@ std::string MainWindow::get_glass_path() const
 #ifdef __unix__ //linux
 
 	string sAppPath = QCoreApplication::applicationDirPath().toStdString();
-	string sGlassPath = sAppPath + "/../share/astree/glass/"; //not very clean but should work
+	string sGlassPath = sAppPath + "../share/astree/glass/"; //not very clean but should work
 	return sGlassPath;
 #endif
 
