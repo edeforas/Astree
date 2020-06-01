@@ -11,7 +11,7 @@
    </rect>
   </property>
   <property name="windowTitle">
-   <string>GlassManager</string>
+   <string>Glass Manager</string>
   </property>
   <property name="windowIcon">
    <iconset resource="Astree.qrc">
