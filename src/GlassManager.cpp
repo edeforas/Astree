@@ -10,6 +10,7 @@
 #include "MaterialUnknow.h"
 
 #include <cassert>
+#include <algorithm>
 
 GlassManager* GlassManager::_pGlassManager=0;
 
