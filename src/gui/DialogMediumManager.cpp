@@ -11,10 +11,11 @@ DialogMediumManager::DialogMediumManager(QWidget *parent, const string& sGlass) 
 {
     ui->setupUi(this);
 
-    vector<string> lsM;
-    GlassManager::singleton().list_available(lsM);
+	// init glass tab
+    vector<string> vsGlass;
+    GlassManager::singleton().list_available(vsGlass);
 
-    ui->twMedium->setRowCount((int)lsM.size());
+    ui->twMedium->setRowCount((int)vsGlass.size());
 
     QStringList qsl;
     qsl+="Maker";
@@ -30,9 +31,9 @@ DialogMediumManager::DialogMediumManager(QWidget *parent, const string& sGlass) 
 
     int iPosGlass=-1;
 
-    for(int i=0;i<(int)lsM.size();i++)
+    for(int i=0;i<(int)vsGlass.size();i++)
     {
-        Glass* m=GlassManager::singleton().create(lsM[i]);
+        Glass* m=GlassManager::singleton().create(vsGlass[i]);
 
         QTableWidgetItem* qwmaker=new QTableWidgetItem(m->maker().c_str());
         ui->twMedium->setItem(i,0,qwmaker);
@@ -75,6 +76,20 @@ DialogMediumManager::DialogMediumManager(QWidget *parent, const string& sGlass) 
         ui->btnSelect->hide();
         ui->btnCancel->hide();
     }
+
+	// init catalogs tab
+	vector<string> vsCatalogs;
+	GlassManager::singleton().list_catalogs(vsCatalogs);
+	ui->twCatalogs->setRowCount((int)vsCatalogs.size());
+	ui->twCatalogs->setColumnCount(1);
+	QStringList qsc;
+	qsc += "Maker";
+	ui->twCatalogs->setHorizontalHeaderLabels(qsc);
+	for (int i = 0; i < (int)vsCatalogs.size(); i++)
+	{
+		QTableWidgetItem* qwmaker = new QTableWidgetItem(vsCatalogs[i].c_str());
+		ui->twCatalogs->setItem(i, 0, qwmaker);
+	}
 }
 //////////////////////////////////////////////////////////////////////
 DialogMediumManager::~DialogMediumManager()

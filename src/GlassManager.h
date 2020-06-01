@@ -19,6 +19,7 @@ public:
     static void destroy(Glass* pMaterial);
 
     void list_available(vector<string>& vsAvailable);
+	void list_catalogs(vector<string>& vsCatalogs);
 
     bool exist(const string& sGlass) const;
 
@@ -32,6 +33,7 @@ private:
 
     static GlassManager* _pGlassManager;
     vector<Glass*> _vGlass; // TODO use map
+	vector<string> _vCatalogs; // TODO use map
 };
 
 #endif

@@ -75,6 +75,13 @@ void GlassManager::list_available(vector<string>& vsAvailable)
         vsAvailable.push_back(_vGlass[i]->name());
 }
 //////////////////////////////////////////////////////////////////////////////
+void GlassManager::list_catalogs(vector<string>& vsCatalogs)
+{
+	vsCatalogs.clear();
+	for (unsigned int i = 0; i < _vCatalogs.size(); i++)
+		vsCatalogs.push_back(_vCatalogs[i]);
+}
+//////////////////////////////////////////////////////////////////////////////
 bool GlassManager::exist(const string& sGlass) const
 {
     for(unsigned int i=0;i<_vGlass.size();i++)
@@ -99,5 +106,10 @@ unsigned int GlassManager::solid_color(const string& sMaterial)
 void GlassManager::inject(Glass* pGlass) //take ownership of pGlass
 {
     _vGlass.push_back(pGlass);
+
+	//add maker in catalog if no existent
+	auto it = std::find(_vCatalogs.begin(), _vCatalogs.end(), pGlass->maker());
+	if (it == _vCatalogs.end())
+		_vCatalogs.push_back(pGlass->maker());
 }
 //////////////////////////////////////////////////////////////////////////////
