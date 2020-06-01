@@ -47,9 +47,6 @@ script:
 after_success:
   - wget -c https://github.com/probonopd/uploadtool/raw/master/upload.sh
   - bash upload.sh Astree*.AppImage*
-  - zip -v Astree-nightly.zip Astree*.AppImage*
-  - curl --upload-file Astree-nightly.zip https://transfer.sh/Astree-nightly.zip
-  - echo ""
 
 branches:
   except:
