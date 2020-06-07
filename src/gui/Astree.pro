@@ -13,7 +13,6 @@ win32:RC_FILE = Astree.rc
 RESOURCES += Astree.qrc
 TRANSLATIONS = Astree_fr.ts
 SOURCES += main.cpp \
-    DialogRevertDesign.cpp \
     MainWindow.cpp \
     DockLightProperties.cpp \
     FrameSideView.cpp \
@@ -22,6 +21,7 @@ SOURCES += main.cpp \
     DockCommentary.cpp \
     DialogMediumManager.cpp \
     DialogScaleDevice.cpp \
+	DialogRevertDesign.cpp \
     DockImageQuality.cpp \
     DockOptimizer.cpp
 	
@@ -34,6 +34,7 @@ HEADERS += MainWindow.h \
     MyViewFrame.h \
     DialogMediumManager.h \
     DialogScaleDevice.h \
+	DialogRevertDesign.h \
     DockImageQuality.h \
     DockOptimizer.h \
     AstreeDefines.h
