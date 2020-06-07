@@ -607,6 +607,11 @@ void OpticalDevice::set(int iSurface,eSurfaceParameter eParam,double dParam)
     _bMustRetrace=true;
 }
 //////////////////////////////////////////////////////////////////////////////
+Surface& OpticalDevice::surface(int iSurface)
+{
+	return _vSurfaces[iSurface];
+}
+//////////////////////////////////////////////////////////////////////////////
 void OpticalDevice::set_parameter(const string & sKey,const string & sValue)
 {
     _otherParameters[sKey]=sValue;

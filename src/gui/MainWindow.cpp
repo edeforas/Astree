@@ -27,10 +27,13 @@
 #include "GlassManager.h"
 #include "DialogMediumManager.h"
 #include "DialogScaleDevice.h"
+#include "DialogRevertDesign.h"
 
 #include "GlassCatalogIo.h"
 
 #include "DeviceScaling.h"
+#include "DeviceRevert.h"
+
 //////////////////////////////////////////////////////////////////////////////
 MainWindow::MainWindow(QWidget *parent)
     : QMainWindow(parent), ui(new Ui::MainWindowClass)
@@ -395,5 +398,19 @@ std::string MainWindow::get_glass_path() const
 #endif
 
 	return "invalid glass path";
+}
+//////////////////////////////////////////////////////////////////////////////
+void MainWindow::on_actionRevert_design_triggered()
+{
+	DialogRevertDesign sd(_pDevice->nb_surface(), this);
+	if (sd.exec())
+	{
+		DeviceRevert dmc;
+
+		dmc.revert(_pDevice, sd.first_surface(), sd.last_surface());
+		_bMustSave = true;
+		device_changed(0, OPTICAL_DEVICE_CHANGED);
+		_pFrameSideView->fit_in_view();
+	}
 }
 //////////////////////////////////////////////////////////////////////////////

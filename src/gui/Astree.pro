@@ -13,6 +13,7 @@ win32:RC_FILE = Astree.rc
 RESOURCES += Astree.qrc
 TRANSLATIONS = Astree_fr.ts
 SOURCES += main.cpp \
+    DialogRevertDesign.cpp \
     MainWindow.cpp \
     DockLightProperties.cpp \
     FrameSideView.cpp \
@@ -21,10 +22,12 @@ SOURCES += main.cpp \
     DockCommentary.cpp \
     DialogMediumManager.cpp \
     DialogScaleDevice.cpp \
+    DialogRevertDesign.cpp \
     DockImageQuality.cpp \
     DockOptimizer.cpp
 	
 HEADERS += MainWindow.h \
+    DialogRevertDesign.h \
     DockLightProperties.h \
     FrameSideView.h \
     DockScatterPlot.h \
@@ -33,11 +36,13 @@ HEADERS += MainWindow.h \
     MyViewFrame.h \
     DialogMediumManager.h \
     DialogScaleDevice.h \
+    DialogRevertDesign.h \
     DockImageQuality.h \
     DockOptimizer.h \
     AstreeDefines.h
 
 FORMS += MainWindow.ui \
+    DialogRevertDesign.ui \
     DockLightProperties.ui \
     FrameSideView.ui \
     DockScatterPlot.ui \
@@ -45,6 +50,7 @@ FORMS += MainWindow.ui \
     DockCommentary.ui \
     DialogMediumManager.ui \
     DialogScaleDevice.ui \
+    DialogRevertDesign.ui \
     DockImageQuality.ui \
     DockOptimizer.ui
 
@@ -67,6 +73,7 @@ SOURCES += \
     ../DeviceIoZmx.cpp \
     ../LightAutoFocus.cpp \
     ../DeviceScaling.cpp \
+    ../DeviceRevert.cpp \
     ../DeviceOptimizer.cpp \
     ../DeviceOptimizerAmoeba.cpp \
     ../DeviceOptimizerRandom.cpp \
@@ -91,6 +98,7 @@ HEADERS += \
     ../DeviceIoZmx.h \
     ../LightAutoFocus.h \
     ../DeviceScaling.h \
+    ../DeviceRevert.h \
     ../DeviceOptimizer.h \
     ../DeviceOptimizerAmoeba.h \
     ../DeviceOptimizerRandom.h \

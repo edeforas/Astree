@@ -7,11 +7,11 @@
     <x>0</x>
     <y>0</y>
     <width>365</width>
-    <height>184</height>
+    <height>189</height>
    </rect>
   </property>
   <property name="windowTitle">
-   <string>Scale Device</string>
+   <string>Scale Design</string>
   </property>
   <property name="windowIcon">
    <iconset resource="Astree.qrc">
@@ -176,7 +176,7 @@
         </widget>
        </item>
        <item>
-        <widget class="QPushButton" name="pushButton">
+        <widget class="QPushButton" name="b">
          <property name="text">
           <string>Ok</string>
          </property>
@@ -191,7 +191,7 @@
  <tabstops>
   <tabstop>leOldSize</tabstop>
   <tabstop>leNewSize</tabstop>
-  <tabstop>pushButton</tabstop>
+  <tabstop>b</tabstop>
   <tabstop>pushButton_2</tabstop>
   <tabstop>rbSizeChange</tabstop>
   <tabstop>rbPercentage</tabstop>

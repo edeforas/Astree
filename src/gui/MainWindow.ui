@@ -30,7 +30,7 @@
      <x>0</x>
      <y>0</y>
      <width>1169</width>
-     <height>21</height>
+     <height>26</height>
     </rect>
    </property>
    <widget class="QMenu" name="menuFile">
@@ -58,6 +58,7 @@
      <string>Tools</string>
     </property>
     <addaction name="actionScal_device"/>
+    <addaction name="actionRevert_design"/>
     <addaction name="actionMedium_Manager"/>
    </widget>
    <widget class="QMenu" name="menuView">
@@ -147,7 +148,7 @@
   </action>
   <action name="actionScal_device">
    <property name="text">
-    <string>Scale device...</string>
+    <string>Scale design...</string>
    </property>
   </action>
   <action name="actionShow_aspheric_Properties">
@@ -218,6 +219,11 @@
   <action name="actionReload">
    <property name="text">
     <string>Reload</string>
+   </property>
+  </action>
+  <action name="actionRevert_design">
+   <property name="text">
+    <string>Revert design...</string>
    </property>
   </action>
  </widget>

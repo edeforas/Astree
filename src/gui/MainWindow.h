@@ -67,6 +67,8 @@ private slots:
 
     void on_actionReload_triggered();
 
+    void on_actionRevert_design_triggered();
+
 private:
     OpticalDevice* _pDevice;
     DockSurfacesData* _pDockSurfacesData;
