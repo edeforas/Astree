@@ -36,7 +36,6 @@ HEADERS += MainWindow.h \
     MyViewFrame.h \
     DialogMediumManager.h \
     DialogScaleDevice.h \
-    DialogRevertDesign.h \
     DockImageQuality.h \
     DockOptimizer.h \
     AstreeDefines.h
@@ -50,7 +49,6 @@ FORMS += MainWindow.ui \
     DockCommentary.ui \
     DialogMediumManager.ui \
     DialogScaleDevice.ui \
-    DialogRevertDesign.ui \
     DockImageQuality.ui \
     DockOptimizer.ui
 
