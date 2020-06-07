@@ -1,5 +1,5 @@
 TEMPLATE = app
-QT += widgets
+QT  += core gui widgets
 DESTDIR= ../..
 
 CONFIG+=c++17
@@ -22,12 +22,10 @@ SOURCES += main.cpp \
     DockCommentary.cpp \
     DialogMediumManager.cpp \
     DialogScaleDevice.cpp \
-    DialogRevertDesign.cpp \
     DockImageQuality.cpp \
     DockOptimizer.cpp
 	
 HEADERS += MainWindow.h \
-    DialogRevertDesign.h \
     DockLightProperties.h \
     FrameSideView.h \
     DockScatterPlot.h \
