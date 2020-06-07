@@ -20,12 +20,18 @@ DialogRevertDesign::~DialogRevertDesign()
 
 int DialogRevertDesign::first_surface()
 {
-	return ui->spFirstSurface->value()-1;
+	if(ui->spFirstSurface->value()<= ui->spLastSurface->value())
+		return ui->spFirstSurface->value()-1;
+	else
+		return ui->spLastSurface->value() - 1;
 }
 
 int DialogRevertDesign::last_surface()
 {
-	return ui->spLastSurface->value()-1;
+	if (ui->spFirstSurface->value() <= ui->spLastSurface->value())
+		return ui->spLastSurface->value() - 1;
+	else
+		return ui->spFirstSurface->value() - 1;
 }
 
 void DialogRevertDesign::on_btnOk_clicked()

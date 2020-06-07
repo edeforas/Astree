@@ -70,7 +70,6 @@ public:
     // surface data accessor
     void set(int iSurface,eSurfaceParameter eParam,double dParam);
     double get(int iSurface,eSurfaceParameter eParam,bool bUpdate=true); //not const due to lazy computation
-	Surface& surface(int iSurface);
 
     // surface parameter cloning
     void set_clone(int iSurface, eSurfaceParameter eParam, int iRefSurface, double dGain); //set iRefSurface=-1 to remove

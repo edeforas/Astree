@@ -16,25 +16,31 @@ bool DeviceRevert::revert(OpticalDevice* pDevice, int iFirstSurface, int iLastSu
 
 	for (int iSurf = iFirstSurface; iSurf <= iLastSurface; iSurf++)
 	{
-		Surface s2 = opdOld.surface(iSurf);
-		
-		//invert profile
-		s2.set_radius_curvature( -s2.radius_curvature());
-		s2.set_R4(-s2.R4());
-		s2.set_R6(-s2.R6());
-		s2.set_R8(-s2.R8());
-		s2.set_R10(-s2.R10());
+		//inverse each surface profile
+		pDevice->set(iSurf, RADIUS_CURVATURE, -opdOld.get(iLastSurface - iSurf , RADIUS_CURVATURE));
+		pDevice->set(iSurf, R4, -opdOld.get(iLastSurface - iSurf, R4));
+		pDevice->set(iSurf, R6, -opdOld.get(iLastSurface - iSurf, R6));
+		pDevice->set(iSurf, R8, -opdOld.get(iLastSurface - iSurf, R8));
+		pDevice->set(iSurf, R10, -opdOld.get(iLastSurface - iSurf, R10));
+		pDevice->set(iSurf, CONIC, -opdOld.get(iLastSurface - iSurf, CONIC));
 
-		pDevice->surface(iLastSurface - iSurf) = s2;
+		//inverse diameters
+		pDevice->set(iSurf, DIAMETER, opdOld.get(iLastSurface - iSurf, DIAMETER));
+		pDevice->set(iSurf, INNER_DIAMETER, opdOld.get(iLastSurface - iSurf, INNER_DIAMETER));
 	}
 
-	//permute all ticks but the last
-	for (int iSurf = iFirstSurface; iSurf <= iLastSurface; iSurf++)
+	for (int iSurf = iFirstSurface+1; iSurf < iLastSurface; iSurf++)
 	{
-		pDevice->set(iSurf, Z, opdOld.get(iLastSurface - iSurf - 1, Z));
+		//inverse ticks
+		pDevice->set(iSurf, Z, opdOld.get(iLastSurface , Z)- opdOld.get(iLastSurface - iSurf, Z)+ opdOld.get(iFirstSurface, Z));
 	}
-	//pDevice->set(iLastSurface, THICK, opdOld.get(iLastSurface, THICK));
 
+	for (int iSurf = iFirstSurface ; iSurf < iLastSurface; iSurf++)
+	{
+		//inverse type
+		pDevice->set_type(iSurf, opdOld.type(iLastSurface- iSurf-1));
+
+	}
     return true;
 }
 //////////////////////////////////////////////////////////////////////////////
