@@ -60,3 +60,5 @@ ui_*.h
 *.iobj
 *.ipdb
 /src/output/*
+*.aps
+*.filters
