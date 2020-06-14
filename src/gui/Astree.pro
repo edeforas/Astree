@@ -21,7 +21,7 @@ SOURCES += main.cpp \
     DockCommentary.cpp \
     DialogMediumManager.cpp \
     DialogScaleDevice.cpp \
-	DialogRevertDesign.cpp \
+    DialogRevertDesign.cpp \
     DockImageQuality.cpp \
     DockOptimizer.cpp
 	
@@ -34,7 +34,7 @@ HEADERS += MainWindow.h \
     MyViewFrame.h \
     DialogMediumManager.h \
     DialogScaleDevice.h \
-	DialogRevertDesign.h \
+    DialogRevertDesign.h \
     DockImageQuality.h \
     DockOptimizer.h \
     AstreeDefines.h
@@ -108,3 +108,6 @@ HEADERS += \
     ../GlassExtended2.h \
     ../Vector3D.h \
     ../Properties.h
+
+DISTFILES += \
+    Astree.ico

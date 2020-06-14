@@ -82,7 +82,7 @@ MainWindow::MainWindow(QWidget *parent)
     //  tabifyDockWidget(_pDockScatterPlot,_pDockImageQuality);
 
     device_changed(0,NEW_OPTICAL_DEVICE,false);
-
+	setWindowIcon(QPixmap(":/Astree/Astree.ico"));
 	QTimer::singleShot(0, this, SLOT(showMaximized())); //showMaximized ugly fix as in:https://stackoverflow.com/questions/19817881/qt-fullscreen-on-startup
 
 	setCursor(Qt::ArrowCursor);

@@ -11,7 +11,11 @@
    </rect>
   </property>
   <property name="windowTitle">
-   <string>Revert Design</string>
+   <string>Reverse Design</string>
+  </property>
+  <property name="windowIcon">
+   <iconset resource="Astree.qrc">
+    <normaloff>:/Astree/Astree.ico</normaloff>:/Astree/Astree.ico</iconset>
   </property>
   <property name="whatsThis">
    <string/>
@@ -22,7 +26,7 @@
      <item>
       <widget class="QLabel" name="label_3">
        <property name="text">
-        <string>Revert Right - Left</string>
+        <string>Reverse surfaces Right - Left</string>
        </property>
       </widget>
      </item>
@@ -98,6 +102,8 @@
    </item>
   </layout>
  </widget>
- <resources/>
+ <resources>
+  <include location="Astree.qrc"/>
+ </resources>
  <connections/>
 </ui>

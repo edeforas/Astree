@@ -55,6 +55,16 @@
       <Extensions>ts;xlf</Extensions>
       <ParseFiles>false</ParseFiles>
     </Filter>
+    <Filter Include="Distribution Files">
+      <UniqueIdentifier>{B83CAF91-C7BF-462F-B76C-EA11631F866C}</UniqueIdentifier>
+      <Extensions>*</Extensions>
+      <ParseFiles>false</ParseFiles>
+    </Filter>
+    <Filter Include="Distribution Files">
+      <UniqueIdentifier>{B83CAF91-C7BF-462F-B76C-EA11631F866C}</UniqueIdentifier>
+      <Extensions>*</Extensions>
+      <ParseFiles>false</ParseFiles>
+    </Filter>
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="..\DeviceIo.cpp">
@@ -72,10 +82,16 @@
     <ClCompile Include="..\DeviceOptimizerRandom.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
+    <ClCompile Include="..\DeviceRevert.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
     <ClCompile Include="..\DeviceScaling.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
     <ClCompile Include="DialogMediumManager.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="DialogRevertDesign.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
     <ClCompile Include="DialogScaleDevice.cpp">
@@ -182,10 +198,16 @@
     <ClInclude Include="..\DeviceOptimizerRandom.h">
       <Filter>Header Files</Filter>
     </ClInclude>
+    <ClInclude Include="..\DeviceRevert.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
     <ClInclude Include="..\DeviceScaling.h">
       <Filter>Header Files</Filter>
     </ClInclude>
     <QtMoc Include="DialogMediumManager.h">
+      <Filter>Header Files</Filter>
+    </QtMoc>
+    <QtMoc Include="DialogRevertDesign.h">
       <Filter>Header Files</Filter>
     </QtMoc>
     <QtMoc Include="DialogScaleDevice.h">
@@ -297,6 +319,8 @@
     
     
     
+    
+    
     <CustomBuild Include="debug\moc_predefs.h.cbt">
       <Filter>Generated Files</Filter>
     </CustomBuild>
@@ -305,36 +329,17 @@
     </CustomBuild>
     
     
-    <ClInclude Include="ui_DialogMediumManager.h">
-      <Filter>Generated Files</Filter>
-    </ClInclude>
-    <ClInclude Include="ui_DialogScaleDevice.h">
-      <Filter>Generated Files</Filter>
-    </ClInclude>
-    <ClInclude Include="ui_DockCommentary.h">
-      <Filter>Generated Files</Filter>
-    </ClInclude>
-    <ClInclude Include="ui_DockImageQuality.h">
-      <Filter>Generated Files</Filter>
-    </ClInclude>
-    <ClInclude Include="ui_DockLightProperties.h">
-      <Filter>Generated Files</Filter>
-    </ClInclude>
-    <ClInclude Include="ui_DockOptimizer.h">
-      <Filter>Generated Files</Filter>
-    </ClInclude>
-    <ClInclude Include="ui_DockScatterPlot.h">
-      <Filter>Generated Files</Filter>
-    </ClInclude>
-    <ClInclude Include="ui_DockSurfacesData.h">
-      <Filter>Generated Files</Filter>
-    </ClInclude>
-    <ClInclude Include="ui_FrameSideView.h">
-      <Filter>Generated Files</Filter>
-    </ClInclude>
-    <ClInclude Include="ui_MainWindow.h">
-      <Filter>Generated Files</Filter>
-    </ClInclude>
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
   </ItemGroup>
   <ItemGroup>
     <None Include="Astree_fr.ts">
@@ -343,6 +348,9 @@
   </ItemGroup>
   <ItemGroup>
     <QtUic Include="DialogMediumManager.ui">
+      <Filter>Form Files</Filter>
+    </QtUic>
+    <QtUic Include="DialogRevertDesign.ui">
       <Filter>Form Files</Filter>
     </QtUic>
     <QtUic Include="DialogScaleDevice.ui">
@@ -382,6 +390,11 @@
     </QtRcc>
     <None Include="Astree_fr.qm">
       <Filter>Resource Files</Filter>
+    </None>
+  </ItemGroup>
+  <ItemGroup>
+    <None Include="Astree.ico">
+      <Filter>Distribution Files</Filter>
     </None>
   </ItemGroup>
   <ItemGroup>

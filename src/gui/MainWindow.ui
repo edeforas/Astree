@@ -223,7 +223,7 @@
   </action>
   <action name="actionRevert_design">
    <property name="text">
-    <string>Revert design...</string>
+    <string>Reverse design...</string>
    </property>
   </action>
  </widget>
