@@ -54,4 +54,4 @@ note=
 note=System is unoptimized
 note=
 note=Uses only spherical surfaces
-parameter.showLightOffAxis=100
+parameter.showLightOffAxis=0

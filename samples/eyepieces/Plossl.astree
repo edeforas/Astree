@@ -5,7 +5,7 @@
 1.diameter=0
 1.diameter.auto=1
 1.radius_curvature=inf
-1.thick=14.45676697
+1.thick=14.06319012
 1.type=void
 2.diameter=25
 2.radius_curvature=53.894
@@ -41,7 +41,7 @@
 7.radius_curvature=-53.894
 7.thick=18
 7.type=Air
-8.diameter=5.532384843
+8.diameter=5.53263866
 8.diameter.auto=1
 8.radius_curvature=inf
 8.thick=0
@@ -74,4 +74,5 @@ parameter.optimizer.6.checked=0
 parameter.optimizer.7.checked=0
 parameter.optimizer.8.checked=0
 parameter.optimizer.9.checked=0
+parameter.optimizer.merit=FullFrameMaxError
 parameter.showLightOffAxis=100
