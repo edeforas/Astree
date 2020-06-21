@@ -69,5 +69,7 @@ void GlassExtended2::set_coefs(double dC0,double dC1,double dC2,double dC3,doubl
     _dC5=dC5;
     _dC6=dC6;
     _dC7=dC7;
+
+	compute_solid_color();
 }
 //////////////////////////////////////////////////////////////////////////////

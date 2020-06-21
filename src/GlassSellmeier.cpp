@@ -53,5 +53,7 @@ void GlassSellmeier::set_coefs(double dB1,double dB2,double dB3,double dC1,doubl
     _dC1=dC1;
     _dC2=dC2;
     _dC3=dC3;
+	
+	compute_solid_color();
 }
 //////////////////////////////////////////////////////////////////////////////

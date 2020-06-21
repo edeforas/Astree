@@ -35,6 +35,7 @@ public:
 
 protected:
     virtual double compute_index(double dLambdaMicrons)=0;
+	void compute_solid_color();
 
     string _sMaker;
     string _sName;
