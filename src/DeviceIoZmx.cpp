@@ -5,6 +5,7 @@
 #include <sstream>
 #include <fstream>
 #include <string>
+#include <cassert>
 using namespace std;
 
 #include "DeviceIoZmx.h"
@@ -20,18 +21,19 @@ OpticalDevice* DeviceIoZmx::import(string sFile)
 
     ifstream f(sFile.c_str(),ios::in);
 
+	bool bMustUseColoredLight = false;
     double dDimensionFactor=1.;
     int iSurface=0;
     bool bSurfPending=false;
     string sType;
-    double dCurvature=0;
-    double dTick=0;
-    double dDiameter=0;
+    double dCurvature=0.;
+    double dTick=0.;
+    double dDiameter=0.;
     double dConic=0.;
     double dInnerDiameter=0.;
     double dApertureDiameter=-1.;
     string sComment;
-    string sNote;
+    string sNote="Imported from ZMX file\nWarning, import may be inaccurate!\n\n";
     string sGlassCatalog;
 
     while(!f.eof())
@@ -71,7 +73,7 @@ OpticalDevice* DeviceIoZmx::import(string sFile)
                 bSurfPending=false;
             }
 
-            if(sKey=="SURF")
+            if(sKey=="SURF") //new surf
             {
                 iSurface=-1;
                 stringstream ss(sVal); ss >> iSurface;
@@ -81,10 +83,10 @@ OpticalDevice* DeviceIoZmx::import(string sFile)
 
                 bSurfPending=true;
 
-                dCurvature=0;
-                dDiameter=0;
-                sType="void";
-                dConic=0;
+                dCurvature=0.;
+                dDiameter=0.;
+                sType="Air";
+                dConic=0.;
                 sComment="";
                 dInnerDiameter=0.;
             }
@@ -113,17 +115,23 @@ OpticalDevice* DeviceIoZmx::import(string sFile)
             { delete pOD; return 0; } // dont' know how to parse
         }
 
-        if(sKey=="CURV")
+        if(sKey=="CURV") //rcurv
         {
             stringstream ss(sVal); ss >> dCurvature;
         }
 
-        if(sKey=="COMM")
+        if(sKey=="COMM") //comment
         {
             sComment=sVal;
         }
 
-        if(sKey=="NOTE")
+		if (sKey == "STOP") //for example, Aperture stop
+		{
+			sType="Stop";
+		}
+		
+		
+		if(sKey=="NOTE") //note
         {
             string sNoteVal;
             auto iPosSpace=sVal.find_first_of(" ");
@@ -133,31 +141,37 @@ OpticalDevice* DeviceIoZmx::import(string sFile)
             sNote+=sNoteVal+"\n";
         }
 
-        if(sKey=="DISZ")
+        if(sKey=="DISZ") //thicks
         {
-            stringstream ss(sVal); ss >> dTick;
-        }
+			if (sVal == "INFINITY")
+				dTick = 0.;
+			else
+			{
+				stringstream ss(sVal);
+				ss >> dTick;
+			}
+		}
 
         if(sKey=="GCAT")
         {
             stringstream ss(sVal); ss >> sGlassCatalog; //TODO use
         }
 
-        if(sKey=="OBSC")
+        if(sKey=="OBSC") //inner diameter
         {
             double dTemp;
             stringstream ss(sVal); ss >> dTemp >> dInnerDiameter;
         }
 
-        if(sKey=="CONI")
+        if(sKey=="CONI") //conic
         {
             stringstream ss(sVal); ss >> dConic;
         }
 
-        if(sKey=="DIAM")
+        if(sKey=="DIAM") //diameter
         {
             stringstream ss(sVal); ss >> dDiameter;
-            dDiameter*=2;
+            dDiameter*=2.;
         }
 
         if(sKey=="ENPD") //aperture diameter
@@ -165,7 +179,7 @@ OpticalDevice* DeviceIoZmx::import(string sFile)
             stringstream ss(sVal); ss >> dApertureDiameter;
         }
 
-        if(sKey=="GLAS")
+        if(sKey=="GLAS") //type or glass
         {
             string sFirstWord;
             auto iPosSpace=sVal.find_first_of(" ");
@@ -174,23 +188,50 @@ OpticalDevice* DeviceIoZmx::import(string sFile)
 
             if(sFirstWord=="MIRROR")
                 sType="reflect";
-            else
-                sType=sFirstWord; //TODO more robust test
-        }
+			else
+			{
+				sType = sFirstWord; //TODO more robust test
+				bMustUseColoredLight=true;
+			}
+		}
     }
+
+	if (bSurfPending)
+	{
+		pOD->insert_surface(iSurface);
+		pOD->set_comment(iSurface, sComment);
+		pOD->set_type(iSurface, sType);
+		pOD->set(iSurface, THICK, dDimensionFactor*dTick);
+		pOD->set(iSurface, CURVATURE, dCurvature / dDimensionFactor);
+		pOD->set(iSurface, DIAMETER, dDiameter*dDimensionFactor);
+		pOD->set(iSurface, CONIC, dConic);
+		pOD->set(iSurface, INNER_DIAMETER, dInnerDiameter*dDimensionFactor);
+		bSurfPending = false;
+	}
+	assert(!bSurfPending);
 
     if(!sNote.empty())
         pOD->set_note(sNote);
 
     // set the last surface type as image, TODO better check
-    if(pOD->nb_surface()!=0)
-    {    pOD->set_type(pOD->nb_surface()-1,"image");
-
+	int iLastSurface = pOD->nb_surface() - 1;
+	if(iLastSurface >=0)
+    {    
+		if (pOD->type(iLastSurface) == "Air")
+		{
+			pOD->set_type(iLastSurface, "image");
+			pOD->set(iLastSurface, AUTO_DIAMETER, 1.);
+			pOD->set_image_autocurvature(true);
+		}
         if(dApertureDiameter>=0.)
             pOD->set(0,DIAMETER,dApertureDiameter*dDimensionFactor);
     }
 
-    // TODO add field of view
+	// add colored light in case of glass, only visible light for now
+	if (bMustUseColoredLight)
+		pOD->set_light_colors("Red.Yellow.Green.Blue.");
+
+	// TODO add field of view
 
     return pOD;
 }
