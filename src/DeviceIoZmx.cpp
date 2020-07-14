@@ -127,7 +127,7 @@ OpticalDevice* DeviceIoZmx::import(string sFile)
 
 		if (sKey == "STOP") //for example, Aperture stop
 		{
-			sType="Stop";
+			sType="stop";
 		}
 		
 		

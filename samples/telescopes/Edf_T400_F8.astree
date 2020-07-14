@@ -30,7 +30,7 @@ device.note=Custom formula from Etienne de Foras:
 device.note=
 device.note=-Diameter=400mm
 device.note=-FNumber=7.4
-device.note=-Two reflective conical mirrror + thin BK7 corrector
+device.note=-Two reflective conical mirrror + thin spherical BK7 corrector
 device.note=-Image is very good in all the flat image field
 device.note=-Adapted for full frame photography
 device.relative_convention=1
@@ -43,7 +43,7 @@ note=Custom formula from Etienne de Foras:
 note=
 note=-Diameter=400mm
 note=-FNumber=7.4
-note=-Two reflective conical mirrror + thin BK7 corrector
+note=-Two reflective conical mirrror + thin spherical BK7 corrector
 note=-Image is very good in all the flat image field
 note=-Adapted for full frame photography
 parameter.optimizer.0.checked=0

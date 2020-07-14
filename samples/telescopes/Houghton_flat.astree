@@ -32,7 +32,7 @@
 4.radius_curvature=-2400
 4.thick=-1198.819621
 4.type=reflect
-5.diameter=31.92420402
+5.diameter=31.92398248
 5.diameter.auto=1
 5.radius_curvature=inf
 5.thick=0
@@ -40,7 +40,7 @@
 5.z.autofocus=1
 device.note=The two glass window aperture are grinded one on the other, reducing time
 device.note=
-device.note=System is unoptimized
+device.note=System is not optimized
 device.note=
 device.note=Uses only spherical surfaces
 device.relative_convention=1
@@ -51,7 +51,7 @@ light.half_field_of_view=0.76
 light.nbsteps=3
 note=The two glass window aperture are grinded one on the other, reducing time
 note=
-note=System is unoptimized
+note=System is not optimized
 note=
 note=Uses only spherical surfaces
 parameter.showLightOffAxis=0

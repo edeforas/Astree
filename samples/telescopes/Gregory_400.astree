@@ -16,7 +16,7 @@
 2.type=image
 2.z=279.2501506
 2.z.autofocus=1
-device.note=sample Gregory
+device.note=Simple Gregory:
 device.note=
 device.note=Primary is parabolical
 device.note=Image field is curved
@@ -28,7 +28,7 @@ image.autofocus=1
 light.colors=YellowBlack.
 light.half_field_of_view=0.15
 light.nbsteps=3
-note=sample Gregory
+note=Simple Gregory:
 note=
 note=Primary is parabolical
 note=Image field is curved
