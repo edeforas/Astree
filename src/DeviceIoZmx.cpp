@@ -33,7 +33,7 @@ OpticalDevice* DeviceIoZmx::import(string sFile)
     double dInnerDiameter=0.;
     double dApertureDiameter=-1.;
     string sComment;
-    string sNote="Imported from ZMX file\nWarning, import may be inaccurate!\n\n";
+    string sNote="Imported from ZMX file: "+ sFile+"\nWarning, import may be inaccurate!\n\n";
     string sGlassCatalog;
 
     while(!f.eof())
