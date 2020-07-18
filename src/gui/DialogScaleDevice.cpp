@@ -23,7 +23,51 @@ DialogScaleDevice::~DialogScaleDevice()
     delete ui;
 }
 
-void DialogScaleDevice::on_pushButton_clicked()
+void DialogScaleDevice::on_pushButton_2_clicked()
+{
+    reject();
+}
+
+void DialogScaleDevice::on_rbFactor_clicked()
+{
+    ui->leFactor->setEnabled(true);
+    ui->lePercentage->setEnabled(false);
+    ui->leOldSize->setEnabled(false);
+    ui->leNewSize->setEnabled(false);
+}
+
+void DialogScaleDevice::on_rbPercentage_clicked()
+{
+    ui->leFactor->setEnabled(false);
+    ui->lePercentage->setEnabled(true);
+    ui->leOldSize->setEnabled(false);
+    ui->leNewSize->setEnabled(false);
+}
+
+void DialogScaleDevice::on_rbSizeChange_clicked()
+{
+    ui->leFactor->setEnabled(false);
+    ui->lePercentage->setEnabled(false);
+    ui->leOldSize->setEnabled(true);
+    ui->leNewSize->setEnabled(true);
+}
+
+double DialogScaleDevice::get_scale()
+{
+    return _dScale;
+}
+
+bool DialogScaleDevice::get_scale_diameter()
+{
+    return _bScaleDiameter;
+}
+
+bool DialogScaleDevice::get_scale_focal()
+{
+    return _bScaleFocal;
+}
+
+void DialogScaleDevice::on_b_clicked()
 {
     bool bOk=false;
 
@@ -69,48 +113,4 @@ void DialogScaleDevice::on_pushButton_clicked()
     _bScaleFocal=ui->cbScaleFocal->isChecked();
 
     accept();
-}
-
-void DialogScaleDevice::on_pushButton_2_clicked()
-{
-    reject();
-}
-
-void DialogScaleDevice::on_rbFactor_clicked()
-{
-    ui->leFactor->setEnabled(true);
-    ui->lePercentage->setEnabled(false);
-    ui->leOldSize->setEnabled(false);
-    ui->leNewSize->setEnabled(false);
-}
-
-void DialogScaleDevice::on_rbPercentage_clicked()
-{
-    ui->leFactor->setEnabled(false);
-    ui->lePercentage->setEnabled(true);
-    ui->leOldSize->setEnabled(false);
-    ui->leNewSize->setEnabled(false);
-}
-
-void DialogScaleDevice::on_rbSizeChange_clicked()
-{
-    ui->leFactor->setEnabled(false);
-    ui->lePercentage->setEnabled(false);
-    ui->leOldSize->setEnabled(true);
-    ui->leNewSize->setEnabled(true);
-}
-
-double DialogScaleDevice::get_scale()
-{
-    return _dScale;
-}
-
-bool DialogScaleDevice::get_scale_diameter()
-{
-    return _bScaleDiameter;
-}
-
-bool DialogScaleDevice::get_scale_focal()
-{
-    return _bScaleFocal;
 }

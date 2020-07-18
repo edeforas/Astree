@@ -41,7 +41,7 @@
 7.radius_curvature=-53.894
 7.thick=18
 7.type=Air
-8.diameter=5.53263866
+8.diameter=5.537524659
 8.diameter.auto=1
 8.radius_curvature=inf
 8.thick=0
@@ -55,7 +55,7 @@ device.relative_convention=1
 image.autocurvature=0
 image.autofocus=0
 light.colors=Red.Yellow.Green.Blue.
-light.half_field_of_view=1.05
+light.half_field_of_view=1.15
 light.nbsteps=5
 note=Plossl eyepiece (symetric formula)
 note=

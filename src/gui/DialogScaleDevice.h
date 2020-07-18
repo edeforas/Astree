@@ -24,8 +24,6 @@ public:
     bool get_scale_focal();
 
 private slots:
-    void on_pushButton_clicked();
-
     void on_pushButton_2_clicked();
 
     void on_rbFactor_clicked();
@@ -33,6 +31,8 @@ private slots:
     void on_rbPercentage_clicked();
 
     void on_rbSizeChange_clicked();
+
+    void on_b_clicked();
 
 private:
     Ui::DialogScaleDevice *ui;
