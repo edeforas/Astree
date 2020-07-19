@@ -2,19 +2,48 @@
 // please see LICENSE.txt for more details and licensing issues
 // copyright Etienne de Foras ( the author )  mailto: etienne.deforas@gmail.com
 
+#include <iostream>
 #include <sstream>
 #include <fstream>
 #include <string>
 #include <cassert>
+#include <codecvt>
 using namespace std;
 
 #include "DeviceIoZmx.h"
 #include "OpticalDevice.h"
 
+/////////////////////////////////////////////////////////////////////////////////////////////////
+// utf16/utf8 utilies ( partially from stackoverflow)
+
+std::string ws2s(const std::wstring& wstr)
+{
+	using convert_typeX = std::codecvt_utf8<wchar_t>;
+	std::wstring_convert<convert_typeX, wchar_t> converterX;
+
+	return converterX.to_bytes(wstr);
+}
+
+bool is_utf16(string sFile)
+{
+	ifstream ifs(sFile, ios::binary);
+
+	while (!ifs.eof())
+	{
+		unsigned char c;
+		ifs >> c;
+		if (c == 0)
+			return true;
+	}
+
+	return false;
+}
 ////////////////////////////////////////////////////////////////////////////////
 OpticalDevice* DeviceIoZmx::import(string sFile)
 {
-    //TODO test and reject if format=utf16
+    //for now, canot open utf16 zmx files
+	if (is_utf16(sFile))
+		return 0;
 
     OpticalDevice* pOD=new OpticalDevice();
     pOD->set_relative_convention(true);
@@ -32,6 +61,7 @@ OpticalDevice* DeviceIoZmx::import(string sFile)
     double dConic=0.;
     double dInnerDiameter=0.;
     double dApertureDiameter=-1.;
+	double dHalfFOV=0;
     string sComment;
     string sNote="Imported from ZMX file: "+ sFile+"\nWarning, import may be inaccurate!\n\n";
     string sGlassCatalog;
@@ -91,6 +121,18 @@ OpticalDevice* DeviceIoZmx::import(string sFile)
                 dInnerDiameter=0.;
             }
         }
+
+		if (sKey == "YFLD") //input light field of view (in degree for now)
+		{
+			stringstream ss(sVal);
+			while (!ss.eof())
+			{
+				double d = 0.;
+				ss >> d;
+				if (d > dHalfFOV)
+					dHalfFOV = d;
+			}
+		}
 
         if(sKey=="UNIT")
         {
@@ -231,7 +273,8 @@ OpticalDevice* DeviceIoZmx::import(string sFile)
 	if (bMustUseColoredLight)
 		pOD->set_light_colors("Red.Yellow.Green.Blue.");
 
-	// TODO add field of view
+	//field of view
+	pOD->set_half_field_of_view(dHalfFOV);
 
     return pOD;
 }
