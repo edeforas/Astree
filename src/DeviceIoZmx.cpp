@@ -7,7 +7,7 @@
 #include <fstream>
 #include <string>
 #include <cassert>
-#include <codecvt>
+//#include <codecvt>
 using namespace std;
 
 #include "DeviceIoZmx.h"
@@ -15,7 +15,7 @@ using namespace std;
 
 /////////////////////////////////////////////////////////////////////////////////////////////////
 // utf16/utf8 utilies ( partially from stackoverflow)
-
+/*
 std::string ws2s(const std::wstring& wstr)
 {
 	using convert_typeX = std::codecvt_utf8<wchar_t>;
@@ -23,7 +23,7 @@ std::string ws2s(const std::wstring& wstr)
 
 	return converterX.to_bytes(wstr);
 }
-
+*/
 bool is_utf16(string sFile)
 {
 	ifstream ifs(sFile, ios::binary);
