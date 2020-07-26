@@ -18,7 +18,7 @@ DockImageQuality::DockImageQuality(QWidget *parent) :
     _bBlockSignals=true;
 
     ui->setupUi(this);
-    _pDevice=0;
+    _pDevice=nullptr;
 
     _bBlockSignals=false;
 }
@@ -38,6 +38,7 @@ void DockImageQuality::device_changed(OpticalDevice* pDevice,int iReason)
         return;
 
     _bBlockSignals=true;
+
 
     ImageQuality pIQ=pDevice->get_image_quality();
     bool bInfinite=pIQ.isImageInfinite;
@@ -68,6 +69,7 @@ void DockImageQuality::device_changed(OpticalDevice* pDevice,int iReason)
     ui->tableWidget->setRowCount(iNbAngles);
     ui->tableWidget->setColumnCount(qsl.size());
     ui->tableWidget->setHorizontalHeaderLabels(qsl);
+//	ui->tableWidget->setSelectionBehavior(QAbstractItemView::Se : SelectRows);
 
     for(int i=0;i<iNbAngles;i++)
     {
@@ -94,12 +96,11 @@ void DockImageQuality::device_changed(OpticalDevice* pDevice,int iReason)
         QString qsVignetting=QString::number(dVignetting,'f',1)+QString(" %");
         ui->tableWidget->setItem(i,4,new QTableWidgetItem(qsVignetting));
 
-
-        //....
-
+		//....
     }
 
-    //  ui->tableWidget->setAlternatingRowColors(true);
+    highlight_offaxislight_row();
+
     ui->tableWidget->resizeColumnsToContents();
 
     if( iNbAngles!=0 )
@@ -120,14 +121,8 @@ void DockImageQuality::device_changed(OpticalDevice* pDevice,int iReason)
         ui->lAirySize->setText("n/a");
         ui->lFNumber->setText("n/a");
     }
-
-    //update angle selected row
-    double dPercentField;
-    if( pDevice->get_parameter("showLightOffAxis",dPercentField) && (ui->tableWidget->rowCount()>1))
-    {
-        ui->tableWidget->selectRow((int)(0.5+(ui->tableWidget->rowCount()-1)*dPercentField/100.));
-    }
-    _bBlockSignals=false;
+	
+	_bBlockSignals = false;
 }
 //////////////////////////////////////////////////////////////////////////////////
 void DockImageQuality::on_tableWidget_currentCellChanged(int currentRow, int currentColumn, int previousRow, int previousColumn)
@@ -154,5 +149,31 @@ void DockImageQuality::on_tableWidget_currentCellChanged(int currentRow, int cur
         _pDevice->set_parameter("showLightOffAxis",dPercentField);
         static_cast<MainWindow*>(parent())->device_changed(this,LIGHT_OFF_AXIS_CHANGED,false);
     }
+
+    highlight_offaxislight_row();
+}
+//////////////////////////////////////////////////////////////////////////////////
+void DockImageQuality::highlight_offaxislight_row()
+{
+    double dPercentField;
+    int iSelectedRow = 0;
+    if(_pDevice!=nullptr)
+        if (_pDevice->get_parameter("showLightOffAxis", dPercentField) && (ui->tableWidget->rowCount() > 1))
+            iSelectedRow = (int)(0.5 + (ui->tableWidget->rowCount() - 1)*dPercentField / 100.);
+
+	for(int i=0;i< ui->tableWidget->rowCount();i++)
+	{
+		QColor qc = Qt::white;
+        if(i== iSelectedRow)
+			qc = Qt::yellow;
+
+		for (int j = 0; j < ui->tableWidget->columnCount(); j++)
+			ui->tableWidget->item(i, j)->setBackgroundColor(qc);
+	}
+}
+//////////////////////////////////////////////////////////////////////////////////
+void DockImageQuality::on_tableWidget_itemSelectionChanged()
+{
+    highlight_offaxislight_row();
 }
 //////////////////////////////////////////////////////////////////////////////////

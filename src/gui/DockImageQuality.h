@@ -26,9 +26,13 @@ public:
 private slots:
      void on_tableWidget_currentCellChanged(int currentRow, int currentColumn, int previousRow, int previousColumn);
 
+     void on_tableWidget_itemSelectionChanged();
+
 private:
     Ui::DockImageQuality *ui;
     OpticalDevice* _pDevice;
+
+    void highlight_offaxislight_row();
 
     bool _bBlockSignals;
 };
