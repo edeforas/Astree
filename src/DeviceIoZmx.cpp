@@ -2,12 +2,11 @@
 // please see LICENSE.txt for more details and licensing issues
 // copyright Etienne de Foras ( the author )  mailto: etienne.deforas@gmail.com
 
-#include <iostream>
 #include <sstream>
 #include <fstream>
 #include <string>
 #include <cassert>
-//#include <codecvt>
+
 using namespace std;
 
 #include "DeviceIoZmx.h"
@@ -15,40 +14,110 @@ using namespace std;
 
 /////////////////////////////////////////////////////////////////////////////////////////////////
 // utf16/utf8 utilies ( partially from stackoverflow)
-/*
-std::string ws2s(const std::wstring& wstr)
-{
-	using convert_typeX = std::codecvt_utf8<wchar_t>;
-	std::wstring_convert<convert_typeX, wchar_t> converterX;
 
-	return converterX.to_bytes(wstr);
-}
-*/
-bool is_utf16(string sFile)
+///////////////////////////////////////////////////////////////////////////////////////////
+class TextFileReader //handle utf8 or utf16 encoding
 {
-	ifstream ifs(sFile, ios::binary);
+public:
+	TextFileReader()
+	{ }
 
-	while (!ifs.eof())
+	bool open(string sFile)
 	{
-		unsigned char c;
-		ifs >> c;
-		if (c == 0)
-			return true;
+		_bIsUtf16 = is_utf16(sFile);
+
+		if(_bIsUtf16)
+		{
+			wistr.open(sFile,ios::binary);
+
+			wchar_t bom;
+			wistr >> bom;
+
+			return !(!wistr);
+		}
+		else
+		{
+			istr.open(sFile);
+			return !(!istr);
+		}
+	}
+	
+	bool eof()
+	{
+		if (_bIsUtf16)
+			return wistr.eof();
+		else
+			return istr.eof();
 	}
 
-	return false;
-}
+	bool getline(string& s)
+	{
+		bool bOk;
+		if (_bIsUtf16)
+		{
+			wstring ws;
+			std::getline(wistr, ws);
+			s = to_string(ws);
+
+			bOk= !(!wistr);
+		}
+		else
+		{
+			::getline(istr, s);
+			bOk= !(!istr);
+		}
+
+		size_t iPosStart = s.find_first_not_of(" \n\r\t");
+		size_t iPosEnd = s.find_last_not_of(" \n\r\t");
+		if (iPosStart != string::npos)
+			s = s.substr(iPosStart, iPosEnd - iPosStart + 1);
+
+		return bOk;
+	}
+
+	bool is_utf16(string sFile)
+	{
+		ifstream ifs(sFile, ios::binary);
+		while (!ifs.eof())
+		{
+			unsigned char c;
+			ifs >> c;
+			if (c == 0)
+				return true;
+		}
+		return false;
+	}
+
+	std::string to_string(const std::wstring& wstr)
+	{
+		//raw way to convert from wstring...
+		string str;
+		for (int i = 0; i < wstr.size(); i++)
+		{
+			wchar_t w = wstr[i];
+			if ( (w<127) && (w>0) )
+				str.push_back((char)w);
+		}
+
+		return str;
+	}
+
+private:
+	bool _bIsUtf16;
+	bool _bEOF;
+	ifstream istr;
+	wifstream wistr;
+};
+
 ////////////////////////////////////////////////////////////////////////////////
 OpticalDevice* DeviceIoZmx::import(string sFile)
 {
-    //for now, canot open utf16 zmx files
-	if (is_utf16(sFile))
-		return 0;
+	TextFileReader tfr;
+	if (!tfr.open(sFile))
+		return nullptr;
 
     OpticalDevice* pOD=new OpticalDevice();
     pOD->set_relative_convention(true);
-
-    ifstream f(sFile.c_str(),ios::in);
 
 	bool bMustUseColoredLight = false;
     double dDimensionFactor=1.;
@@ -66,10 +135,10 @@ OpticalDevice* DeviceIoZmx::import(string sFile)
     string sNote="Imported from ZMX file: "+ sFile+"\nWarning, import may be inaccurate!\n\n";
     string sGlassCatalog;
 
-    while(!f.eof())
+    while(!tfr.eof())
     {
-        string sLine;
-        std::getline(f,sLine);
+		string sLine;
+		tfr.getline(sLine);
 
         //trim first space if any
         size_t iPos=sLine.find_first_not_of(" ");
@@ -84,10 +153,10 @@ OpticalDevice* DeviceIoZmx::import(string sFile)
         string sVal=sLine.substr(4); // can be empty
 
         //trim first space if any
-        size_t iPos2=sVal.find_first_not_of(" ");
-        if(iPos2!=string::npos)
-            sVal=sVal.substr(iPos2);
-
+        size_t iPosStart=sVal.find_first_not_of(" \n\r");
+		if(iPosStart !=string::npos)
+            sVal=sVal.substr(iPosStart);
+			
         if((sKey=="SURF") || (sKey=="BLNK"))
         {
             if(bSurfPending)
