@@ -32,7 +32,7 @@
 6.radius_curvature=inf
 6.thick=0
 6.type=image_infinite
-device.note=Huygens eyepiece
+device.note=Monocentric eyepiece design
 device.note=
 device.note=frome the website:
 device.note=
@@ -43,7 +43,7 @@ image.autofocus=0
 light.colors=Red.YellowBlack.Yellow.Green.Blue.
 light.half_field_of_view=0.5
 light.nbsteps=3
-note=Huygens eyepiece
+note=Monocentric eyepiece design
 note=
 note=frome the website:
 note=

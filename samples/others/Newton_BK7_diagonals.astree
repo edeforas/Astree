@@ -17,6 +17,8 @@
 3.type=image
 3.z.autofocus=1
 device.note=This sample show how a perfect parabolic telescope can be altered using prismatic secondaries, or right angles prismatic devices
+device.note=
+device.note=The glass window has same same optical lenght as a  right angles primatic devices, and the image from the parabolic mirror is no more pefect in the center.
 device.relative_convention=1
 image.autocurvature=0
 image.autofocus=1
@@ -24,3 +26,5 @@ light.colors=Red.Yellow.Green.Blue.
 light.half_field_of_view=0.5
 light.nbsteps=3
 note=This sample show how a perfect parabolic telescope can be altered using prismatic secondaries, or right angles prismatic devices
+note=
+note=The glass window has same same optical lenght as a  right angles primatic devices, and the image from the parabolic mirror is no more pefect in the center.

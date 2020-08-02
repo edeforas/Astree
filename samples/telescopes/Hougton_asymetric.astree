@@ -37,7 +37,7 @@
 5.radius_curvature=inf
 5.type=image
 5.z=-1198.636336
-device.note=The two glass window aperture are grinded one on the other, reducing time
+device.note=The two glass window aperture are grinded one on the other, reducing time. A last grinding pass is mandatory to sligthlty change the radius of curvature
 device.note=
 device.note=System is unoptimized
 device.note=
@@ -48,7 +48,7 @@ image.autofocus=0
 light.colors=Red.Yellow.Green.Blue.
 light.half_field_of_view=0.76
 light.nbsteps=3
-note=The two glass window aperture are grinded one on the other, reducing time
+note=The two glass window aperture are grinded one on the other, reducing time. A last grinding pass is mandatory to sligthlty change the radius of curvature
 note=
 note=System is unoptimized
 note=

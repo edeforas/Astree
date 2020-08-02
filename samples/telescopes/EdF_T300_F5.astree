@@ -75,7 +75,7 @@ device.note=
 device.note=The drawbacks are:
 device.note=- the number of surface to make: 4
 device.note=- need to add a secondary to use it as a Newton telescope
-device.note=- need unwanted light analysis
+device.note=- need reflect light analysis
 device.note=
 device.note=Scaled to FNumber=5
 device.note=
@@ -101,7 +101,7 @@ note=
 note=The drawbacks are:
 note=- the number of surface to make: 4
 note=- need to add a secondary to use it as a Newton telescope
-note=- need unwanted light analysis
+note=- need reflect light analysis
 note=
 note=Scaled to FNumber=5
 note=
