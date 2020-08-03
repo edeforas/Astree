@@ -20,7 +20,9 @@ class TextFileReader //handle utf8 or utf16 encoding
 {
 public:
 	TextFileReader()
-	{ }
+	{
+		_bIsUtf16=false;
+	}
 
 	bool open(string sFile)
 	{
@@ -104,7 +106,6 @@ public:
 
 private:
 	bool _bIsUtf16;
-	bool _bEOF;
 	ifstream istr;
 	wifstream wistr;
 };

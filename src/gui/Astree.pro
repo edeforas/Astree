@@ -74,6 +74,7 @@ SOURCES += \
     ../DeviceOptimizer.cpp \
     ../DeviceOptimizerAmoeba.cpp \
     ../DeviceOptimizerRandom.cpp \
+    ../DeviceOptimizerHypercube.cpp \
     ../FileUtil.cpp \
     ../Glass.cpp \
     ../GlassManager.cpp \
@@ -99,6 +100,7 @@ HEADERS += \
     ../DeviceOptimizer.h \
     ../DeviceOptimizerAmoeba.h \
     ../DeviceOptimizerRandom.h \
+    ../DeviceOptimizerHypercube.h \
     ../FileUtil.h \
     ../MaterialVacuum.h \
     ../GlassManager.h \

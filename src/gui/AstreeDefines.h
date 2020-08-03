@@ -5,11 +5,11 @@
 #ifndef AstreeDefines_
 #define AstreeDefines_
 
-#define ASTREE_VERSION "1.23"
+#define ASTREE_VERSION "1.24"
 
 #define SIDEVIEW_NB_POINTS_SURFACE 41
 #define SIDEVIEW_NB_POINTS_LIGHT 17
-#define NB_POINTS_SCATTER_PLOT 71
+#define NB_POINTS_SCATTER_PLOT 51
 
 //device changed reasons
 #define NEW_OPTICAL_DEVICE 1

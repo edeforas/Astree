@@ -97,7 +97,7 @@ void DockOptimizer::optimize(bool bModeRefine)
     if(_pDevice->nb_surface()==0)
         return;
 
-    DeviceOptimizer* optim;
+    DeviceOptimizer* optim=nullptr;
     if(ui->cbMethod->currentIndex()==0)
         optim=new DeviceOptimizerAmoeba;
 

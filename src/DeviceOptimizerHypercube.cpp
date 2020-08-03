@@ -62,18 +62,16 @@ OptimizerResult DeviceOptimizerHypercube::optimize()
             }
         
 			//change next parameter in vDivide
-			for (int i = 0; i < vDivide.size();i++)
+			for (int j = 0; j < vDivide.size();j++)
 			{
-				if (vDivide[i] != DIVIDE_ITER_BY_AXIS)
+				if (vDivide[j] != DIVIDE_ITER_BY_AXIS)
 				{
-					vDivide[i]++;
+					vDivide[j]++;
 					break;
 				}
 				else
-					vDivide[i] = 0; // and jump next parameter
+					vDivide[j] = 0; // and jump next parameter
 			}
-
-
 		}
 
         paramBest=paramBestIter;
