@@ -169,6 +169,11 @@
           <string>Monte-Carlo MultiScale</string>
          </property>
         </item>
+        <item>
+         <property name="text">
+          <string>Hypercube (regular division)</string>
+         </property>
+        </item>
        </widget>
       </item>
       <item>

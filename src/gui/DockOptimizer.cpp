@@ -13,6 +13,7 @@
 
 #include "DeviceOptimizerRandom.h"
 #include "DeviceOptimizerAmoeba.h"
+#include "DeviceOptimizerHypercube.h"
 
 #include "MainWindow.h"
 
@@ -99,8 +100,12 @@ void DockOptimizer::optimize(bool bModeRefine)
     DeviceOptimizer* optim;
     if(ui->cbMethod->currentIndex()==0)
         optim=new DeviceOptimizerAmoeba;
-    else
+
+    if(ui->cbMethod->currentIndex()==1)
         optim=new DeviceOptimizerRandom;
+
+    if(ui->cbMethod->currentIndex()==2)
+        optim=new DeviceOptimizerHypercube;
 
     optim->set_device(_pDevice);
 
@@ -390,6 +395,9 @@ void DockOptimizer::on_cbMethod_currentIndexChanged(int index)
 
     if(iCriteria==1)
         _pDevice->set_parameter("optimizer.method","MonteCarlo");
+
+    if(iCriteria==1)
+        _pDevice->set_parameter("optimizer.method","Hypercube");
 
     static_cast<MainWindow*>(parent())->device_changed(this,OPTIMIZER_CHANGED);
 }

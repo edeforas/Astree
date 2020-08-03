@@ -202,6 +202,7 @@
     <ClCompile Include="..\DeviceIoZmx.cpp" />
     <ClCompile Include="..\DeviceOptimizer.cpp" />
     <ClCompile Include="..\DeviceOptimizerAmoeba.cpp" />
+    <ClCompile Include="..\DeviceOptimizerHypercube.cpp" />
     <ClCompile Include="..\DeviceOptimizerRandom.cpp" />
     <ClCompile Include="..\DeviceRevert.cpp" />
     <ClCompile Include="..\DeviceScaling.cpp" />
@@ -237,6 +238,7 @@
     <ClCompile Include="main.cpp" />
   </ItemGroup>
   <ItemGroup>
+    <ClInclude Include="..\DeviceOptimizerHypercube.h" />
     <ClInclude Include="AstreeDefines.h" />
     <ClInclude Include="..\DeviceIo.h" />
     <ClInclude Include="..\DeviceIoZmx.h" />
