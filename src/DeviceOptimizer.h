@@ -29,18 +29,22 @@ using namespace std;
 #define MIN_RESOLUTION_R4 1.e-22
 #define R4_HALF_RATIO 2
 #define R4_HALF_RATIO_REFINE 1.05
+#define R4_HALF_RANGE_DEFAULT 1e-10
 
 #define MIN_RESOLUTION_R6 1.e-24
 #define R6_HALF_RATIO 2
 #define R6_HALF_RATIO_REFINE 1.05
+#define R6_HALF_RANGE_DEFAULT 1e-13
 
 #define MIN_RESOLUTION_R8 1.e-26
 #define R8_HALF_RATIO 2
 #define R8_HALF_RATIO_REFINE 1.05
+#define R8_HALF_RANGE_DEFAULT 1e-16
 
 #define MIN_RESOLUTION_R10 1.e-28
 #define R10_HALF_RATIO 2
 #define R10_HALF_RATIO_REFINE 1.05
+#define R10_HALF_RANGE_DEFAULT 1e-19
 
 class DeviceOptimizerParameter
 {
@@ -86,8 +90,6 @@ public:
     void set_merit_function(OptimizerMeritFunction eMeritFunction);
 
     virtual OptimizerResult optimize()=0;
-
-    bool domain_under_resolution(const ParameterSet& params);
 
 protected:
     void apply_parameter(const ParameterSet& parameters);

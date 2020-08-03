@@ -56,28 +56,64 @@ void DeviceOptimizer::add_parameter(int iSurface,const string& sParameter,bool b
             dMax=_pDevice->get(iSurface,RADIUS_CURVATURE)*RCURV_HALF_RATIO_REFINE;
         }
 
-        if(sParameter=="R4")
-        {
-            dMin=_pDevice->get(iSurface,R4)/R4_HALF_RATIO_REFINE; // TODO manage R4=0
-            dMax=_pDevice->get(iSurface,R4)*R4_HALF_RATIO_REFINE;
-        }
+		if (sParameter == "R4")
+		{
+			double dR4 = _pDevice->get(iSurface, R4);
+			if (dR4 != 0.)
+			{
+				dMin = dR4 / R4_HALF_RATIO_REFINE;
+				dMax = dR4 * R4_HALF_RATIO_REFINE;
+			}
+			else
+			{
+				dMin = -R4_HALF_RANGE_DEFAULT;
+				dMax = R4_HALF_RANGE_DEFAULT;
+			}
+		}
 
         if(sParameter=="R6")
         {
-            dMin=_pDevice->get(iSurface,R6)/R6_HALF_RATIO_REFINE;  // TODO manage R6=0
-            dMax=_pDevice->get(iSurface,R6)*R6_HALF_RATIO_REFINE;
+			double dR6 = _pDevice->get(iSurface, R6);
+			if (dR6 != 0.)
+			{
+				dMin = dR6 / R6_HALF_RATIO_REFINE;
+				dMax = dR6 * R6_HALF_RATIO_REFINE;
+			}
+			else
+			{
+				dMin = -R6_HALF_RANGE_DEFAULT;
+				dMax = R6_HALF_RANGE_DEFAULT;
+			}
         }
 
         if(sParameter=="R8")
         {
-            dMin=_pDevice->get(iSurface,R8)/R8_HALF_RATIO_REFINE;  // TODO manage R8=0
-            dMax=_pDevice->get(iSurface,R8)*R8_HALF_RATIO_REFINE;
+			double dR8 = _pDevice->get(iSurface, R8);
+			if (dR8 != 0.)
+			{
+				dMin = dR8 / R8_HALF_RATIO_REFINE;
+				dMax = dR8 * R8_HALF_RATIO_REFINE;
+			}
+			else
+			{
+				dMin = -R8_HALF_RANGE_DEFAULT;
+				dMax = R8_HALF_RANGE_DEFAULT;
+			}
         }
 
         if(sParameter=="R10")
         {
-            dMin=_pDevice->get(iSurface,R10)/R10_HALF_RATIO_REFINE;  // TODO manage R10=0
-            dMax=_pDevice->get(iSurface,R10)*R10_HALF_RATIO_REFINE;
+			double dR10 = _pDevice->get(iSurface, R10);
+			if (dR10 != 0.)
+			{
+				dMin = dR10 / R10_HALF_RATIO_REFINE;
+				dMax = dR10 * R10_HALF_RATIO_REFINE;
+			}
+			else
+			{
+				dMin = -R10_HALF_RANGE_DEFAULT;
+				dMax = R10_HALF_RANGE_DEFAULT;
+			}
         }
 
         if(sParameter=="Z")
@@ -106,29 +142,65 @@ void DeviceOptimizer::add_parameter(int iSurface,const string& sParameter,bool b
             dMax=_pDevice->get(iSurface,RADIUS_CURVATURE)*RCURV_HALF_RATIO;
         }
 
-        if(sParameter=="R4")
-        {
-            dMin=_pDevice->get(iSurface,R4)/R4_HALF_RATIO; // TODO manage R4=0
-            dMax=_pDevice->get(iSurface,R4)*R4_HALF_RATIO;
-        }
+		if (sParameter == "R4")
+		{
+			double dR4 = _pDevice->get(iSurface, R4);
+			if (dR4 != 0.)
+			{
+				dMin = dR4 / R4_HALF_RATIO;
+				dMax = dR4 * R4_HALF_RATIO;
+			}
+			else
+			{
+				dMin = -R4_HALF_RANGE_DEFAULT;
+				dMax = R4_HALF_RANGE_DEFAULT;
+			}
+		}
 
-        if(sParameter=="R6")
-        {
-            dMin=_pDevice->get(iSurface,R6)/R6_HALF_RATIO;  // TODO manage R6=0
-            dMax=_pDevice->get(iSurface,R6)*R6_HALF_RATIO;
-        }
+		if (sParameter == "R6")
+		{
+			double dR6 = _pDevice->get(iSurface, R6);
+			if (dR6 != 0.)
+			{
+				dMin = dR6 / R6_HALF_RATIO;
+				dMax = dR6 * R6_HALF_RATIO;
+			}
+			else
+			{
+				dMin = -R6_HALF_RANGE_DEFAULT;
+				dMax = R6_HALF_RANGE_DEFAULT;
+			}
+		}
 
-        if(sParameter=="R8")
-        {
-            dMin=_pDevice->get(iSurface,R8)/R8_HALF_RATIO;  // TODO manage R8=0
-            dMax=_pDevice->get(iSurface,R8)*R8_HALF_RATIO;
-        }
+		if (sParameter == "R8")
+		{
+			double dR8 = _pDevice->get(iSurface, R8);
+			if (dR8 != 0.)
+			{
+				dMin = dR8 / R8_HALF_RATIO;
+				dMax = dR8 * R8_HALF_RATIO;
+			}
+			else
+			{
+				dMin = -R8_HALF_RANGE_DEFAULT;
+				dMax = R8_HALF_RANGE_DEFAULT;
+			}
+		}
 
-        if(sParameter=="R10")
-        {
-            dMin=_pDevice->get(iSurface,R10)/R10_HALF_RATIO;  // TODO manage R10=0
-            dMax=_pDevice->get(iSurface,R10)*R10_HALF_RATIO;
-        }
+		if (sParameter == "R10")
+		{
+			double dR10 = _pDevice->get(iSurface, R10);
+			if (dR10 != 0.)
+			{
+				dMin = dR10 / R10_HALF_RATIO;
+				dMax = dR10 * R10_HALF_RATIO;
+			}
+			else
+			{
+				dMin = -R10_HALF_RANGE_DEFAULT;
+				dMax = R10_HALF_RANGE_DEFAULT;
+			}
+		}
 
         if(sParameter=="Z")
         {
@@ -302,16 +374,5 @@ double DeviceOptimizer::compute_demerit()
     }
 
     return SPOT_SIZE_INFINITY;
-}
-//////////////////////////////////////////////////////////////////////////////
-bool DeviceOptimizer::domain_under_resolution(const ParameterSet& params)
-{
-    for(unsigned int i=0;i<params.size();i++)
-    {
-        const DeviceOptimizerParameter& param=params[i];
-        if((param.dMax-param.dMin)>param.dResolution)
-            return false;
-    }
-    return true;
 }
 //////////////////////////////////////////////////////////////////////////////

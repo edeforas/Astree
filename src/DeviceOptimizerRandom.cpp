@@ -62,7 +62,8 @@ OptimizerResult DeviceOptimizerRandom::optimize()
 
         paramBest=paramBestIter;
 
-        // scale around best solution , divide by 2 each dimension
+        // scale around best solution , divide by 2 each dimension test if box is too small then exit
+		bExit = true;
         for(unsigned int iP=0;iP<paramBest.size();iP++)
         {
             DeviceOptimizerParameter& dop=paramBest[iP];
@@ -72,10 +73,10 @@ OptimizerResult DeviceOptimizerRandom::optimize()
             dop.dMin=dCenter-dRadius;
             dop.dMax=dCenter+dRadius;
 
-            // TODO check domain exit
+            // check domain exit
+			if ((dop.dMax - dop.dMin) > dop.dResolution)
+				bExit= false;
         }
-
-        bExit=domain_under_resolution(paramBest);
     }
 
     if(dBestMerit<SPOT_SIZE_INFINITY/2)
