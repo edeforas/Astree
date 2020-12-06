@@ -36,7 +36,7 @@ device.note=The design is diffraction limited in all the 110mm flat field. This 
 device.note=
 device.note=Work in progress
 device.note=
-device.note=sky FOV=0.5deg
+device.note=sky FOV=1deg
 device.note=
 device.note=author: Etienne de Foras
 device.relative_convention=1
@@ -51,7 +51,7 @@ note=The design is diffraction limited in all the 110mm flat field. This design 
 note=
 note=Work in progress
 note=
-note=sky FOV=0.5deg
+note=sky FOV=1deg
 note=
 note=author: Etienne de Foras
 parameter.optimizer.0.checked=1
