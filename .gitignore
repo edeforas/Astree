@@ -62,3 +62,4 @@ ui_*.h
 /src/output/*
 *.aps
 *.filters
+*.pyc
