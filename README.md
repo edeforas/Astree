@@ -14,8 +14,5 @@ It use Qt for the gui.
 
 Feel free to contribute!
 
-Windows binaries can be downloaded at: 
-http://edeforas.free.fr
-or
-in the bin/ folder
+Windows binaries can be downloaded at: http://edeforas.free.fr
 

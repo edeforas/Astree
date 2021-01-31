@@ -1,9 +1,24 @@
-import Astree as astree
+from Astree import *
+import matplotlib.pyplot as plt
 
-d=astree.Device()
-d.set_field_of_view(1.)
+#simple newton (spherical mirror)
+diameter=200.
+focal=1200.
+d=Device()
+#d.set_field_of_view(1.)
+#d.add_surface(Ticks(focal))
+d.add_surface(Reflect(diameter=diameter,rc=2.*focal)) # spherical
+#d.add_surface(Image())
 
-d.add_surface('reflect',1200,2400,200)
-d.add_surface('image')
+# plot results
+ir=d.compute()
+l0=ir.lights[0]
 
-print(d.lf())
+# plt.scatter(l0.x,l0.y)
+# plt.gca().set_aspect('equal')
+
+r=np.sqrt(l0.x**2+l0.y**2)
+z=l0.z
+plt.plot(r,z)
+
+plt.show()
