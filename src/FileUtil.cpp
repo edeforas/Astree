@@ -34,7 +34,7 @@ vector<string> FileUtil::list(const string& sPathAndMask)
 		  FindClose(hfind);
 	  }
 	  
-	return vsResult;
+	return vsResult; 
 }
 //////////////////////////////////////////////////////////////////////////////
 #endif
@@ -70,7 +70,7 @@ vector<string> FileUtil::list(const string& sPathAndMask)
 #endif
 
 //////////////////////////////////////////////////////////////////////////////
-string FileUtil::get_path(string sFile)
+std::string FileUtil::get_path(std::string sFile)
 {
     size_t iPos = sFile.find_last_of("\\");
     return sFile.substr(0, iPos);
