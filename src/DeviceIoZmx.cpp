@@ -111,7 +111,7 @@ private:
 };
 
 ////////////////////////////////////////////////////////////////////////////////
-OpticalDevice* DeviceIoZmx::import(string sFile)
+OpticalDevice* DeviceIoZmx::import(const string& sFile)
 {
 	TextFileReader tfr;
 	if (!tfr.open(sFile))

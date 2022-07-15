@@ -11,7 +11,7 @@ using namespace std;
 #include "Properties.h"
 
 ////////////////////////////////////////////////////////////////////////////////
-bool DeviceIo::save(string sFile, OpticalDevice* pOD)
+bool DeviceIo::save(const string &sFile, OpticalDevice* pOD)
 {
     Properties prop;
     int iSurfclone;
@@ -143,7 +143,7 @@ bool DeviceIo::save(string sFile, OpticalDevice* pOD)
     return prop.save(sFile);
 }
 ////////////////////////////////////////////////////////////////////////////////
-OpticalDevice* DeviceIo::load(string sFile)
+OpticalDevice* DeviceIo::load(const string& sFile)
 {
     Properties prop;
     if (!prop.load(sFile))

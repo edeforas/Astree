@@ -17,7 +17,7 @@
 2.z.autofocus=1
 device.note=primary is spherical
 device.note=
-device.note=Off axis images are bad
+device.note=Offaxis images are bad
 device.note=
 device.note=secondary is strongly aspheric
 device.relative_convention=1
@@ -28,6 +28,7 @@ light.half_field_of_view=0.28
 light.nbsteps=3
 note=primary is spherical
 note=
-note=Off axis images are bad
+note=Offaxis images are bad
 note=
 note=secondary is strongly aspheric
+parameter.showLightOffAxis=0

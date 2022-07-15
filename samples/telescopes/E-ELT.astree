@@ -25,7 +25,7 @@
 3.type=image
 device.convention=relative
 device.note=E-ELT Initial 42m design
-device.note=(AO and Flat mirrors M4 and M5 removed)
+device.note=(AO, Flat mirrors, M4 and M5 mirrors removed)
 device.note=
 device.note=
 device.note=From the document:
@@ -46,7 +46,7 @@ light.colors=YellowBlack.
 light.half_field_of_view=0.08333
 light.nbsteps=5
 note=E-ELT Initial 42m design
-note=(AO and Flat mirrors M4 and M5 removed)
+note=(AO, Flat mirrors, M4 and M5 mirrors removed)
 note=
 note=
 note=From the document:

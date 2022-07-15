@@ -14,8 +14,8 @@ class Properties;
 class DeviceIo
 {
 public:
-    static bool save(string sFile, OpticalDevice* pD);
-    static OpticalDevice* load(string sFile);
+    static bool save(const string& sFile, OpticalDevice* pD);
+    static OpticalDevice* load(const string& sFile);
 };
 
 #endif

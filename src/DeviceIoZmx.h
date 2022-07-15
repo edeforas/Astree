@@ -13,7 +13,7 @@ class OpticalDevice;
 class DeviceIoZmx
 {
 public:
-    static OpticalDevice* import(string sFile);
+    static OpticalDevice* import(const string& sFile);
 };
 
 #endif
