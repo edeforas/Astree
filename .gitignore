@@ -63,3 +63,5 @@ ui_*.h
 *.aps
 *.filters
 *.pyc
+.vs
+build
