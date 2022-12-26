@@ -1,3 +1,5 @@
+include_directories(../src)
+
 add_executable(test_newton test_newton.cpp  )
 target_link_libraries(test_newton libAstree)
 

@@ -1,6 +1,3 @@
-cmake_minimum_required(VERSION 3.0.0)
-project (astree)
-
 set(ASTREE_FILES
 	OpticalDevice.h OpticalDevice.cpp
 	ImageQuality.h ImageQuality.cpp
@@ -18,5 +15,3 @@ set(ASTREE_FILES
 )
 include_directories(.)
 add_library( libAstree STATIC ${ASTREE_FILES})
-
-add_subdirectory(tests)
