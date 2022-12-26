@@ -65,3 +65,4 @@ ui_*.h
 *.pyc
 .vs
 build
+CMakeSettings.json
