@@ -189,7 +189,7 @@ void Light::get_tilt(double& dTiltX,double& dTiltY) const
     dTiltY=_dTiltY*RAD_TO_DEG;
 }
 //////////////////////////////////////////////////////////////////////////////
-void Light::calc_colors(string sColors,vector<double>& vdLambda,vector<int>& vdVisualColors)
+void Light::calc_colors(const string& sColors,vector<double>& vdLambda,vector<int>& vdVisualColors)
 {
     vdLambda.clear();
     vdVisualColors.clear();

@@ -25,7 +25,7 @@ public:
     virtual ~Surface();
 
     string type() const;
-    bool set_type(string sType);
+    bool set_type(const string& sType);
 
     void set_x(double dx);
     double x() const;

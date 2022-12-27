@@ -216,7 +216,7 @@ bool Properties::load(const string& sFileName)
 
         //delete eventually the 13 character at the end
         if((int)(sLine[sLine.size()-1])==13)
-            sLine=sLine.substr(0,sLine.size()-1);
+            sLine.resize(sLine.size()-1);
 
         string sKey=sLine.substr(0,iPosEgal);
         string sValue=sLine.substr(iPosEgal+1);

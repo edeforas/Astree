@@ -239,7 +239,7 @@ bool OpticalDevice::get_image_autocurvature() const
     return _bAutoCurvature;
 }
 //////////////////////////////////////////////////////////////////////////////
-void OpticalDevice::set_comment(int iSurface,string sComment)
+void OpticalDevice::set_comment(int iSurface,const string & sComment)
 {
     _vSurfaces[iSurface].set_comment(sComment);
 }
@@ -285,7 +285,7 @@ void OpticalDevice::ray_trace()
     //update clone parameters
     for(unsigned int i=0;i<_surfParamsClone.size();i++)
     {
-        SurfaceParameterClone& a=_surfParamsClone[i];
+        const SurfaceParameterClone& a=_surfParamsClone[i];
         set(a.iSurface,a.param,a.dGain*get(a.iRefSurface,a.param,false));
     }
 
@@ -472,7 +472,7 @@ double OpticalDevice::half_field_of_view() const
     return _dHalfFov;
 }
 //////////////////////////////////////////////////////////////////////////////
-void OpticalDevice::set_type(int iSurf,string sType)
+void OpticalDevice::set_type(int iSurf,const string& sType)
 {
     _vSurfaces[iSurf].set_type(sType);
     _bMustRetrace=true;

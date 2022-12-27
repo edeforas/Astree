@@ -35,7 +35,7 @@ bool GlassCatalogIO::load(string sFile,GlassManager& pManager)
         sMaker=sFile.substr(iIndexStartMaker+1);
     auto iIndexSeparator=sMaker.find_first_of("_. -");
     if( (iIndexSeparator!=string::npos) )
-        sMaker=sMaker.substr(0,iIndexSeparator);
+        sMaker.resize(iIndexSeparator);
 
     while(!f.eof())
     {

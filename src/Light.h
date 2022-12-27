@@ -30,7 +30,7 @@ public:
     void set_material(Glass* pM);
 
     void set_colors(const string & vsAllColors);
-    static void calc_colors(string sColors,vector<double>& vdLambda,vector<int>& vdVisualColors);
+    static void calc_colors(const string& sColors,vector<double>& vdLambda,vector<int>& vdVisualColors);
     int get_visual_color(double dLambda) const;
 
     void set_geometry(double dZ,double dDiameter);

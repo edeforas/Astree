@@ -60,7 +60,7 @@ public:
     int nb_surface() const;
 
     // surface type management
-    void set_type(int iSurf,string sType);
+    void set_type(int iSurf,const string& sType);
     string type(int iSurf) const;
 
     // note management
@@ -94,7 +94,7 @@ public:
     bool compute_surface_profile(int iSurface,double dX,double dY,double& dZ); //TODO add slope computation
 
     // comment settings
-    void set_comment(int iSurface,string sComment);
+    void set_comment(int iSurface,const string& sComment);
     string comment(int iSurface) const;
     bool has_comment() const;
 

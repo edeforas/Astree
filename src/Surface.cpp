@@ -247,7 +247,7 @@ void Surface::local_ref(Photon& p) const
     p.z-=z();
 }
 //////////////////////////////////////////////////////////////////////////////
-bool Surface::set_type(string sType)
+bool Surface::set_type(const string& sType)
 {
     assert(sType!="");
     if ( (sType!="reflect") && (sType!="stop") && (sType!="image") && (sType!="image_infinite") && (sType!="transmit") && (sType!="void") && (sType!="perfect_lens") && (sType!="perfect_mirror") )
