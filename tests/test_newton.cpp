@@ -25,7 +25,8 @@ void test(bool bTest,string sMessage)
 /////////////////////////////////////////////////////////////////////
 void test_parabolic_mirror()
 {
-    OpticalDevice od;
+	cout << "Test parabolic mirror start..." << endl;
+	OpticalDevice od;
     double dDiameter=200.;
     double dFocal=1000.;
 
@@ -51,13 +52,16 @@ void test_parabolic_mirror()
     test(is_near(0,iq.vdSpotSize[0]),"Spot size must be zero");
     test(is_near(0,iq.vdSpotvsAiry[0]),"Spot size vs Airy must be zero");
     test(is_near(100,iq.vdVignetting[0]),"Vignetting must be 100%");
+	cout <<"Test parabolic mirror ok." << endl;
 }
 /////////////////////////////////////////////////////////////////////
 void test_computation_time()
 {
+	cout << "Test Duration start..." << endl;
+	int iNbTests = 100;
 	chrono::steady_clock::time_point T1 = chrono::steady_clock::now();
 
-	for (int i = 0; i < 1000; i++)
+	for (int iTest = 0; iTest < iNbTests; iTest++)
 	{
 		OpticalDevice od;
 		double dDiameter = 200.;
@@ -89,7 +93,8 @@ void test_computation_time()
 
 	chrono::steady_clock::time_point T2 = chrono::steady_clock::now();
 	auto delta = chrono::duration_cast<std::chrono::milliseconds>(T2-T1).count();
-	cout << "Duration: " << delta << " ms" << endl;
+	cout << "Duration: " << delta/(double)iNbTests << " ms" << endl;
+	cout << "Test Duration ok." << endl;
 }
 /////////////////////////////////////////////////////////////////////
 int main()
@@ -97,7 +102,7 @@ int main()
     test_parabolic_mirror();
 	test_computation_time();
 
-    cout << "all tests success!" << endl;
+    cout << "All tests ok." << endl;
 
     return 0;
 }
