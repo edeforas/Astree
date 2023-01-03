@@ -32,6 +32,11 @@ install:
   - cp -r glass/* astree/usr/glass
   
 script:
+  - cd src
+  - cmake --version
+  - cmake CMakeLists.txt
+  - cmake  --build .
+  - cd ..
   - cd src/gui
   - qmake CONFIG+=release PREFIX=/usr
   - make -j$(nproc)
