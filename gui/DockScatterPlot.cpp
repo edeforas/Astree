@@ -263,7 +263,7 @@ void DockScatterPlot::device_changed(OpticalDevice* pDevice, int iReason)
     enlarge(rtotal,1.1);
 
     scene->setSceneRect(rtotal);
-	m_ui->graphicsView->resetMatrix();
+    m_ui->graphicsView->resetTransform();
     m_ui->graphicsView->fitInView(rtotal,Qt::KeepAspectRatio);
 
     _bBlockSignals=false;

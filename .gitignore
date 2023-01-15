@@ -66,3 +66,4 @@ ui_*.h
 .vs
 build
 CMakeSettings.json
+/build-*

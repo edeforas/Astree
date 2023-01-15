@@ -216,7 +216,7 @@ void FrameSideView::fit_in_view()
     QRectF r=scene->itemsBoundingRect();
     enlarge(r,1.1);
     scene->setSceneRect(r);
-	m_ui->graphicsView->resetMatrix();
+    m_ui->graphicsView->resetTransform();
     m_ui->graphicsView->fitInView(r,Qt::KeepAspectRatio);
 }
 //////////////////////////////////////////////////////////////////////////////
