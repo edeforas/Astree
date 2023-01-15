@@ -158,17 +158,19 @@ void DockImageQuality::highlight_offaxislight_row()
     double dPercentField;
     int iSelectedRow = 0;
     if(_pDevice!=nullptr)
+    {
         if (_pDevice->get_parameter("showLightOffAxis", dPercentField) && (ui->tableWidget->rowCount() > 1))
             iSelectedRow = (int)(0.5 + (ui->tableWidget->rowCount() - 1)*dPercentField / 100.);
+    }
 
-	for(int i=0;i< ui->tableWidget->rowCount();i++)
+    for(int i=0;i< ui->tableWidget->rowCount();i++)
 	{
 		QColor qc = Qt::white;
         if(i== iSelectedRow)
 			qc = Qt::yellow;
 
 		for (int j = 0; j < ui->tableWidget->columnCount(); j++)
-			ui->tableWidget->item(i, j)->setBackgroundColor(qc);
+            ui->tableWidget->item(i, j)->setBackground(qc);
 	}
 }
 //////////////////////////////////////////////////////////////////////////////////
