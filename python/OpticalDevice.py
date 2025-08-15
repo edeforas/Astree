@@ -321,8 +321,25 @@ class OpticalDevice:
         return False  # Placeholder implementation
 
     def initialize_light(self, light: Light, dTilt: float, iGridX: int, iGridY: int):
-        # This method was referenced but not defined in the original
-        pass
+        pSurf = None
+
+        # do not init on void surfaces
+        for surface in self._vSurfaces:
+            if surface.type() != "void":
+                pSurf = surface
+                break
+
+        if pSurf is None:
+            return
+
+        light.set_nb_photons(iGridX, iGridY)
+        light.set_tilt(dTilt, 0)
+        light.set_colors(self._sLightColors)
+
+        dDecal = 0
+        pSurf.compute_z(0, pSurf.diameter() / 2.0, dDecal)
+        light.set_geometry(pSurf.z() + dDecal, pSurf.diameter())
+        light.get_photon(0)  # to force light->init# This method was referenced but not defined in the original
 
     def set(self, iSurface: int, param: str, value: float):
         # This method was referenced but not defined in the original
