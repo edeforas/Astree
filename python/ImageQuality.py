@@ -8,11 +8,11 @@ class ImageQuality:
 
     def init(self, number_of_angles):
         self._number_of_angles = number_of_angles
-        self.angle_values = [-1.0] * number_of_angles
-        self.distance_values = [-1.0] * number_of_angles
-        self.vignetting_values = [-1.0] * number_of_angles
-        self.spot_size_values = [-1.0] * number_of_angles
-        self.spot_vs_airy_values = [-1.0] * number_of_angles
+        self.vdAngles = [-1.0] * number_of_angles
+        self.vdDist = [-1.0] * number_of_angles
+        self.vdVignetting = [-1.0] * number_of_angles
+        self.vdSpotSize = [-1.0] * number_of_angles
+        self.vdSpotvsAiry = [-1.0] * number_of_angles
 
         self.f_number = -1.0
         self.airy_size = -1.0

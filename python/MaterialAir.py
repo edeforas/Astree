@@ -4,7 +4,7 @@
 
 import Glass
 
-class MaterialAir(Glass):
+class MaterialAir(Glass.Glass):
     def __init__(self):
         self._sName = "Air"
         self._sFormula = "Custom"

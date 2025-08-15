@@ -10,7 +10,6 @@ CURVATURE_FLAT =1e-20
 NB_ITER_STOP_NEWTON =40
 RESOLUTION_STOP_NEWTON =1e-7 #//0.1 nm=1e-7 mm  resolution
 
-
 class Surface:
     def __init__(self):
         self._sType = "void"
@@ -363,20 +362,20 @@ class Surface:
     def comment(self) -> str:
         return self._comment
 
-    def set_auto_diameter(self, auto: bool):
-        self._auto_diameter = auto
+    def set_auto_diameter(self, _bAutoDiameter: bool):
+        self._bAutoDiameter = _bAutoDiameter
 
     def get_auto_diameter(self) -> bool:
-        return self._auto_diameter
+        return self._bAutoDiameter
 
     def set_auto_inner_diameter(self, auto: bool):
-        self._auto_inner_diameter = auto
+        self._bAutoInnerDiameter = auto
 
     def get_auto_inner_diameter(self) -> bool:
-        return self._auto_inner_diameter
+        return self._bAutoInnerDiameter
 
     def inner_diameter(self) -> float:
-        return self._inner_diameter
+        return self._bAutoInnerDiameter
 
     def is_aspheric(self) -> bool:
         return self._aspheric

@@ -199,7 +199,7 @@ class OpticalDevice:
             self.set(a.iSurface, a.param, a.dGain * self.get(a.iRefSurface, a.param, False))
 
         # main ray tracing loop on axis for autofocus
-        light = Light()
+        light = Light.Light()
         self.ray_trace_step(light, 0, self._bAutoFocus, False)
         self._imageQuality.isImageInfinite = light.is_image_infinite()
 

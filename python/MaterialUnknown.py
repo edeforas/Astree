@@ -4,7 +4,7 @@
 
 import Glass
 
-class MaterialUnknown(Glass):
+class MaterialUnknown(Glass.Glass):
     def __init__(self):
         self.name = "Unknown"
         self.formula = "Unknown"

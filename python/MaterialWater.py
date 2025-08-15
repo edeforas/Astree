@@ -4,7 +4,7 @@
 
 import Glass
 
-class MaterialWater(Glass):
+class MaterialWater(Glass.Glass):
     def __init__(self):
         self.name = "Water"
         self.formula = "Constant"

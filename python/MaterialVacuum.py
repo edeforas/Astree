@@ -4,7 +4,7 @@
 
 import Glass
 
-class MaterialVacuum(Glass):
+class MaterialVacuum(Glass.Glass):
     def __init__(self):
         self.name = "Vacuum"
         self.formula = "Constant"
