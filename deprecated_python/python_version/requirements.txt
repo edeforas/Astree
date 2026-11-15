@@ -1,3 +1,0 @@
-numpy>=1.21.0
-matplotlib>=3.5.0
-PyQt6>=6.2.0

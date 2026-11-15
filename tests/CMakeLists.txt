@@ -6,5 +6,25 @@ target_link_libraries(test_newton libAstree)
 add_executable(test_perfect_surface test_perfect_surface.cpp  )
 target_link_libraries(test_perfect_surface libAstree)
 
+add_executable(test_surface_profile test_surface_profile.cpp)
+target_link_libraries(test_surface_profile libAstree)
+add_test(NAME surface_profile COMMAND test_surface_profile)
+
+add_executable(test_optical_device_properties test_optical_device_properties.cpp)
+target_link_libraries(test_optical_device_properties libAstree)
+add_test(NAME optical_device_properties COMMAND test_optical_device_properties)
+
+add_executable(test_surface_tilt_intersection test_surface_tilt_intersection.cpp)
+target_link_libraries(test_surface_tilt_intersection libAstree)
+add_test(NAME surface_tilt_intersection COMMAND test_surface_tilt_intersection)
+
 add_executable(test_scaling test_scaling.cpp  )
 target_link_libraries(test_scaling libAstree)
+
+add_executable(test_optimizer test_optimizer.cpp)
+target_link_libraries(test_optimizer libAstree)
+add_test(NAME optimizer COMMAND test_optimizer)
+
+add_executable(test_ritchey_chretien test_ritchey_chretien.cpp)
+target_link_libraries(test_ritchey_chretien libAstree)
+add_test(NAME ritchey_chretien COMMAND test_ritchey_chretien)

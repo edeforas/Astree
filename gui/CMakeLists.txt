@@ -1,69 +1,78 @@
-find_package(Qt6 6.2 REQUIRED COMPONENTS Widgets)
+include(FetchContent)
+
+set(GLFW_BUILD_EXAMPLES OFF CACHE BOOL "" FORCE)
+set(GLFW_BUILD_TESTS OFF CACHE BOOL "" FORCE)
+set(GLFW_BUILD_DOCS OFF CACHE BOOL "" FORCE)
+set(GLFW_INSTALL OFF CACHE BOOL "" FORCE)
+
+FetchContent_Declare(
+    glfw
+    GIT_REPOSITORY https://github.com/glfw/glfw.git
+    GIT_TAG 3.4
+    GIT_SHALLOW TRUE
+)
+FetchContent_Declare(
+    imgui
+    GIT_REPOSITORY https://github.com/ocornut/imgui.git
+    GIT_TAG v1.91.9b-docking
+    GIT_SHALLOW TRUE
+)
+FetchContent_MakeAvailable(glfw imgui)
+
+find_package(OpenGL REQUIRED)
 
 set(ASTREE_GUI_SOURCES
-    DialogMediumManager.cpp
-    DialogRevertDesign.cpp
-    DialogScaleDevice.cpp
-    DockCommentary.cpp
-    DockImageQuality.cpp
-    DockLightProperties.cpp
-    DockOptimizer.cpp
-    DockScatterPlot.cpp
-    DockSurfacesData.cpp
-    FrameSideView.cpp
-    MainWindow.cpp
     main.cpp
-    DialogMediumManager.h
-    DialogRevertDesign.h
-    DialogScaleDevice.h
-    DockCommentary.h
-    DockImageQuality.h
-    DockLightProperties.h
-    DockOptimizer.h
-    DockScatterPlot.h
-    DockSurfacesData.h
-    FrameSideView.h
-    MainWindow.h
-    MyViewFrame.h
-    AstreeDefines.h
-    Astree.qrc
-    MainWindow.ui
-    DialogRevertDesign.ui
-    DockLightProperties.ui
-    FrameSideView.ui
-    DockScatterPlot.ui
-    DockSurfacesData.ui
-    DockCommentary.ui
-    DialogMediumManager.ui
-    DialogScaleDevice.ui
-    DockImageQuality.ui
-    DockOptimizer.ui
+    AppSettings.cpp
+    AppState.cpp
+    FileUI.cpp
+    OpticalPanels.cpp
+    Panels.cpp
+    LightPanel.cpp
+    NotesPanel.cpp
+    OptimizerPanel.cpp
+    MediumManagerPanel.cpp
+    CloneEditorPanel.cpp
+    ScaleDialog.cpp
+    RevertDialog.cpp
+    AboutDialog.cpp
+    PendingActionDialog.cpp
+    ResetSettingsDialog.cpp
+    StatusBar.cpp
 )
+
+add_library(astree_imgui STATIC
+    ${imgui_SOURCE_DIR}/imgui.cpp
+    ${imgui_SOURCE_DIR}/imgui_draw.cpp
+    ${imgui_SOURCE_DIR}/imgui_tables.cpp
+    ${imgui_SOURCE_DIR}/imgui_widgets.cpp
+    ${imgui_SOURCE_DIR}/backends/imgui_impl_glfw.cpp
+    ${imgui_SOURCE_DIR}/backends/imgui_impl_opengl3.cpp
+)
+target_include_directories(astree_imgui PUBLIC
+    ${imgui_SOURCE_DIR}
+    ${imgui_SOURCE_DIR}/backends
+)
+target_link_libraries(astree_imgui PUBLIC glfw OpenGL::GL)
 
 if(WIN32)
-    list(APPEND ASTREE_GUI_SOURCES Astree.rc)
+    enable_language(RC)
+    add_executable(Astree WIN32 ${ASTREE_GUI_SOURCES})
+    target_sources(Astree PRIVATE "${PROJECT_SOURCE_DIR}/gui/Astree.rc")
+else()
+    add_executable(Astree ${ASTREE_GUI_SOURCES})
 endif()
-
-add_executable(Astree ${ASTREE_GUI_SOURCES})
-target_include_directories(Astree PRIVATE ${CMAKE_CURRENT_SOURCE_DIR})
-target_link_libraries(Astree PRIVATE libAstree Qt6::Widgets)
-target_compile_definitions(Astree PRIVATE $<$<CONFIG:Release>:QT_NO_DEBUG>)
-
-set_target_properties(Astree PROPERTIES
-    AUTOMOC ON
-    AUTOUIC ON
-    AUTORCC ON
-    AUTOUIC_SEARCH_PATHS ${CMAKE_CURRENT_SOURCE_DIR}
-    OUTPUT_NAME_DEBUG Astree_debug
-    OUTPUT_NAME_RELEASE Astree
+target_include_directories(Astree PRIVATE ${PROJECT_SOURCE_DIR}/src)
+target_link_libraries(Astree PRIVATE libAstree astree_imgui)
+if(WIN32)
+    target_link_libraries(Astree PRIVATE Dwmapi Ole32 Shell32)
+endif()
+target_compile_definitions(Astree PRIVATE
+    ASTREE_GLASS_DIR="${PROJECT_SOURCE_DIR}/glass"
 )
 
-if(CMAKE_SYSTEM_NAME STREQUAL "Linux")
-    install(TARGETS Astree RUNTIME DESTINATION bin)
-    install(FILES "${PROJECT_SOURCE_DIR}/astree.desktop"
-        DESTINATION share/applications)
-    install(FILES "${PROJECT_SOURCE_DIR}/Astree.png"
-        DESTINATION share/pixmaps)
-    install(FILES "${PROJECT_SOURCE_DIR}/astree.appdata.xml"
-        DESTINATION share/appdata)
+if(MSVC)
+    target_compile_options(Astree PRIVATE /W4)
+else()
+    target_compile_options(Astree PRIVATE -Wall -Wextra -Wpedantic)
 endif()
