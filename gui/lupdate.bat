@@ -1,3 +1,3 @@
-C:\Qt\5.13.0\msvc2017_64\bin\lupdate.exe Astree.pro
+lupdate.exe . ..\src -ts Astree_fr.ts
 pause
-C:\Qt\5.13.0\msvc2017_64\bin\linguist.exe Astree_fr.ts
+linguist.exe Astree_fr.ts

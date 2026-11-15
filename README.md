@@ -14,6 +14,20 @@ It use Qt for the gui.
 
 Feel free to contribute!
 
+## Building from source
+
+The project is built with CMake 3.20 or newer and Qt 6.2 or newer (Widgets).
+Configure and build from the repository root (the GUI is enabled by default):
+
+```sh
+cmake -S . -B build
+cmake --build build --config Release
+```
+
+On Linux, `cmake --install build` installs the application and its desktop
+metadata. CMake must be able to locate the Qt 6 installation. To build just the
+engine and tests without Qt, configure with `-DASTREE_BUILD_GUI=OFF`.
+
 Windows binaries can be downloaded at: 
 http://edeforas.free.fr
 or

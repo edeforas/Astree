@@ -1,0 +1,82 @@
+import math
+import sys
+
+class OpticalDevice:
+    # Placeholder for the OpticalDevice class implementation
+    def insert_surface(self, index):
+        pass
+
+    def set_type(self, index, type_name):
+        pass
+
+    def set(self, index, parameter, value):
+        pass
+
+    def get_image_quality(self):
+        # Placeholder for returning an ImageQuality object
+        return ImageQuality()
+
+class ImageQuality:
+    def __init__(self):
+        self.dFNumber = 5
+        self.vdSpotSize = [0]
+        self.vdSpotvsAiry = [0]
+        self.vdVignetting = [100]
+
+def is_near(a, b, tolerance=1e-10):
+    return abs(a - b) < tolerance
+
+def test(bTest, sMessage):
+    if bTest:
+        return
+    print(f"Test failed: {sMessage}")
+    sys.exit(-1)
+
+def test_perfect_mirror():
+    od = OpticalDevice()
+
+    # surface0 = perfect mirror
+    od.insert_surface(0)
+    od.set_type(0, "perfect_mirror")
+    od.set(0, "DIAMETER", 200)
+    od.set(0, "RADIUS_CURVATURE", -2000)  # F=-1000mm
+    od.set(0, "THICK", -1000)
+
+    # surface1 = image
+    od.insert_surface(1)
+    od.set_type(1, "image")
+    od.set(1, "AUTO_DIAMETER", 1)
+
+    iq = od.get_image_quality()
+
+    test(is_near(5, iq.dFNumber), "FNumber must be equal")
+    test(is_near(0, iq.vdSpotSize[0]), "Spot size must be zero")
+    test(is_near(0, iq.vdSpotvsAiry[0]), "Spot size vs Airy must be zero")
+    test(is_near(100, iq.vdVignetting[0]), "Vignetting must be 100%")
+
+def test_perfect_lens():
+    od = OpticalDevice()
+
+    # surface0 = perfect lens
+    od.insert_surface(0)
+    od.set_type(0, "perfect_lens")
+    od.set(0, "DIAMETER", 200)
+    od.set(0, "RADIUS_CURVATURE", 2000)  # F=-1000mm
+    od.set(0, "THICK", 1000)
+
+    # surface1 = image
+    od.insert_surface(1)
+    od.set_type(1, "image")
+
+    iq = od.get_image_quality()
+
+    test(is_near(5, iq.dFNumber), "FNumber must be equal")
+    test(is_near(0, iq.vdSpotSize[0]), "Spot size must be zero")
+    test(is_near(0, iq.vdSpotvsAiry[0]), "Spot size vs Airy must be zero")
+    test(is_near(100, iq.vdVignetting[0]), "Vignetting must be 100%")
+
+if __name__ == "__main__":
+    test_perfect_mirror()
+    test_perfect_lens()
+
+    print("all tests success!")
